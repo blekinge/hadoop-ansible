@@ -1,0 +1,5 @@
+---
+- name: Start namenode process
+  file:
+    path: "{{ hadoop_path }}"
+    state: directory

@@ -1,0 +1,131 @@
+---
+- name: syshome
+  file:
+    path: "{{ SYSHOME_DIR }}"
+    owner: root
+    group: root
+    mode: '0622'
+    state: directory
+
+- name: syshome
+  file:
+    path: "/syshome"
+    owner: root
+    group: root
+    mode: '0622'
+    state: directory
+
+- name: syshomes
+  file:
+    path: "{{ SYSHOME_DIR }}/{{ item.user }}"
+    owner: "{{ item.user }}"
+    group: "{{ item.group }}"
+    mode: '0600'
+    state: directory
+  loop:
+    - { user: hdfs, group: hdfs}
+    - { user: mapred, group: hadoop}
+    - { user: yarn, group: hadoop}
+    - { user: zookeeper, group: hadoop}
+
+- name: syshomes
+  file:
+    src: "/{{ SYSHOME_DIR }}/{{ item.user }}"
+    dest: "/syshome/{{ item.user }}"
+#    owner: "{{ item.user }}"
+#    group: "{{ item.group }}"
+#    mode: '0600'
+    state: link
+  loop:
+    - { user: hdfs, group: hdfs}
+    - { user: mapred, group: hadoop}
+    - { user: yarn, group: hadoop}
+    - { user: zookeeper, group: hadoop}
+
+#NFS exports this folder
+- name: setup nfs exports
+  lineinfile:
+    path: /etc/exports
+    state: present
+    line: "{{ SYSHOME_DIR }} {{ IPRANGE1 }}(rw,sec=sys,fsid=1339)"
+
+- name: NFS autohome server
+  systemd:
+    name: nfs-server
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+
+
+#Add the NFS service principal for the server and client to Kerberos.
+- name: FreeIPA automount setup service
+  ipaservice:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: "nfs/{{ ipaserver_hostname }}"
+    state: present
+    force: yes
+
+
+#https://blog.delouw.ch/2015/03/14/using-ipa-to-provide-automount-maps-for-nfsv4-home-directories/
+
+#This require the ipa admintools to be installed and the host to be an ipa client
+- block:
+
+  - name: setup autohome
+    shell: |
+      #Add the auto.home map
+      ipa automountmap-add default auto.home
+
+      #And add the auto.home map to auto.master
+      ipa automountkey-add default --key "/autohome" --info auto.home auto.master
+
+      #Finally add the key to the auto.home map
+      ipa automountkey-add default \
+      --key "*" \
+      --info "-fstype=nfs4,rw,sec=krb5,intr,hard {{ ipaserver_hostname }}:{{ AUTOHOME_DIR }}/&" \
+      auto.home
+
+  - name: Tell your NFS service to use NFSv4
+    lineinfile:
+      path: /etc/sysconfig/nfs
+      state: present
+      line: 'SECURE_NFS="yes"'
+
+  - name: setup autohome
+    shell: |
+      #Get the keytab for the nfs process
+      ipa-getkeytab --server {{ ipaserver_hostname }} -p "nfs/{{ ipaserver_hostname }}" -k /etc/krb5.keytab
+
+
+  - name: Autohome dir
+    file:
+      path: "{{ AUTOHOME_DIR }}"
+      owner: root
+      group: root
+      mode: '0622'
+      state: directory
+
+  - name: #Create your NFS share and start the NFS server
+    lineinfile:
+      path: /etc/exports
+      state: present
+      line: "{{ AUTOHOME_DIR }}    {{  IPRANGE1 }}(rw,sec=sys:krb5:krb5i:krb5p)"
+
+  - name: admin home
+    file:
+        path: "{{ AUTOHOME_DIR }}/admin"
+        owner: admin
+        group: admin
+        mode: '0600'
+        state: directory
+
+
+  - name: NFS autohome server
+    systemd:
+      name: nfs-server
+      state: started
+      enabled: yes
+      daemon_reload: yes
+
+

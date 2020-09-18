@@ -1,0 +1,38 @@
+---
+ipaadmin_password: ADMPassword1
+ipadm_password: DMPassword1
+ipaserver_domain: nah.hadoop
+ipaserver_realm: NAH.HADOOP
+ipaserver_hostname: nah-adm.nah.hadoop
+ipaserver_setup_dns: yes
+ipaserver_auto_forwarders: yes
+ipaserver_idstart: 20000
+ipaserver_noreverse: true
+ipaserver_no_host_dns: false
+
+
+users_hadoopGroup: 11000
+users_hdfsGroup: 11200
+users_systemServiceGroup: 15000
+users_ambariServiceGroup: 16000
+users_bigInsightsServiceGroup: 17000
+users_subadminsGroup: 12000
+users_adminsGroup: 13000
+users_usersGroup: 20000
+users_p000Group: 100
+
+
+
+
+SUBNET1: 10.0.0
+IPRANGE1: "{{SUBNET1}}.0/24"
+DOMAIN_NAME1: nah.hadoop
+REALM_NAME: NAH.HADOOP
+
+CLUSTER_NAME: NAH
+
+LDAP_DOMAIN: "dc=nah,dc=hadoop"
+
+STO_DATA_DIR: /sto-data
+SYSHOME_DIR: /sto-data/syshome
+AUTOHOME_DIR: /sto-data/home

@@ -1,0 +1,26 @@
+---
+- name: Default Sudo rules
+  ipasudorule:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: defaults
+    hostcategory: all
+    usercategory: all
+    sudooption:
+    - '!requiretty'
+    - '!env_reset'
+    - 'env_delete-=PATH'
+
+- name: Subadmin Sudo rules
+  ipasudorule:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: subadmins
+    hostcategory: all
+    cmdcategory: all
+    runasusercategory: all
+    runasgroupcategory: all
+    sudooption:
+      - '!requiretty'
+      - '!authenticate'
+    group:
+      - subadmins
+      - admins

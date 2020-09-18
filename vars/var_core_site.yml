@@ -1,0 +1,37 @@
+---
+# hadoop configration
+hdfs_port: 9000
+core_site_properties:
+  - {
+    "name": "fs.defaultFS",
+    "value": "hdfs://{{ master_ip }}:{{ hdfs_port }}"
+#    hdfs://KAC
+  }
+  - {
+    "name": "hadoop.tmp.dir",
+    "value": "file:{{ hadoop_tmp }}"
+  }
+  - {
+    "name": "io.file.buffer.size",
+    "value": "131072"
+  }
+  - {
+    "name": "dfs.access.time.precision",
+    "value": "3600000"
+  }
+  - {
+    "name": "dfs.namenode.accesstime.precision",
+    "value": "3600000"
+  }
+  - {
+    "name": "fs.trash.checkpoint.interval",
+    "value": "360"
+  }
+  - {
+    "name": "io.compression.codecs",
+    "value": "org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.SnappyCodec"
+  }
+  - {
+    "name": "io.serializations",
+    "value": "org.apache.hadoop.io.serializer.WritableSerialization"
+  }

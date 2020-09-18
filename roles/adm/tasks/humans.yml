@@ -1,0 +1,62 @@
+---
+- name: human users
+  ipauser:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    last: Human
+    userclass: SubAdmin
+    shell: /bin/bash
+
+    users:
+      - name: vagrant
+        first: Vagrant
+        Last: Vagrant
+        uid: 1000
+        gid: 1000
+        homedir: /home/vagrant
+
+      - name: nahuser
+        first: NahUser
+        last: User
+        uid: "{{users_p000Group | int + 1}}"
+        gid: "{{users_p000Group | int + 1}}"
+        homedir: /home/nahuser
+
+
+- name: human user groups subadmins
+  ipagroup:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: subadmins
+    action: member
+    user:
+      - vagrant
+      - nahuser
+
+- name: human user groups nahusers
+  ipagroup:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: nahusers
+    action: member
+    user:
+      - vagrant
+      - nahuser
+
+- name: autohome
+  file:
+    path: "{{ AUTOHOME_DIR }}"
+    owner: root
+    group: root
+    mode: '0622'
+    state: directory
+
+
+
+- name: autohomes
+  file:
+    path: "{{ AUTOHOME_DIR }}/{{ item.user }}"
+    owner: "{{ item.user }}"
+    group: "{{ item.group }}"
+    mode: '0600'
+    state: directory
+  loop:
+    - { user: nahuser, group: nahuser}
+    - { user: vagrant, group: vagrant}

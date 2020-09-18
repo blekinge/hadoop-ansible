@@ -1,0 +1,12 @@
+- hosts: ipaserver
+  become: yes
+  vars_files:
+    - vars/var_ipa.yml
+  roles:
+    - role: ipaserver
+      state: present
+
+    - role: adm
+
+
+#append /etc/nsswitch.conf "sudoers: files sss"

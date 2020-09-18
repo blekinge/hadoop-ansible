@@ -1,0 +1,30 @@
+<configuration>
+
+    <property>
+        <name>nfs.exports.allowed.hosts</name>
+        <value>172.16.215.0/24 rw</value>
+    </property>
+
+    <property>
+        <name>nfs.file.dump.dir</name>
+        <value>/tmp/.hdfs-nfs</value>
+    </property>
+
+
+    <property>
+        <name>nfs.kerberos.principal</name>
+        <value>hdfs-nfs/_HOST@KAC.SBLOKALNET</value>
+    </property>
+
+    <property>
+        <name>nfs.keytab.file</name>
+        <value>/etc/security/keytabs/hdfs-nfs.service.keytab</value>
+    </property>
+
+    <property>
+        <name>nfs.port.monitoring.disabled</name>
+        <value>false</value>
+    </property>
+
+
+</configuration>

@@ -1,0 +1,119 @@
+dfs_namenode_httpport: 9001
+hdfs_site_properties:
+  #General
+  - {
+    "name": "dfs.replication",
+    "value": "3"
+  }
+  - {
+    name: "dfs.replication.max",
+    value: 50
+  }
+  - {
+    name: "dfs.support.append",
+    value: "true"
+  }
+  - {
+    name: "fs.permissions.umask-mode",
+    value: "027"
+  }
+  - {
+    "name": "dfs.blocksize",
+    "value": 134217728
+  }
+  - {
+    "name": "dfs.cluster.administrators",
+    "value": " hdfs,admins,subadmins"
+  }
+  - {
+    "name": "dfs.permissions.enabled",
+    "value": "true"
+  }
+  - {
+    "name": "dfs.permissions.superusergroup",
+    "value": "hdfs"
+  }
+  - {
+    name: "dfs.webhdfs.enabled",
+    value: "true"
+  }
+
+
+
+  # Namenode
+  - {
+    "name": "dfs.namenode.secondary.http-address",
+    "value": "{{ master_hostname }}:{{ dfs_namenode_httpport }}"
+  }
+  - {
+    "name": "dfs.namenode.name.dir",
+    "value": "file:{{ hadoop_dfs_name }}"
+  }
+  - {
+    "name": "dfs.namenode.data.dir",
+    "value": "file:{{ hadoop_dfs_data }}"
+  }
+  - {
+    "name": "dfs.namenode.acls.enabled",
+    "value": "true"
+  }
+  - {
+    "name": "dfs.namenode.checkpoint.dir",
+    "value": "/hadoop/hdfs/namesecondary"
+  }
+  - {
+    "name": "dfs.namenode.checkpoint.edits.dir",
+    "value": "/hadoop/hdfs/namesecondary"
+  }
+  - {
+    "name": "dfs.namenode.rpc-bind-host",
+    "value": "0.0.0.0"
+  }
+  - {
+    "name": "dfs.namenode.servicerpc-bind-host",
+    "value": "0.0.0.0"
+  }
+  - {
+    "name": "dfs.namenode.safemode.threshold-pct",
+    "value": "0.99"
+  }
+
+  #Client
+  - {
+    "name": "dfs.client.read.shortcircuit",
+    "value": 4096
+  }
+  - {
+    "name": "dfs.client.use.datanode.hostname",
+    "value": "true"
+  }
+
+  #Datanode
+  - {
+    "name": "dfs.datanode.use.datanode.hostname",
+    "value": "true"
+  }
+  - {
+    "name": "dfs.datanode.data.dir",
+    "value": "/data/sdb1/hdfs,/data/sdc1/hdfs,/data/sdd1/hdfs,/data/sde1/hdfs,/data/sdf1/hdfs,/data/sdg1/hdfs"
+  }
+  - {
+    "name": "dfs.datanode.data.dir.perm",
+    "value": 750
+  }
+  - {
+    "name": "dfs.datanode.address",
+    "value": "0.0.0.0:1019"
+  }
+  - {
+    "name": "dfs.datanode.http.address",
+    "value": "0.0.0.0:1022"
+  }
+  - {
+    "name": "dfs.datanode.https.address",
+    "value": "0.0.0.0:50475"
+  }
+  - {
+    "name": "dfs.datanode.https.address",
+    "value": "0.0.0.0:8010"
+  }

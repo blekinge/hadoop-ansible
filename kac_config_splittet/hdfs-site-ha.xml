@@ -1,0 +1,86 @@
+<configuration>
+    <property>
+        <name>dfs.client.failover.proxy.provider.KAC</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+    </property>
+
+
+    <property>
+        <name>dfs.ha.automatic-failover.enabled</name>
+        <value>true</value>
+    </property>
+
+    <property>
+        <name>dfs.ha.fencing.methods</name>
+        <value>shell(/bin/true)</value>
+    </property>
+
+    <property>
+        <name>dfs.ha.namenodes.KAC</name>
+        <value>nn1,nn2</value>
+    </property>
+
+    <property>
+        <name>dfs.journalnode.edits.dir</name>
+        <value>/hadoop/hdfs/journal</value>
+    </property>
+
+    <property>
+        <name>dfs.journalnode.http-address</name>
+        <value>0.0.0.0:8480</value>
+    </property>
+
+    <property>
+        <name>dfs.journalnode.https-address</name>
+        <value>0.0.0.0:8481</value>
+    </property>
+
+    <property>
+        <name>dfs.namenode.http-address.KAC.nn1</name>
+        <value>kac-hdfs-001.kach.sblokalnet:50070</value>
+    </property>
+
+    <property>
+        <name>dfs.namenode.http-address.KAC.nn2</name>
+        <value>kac-hdfs-002.kach.sblokalnet:50070</value>
+    </property>
+
+
+    <property>
+        <name>dfs.namenode.https-address.KAC.nn1</name>
+        <value>kac-hdfs-001.kach.sblokalnet:50470</value>
+    </property>
+
+    <property>
+        <name>dfs.namenode.https-address.KAC.nn2</name>
+        <value>kac-hdfs-002.kach.sblokalnet:50470</value>
+    </property>
+
+    <property>
+        <name>dfs.namenode.rpc-address.KAC.nn1</name>
+        <value>kac-hdfs-001.kach.sblokalnet:8020</value>
+    </property>
+
+    <property>
+        <name>dfs.namenode.rpc-address.KAC.nn2</name>
+        <value>kac-hdfs-002.kach.sblokalnet:8020</value>
+    </property>
+
+
+    <property>
+        <name>dfs.namenode.shared.edits.dir</name>
+        <value>qjournal://kac-zkpr-001.kach.sblokalnet:8485;kac-zkpr-002.kach.sblokalnet:8485;kac-zkpr-003.kach.sblokalnet:8485/KAC</value>
+    </property>
+
+    <property>
+        <name>dfs.internal.nameservices</name>
+        <value>KAC</value>
+    </property>
+
+
+    <property>
+        <name>dfs.nameservices</name>
+        <value>KAC</value>
+    </property>
+
+</configuration>
