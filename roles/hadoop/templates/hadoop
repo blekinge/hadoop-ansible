@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+source /etc/profile.d/hadoop_env.sh
+
+exec "$HADOOP_HOME/bin/hadoop" "$@"
+

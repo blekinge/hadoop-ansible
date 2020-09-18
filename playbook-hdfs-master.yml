@@ -2,7 +2,6 @@
   become: yes
   vars_files:
     - vars/var_basic.yml
-    - vars/var_master.yml
     - vars/var_hadoop.yml
     - vars/var_core_site.yml
     - vars/var_hdfs_site.yml

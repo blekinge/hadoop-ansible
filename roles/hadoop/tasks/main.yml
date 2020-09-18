@@ -39,5 +39,4 @@
 - include: redhat.yml
   when: ansible_os_family == 'RedHat'
 
-#- include: run_hadoop.yml
-#  when: config_hadoop
+- include: start_hadoop.yml

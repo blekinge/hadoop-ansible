@@ -1,0 +1,13 @@
+[Unit]
+Description=Hadoop DFS namenode
+Requires=network-online.target
+
+[Service]
+User=hdfs
+Group=hadoop
+Type=forking
+ExecStart=/usr/local/bin/hadoop namenode
+PIDFile=/tmp/hadoop-namenode.pid
+
+[Install]
+WantedBy=multi-user.target

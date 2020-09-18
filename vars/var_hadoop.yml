@@ -14,13 +14,22 @@ hadoop_log_path: "/var/logs/hadoop/"
 user: "root"
 group: "hadoop"
 
+hdfs_data_dirs:
+  - "{{ hadoop_dfs_data }}"
+#  - /data/sdb1/hdfs
+#  - /data/sdc1/hdfs
+#  - /data/sdd1/hdfs
+#  - /data/sde1/hdfs
+#  - /data/sdf1/hdfs
+#  - /data/sdg1/hdfs
 
+hdfs_data_dirs_joined:  "{{ hdfs_data_dirs | join(',') }}"
 
 hadoop_hdfs_user: "hdfs"
 hadoop_hdfs_create_path:
   - "{{ hadoop_tmp }}"
   - "{{ hadoop_dfs_name }}"
-  - "{{ hadoop_dfs_data }}"
+  - hdfs_data_dirs
   - "{{ hadoop_log_path }}"
   - "/var/run/hadoop"
 

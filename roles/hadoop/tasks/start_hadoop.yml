@@ -1,0 +1,14 @@
+---
+- name: Start datanode process
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: datanode
+  when: start_datanode
+
+- name: Start namenode process
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: namenode
+  when: start_namenode

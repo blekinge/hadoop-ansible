@@ -1,4 +1,3 @@
-dfs_namenode_httpport: 9001
 hdfs_site_properties:
   #General
   - {
@@ -41,10 +40,6 @@ hdfs_site_properties:
 
 
   # Namenode
-  - {
-    "name": "dfs.namenode.secondary.http-address",
-    "value": "{{ master_hostname }}:{{ dfs_namenode_httpport }}"
-  }
   - {
     "name": "dfs.namenode.name.dir",
     "value": "file:{{ hadoop_dfs_name }}"
@@ -95,7 +90,7 @@ hdfs_site_properties:
   }
   - {
     "name": "dfs.datanode.data.dir",
-    "value": "/data/sdb1/hdfs,/data/sdc1/hdfs,/data/sdd1/hdfs,/data/sde1/hdfs,/data/sdf1/hdfs,/data/sdg1/hdfs"
+    "value": "{{ hdfs_data_dirs_joined }}"
   }
   - {
     "name": "dfs.datanode.data.dir.perm",
@@ -103,11 +98,11 @@ hdfs_site_properties:
   }
   - {
     "name": "dfs.datanode.address",
-    "value": "0.0.0.0:1019"
+    "value": "0.0.0.0:1039"
   }
   - {
     "name": "dfs.datanode.http.address",
-    "value": "0.0.0.0:1022"
+    "value": "0.0.0.0:1032"
   }
   - {
     "name": "dfs.datanode.https.address",
