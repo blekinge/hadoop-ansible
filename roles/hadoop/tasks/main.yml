@@ -19,16 +19,6 @@
   with_items:
     - "{{ yarn_create_path }}"
 
-- name: Create Zookeeper Paths
-  file:
-    path: "{{ item }}"
-    owner: "{{ zookeeper_user }}"
-    group: "{{ hadoop_group }}"
-    state: directory
-    mode: 0755
-  with_items:
-    - "{{ zookeeper_create_path }}"
-
 
 - include: install_hadoop.yml
   when: install_hadoop

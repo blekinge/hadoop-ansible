@@ -98,17 +98,14 @@ hdfs_site_properties:
   }
   - {
     "name": "dfs.datanode.address",
-    "value": "0.0.0.0:1039"
+    "value": "0.0.0.0:{{ hdfs_datanode_port }}"
   }
   - {
     "name": "dfs.datanode.http.address",
-    "value": "0.0.0.0:1032"
+    "value": "0.0.0.0:{{ hdfs_datanode_http_port }}"
   }
   - {
     "name": "dfs.datanode.https.address",
-    "value": "0.0.0.0:50475"
+    "value": "0.0.0.0:{{ hdfs_datanode_https_port }}"
   }
-  - {
-    "name": "dfs.datanode.https.address",
-    "value": "0.0.0.0:8010"
-  }
+

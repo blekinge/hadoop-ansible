@@ -1,0 +1,17 @@
+- hosts: zookeeper
+  become: yes
+  vars_files:
+    - vars/var_basic.yml
+    - vars/var_ports.yml
+    - vars/var_hadoop.yml
+    - vars/var_zookeeper.yml
+  vars:
+    open_firewall: false
+    disable_firewall: true
+    zookeeper_server: true
+    start: true
+
+  roles:
+    - java
+    - firewall
+    - zookeeper

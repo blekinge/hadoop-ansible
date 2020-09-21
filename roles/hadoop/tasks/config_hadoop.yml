@@ -28,16 +28,16 @@
   template: src=log4j.properties dest={{ hadoop_config_path }}/ mode=0644 owner=root group = {{ hadoop_group }}
 
 - name: Copy Hadoop Env Script
-  template: src=hadoop_env.sh dest=/etc/profile.d/ mode=0755 owner=root group = {{ hadoop_group }}
+  template: src=hadoop_env.sh dest=/etc/profile.d/ mode=0644 owner=root group = {{ hadoop_group }}
 
 - name: Copy Hadoop daemon Script
   template: src=hadoop-daemon.sh dest=/usr/local/bin/ mode=0755 owner=root group = {{ hadoop_group }}
 
 - name: Copy Hadoop datanode systemd service
-  template: src=systemd_datanode.service dest=/etc/systemd/system/datanode.service mode=0755 owner="root" group="root"
+  template: src=systemd_datanode.service dest=/etc/systemd/system/datanode.service mode=0644 owner="root" group="root"
 
 - name: Copy Hadoop namenode systemd service
-  template: src=systemd_namenode.service dest=/etc/systemd/system/namenode.service mode=0755 owner="root" group="root"
+  template: src=systemd_namenode.service dest=/etc/systemd/system/namenode.service mode=0644 owner="root" group="root"
 
 - name: Set Hadoop Env
   shell: source /etc/profile.d/hadoop_env.sh

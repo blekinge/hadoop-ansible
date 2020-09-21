@@ -1,0 +1,46 @@
+- hosts: hdfs_master
+  become: yes
+  vars_files:
+    - vars/var_basic.yml
+    - vars/var_ports.yml
+    - vars/var_hadoop.yml
+    - vars/hadoop_config_files/var_core_site.yml
+    - vars/hadoop_config_files/var_hdfs_site.yml
+  vars:
+    open_firewall: false
+    disable_firewall: true
+
+    install_hadoop: true
+    config_hadoop: true
+
+    namenode: true
+    datanode: false
+    start: true
+
+  roles:
+    - java
+    - firewall
+    - hadoop
+
+- hosts: workers
+  become: yes
+  vars_files:
+    - vars/var_basic.yml
+    - vars/var_ports.yml
+    - vars/var_hadoop.yml
+    - vars/var_core_site.yml
+    - vars/var_hdfs_site.yml
+  vars:
+    open_firewall: false
+    disable_firewall: true
+    install_hadoop: true
+    config_hadoop: true
+    namenode: false
+    datanode: true
+    start: true
+  roles:
+    - java
+    - firewall
+    - hadoop
+
+
