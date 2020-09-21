@@ -9,7 +9,13 @@ hadoop_config_path: "/etc/hadoop/conf/"
 hadoop_tmp: "/tmp/hadoop"
 hadoop_dfs_name: "/hdfs/dfs/name"
 hadoop_dfs_data: "/hdfs/dfs/data"
-hadoop_log_path: "/var/logs/hadoop/"
+hadoop_log_path: "/var/log/hadoop/"
+hadoop_pid_dir: "/var/run/hadoop/"
+
+hdfs_user: "hdfs"
+hdfs_group: "hdfs"
+
+hadoop_group: "hadoop"
 
 user: "root"
 group: "hadoop"
@@ -25,20 +31,19 @@ hdfs_data_dirs:
 
 hdfs_data_dirs_joined:  "{{ hdfs_data_dirs | join(',') }}"
 
-hadoop_hdfs_user: "hdfs"
-hadoop_hdfs_create_path:
+hdfs_create_path:
   - "{{ hadoop_tmp }}"
   - "{{ hadoop_dfs_name }}"
   - hdfs_data_dirs
   - "{{ hadoop_log_path }}"
   - "/var/run/hadoop"
 
-hadoop_mapreduce_user: "mapred"
-hadoop_yarn_user: "yarn"
-hadoop_yarn_create_path: []
+mapreduce_user: "mapred"
+yarn_user: "yarn"
+yarn_create_path: []
 
-hadoop_zookeeper_user: "zookeeper"
-hadoop_zookeeper_create_path: []
+zookeeper_user: "zookeeper"
+zookeeper_create_path: []
 
 
 

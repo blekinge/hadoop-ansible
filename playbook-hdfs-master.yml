@@ -8,9 +8,14 @@
   vars:
     open_firewall: false
     disable_firewall: true
+
     install_hadoop: true
     config_hadoop: true
-    start_namenode: true
+
+    namenode: true
+    datanode: false
+    start: true
+
   roles:
     - java
     - hadoop

@@ -4,37 +4,40 @@
     src: core-site.xml
     dest: "{{ hadoop_config_path }}/"
     mode: 0644
-    owner: "{{ user }}"
-    group: "{{ group }}"
+    owner: "root"
+    group: "{{ hadoop_group }}"
 
 - name: Copy Hadoop hdfs-site.xml
   template:
     src: hdfs-site.xml
     dest: "{{ hadoop_config_path }}/"
     mode: 0644
-    owner: "{{ hadoop_hdfs_user }}"
-    group: "{{ group }}"
+    owner: "root"
+    group: "{{ hadoop_group }}"
 
 - name: Copy Hadoop mapred-site.xml
-  template: src=mapred-site.xml dest={{ hadoop_config_path }}/ mode=0644 owner={{ hadoop_mapreduce_user }} group = {{ group }}
+  template: src=mapred-site.xml dest={{ hadoop_config_path }}/ mode=0644 owner=root group = {{ hadoop_group }}
 
 - name: Copy Hadoop yarn-site.xml
-  template: src=yarn-site.xml dest={{ hadoop_config_path }}/ mode=0644 owner={{ hadoop_yarn_user }} group = {{ group }}
+  template: src=yarn-site.xml dest={{ hadoop_config_path }}/ mode=0644 owner=root group = {{ hadoop_group }}
 
 - name: Copy Hadoop workers
-  template: src=workers dest={{ hadoop_config_path }}/ mode=0644 owner={{ user }} group = {{ group }}
+  template: src=workers dest={{ hadoop_config_path }}/ mode=0644 owner=root group = {{ hadoop_group }}
+
+- name: Copy log4j.properties
+  template: src=log4j.properties dest={{ hadoop_config_path }}/ mode=0644 owner=root group = {{ hadoop_group }}
 
 - name: Copy Hadoop Env Script
-  template: src=hadoop_env.sh dest=/etc/profile.d/ mode=0755 owner={{ user }} group = {{ group }}
+  template: src=hadoop_env.sh dest=/etc/profile.d/ mode=0755 owner=root group = {{ hadoop_group }}
 
 - name: Copy Hadoop daemon Script
-  template: src=hadoop dest=/usr/local/bin/ mode=0755 owner={{ user }} group = {{ group }}
+  template: src=hadoop-daemon.sh dest=/usr/local/bin/ mode=0755 owner=root group = {{ hadoop_group }}
 
 - name: Copy Hadoop datanode systemd service
-  template: src=systemd_datanode.service dest=/etc/systemd/system/datanode.service mode=0755 owner={{ user }} group = {{ group }}
+  template: src=systemd_datanode.service dest=/etc/systemd/system/datanode.service mode=0755 owner="root" group="root"
 
 - name: Copy Hadoop namenode systemd service
-  template: src=systemd_namenode.service dest=/etc/systemd/system/namenode.service mode=0755 owner={{ user }} group = {{ group }}
+  template: src=systemd_namenode.service dest=/etc/systemd/system/namenode.service mode=0755 owner="root" group="root"
 
 - name: Set Hadoop Env
   shell: source /etc/profile.d/hadoop_env.sh

@@ -10,7 +10,9 @@
     disable_firewall: true
     install_hadoop: true
     config_hadoop: true
-    start_datanode: true
+    namenode: false
+    datanode: true
+    start: true
   roles:
     - java
     - hadoop

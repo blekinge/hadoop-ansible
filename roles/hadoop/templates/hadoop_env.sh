@@ -1,7 +1,3 @@
-
-
-
-
 # Set Hadoop-specific environment variables here.
 
 # The only required environment variable is JAVA_HOME.  All others are
@@ -10,7 +6,7 @@
 # remote nodes.
 
 # The java implementation to use.  Required.
-jdk_version=$(ls -al {{jvm_home}}|grep "^d"|grep "java"|awk '{print$NF}')
+jdk_version=$(ls -al {{jvm_home}} | grep "^d" | grep "java" | awk '{print$NF}')
 export JAVA_HOME={{ jvm_home }}/$jdk_version
 
 export HADOOP_HOME_WARN_SUPPRESS=1
@@ -20,10 +16,10 @@ export HADOOP_HOME={{hadoop_path}}/hadoop-{{hadoop_version}}
 
 export PATH=$HADOOP_HOME/sbin:$HADOOP_HOME/bin:$PATH
 
+export HADOOP_SECURE_USER=${HADOOP_SECURE_USER:-"{{ hdfs_user }}"}
 
 # Hadoop Configuration Directory
 export HADOOP_CONF_DIR=/etc/hadoop/conf/
-
 
 # We need to add the HADOOP Root logger for the daemons only;
 # however, HADOOP_ROOT_LOGGER is shared by the client and the
@@ -31,6 +27,7 @@ export HADOOP_CONF_DIR=/etc/hadoop/conf/
 INVOKER="${0##*/}"
 if [ "$INVOKER" == "hadoop-daemon.sh" ]; then
   export HADOOP_ROOT_LOGGER=${HADOOP_ROOT_LOGGER:-"INFO,DRFA"}
+  export HADOOP_DAEMON_ROOT_LOGGER=${HADOOP_DAEMON_ROOT_LOGGER:-"INFO,DRFA"}
   export HADOOP_SECURITY_LOGGER=${HADOOP_SECURITY_LOGGER:-"INFO,DRFAS"}
   export HDFS_AUDIT_LOGGER=${HDFS_AUDIT_LOGGER:-"INFO,DRFAAUDIT"}
 
@@ -38,11 +35,13 @@ if [ "$INVOKER" == "hadoop-daemon.sh" ]; then
   export MAPRED_JOBSUMMARY_LOGGER=${MAPRED_JOBSUMMARY_LOGGER:-"INFO,JSA"}
 fi
 
+
+
+
 #Basic hadoop log config
 HADOOP_LOG_OPTS="-Dhadoop.security.logger=$HADOOP_SECURITY_LOGGER \
                  -Dhdfs.audit.logger=$HDFS_AUDIT_LOGGER \
                  $RANGER_LOGGER"
-
 
 # The maximum amount of heap to use, in MB. Default is 1000.
 export HADOOP_HEAPSIZE="1024"
@@ -51,7 +50,6 @@ export HADOOP_NAMENODE_INIT_HEAPSIZE="-Xms4096m"
 
 # Extra Java runtime options.  Empty by default.
 export HADOOP_OPTS="-Djava.net.preferIPv4Stack=true ${HADOOP_OPTS}"
-
 
 #Options commons for all the HDFS daemons
 HADOOP_COMMON_DAEMON_OPTS="-server \
@@ -72,9 +70,8 @@ HADOOP_NAMENODE_GC_OPTS="-XX:ParallelGCThreads=8 \
 #                   -XX:+PrintGCTimeStamps \
 #                   -XX:+PrintGCDateStamps"
 
-
 #Common options for the Primary and Secondary NameNode
-SHARED_HADOOP_NAMENODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
+SHARED_HDFS_NAMENODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
                              $HADOOP_NAMENODE_GC_OPTS \
                              $GC_LOG_OPTS  \
                              -Xms4096m \
@@ -82,11 +79,11 @@ SHARED_HADOOP_NAMENODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
                              $HADOOP_LOG_OPTS"
 
 #The Primary NameNode opts
-export HADOOP_NAMENODE_OPTS="${SHARED_HADOOP_NAMENODE_OPTS} \
+export HDFS_NAMENODE_OPTS="${SHARED_HDFS_NAMENODE_OPTS} \
                              -Dorg.mortbay.jetty.Request.maxFormContentSize=-1"
 #The Secondary NameNode opts
-export HADOOP_SECONDARYNAMENODE_OPTS="${SHARED_HADOOP_NAMENODE_OPTS} \
-                                      ${HADOOP_SECONDARYNAMENODE_OPTS}"
+export HDFS_SECONDARYNAMENODE_OPTS="${SHARED_HDFS_NAMENODE_OPTS} \
+                                      ${HDFS_SECONDARYNAMENODE_OPTS}"
 
 #The Garbage collector config for the DataNode
 HADOOP_DATANODE_GC_OPTS="-XX:ParallelGCThreads=4 \
@@ -97,15 +94,12 @@ HADOOP_DATANODE_GC_OPTS="-XX:ParallelGCThreads=4 \
                          -XX:+UseCMSInitiatingOccupancyOnly"
 
 #The DataNode opts
-export HADOOP_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
+export HDFS_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
                              $HADOOP_DATANODE_GC_OPTS \
                              $GC_LOG_OPTS  \
                              -Xms2048m \
                              -Xmx2048m \
                              $HADOOP_LOG_OPTS"
-
-
-
 
 # The following applies to multiple commands (fs, dfs, fsck, distcp etc)
 export HADOOP_CLIENT_OPTS="-Xmx${HADOOP_HEAPSIZE}m $HADOOP_CLIENT_OPTS"
@@ -118,24 +112,22 @@ HADOOP_BALANCER_OPTS="-server \
                       -Xmx1024m \
                       ${HADOOP_BALANCER_OPTS}"
 
-
 # On secure datanodes, user to run the datanode as after dropping privileges
-export HADOOP_DATANODE_SECURE_USER=${HADOOP_DATANODE_SECURE_USER:-hdfs}
+export HADOOP_DATANODE_SECURE_USER=${HADOOP_DATANODE_SECURE_USER:-"{{ hdfs_user }}"}
 
 # Extra ssh options.  Empty by default.
 export HADOOP_SSH_OPTS="-o ConnectTimeout=5 -o SendEnv=HADOOP_CONF_DIR"
 
-
 # Where log files are stored.  $HADOOP_HOME/logs by default.
-export HADOOP_LOG_DIR={{ hadoop_log_path }}/$USER
+export HADOOP_LOG_DIR="{{ hadoop_log_path }}/$USER"
 
 # History server logs
 #TODO hadoop log path
-export HADOOP_MAPRED_LOG_DIR=/var/log/hadoop-mapreduce/$USER
+export HADOOP_MAPRED_LOG_DIR="{{ hadoop_log_path }}/mapreduce/$USER"
 
 # Where log files are stored in the secure data environment.
 #TODO hadoop log path
-export HADOOP_SECURE_DN_LOG_DIR=/var/log/hadoop/$HADOOP_SECURE_DN_USER
+export HADOOP_SECURE_LOG_DIR="{{ hadoop_log_path }}/$HADOOP_SECURE_USER"
 
 # File naming remote slave hosts.  $HADOOP_HOME/conf/slaves by default.
 # export HADOOP_SLAVES=${HADOOP_HOME}/conf/slaves
@@ -149,11 +141,11 @@ export HADOOP_SECURE_DN_LOG_DIR=/var/log/hadoop/$HADOOP_SECURE_DN_USER
 # export HADOOP_SLAVE_SLEEP=0.1
 
 # The directory where pid files are stored. /tmp by default.
-export HADOOP_PID_DIR=/var/run/hadoop/$USER
-export HADOOP_SECURE_DN_PID_DIR=/var/run/hadoop/$HADOOP_SECURE_DN_USER
+export HADOOP_PID_DIR={{ hadoop_pid_dir }}/$USER
+export HADOOP_SECURE_PID_DIR={{ hadoop_pid_dir }}/$HADOOP_SECURE_USER
 
 # History server pid
-export HADOOP_MAPRED_PID_DIR=/var/run/hadoop-mapreduce/$USER
+export HADOOP_MAPRED_PID_DIR={{ hadoop_pid_dir }}/mapreduce/$USER
 
 YARN_RESOURCEMANAGER_OPTS="-Dyarn.server.resourcemanager.appsummary.logger=INFO,RMSUMMARY"
 
@@ -167,9 +159,8 @@ export HADOOP_IDENT_STRING=$USER
 # Add database libraries
 JAVA_JDBC_LIBS=""
 if [ -d "/usr/share/java" ]; then
-  for jarFile in `ls /usr/share/java | grep -E "(mysql|ojdbc|postgresql|sqljdbc)" 2>/dev/null`
-  do
-      JAVA_JDBC_LIBS=${JAVA_JDBC_LIBS}:$jarFile
+  for jarFile in $(ls /usr/share/java | grep -E "(mysql|ojdbc|postgresql|sqljdbc)" 2>/dev/null); do
+    JAVA_JDBC_LIBS=${JAVA_JDBC_LIBS}:$jarFile
   done
 fi
 
@@ -182,11 +173,9 @@ export HADOOP_LIBEXEC_DIR=$HADOOP_HOME/libexec
 # Mostly required for hadoop 2.0
 export JAVA_LIBRARY_PATH=${JAVA_LIBRARY_PATH}:${HADOOP_HOME}/lib/native/
 
-
-
 # Fix temporary bug, when ulimit from conf files is not picked up, without full relogin.
 # Makes sense to fix only when runing DN as root
-if [ "$command" == "datanode" ] && [ "$EUID" -eq 0 ] && [ -n "$HADOOP_SECURE_DN_USER" ]; then
+if [ "$command" == "datanode" ] && [ "$EUID" -eq 0 ] && [ -n "$HADOOP_SECURE_USER" ]; then
 
   ulimit -n 128000
 fi

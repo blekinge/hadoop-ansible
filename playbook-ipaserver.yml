@@ -6,7 +6,7 @@
     - role: ipaserver
       state: present
 
-    - role: adm
+    - role: yak_user_manager
 
 
 #append /etc/nsswitch.conf "sudoers: files sss"

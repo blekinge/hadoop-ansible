@@ -1,0 +1,25 @@
+---
+- name: Start datanode process
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: datanode
+  when: datanode and start
+
+
+
+- name: Format namenode
+  shell:
+    cmd:
+      source /etc/profile.d/hadoop_env.sh;
+      hdfs namenode --format > "{{ hadoop_dfs_name }}/formatted"
+    executable: /bin/bash
+    creates: "{{ hadoop_dfs_name }}/formatted"
+  when: namenode and start
+
+- name: Start namenode process
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: namenode
+  when: namenode and start

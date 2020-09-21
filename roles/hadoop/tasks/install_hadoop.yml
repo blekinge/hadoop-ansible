@@ -10,6 +10,6 @@
     dest: "{{ hadoop_path }}"
     remote_src: yes
     creates: "{{ hadoop_path }}/hadoop-{{ hadoop_version }}"
-    group: "{{ group }}"
-    owner: "{{ user }}"
+    group: "{{ hadoop_group }}"
+    owner: "root"
 

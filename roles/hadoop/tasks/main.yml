@@ -2,32 +2,32 @@
 - name: Create HDFS Paths
   file: 
     path: "{{ item }}"
-    owner: "{{ hadoop_hdfs_user }}"
-    group: "{{ group }}"
+    owner: "{{ hdfs_user }}"
+    group: "{{ hdfs_group }}"
     state: directory
     mode: 0755
   with_items:
-    - "{{ hadoop_hdfs_create_path }}"
+    - "{{ hdfs_create_path }}"
 
 - name: Create YARN Paths
   file:
     path: "{{ item }}"
-    owner: "{{ hadoop_yarn_user }}"
-    group: "{{ group }}"
+    owner: "{{ yarn_user }}"
+    group: "{{ hadoop_group }}"
     state: directory
     mode: 0755
   with_items:
-    - "{{ hadoop_yarn_create_path }}"
+    - "{{ yarn_create_path }}"
 
 - name: Create Zookeeper Paths
   file:
     path: "{{ item }}"
-    owner: "{{ hadoop_zookeeper_user }}"
-    group: "{{ group }}"
+    owner: "{{ zookeeper_user }}"
+    group: "{{ hadoop_group }}"
     state: directory
     mode: 0755
   with_items:
-    - "{{ hadoop_zookeeper_create_path }}"
+    - "{{ zookeeper_create_path }}"
 
 
 - include: install_hadoop.yml
@@ -36,7 +36,6 @@
 - include: config_hadoop.yml
   when: config_hadoop
 
-- include: redhat.yml
-  when: ansible_os_family == 'RedHat'
+- include: firewall.yml
 
-- include: start_hadoop.yml
+- include: start_hdfs.yml
