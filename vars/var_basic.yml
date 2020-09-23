@@ -7,4 +7,3 @@ java_packages:
 
 master_ip: "{{ ansible_host }}"
 master_hostname: "{{ ansible_hostname }}"
-

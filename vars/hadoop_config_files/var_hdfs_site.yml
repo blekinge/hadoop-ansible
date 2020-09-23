@@ -42,11 +42,11 @@ hdfs_site_properties:
   # Namenode
   - {
     "name": "dfs.namenode.name.dir",
-    "value": "file:{{ hadoop_dfs_name }}"
+    "value": "{{ hadoop_dfs_name }}"
   }
   - {
     "name": "dfs.namenode.data.dir",
-    "value": "file:{{ hadoop_dfs_data }}"
+    "value": "{{ hadoop_dfs_data }}"
   }
   - {
     "name": "dfs.namenode.acls.enabled",
@@ -108,4 +108,67 @@ hdfs_site_properties:
     "name": "dfs.datanode.https.address",
     "value": "0.0.0.0:{{ hdfs_datanode_https_port }}"
   }
+
+  #HA
+  - {
+    "name": "dfs.nameservices",
+    "value": "{{ hdfs_name }}"
+  }
+  - {
+    "name": "dfs.ha.namenodes.{{ hdfs_name }}",
+    "value": "nn1,nn2"
+  }
+  - {
+    "name": "dfs.namenode.rpc-address.{{ hdfs_name }}.nn1",
+    "value": "{{ nn1 }}:8020"
+  }
+  - {
+    "name": "dfs.namenode.rpc-address.{{ hdfs_name }}.nn2",
+    "value": "{{ nn2 }}:8020"
+  }
+  - {
+    "name": "dfs.namenode.http-address.{{ hdfs_name }}.nn1",
+    "value": "{{ nn1 }}:9870"
+  }
+  - {
+    "name": "dfs.namenode.http-address.{{ hdfs_name }}.nn2",
+    "value": "{{ nn2 }}:9870"
+  }
+# TODO https
+  - {
+    "name": "dfs.namenode.shared.edits.dir",
+    "value": "qjournal://{{ groups['zookeeper'] | zip_longest([], fillvalue='8485') | map('join', ':') | join(';') }}/{{ hdfs_name }}"
+  }
+
+  - {
+    "name": "dfs.client.failover.proxy.provider.{{ hdfs_name }}",
+    "value": "org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider"
+  }
+  - {
+    "name": "dfs.ha.fencing.methods",
+    "value": "shell(/bin/true)"
+  }
+  - {
+    "name": "dfs.journalnode.edits.dir",
+    "value": "{{ hadoop_dfs_journal }}"
+  }
+  - {
+    "name": "dfs.ha.automatic-failover.enabled",
+    "value": "true"
+  }
+
+
+
+
+
+  - {
+    "name": "dfs.journalnode.http-address",
+    "value": "0.0.0.0:8480"
+  }
+  - {
+    "name": "dfs.journalnode.https-address",
+    "value": "0.0.0.0:8481"
+  }
+
+
 

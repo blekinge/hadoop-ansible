@@ -1,0 +1,17 @@
+[Unit]
+Description=Hadoop DFS journalnode
+Requires=network-online.target
+
+[Service]
+User={{ hdfs_user }}
+Group={{ hadoop_group }}
+Type=forking
+ExecStart=/usr/local/bin/hadoop-daemon.sh hdfs --daemon start journalnode
+PIDFile={{ hadoop_pid_dir }}/{{ hdfs_user }}/hadoop-hdfs-journalnode.pid
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+

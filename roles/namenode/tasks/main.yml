@@ -1,0 +1,66 @@
+---
+- name: Stop namenode process
+  systemd:
+    state: stopped
+    daemon_reload: yes
+    name: namenode
+
+- name: Format namenode
+  become: yes
+  become_user: hdfs
+  shell:
+    cmd:
+      source /etc/profile.d/hadoop_env.sh;
+      hdfs namenode --format > "{{ hadoop_dfs_name }}/formatted"
+    executable: /bin/bash
+    creates: "{{ hadoop_dfs_name }}/formatted"
+  when: primary|bool
+
+
+- name: Initialize shared edit
+  become: yes
+  become_user: hdfs
+  shell:
+    cmd:
+      source /etc/profile.d/hadoop_env.sh;
+      hdfs namenode -initializeSharedEdits > "{{ hadoop_dfs_name }}/shared_edits_initialized"
+    executable: /bin/bash
+    creates: "{{ hadoop_dfs_name }}/shared_edits_initialized"
+  when: primary|bool
+
+
+- name: Bootstrap HA
+  become: yes
+  become_user: hdfs
+  shell:
+    cmd:
+      source /etc/profile.d/hadoop_env.sh;
+      hdfs namenode -bootstrapStandby > "{{ hadoop_dfs_name }}/bootstrapped"
+    executable: /bin/bash
+    creates: "{{ hadoop_dfs_name }}/bootstrapped"
+  when: not (primary | bool)
+
+- name: Format zkfc
+  become: yes
+  become_user: hdfs
+  shell:
+    cmd:
+      source /etc/profile.d/hadoop_env.sh;
+      hdfs zkfc -formatZK > "{{ hadoop_dfs_name }}/zkFormatted"
+    executable: /bin/bash
+    creates: "{{ hadoop_dfs_name }}/zkFormatted"
+  when: primary|bool
+
+
+- name: Start namenode process
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: namenode
+
+- name: Start namenode process
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: zkfc
+

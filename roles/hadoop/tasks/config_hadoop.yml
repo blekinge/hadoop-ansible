@@ -39,5 +39,9 @@
 - name: Copy Hadoop namenode systemd service
   template: src=systemd_namenode.service dest=/etc/systemd/system/namenode.service mode=0644 owner="root" group="root"
 
-- name: Set Hadoop Env
-  shell: source /etc/profile.d/hadoop_env.sh
+- name: Copy Hadoop journal systemd service
+  template: src=systemd_journalnode.service dest=/etc/systemd/system/journalnode.service mode=0644 owner="root" group="root"
+
+
+- name: Copy Hadoop journal systemd service
+  template: src=systemd_zkfc.service dest=/etc/systemd/system/zkfc.service mode=0644 owner="root" group="root"

@@ -9,23 +9,9 @@
   with_items:
     - "{{ hdfs_create_path }}"
 
-- name: Create YARN Paths
-  file:
-    path: "{{ item }}"
-    owner: "{{ yarn_user }}"
-    group: "{{ hadoop_group }}"
-    state: directory
-    mode: 0755
-  with_items:
-    - "{{ yarn_create_path }}"
 
 
 - include: install_hadoop.yml
-  when: install_hadoop
 
 - include: config_hadoop.yml
-  when: config_hadoop
 
-- include: firewall.yml
-
-- include: start_hdfs.yml

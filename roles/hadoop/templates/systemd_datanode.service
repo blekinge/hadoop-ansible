@@ -6,7 +6,7 @@ Requires=network-online.target
 User={{ hdfs_user }}
 Group={{ hadoop_group }}
 Type=forking
-ExecStart=/usr/local/bin/hadoop hdfs --daemon start datanode
+ExecStart=/usr/local/bin/hadoop-daemon.sh hdfs --daemon start datanode
 PIDFile={{ hadoop_pid_dir }}/{{ hdfs_user }}/hadoop-hdfs-datanode.pid
 
 [Install]

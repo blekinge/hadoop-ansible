@@ -3,8 +3,7 @@
 core_site_properties:
   - {
     "name": "fs.defaultFS",
-    "value": "hdfs://hdfs001.yak2.net"
-#    hdfs://KAC
+    "value": "hdfs://{{ hdfs_name }}"
   }
   - {
     "name": "hadoop.tmp.dir",
@@ -33,4 +32,18 @@ core_site_properties:
   - {
     "name": "io.serializations",
     "value": "org.apache.hadoop.io.serializer.WritableSerialization"
+  }
+
+  - {
+    "name": "ha.failover-controller.active-standby-elector.zk.op.retries",
+    "value": "120"
+  }
+#  - {
+#    "name": "ha.zookeeper.acl",
+#    "value": "sasl:nn:rwcda"
+#  }
+  - {
+    "name": "ha.zookeeper.quorum",
+#    https://gist.github.com/halberom/b1f6eaed16dba1b298e8#gistcomment-2642730
+    "value": "{{ groups['zookeeper'] | zip_longest([], fillvalue='2181') | map('join', ':') | join(',') }}"
   }

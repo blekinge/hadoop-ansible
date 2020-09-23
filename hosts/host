@@ -4,18 +4,28 @@ nah-adm
 ipaserver_ip_addresses=10.0.0.9
 
 
-[hdfs_master]
-hdfs001.yak2.net
-#hdfs002.yak2.net
+[hdfs_namenode]
+hdfs001.yak2.net primary=true
+hdfs002.yak2.net primary=false
 
-[yarn_master]
-yarn001.yak2.net
-yarn002.yak2.net
+
+
+
+[hdfs_journal]
+zkpr001.yak2.net
+zkpr002.yak2.net
+zkpr003.yak2.net
 
 [zookeeper]
 zkpr001.yak2.net
 zkpr002.yak2.net
 zkpr003.yak2.net
+
+
+[yarn_master]
+yarn001.yak2.net
+yarn002.yak2.net
+
 
 [hdfs_client]
 hdfs001.yak2.net

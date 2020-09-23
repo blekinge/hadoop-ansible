@@ -13,5 +13,5 @@
 
   roles:
     - java
-    - firewall
+    - firewall_open
     - zookeeper
