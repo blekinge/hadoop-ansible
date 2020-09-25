@@ -1,0 +1,17 @@
+[Unit]
+Description=Hadoop DFS secondary namenode
+Requires=network-online.target
+
+[Service]
+User={{ hdfs_user }}
+Group={{ hadoop_group }}
+Type=forking
+ExecStart=/usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh --daemon start secondarynamenode
+PIDFile={{ hadoop_pid_dir }}/{{ hdfs_user }}/hadoop-hdfs-secondarynamenode.pid
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+

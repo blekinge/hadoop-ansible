@@ -1,6 +1,5 @@
 # The java implementation to use.  Required.
-jdk_version=$(ls -al {{jvm_home}} | grep "^d" | grep "java" | awk '{print$NF}')
-export JAVA_HOME={{ jvm_home }}/$jdk_version
+export JAVA_HOME={{ jvm_home }}
 
 export ZOOKEEPER_HOME={{zookeeper_home}}
 export ZOO_LOG_DIR="{{ zookeeper_path }}"

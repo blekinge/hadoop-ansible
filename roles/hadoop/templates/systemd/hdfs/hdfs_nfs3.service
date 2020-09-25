@@ -1,0 +1,17 @@
+[Unit]
+Description=Hadoop DFS NFS version 3 gateway
+Requires=network-online.target
+
+[Service]
+User={{ hdfs_user }}
+Group={{ hadoop_group }}
+Type=forking
+ExecStart=/usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh --daemon start nfs3
+PIDFile={{ hadoop_pid_dir }}/{{ hdfs_user }}/hadoop-hdfs-nfs3.pid
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+

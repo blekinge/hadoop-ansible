@@ -3,15 +3,97 @@
   file: 
     path: "{{ item }}"
     owner: "{{ hdfs_user }}"
-    group: "{{ hdfs_group }}"
+    group: "{{ hadoop_group }}"
     state: directory
-    mode: 0755
+    mode: 0750
   with_items:
     - "{{ hdfs_create_path }}"
 
+- name: Create YARN Paths
+  file:
+    path: "{{ item }}"
+    owner: "{{ yarn_user }}"
+    group: "{{ hadoop_group }}"
+    state: directory
+    mode: 0750
+  with_items:
+    - "{{ yarn_create_path }}"
 
 
-- include: install_hadoop.yml
+- name: ensure hadoop directory exists
+  file:
+    path: "{{ hadoop_path }}"
+    state: directory
 
-- include: config_hadoop.yml
+- name: Unzip Hadoop
+  unarchive:
+    src: "{{hadoop_download}}"
+    dest: "{{ hadoop_path }}"
+    remote_src: yes
+    creates: "{{ hadoop_home }}"
+    group: "{{ hadoop_group }}"
+    owner: "root"
+
+
+- name: remove {{ hadoop_home }}/etc/hadoop
+  file:
+    path: "{{ hadoop_home }}/etc/hadoop"
+    state: absent
+
+- name: symlink {{ hadoop_home }}/etc/hadoop to {{ hadoop_config_path }}
+  file:
+    src: "{{ hadoop_config_path }}"
+    dest:  "{{ hadoop_home }}/etc/hadoop"
+    owner: root
+    group: "{{ hadoop_group }}"
+    state: link
+    force: true
+
+- name: Install fixed container-executor
+  copy:
+    src: container-executor
+    dest: "{{ hadoop_home }}/bin/"
+    owner: root
+    group: hadoop
+    mode: '6050'
+
+- name: Copy Hadoop YARN systemd services
+  template:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/
+    mode: 0644
+    owner: "root"
+    group: "root"
+  with_fileglob:
+    - "templates/systemd/yarn/*"
+
+
+- name: Copy Hadoop HDFS systemd services
+  template:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/
+    mode: 0644
+    owner: "root"
+    group: "root"
+  with_fileglob:
+    - "templates/systemd/hdfs/*"
+
+- name: Copy Hadoop config files
+  template:
+    src: "{{ item }}"
+    dest: "{{ hadoop_config_path }}/"
+    mode: 0644
+    owner: "root"
+    group: "{{ hadoop_group }}"
+  with_fileglob:
+    - "templates/hadoop_conf/*"
+
+- name: Copy Hadoop invoker Script
+  template:
+    src: "hadoop-invoker.sh"
+    dest: "/usr/local/bin/"
+    mode: "0755"
+    owner: "root"
+    group: "{{ hadoop_group }}"
+
 

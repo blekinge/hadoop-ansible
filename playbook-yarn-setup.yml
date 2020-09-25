@@ -1,15 +1,3 @@
-- hosts: hdfs_journal
-  vars_files:
-    - vars/var_basic.yml
-    - vars/var_ports.yml
-    - vars/var_hadoop.yml
-    - vars/hadoop_config_files/var_core_site.yml
-    - vars/hadoop_config_files/var_hdfs_site.yml
-    - vars/hadoop_config_files/var_mapred_site.yml
-    - vars/hadoop_config_files/var_yarn_site.yml
-  roles:
-    - journalnode
-
 
 - hosts: workers
   vars_files:
@@ -22,12 +10,10 @@
     - vars/hadoop_config_files/var_yarn_site.yml
   vars:
   roles:
-    - datanode
+    - yarn_node_manager
 
 
-
-
-- hosts: hdfs_namenode
+- hosts: yarn_resource_manager
   vars_files:
     - vars/var_basic.yml
     - vars/var_ports.yml
@@ -36,5 +22,7 @@
     - vars/hadoop_config_files/var_hdfs_site.yml
     - vars/hadoop_config_files/var_mapred_site.yml
     - vars/hadoop_config_files/var_yarn_site.yml
+  vars:
   roles:
-    - namenode
+    - yarn_resource_manager
+

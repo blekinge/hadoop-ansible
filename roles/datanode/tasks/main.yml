@@ -3,5 +3,5 @@
   systemd:
     state: started
     daemon_reload: yes
-    name: datanode
+    name: hdfs_datanode
 

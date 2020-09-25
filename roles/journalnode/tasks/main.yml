@@ -3,5 +3,5 @@
   systemd:
     state: started
     daemon_reload: yes
-    name: journalnode
+    name: hdfs_journalnode
 

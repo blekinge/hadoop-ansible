@@ -1,0 +1,17 @@
+[Unit]
+Description=Distributes data evenly among disks on a given node
+Requires=network-online.target
+
+[Service]
+User={{ hdfs_user }}
+Group={{ hadoop_group }}
+Type=forking
+ExecStart=/usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh --daemon start diskbalancer
+PIDFile={{ hadoop_pid_dir }}/{{ hdfs_user }}/hadoop-hdfs-diskbalancer.pid
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+

@@ -5,6 +5,9 @@
 hadoop_version: "3.3.0"
 hadoop_download: http://ftp.download-by.net/apache/hadoop/common/hadoop-{{hadoop_version}}/hadoop-{{hadoop_version}}.tar.gz
 hadoop_path: "/usr/local/hadoop"
+hadoop_home: "{{ hadoop_path }}/hadoop-{{ hadoop_version }}"
+
+
 hadoop_config_path: "/etc/hadoop/conf/"
 hadoop_tmp: "/tmp/hadoop"
 hadoop_dfs_name: "/hdfs/dfs/name"
@@ -48,5 +51,14 @@ hdfs_create_path:
 
 
 mapreduce_user: "mapred"
+
+
 yarn_user: "yarn"
-yarn_create_path: []
+yarn_create_path:
+  - "/var/run/hadoop/{{ yarn_user }}/"
+  - "/var/log/hadoop/{{ yarn_user }}/"
+
+
+yarn_history_server: "{{ groups['yarn_history'] | first }}"
+yarn_resource_manager_server1: "{{ groups['yarn_resource_manager'] | first }}"
+yarn_resource_manager_server2: "{{ groups['yarn_resource_manager'] | last }}"

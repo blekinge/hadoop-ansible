@@ -1,0 +1,13 @@
+[Unit]
+Description=Hadoop YARN registry DNS server
+Requires=network-online.target
+
+[Service]
+User={{ yarn_user }}
+Group={{ hadoop_group }}
+Type=forking
+ExecStart=/usr/local/bin/hadoop-invoker.sh yarn yarn-env.sh --daemon start registrydns
+PIDFile={{ hadoop_pid_dir }}/{{ yarn_user }}/hadoop-yarn-registrydns.pid
+
+[Install]
+WantedBy=multi-user.target
