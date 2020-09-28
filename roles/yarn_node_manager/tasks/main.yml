@@ -1,7 +1,7 @@
 ---
 - name: Start node manager process
   systemd:
-    state: started
+    state: restarted
     daemon_reload: yes
     name: yarn_nodemanager
 

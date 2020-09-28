@@ -1,9 +1,3 @@
-yarn_resourcemanager_port: 8050
-yarn_resourcemanager_scheduler_port: 8030
-yarn_resourcemanager_webapp_port: 8088
-yarn_resourcemanager_tracker_port: 8025
-yarn_resourcemanager_admin_port: 8141
-
 yarn_site_properties:
 
   - {
@@ -105,7 +99,7 @@ yarn_site_properties:
   - {
     "name": "yarn.nodemanager.aux-services",
     "value": "mapreduce_shuffle"
-#      "value": "mapreduce_shuffle,spark_shuffle,spark2_shuffle"
+      #      "value": "mapreduce_shuffle,spark_shuffle,spark2_shuffle"
 
   }
 
@@ -113,26 +107,26 @@ yarn_site_properties:
     "name": "yarn.nodemanager.aux-services.mapreduce_shuffle.class",
     "value": "org.apache.hadoop.mapred.ShuffleHandler"
   }
-#
-#  - {
-#    "name": "yarn.nodemanager.aux-services.spark2_shuffle.class",
-#    "value": "org.apache.spark.network.yarn.YarnShuffleService"
-#  }
-#
-#  - {
-#    "name": "yarn.nodemanager.aux-services.spark2_shuffle.classpath",
-#    "value": "/usr/hdp/current/spark2-client/aux/*"
-#  }
-#
-#  - {
-#    "name": "yarn.nodemanager.aux-services.spark_shuffle.class",
-#    "value": "org.apache.spark.network.yarn.YarnShuffleService"
-#  }
-#
-#  - {
-#    "name": "yarn.nodemanager.aux-services.spark_shuffle.classpath",
-#    "value": "/usr/hdp/current/spark-client/aux/*"
-#  }
+  #
+  #  - {
+  #    "name": "yarn.nodemanager.aux-services.spark2_shuffle.class",
+  #    "value": "org.apache.spark.network.yarn.YarnShuffleService"
+  #  }
+  #
+  #  - {
+  #    "name": "yarn.nodemanager.aux-services.spark2_shuffle.classpath",
+  #    "value": "/usr/hdp/current/spark2-client/aux/*"
+  #  }
+  #
+  #  - {
+  #    "name": "yarn.nodemanager.aux-services.spark_shuffle.class",
+  #    "value": "org.apache.spark.network.yarn.YarnShuffleService"
+  #  }
+  #
+  #  - {
+  #    "name": "yarn.nodemanager.aux-services.spark_shuffle.classpath",
+  #    "value": "/usr/hdp/current/spark-client/aux/*"
+  #  }
 
   - {
     "name": "yarn.nodemanager.bind-host",
@@ -207,7 +201,7 @@ yarn_site_properties:
 
   - {
     "name": "yarn.nodemanager.local-dirs",
-    "value": "/yarn/local"
+    "value": "{{ yarn_data_dirs_joined }}"
   }
 
   - {
@@ -242,7 +236,7 @@ yarn_site_properties:
 
   - {
     "name": "yarn.nodemanager.log-dirs",
-    "value": "/hadoop/yarn/log"
+    "value": "{{ hadoop_log_dir }}/{{ yarn_user }}/nodemanager/"
   }
 
   - {
@@ -257,7 +251,7 @@ yarn_site_properties:
 
   - {
     "name": "yarn.nodemanager.recovery.dir",
-    "value": "/var/log/hadoop/yarn/nodemanager/recovery-state"
+    "value": "{{ hadoop_log_dir }}/{{ yarn_user }}/nodemanager/recovery-state"
   }
 
   - {
@@ -300,8 +294,8 @@ yarn_site_properties:
     "value": "2.1"
   }
   - {
-      "name": "yarn.nodemanager.linux-container-executor.group",
-      "value": "{{ hadoop_group }}"
+    "name": "yarn.nodemanager.linux-container-executor.group",
+    "value": "{{ hadoop_group }}"
   }
 
 
@@ -309,11 +303,6 @@ yarn_site_properties:
   - {
     "name": "yarn.resourcemanager.address",
     "value": "{{ yarn_history_server }}:8050"
-  }
-
-  - {
-    "name": "yarn.resourcemanager.admin.address",
-    "value": "{{ yarn_history_server }}:8141"
   }
 
   - {
@@ -326,10 +315,7 @@ yarn_site_properties:
     "value": "0.0.0.0"
   }
 
-  - {
-    "name": "yarn.resourcemanager.cluster-id",
-    "value": "yarn-cluster"
-  }
+
 
   - {
     "name": "yarn.resourcemanager.connect.max-wait.ms",
@@ -352,10 +338,6 @@ yarn_site_properties:
   }
 
 
-  - {
-    "name": "yarn.resourcemanager.hostname",
-    "value": "{{ yarn_resource_manager_server1 }}"
-  }
 
 
   - {
@@ -464,21 +446,7 @@ yarn_site_properties:
     "value": "true"
   }
 
-  - {
-    "name": "yarn.resourcemanager.webapp.address",
-    "value": "{{ yarn_resource_manager_server1 }}:8088"
-  }
 
-
-  - {
-    "name": "yarn.resourcemanager.webapp.address.rm1",
-    "value": "{{ yarn_resource_manager_server1 }}:8088"
-  }
-
-  - {
-    "name": "yarn.resourcemanager.webapp.address.rm2",
-    "value": "{{ yarn_resource_manager_server2 }}:8088"
-  }
 
   - {
     "name": "yarn.resourcemanager.webapp.delegation-token-auth-filter.enabled",
@@ -511,10 +479,6 @@ yarn_site_properties:
     "value": "10000"
   }
 
-  - {
-    "name": "yarn.resourcemanager.zk-address",
-    "value": "{{ groups['zookeeper'] | zip_longest([], fillvalue='2181') | map('join', ':') | join(',') }}"
-  }
 
   - {
     "name": "yarn.resourcemanager.zk-num-retries",
@@ -787,3 +751,47 @@ yarn_site_properties:
     "name": "yarn.timeline-service.webapp.https.address",
     "value": "{{ yarn_history_server }}:8190"
   }
+
+  - {
+    "name": "yarn.resourcemanager.ha.enabled",
+    "value": "true"
+  }
+  - {
+    "name": "yarn.resourcemanager.cluster-id",
+    "value": "KAC-YARN"
+  }
+  - {
+    name: "yarn.resourcemanager.ha.rm-ids",
+    value: "rm1,rm2"
+  }
+  - {
+    "name": "yarn.resourcemanager.hostname.rm1",
+    "value": "{{ yarn_resource_manager_server1 }}"
+  }
+  - {
+    "name": "yarn.resourcemanager.hostname.rm2",
+    "value": "{{ yarn_resource_manager_server2 }}"
+  }
+  - {
+      name: "yarn.resourcemanager.admin.address.rm1",
+      value: "{{ yarn_resource_manager_server1 }}:8033"
+  }
+  - {
+    name: "yarn.resourcemanager.admin.address.rm2",
+    value: "{{ yarn_resource_manager_server2 }}:8033"
+  }
+  - {
+    "name": "yarn.resourcemanager.webapp.address.rm1",
+    "value": "{{ yarn_resource_manager_server1 }}:8088"
+  }
+
+  - {
+    "name": "yarn.resourcemanager.webapp.address.rm2",
+    "value": "{{ yarn_resource_manager_server2 }}:8088"
+  }
+
+  - {
+    "name": "hadoop.zk.address",
+    "value": "{{ groups['zookeeper'] | zip_longest([], fillvalue='2181') | map('join', ':') | join(',') }}"
+  }
+

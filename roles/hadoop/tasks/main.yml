@@ -97,3 +97,13 @@
     group: "{{ hadoop_group }}"
 
 
+
+- name: Copy Hadoop config files
+  template:
+    src: "{{ item }}"
+    dest: "/etc/profile.d/"
+    mode: 0644
+    owner: "root"
+    group: "{{ hadoop_group }}"
+  with_fileglob:
+    - "templates/profile.d/*"

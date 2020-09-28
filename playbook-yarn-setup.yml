@@ -10,6 +10,7 @@
     - vars/hadoop_config_files/var_yarn_site.yml
   vars:
   roles:
+    - java
     - yarn_node_manager
 
 
@@ -23,6 +24,10 @@
     - vars/hadoop_config_files/var_mapred_site.yml
     - vars/hadoop_config_files/var_yarn_site.yml
   vars:
+    open_firewall: false
+    disable_firewall: true
   roles:
+    - java
+    - firewall_open
     - yarn_resource_manager
 

@@ -46,13 +46,13 @@ hdfs_site_properties:
   }
   - {
     "name": "dfs.namenode.data.dir",
-    "value": "{{ hadoop_dfs_data }}"
+    "value": "{{ hdfs_data_dirs_joined }}"
   }
   - {
     "name": "dfs.namenode.acls.enabled",
     "value": "true"
   }
-  - {
+  - { # TODO
     "name": "dfs.namenode.checkpoint.dir",
     "value": "/hadoop/hdfs/namesecondary"
   }

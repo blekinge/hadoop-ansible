@@ -70,12 +70,21 @@ export HADOOP_HOME={{hadoop_path}}/hadoop-{{hadoop_version}}
 # --config) may react strangely otherwise.
 export HADOOP_CONF_DIR={{ hadoop_config_path }}
 
+
+# The minimum amount of heap to use (Java -Xms).  If no unit
+# is provided, it will be converted to MB.  Daemons will
+# prefer any Xms setting in their respective _OPT variable.
+# There is no default; the JVM will autoscale based upon machine
+# memory size.
+export HADOOP_HEAPSIZE="1024m"
+
 # The maximum amount of heap to use (Java -Xmx).  If no unit
 # is provided, it will be converted to MB.  Daemons will
 # prefer any Xmx setting in their respective _OPT variable.
 # There is no default; the JVM will autoscale based upon machine
 # memory size.
 #export HADOOP_HEAPSIZE_MAX=
+export HADOOP_HEAPSIZE_MAX="$HADOOP_HEAPSIZE"
 
 # The minimum amount of heap to use (Java -Xms).  If no unit
 # is provided, it will be converted to MB.  Daemons will
@@ -83,6 +92,7 @@ export HADOOP_CONF_DIR={{ hadoop_config_path }}
 # There is no default; the JVM will autoscale based upon machine
 # memory size.
 # export HADOOP_HEAPSIZE_MIN=
+export HADOOP_HEAPSIZE_MIN="$HADOOP_HEAPSIZE"
 
 # Enable extra debugging of Hadoop's JAAS binding, used to set up
 # Kerberos security.
@@ -102,9 +112,11 @@ export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
 
 # Extra Java runtime options for some Hadoop commands
 # and clients (i.e., hdfs dfs -blah).  These get appended to HADOOP_OPTS for
-# such commands.  In most cases, # this should be left empty and
+# such commands.  In most cases,
+# this should be left empty and
 # let users supply it on the command line.
 # export HADOOP_CLIENT_OPTS=""
+export HADOOP_CLIENT_OPTS="-Xmx${HADOOP_HEAPSIZE_MAX}m $HADOOP_CLIENT_OPTS"
 
 #
 # A note about classpaths.
@@ -161,6 +173,7 @@ export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
 # Options to pass to SSH when one of the "log into a host and
 # start/stop daemons" scripts is executed
 # export HADOOP_SSH_OPTS="-o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=10s"
+export HADOOP_SSH_OPTS="-o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=10s -o SendEnv=HADOOP_CONF_DIR"
 
 # The built-in ssh handler will limit itself to 10 simultaneous connections.
 # For pdsh users, this sets the fanout size ( -f )
@@ -169,7 +182,7 @@ export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
 
 # Filename which contains all of the hosts for any remote execution
 # helper scripts # such as workers.sh, start-dfs.sh, etc.
-# export HADOOP_WORKERS="${HADOOP_CONF_DIR}/workers"
+export HADOOP_WORKERS="${HADOOP_CONF_DIR}/workers"
 
 ###
 # Options for all daemons
@@ -189,7 +202,7 @@ export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
 # ${HADOOP_HOME}/logs by default.
 # Java property: hadoop.log.dir
 # export HADOOP_LOG_DIR=${HADOOP_HOME}/logs
-export HADOOP_LOG_DIR="{{ hadoop_log_path }}/$USER"
+export HADOOP_LOG_DIR="{{ hadoop_log_dir }}/$USER"
 
 # A string representing this instance of hadoop. $USER by default.
 # This is used in writing log and pid files, so keep that in mind!
@@ -228,7 +241,7 @@ export HADOOP_SECURITY_LOGGER=${HADOOP_SECURITY_LOGGER:-"INFO,DRFAS"}
 
 # Default name for the service level authorization file
 # Java property: hadoop.policy.file
-# export HADOOP_POLICYFILE="hadoop-policy.xml"
+export HADOOP_POLICYFILE="hadoop-policy.xml"
 
 #
 # NOTE: this is not used by default!  <-----
@@ -249,16 +262,11 @@ export HADOOP_HOME_WARN_SUPPRESS=1
 HADOOP_LOG_OPTS="-Dhadoop.security.logger=$HADOOP_SECURITY_LOGGER \
                  -Dhdfs.audit.logger=$HDFS_AUDIT_LOGGER"
 
-# The minimum amount of heap to use (Java -Xms).  If no unit
-# is provided, it will be converted to MB.  Daemons will
-# prefer any Xms setting in their respective _OPT variable.
-# There is no default; the JVM will autoscale based upon machine
-# memory size.
-export HADOOP_HEAPSIZE="1024"
+
 
 #Options commons for all the HDFS daemons
 HADOOP_COMMON_DAEMON_OPTS="-server \
-                           -XX:ErrorFile={{ hadoop_log_path }}/$USER/hs_err_pid%p.log"
+                           -XX:ErrorFile={{ hadoop_log_dir }}/$USER/hs_err_pid%p.log"
 
 #The Garbage collector config for the NameNode
 HADOOP_NAMENODE_GC_OPTS="-XX:ParallelGCThreads=8 \
@@ -275,42 +283,9 @@ HADOOP_NAMENODE_GC_OPTS="-XX:ParallelGCThreads=8 \
 #                   -XX:+PrintGCTimeStamps \
 #                   -XX:+PrintGCDateStamps"
 
-#The Garbage collector config for the DataNode
-HADOOP_DATANODE_GC_OPTS="-XX:ParallelGCThreads=4 \
-                         -XX:+UseConcMarkSweepGC \
-                         -XX:NewSize=200m \
-                         -XX:MaxNewSize=200m \
-                         -XX:CMSInitiatingOccupancyFraction=70 \
-                         -XX:+UseCMSInitiatingOccupancyOnly"
-
-#The DataNode opts
-export HDFS_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
-                             $HADOOP_DATANODE_GC_OPTS \
-                             $GC_LOG_OPTS  \
-                             -Xms2048m \
-                             -Xmx2048m \
-                             $HADOOP_LOG_OPTS"
-
-# The following applies to multiple commands (fs, dfs, fsck, distcp etc)
-export HADOOP_CLIENT_OPTS="-Xmx${HADOOP_HEAPSIZE}m $HADOOP_CLIENT_OPTS"
-
-HADOOP_NFS3_OPTS="-Xmx1024m \
-                  ${HADOOP_LOG_OPTS} \
-                  ${HADOOP_NFS3_OPTS}"
-
-HADOOP_BALANCER_OPTS="-server \
-                      -Xmx1024m \
-                      ${HADOOP_BALANCER_OPTS}"
-
-# On secure datanodes, user to run the datanode as after dropping privileges
-#export HADOOP_DATANODE_SECURE_USER=${HADOOP_DATANODE_SECURE_USER:-"{{ hdfs_user }}"}
-
-# Extra ssh options.  Empty by default.
-export HADOOP_SSH_OPTS="-o ConnectTimeout=5 -o SendEnv=HADOOP_CONF_DIR"
 
 # History server logs
-#TODO hadoop log path
-export HADOOP_MAPRED_LOG_DIR="{{ hadoop_log_path }}/mapreduce/$USER"
+export HADOOP_MAPRED_LOG_DIR="{{ hadoop_log_dir }}/mapreduce/$USER"
 
 # File naming remote slave hosts.  $HADOOP_HOME/conf/slaves by default.
 # export HADOOP_SLAVES=${HADOOP_HOME}/conf/slaves
@@ -440,6 +415,7 @@ export HDFS_SECONDARYNAMENODE_OPTS="${SHARED_HDFS_NAMENODE_OPTS} \
 # This is the default:
 # export HDFS_DATANODE_OPTS="-Dhadoop.security.logger=ERROR,RFAS"
 
+
 #The Garbage collector config for the DataNode
 HADOOP_DATANODE_GC_OPTS="-XX:ParallelGCThreads=4 \
                          -XX:+UseConcMarkSweepGC \
@@ -455,6 +431,7 @@ export HDFS_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
                              -Xms2048m \
                              -Xmx2048m \
                              $HADOOP_LOG_OPTS"
+
 
 # On secure datanodes, user to run the datanode as after dropping privileges.
 # This **MUST** be uncommented to enable secure HDFS if using privileged ports
@@ -478,6 +455,10 @@ export HDFS_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_NFS3_OPTS=""
+
+HADOOP_NFS3_OPTS="-Xmx$HADOOP_HEAPSIZE_MAX \
+                  ${HADOOP_LOG_OPTS} \
+                  ${HADOOP_NFS3_OPTS}"
 
 # Specify the JVM options to be used when starting the Hadoop portmapper.
 # These options will be appended to the options specified as HADOOP_OPTS
@@ -525,6 +506,10 @@ export HDFS_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_BALANCER_OPTS=""
+HADOOP_BALANCER_OPTS="-server \
+                      -Xmx$HADOOP_HEAPSIZE_MAX \
+                      ${HADOOP_BALANCER_OPTS}"
+
 
 ###
 # HDFS Mover specific parameters

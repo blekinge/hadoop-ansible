@@ -11,9 +11,8 @@ hadoop_home: "{{ hadoop_path }}/hadoop-{{ hadoop_version }}"
 hadoop_config_path: "/etc/hadoop/conf/"
 hadoop_tmp: "/tmp/hadoop"
 hadoop_dfs_name: "/hdfs/dfs/name"
-hadoop_dfs_data: "/hdfs/dfs/data"
 hadoop_dfs_journal: "/hdfs/dfs/journal"
-hadoop_log_path: "/var/log/hadoop/"
+hadoop_log_dir: "/var/log/hadoop/"
 hadoop_pid_dir: "/var/run/hadoop/"
 
 hdfs_user: "hdfs"
@@ -21,6 +20,7 @@ hdfs_group: "hdfs"
 
 hadoop_group: "hadoop"
 
+#TODO handle more than 2 namenodes
 nn1: "{{ groups['hdfs_namenode'] | first }}"
 nn2: "{{ groups['hdfs_namenode'] | last }}"
 
@@ -31,8 +31,7 @@ user: "root"
 group: "hadoop"
 
 hdfs_data_dirs:
-  - "{{ hadoop_dfs_data }}"
-#  - /data/sdb1/hdfs
+  - /data/sdb1/hdfs
 #  - /data/sdc1/hdfs
 #  - /data/sdd1/hdfs
 #  - /data/sde1/hdfs
@@ -44,9 +43,8 @@ hdfs_data_dirs_joined:  "{{ hdfs_data_dirs | join(',') }}"
 hdfs_create_path:
   - "{{ hadoop_tmp }}"
   - "{{ hadoop_dfs_name }}"
-  - hdfs_data_dirs
   - "{{ hadoop_dfs_journal }}"
-  - "{{ hadoop_log_path }}"
+  - "{{ hadoop_log_dir }}"
   - "{{ hadoop_pid_dir }}"
 
 
@@ -60,5 +58,17 @@ yarn_create_path:
 
 
 yarn_history_server: "{{ groups['yarn_history'] | first }}"
+#TODO handle more than to yarn resource managers...
 yarn_resource_manager_server1: "{{ groups['yarn_resource_manager'] | first }}"
 yarn_resource_manager_server2: "{{ groups['yarn_resource_manager'] | last }}"
+
+
+yarn_data_dirs:
+  - /data/sdb1/yarn
+#  - /data/sdc1/hdfs
+#  - /data/sdd1/hdfs
+#  - /data/sde1/hdfs
+#  - /data/sdf1/hdfs
+#  - /data/sdg1/hdfs
+
+yarn_data_dirs_joined:  "{{ yarn_data_dirs | join(',') }}"

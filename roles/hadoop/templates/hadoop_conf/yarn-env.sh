@@ -29,36 +29,30 @@ if [ -f "{{ hadoop_config_path }}/hadoop-env.sh" ]; then
   source "{{ hadoop_config_path }}/hadoop-env.sh"
 fi
 
-export HADOOP_YARN_HOME={{hadoop_path}}/hadoop-{{hadoop_version}}
-YARN_OPTS="$YARN_OPTS -Dyarn.home.dir=$HADOOP_YARN_HOME"
+export HADOOP_YARN_HOME="{{ hadoop_home }}"
+HADOOP_OPTS="$HADOOP_OPTS -Dyarn.home.dir=$HADOOP_YARN_HOME"
 
-export YARN_LOG_DIR=/var/log/hadoop/$USER
+export HADOOP_LOG_DIR="{{ hadoop_log_dir }}/{{ yarn_user }}"
 export HADOOP_DAEMON_ROOT_LOGGER="INFO,EWMA,DRFA"
 
-
-export YARN_PID_DIR=/var/run/hadoop/$USER
-export HADOOP_LIBEXEC_DIR=$HADOOP_YARN_HOME/libexec
-export HADOOP_CONF_DIR={{ hadoop_config_path }}
+export HADOOP_PID_DIR="{{ hadoop_pid_dir }}/{{ yarn_user }}"
+export HADOOP_LIBEXEC_DIR="$HADOOP_YARN_HOME/libexec"
+export HADOOP_CONF_DIR="{{ hadoop_config_path }}"
 
 # User for YARN daemons
-YARN_IDENT_STRING={{ yarn_user }}
-YARN_OPTS="$YARN_OPTS -Dyarn.id.str=$YARN_IDENT_STRING"
+HADOOP_IDENT_STRING="{{ yarn_user }}"
+HADOOP_OPTS="$HADOOP_OPTS -Dyarn.id.str=$HADOOP_IDENT_STRING"
 
-export HADOOP_YARN_USER=${HADOOP_YARN_USER:-{{ yarn_user }}}
-
+export HADOOP_YARN_USER="${HADOOP_YARN_USER:-{{ yarn_user }}}"
 
 # The java implementation to use.  Required.
-export JAVA_HOME={{ jvm_home }}
-
-
-
-
+export JAVA_HOME="{{ jvm_home }}"
 
 # some Java parameters
 # export JAVA_HOME=/home/y/libexec/jdk1.6.0/
 if [ "$JAVA_HOME" != "" ]; then
   #echo "run java in $JAVA_HOME"
-  JAVA_HOME=$JAVA_HOME
+  JAVA_HOME="$JAVA_HOME"
 fi
 
 if [ "$JAVA_HOME" = "" ]; then
@@ -66,11 +60,11 @@ if [ "$JAVA_HOME" = "" ]; then
   exit 1
 fi
 
-JAVA=$JAVA_HOME/bin/java
+JAVA="$JAVA_HOME/bin/java"
 JAVA_HEAP_MAX=-Xmx1000m
 
 if [ "x$JAVA_LIBRARY_PATH" != "x" ]; then
-  YARN_OPTS="$YARN_OPTS -Djava.library.path=$JAVA_LIBRARY_PATH"
+  HADOOP_OPTS="$HADOOP_OPTS -Djava.library.path=$JAVA_LIBRARY_PATH"
 fi
 
 # For setting YARN specific HEAP sizes please use this
@@ -79,31 +73,22 @@ YARN_HEAPSIZE=1024
 
 # check envvars which might override default args
 if [ "$YARN_HEAPSIZE" != "" ]; then
-  JAVA_HEAP_MAX="-Xmx""$YARN_HEAPSIZE""m"
+  JAVA_HEAP_MAX="-Xmx${YARN_HEAPSIZE}m"
 fi
-
 
 # so that filenames w/ spaces are handled correctly in loops below
 IFS=
-
-
 
 # default policy file for service-level authorization
 if [ "$YARN_POLICYFILE" = "" ]; then
   YARN_POLICYFILE="hadoop-policy.xml"
 fi
-YARN_OPTS="$YARN_OPTS -Dyarn.policy.file=$YARN_POLICYFILE"
-
+HADOOP_OPTS="$HADOOP_OPTS -Dyarn.policy.file=$YARN_POLICYFILE"
 
 # restore ordinary behaviour
 unset IFS
 
-
-
-#YARN_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username=zookeeper -Djava.security.auth.login.config=/etc/hadoop/2.6.5.0-292/0/yarn_jaas.conf -Dzookeeper.sasl.clientconfig=Client $YARN_OPTS"
-
-
-export YARN_OPTS
+#HADOOP_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username=zookeeper -Djava.security.auth.login.config=/etc/hadoop/2.6.5.0-292/0/yarn_jaas.conf -Dzookeeper.sasl.clientconfig=Client $HADOOP_OPTS"
 
 ###
 # Resource Manager specific parameters
@@ -168,10 +153,6 @@ export YARN_NODEMANAGER_HEAPSIZE=1024
 # Node Manager specific parameters
 export YARN_NODEMANAGER_OPTS="$YARN_NODEMANAGER_OPTS -Dnm.audit.logger=INFO,NMAUDIT"
 
-
-
-
-
 ###
 # TimeLineServer specific parameters
 ###
@@ -192,7 +173,6 @@ export YARN_TIMELINESERVER_HEAPSIZE=1024
 #
 #export YARN_TIMELINESERVER_OPTS=
 
-
 ###
 # TimeLineReader specific parameters
 ###
@@ -204,7 +184,6 @@ export YARN_TIMELINESERVER_HEAPSIZE=1024
 # See ResourceManager for some examples
 #
 #export YARN_TIMELINEREADER_OPTS=
-
 
 ###
 # Web App Proxy Server specifc parameters
@@ -269,4 +248,4 @@ export YARN_TIMELINESERVER_HEAPSIZE=1024
 # export YARN_SERVICE_EXAMPLES_DIR = $HADOOP_YARN_HOME/share/hadoop/yarn/yarn-service-examples
 # export YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE=true
 
-
+export HADOOP_OPTS
