@@ -1,8 +1,5 @@
 [ipaserver]
-nah-adm
-[ipaserver:vars]
-ipaserver_ip_addresses=10.0.0.9
-
+fipa001.yak2.net
 
 [hdfs_namenode]
 hdfs001.yak2.net primary=true
@@ -32,4 +29,4 @@ roda004.yak2.net
 
 
 [yarn_history]
-hist001.yak2.net
+#hist001.yak2.net

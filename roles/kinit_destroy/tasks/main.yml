@@ -1,0 +1,11 @@
+---
+- name: kinit | destroying tokens
+  command: "/usr/bin/kdestroy"
+  become: no
+
+- name: Kinit| check token is not there anymore
+  command: /usr/bin/klist
+  register: result
+  failed_when: "'krbtgt' in result.stdout"
+  changed_when: result.rc != 1
+  become: no

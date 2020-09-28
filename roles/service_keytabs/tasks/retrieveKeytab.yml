@@ -1,0 +1,26 @@
+---
+
+
+- name: "check if keytab file {{ entry.keytab_file }} exists"
+  stat:
+    path: "{{ entry.keytab_file }}"
+  register: keytab_file
+
+- name: "test existing keytab for  {{ entry.principal }}"
+  shell: kinit -kt {{ entry.keytab_file }} {{ entry.principal}} -c test.ticket || rm {{ entry.keytab_file }}
+  when: keytab_file.stat.exists == True
+
+- name: "getKeytab for {{ entry.principal }}"
+  shell: ipa-getkeytab --server={{groups['ipaserver'] | first }} --principal={{ entry.principal}} --keytab={{ entry.keytab_file }}
+  args:
+    creates: "{{ entry.keytab_file }}"
+  when: entry.type == "SERVICE"
+
+
+- name: "set permissions for {{ entry.keytab_file }}"
+  file:
+    owner: "{{ entry.owner}}"
+    group: "{{ entry.group }}"
+    mode: "{{ entry.file_permissions }}"
+    path: "{{ entry.keytab_file }}"
+    state: "file"

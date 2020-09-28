@@ -1,0 +1,58 @@
+
+#See https://stackoverflow.com/a/50055245
+- hosts: all
+  vars_files:
+    - vars/var_kerberos.yml
+    - vars/var_ipa.yml
+    - vars/var_hadoop.yml
+  tasks:
+    - set_fact:
+        kerberos_conf: >
+          {%- set temp_list = [] -%}
+          {%- for host in groups['all'] -%}
+          {%- for service in keytab_services if service.hostgroup in hostvars[host]['group_names'] -%}
+          {%- set temp_dic = {} -%}
+          {%- set _= temp_dic.update({'host': host }) -%}
+          {%- set _= temp_dic.update({'type': 'SERVICE' }) -%}
+          {%- set _= temp_dic.update({'principal': service.name+'/'+host+'@'+ipaserver_realm }) -%}
+          {%- set _= temp_dic.update({'keytab_file': keytab_dir+service.name+'.service.keytab' }) -%}
+          {%- set _= temp_dic.update({'owner': service.owner }) -%}
+          {%- set _= temp_dic.update({'group': service.group }) -%}
+          {%- set _= temp_dic.update({'file_permissions': keytab_permissions }) -%}
+          {%- set _= temp_list.append(temp_dic) -%}
+          {%- endfor %}
+          {%- endfor %}
+          {%- for user in keytab_users -%}
+          {%- set temp_dic = {} -%}
+          {%- set _= temp_dic.update({'host': user.host }) -%}
+          {%- set _= temp_dic.update({'type': 'USER' }) -%}
+          {%- set _= temp_dic.update({'principal': user.name+'@'+ipaserver_realm }) -%}
+          {%- set _= temp_dic.update({'keytab_file': keytab_dir+user.name+'.headless.keytab' }) -%}
+          {%- set _= temp_dic.update({'owner': user.owner }) -%}
+          {%- set _= temp_dic.update({'group': user.group }) -%}
+          {%- set _= temp_dic.update({'file_permissions': keytab_permissions }) -%}
+          {%- set _= temp_list.append(temp_dic) -%}
+          {%- endfor %}
+          {{- temp_list -}}
+
+    - debug:
+        var: kerberos_conf
+
+- hosts: ipaserver
+  vars_files:
+    - vars/var_kerberos.yml
+    - vars/var_ipa.yml
+    - vars/var_hadoop.yml
+  roles:
+    - ipa_service_definitions
+
+- hosts: all
+  vars_files:
+    - vars/var_kerberos.yml
+    - vars/var_ipa.yml
+    - vars/var_hadoop.yml
+  roles:
+    - kinit_init
+    - service_keytabs
+    - kinit_destroy
+

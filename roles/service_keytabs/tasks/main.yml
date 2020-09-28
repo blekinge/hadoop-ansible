@@ -1,0 +1,48 @@
+---
+- name: Create keytabs dir
+  file:
+    owner: root
+    group: "{{ hadoop_group }}"
+    mode: 0640
+    path: "{{ dir }}"
+    state: "directory"
+  loop: '{{ kerberos_conf | selectattr("host", "eq", inventory_hostname) | map(attribute="keytab_file") | map("dirname") |unique| list}}'
+  loop_control:
+    loop_var: "dir"
+
+- name: Create keytabs dir
+  file:
+    owner: root
+    group: "{{ hadoop_group }}"
+    mode: 0640
+    path: "{{ dir }}"
+    state: "directory"
+  loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | map(attribute="keytab_file") | map("dirname") |unique| list}}'
+  loop_control:
+    loop_var: "dir"
+
+- name: Retrieving keytab for host
+  include: retrieveKeytab.yml entry="{{item}}"
+  with_items: '{{ kerberos_conf | selectattr("host", "eq", inventory_hostname) | list}}'
+
+
+- name: Retrieving keytab for user
+  include: retrieveKeytab.yml entry="{{item}}"
+  with_items: '{{ kerberos_conf | selectattr("type", "eq", "USER") | list}}'
+
+
+- name: fetching keytabs for headless users to localhost
+  fetch:
+    src: "{{ item }}"
+    dest: keytabs/
+    flat: true
+  loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | map(attribute="keytab_file") | unique| list}}'
+  when: '"ipaserver" in group_names'
+
+- name: uploading headless keytabs to {{ host }}
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/security/keytabs/"
+  with_fileglob:
+    - "./keytabs/*"
+  when: '"ipaserver" not in group_names'

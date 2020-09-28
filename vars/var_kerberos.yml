@@ -1,0 +1,43 @@
+---
+ipaserver_domain: yak2.net
+ipaserver_realm: YAK2.NET
+
+kinit_principal: "admin@{{ipaserver_realm}}"
+
+keytab_services:
+    - {
+          hostgroup: "workers",
+          name: "dn",
+          owner: "{{ hdfs_user }}",
+          group: "{{ hadoop_group }}"
+    }
+    - {
+      hostgroup: "hdfs_namenode",
+      name: "nn",
+      owner: "{{ hdfs_user }}",
+      group: "{{ hadoop_group }}"
+    }
+    - {
+        hostgroup: "workers",
+        name: "nm",
+        owner: "{{ yarn_user }}",
+        group: "{{ hadoop_group }}"
+    }
+    - {
+      hostgroup: "yarn_resource_manager",
+      name: "rm",
+      owner: "{{ yarn_user }}",
+      group: "{{ hadoop_group }}"
+    }
+
+keytab_users:
+  - {
+    host: "{{ groups['ipaserver'] | first }}",
+    name: "{{ hdfs_user }}",
+    owner: "{{ hdfs_user }}",
+    group: "{{ hadoop_group }}"
+  }
+
+keytab_dir: "/etc/security/keytabs/"
+keytab_permissions: "0400"
+

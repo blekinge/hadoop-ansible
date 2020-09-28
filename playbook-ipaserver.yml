@@ -1,11 +1,8 @@
-- hosts: ipaserver
+- hosts: ipaservers
   become: yes
   vars_files:
     - vars/var_ipa.yml
   roles:
-    - role: ipaserver
-      state: present
-
     - role: yak_user_manager
 
 
