@@ -1,7 +1,7 @@
 ---
 - name: Start datanode process
   systemd:
-    state: started
+    state: restarted
     daemon_reload: yes
     name: hdfs_datanode
 

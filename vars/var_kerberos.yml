@@ -5,30 +5,46 @@ ipaserver_realm: YAK2.NET
 kinit_principal: "admin@{{ipaserver_realm}}"
 
 keytab_services:
-    - {
-          hostgroup: "workers",
-          name: "dn",
-          owner: "{{ hdfs_user }}",
-          group: "{{ hadoop_group }}"
-    }
-    - {
-      hostgroup: "hdfs_namenode",
-      name: "nn",
-      owner: "{{ hdfs_user }}",
-      group: "{{ hadoop_group }}"
-    }
-    - {
-        hostgroup: "workers",
-        name: "nm",
-        owner: "{{ yarn_user }}",
-        group: "{{ hadoop_group }}"
-    }
-    - {
-      hostgroup: "yarn_resource_manager",
-      name: "rm",
-      owner: "{{ yarn_user }}",
-      group: "{{ hadoop_group }}"
-    }
+  #  HDFS
+  - {
+    hostgroup: "workers",
+    name: "dn",
+    owner: "{{ hdfs_user }}",
+    group: "{{ hadoop_group }}"
+  }
+  - {
+    hostgroup: "hdfs_namenode",
+    name: "nn",
+    owner: "{{ hdfs_user }}",
+    group: "{{ hadoop_group }}"
+  }
+  - {
+    hostgroup: "hdfs_journal",
+    name: "jn",
+    owner: "{{ hdfs_user }}",
+    group: "{{ hadoop_group }}"
+  }
+  - {
+    hostgroup: "all",
+    service: "HTTP",
+    name: "spnego",
+    owner: "root",
+    group: "{{ hadoop_group }}",
+    permissions: "0440"
+  }
+  #    YARN
+  - {
+    hostgroup: "workers",
+    name: "nm",
+    owner: "{{ yarn_user }}",
+    group: "{{ hadoop_group }}"
+  }
+  - {
+    hostgroup: "yarn_resource_manager",
+    name: "rm",
+    owner: "{{ yarn_user }}",
+    group: "{{ hadoop_group }}"
+  }
 
 keytab_users:
   - {

@@ -50,13 +50,13 @@
 
 - name: Start namenode process
   systemd:
-    state: started
+    state: restarted
     daemon_reload: yes
     name: hdfs_namenode
 
-- name: Start namenode process
+- name: Start namenode zkfc process
   systemd:
-    state: started
+    state: restarted
     daemon_reload: yes
     name: hdfs_zkfc
 

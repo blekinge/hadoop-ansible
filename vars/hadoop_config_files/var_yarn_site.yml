@@ -752,7 +752,7 @@ yarn_site_properties:
     "value": "{{ yarn_history_server }}:8190"
   }
 
-# See https://hadoop.apache.org/docs/r3.3.0/hadoop-yarn/hadoop-yarn-site/ResourceManagerHA.html
+  # See https://hadoop.apache.org/docs/r3.3.0/hadoop-yarn/hadoop-yarn-site/ResourceManagerHA.html
   - {
     "name": "yarn.resourcemanager.ha.enabled",
     "value": "true"
@@ -774,8 +774,8 @@ yarn_site_properties:
     "value": "{{ yarn_resource_manager_server2 }}"
   }
   - {
-      name: "yarn.resourcemanager.admin.address.rm1",
-      value: "{{ yarn_resource_manager_server1 }}:8033"
+    name: "yarn.resourcemanager.admin.address.rm1",
+    value: "{{ yarn_resource_manager_server1 }}:8033"
   }
   - {
     name: "yarn.resourcemanager.admin.address.rm2",

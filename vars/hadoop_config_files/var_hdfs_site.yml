@@ -157,7 +157,10 @@ hdfs_site_properties:
     "value": "true"
   }
 
-
+  - {
+    "name": "",
+    "value": ""
+  }
 
 
 
@@ -170,5 +173,50 @@ hdfs_site_properties:
     "value": "0.0.0.0:8481"
   }
 
+  - {
+    "name": "dfs.datanode.kerberos.principal",
+    "value": "dn/_HOST@{{ipaserver_realm}}"
+  }
+  - {
+    "name": "dfs.datanode.keytab.file",
+    "value": "/etc/security/keytabs/dn.service.keytab"
+  }
+  - {
+    "name": "dfs.encrypt.data.transfer.cipher.suites",
+    "value": "AES/CTR/NoPadding"
+  }
+  - {
+    "name": "dfs.journalnode.kerberos.internal.spnego.principal",
+    "value": "HTTP/_HOST@{{ipaserver_realm}}"
+  }
 
+  - {
+    "name": "dfs.journalnode.kerberos.principal",
+    "value": "jn/_HOST@{{ipaserver_realm}}"
+  }
+
+  - {
+    "name": "dfs.journalnode.keytab.file",
+    "value": "/etc/security/keytabs/jn.service.keytab"
+  }
+  - {
+    "name": "dfs.namenode.kerberos.internal.spnego.principal",
+    "value": "HTTP/_HOST@{{ipaserver_realm}}"
+  }
+  - {
+    "name": "dfs.namenode.kerberos.principal",
+    "value": "nn/_HOST@{{ipaserver_realm}}"
+  }
+  - {
+    "name": "dfs.namenode.keytab.file",
+    "value": "/etc/security/keytabs/nn.service.keytab"
+  }
+  - {
+    "name": "dfs.web.authentication.kerberos.keytab",
+    "value": "/etc/security/keytabs/spnego.service.keytab"
+  }
+  - {
+    "name": "dfs.web.authentication.kerberos.principal",
+    "value": "HTTP/_HOST@{{ipaserver_realm}}"
+  }
 

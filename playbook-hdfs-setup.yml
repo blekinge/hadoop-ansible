@@ -3,6 +3,7 @@
     - vars/var_basic.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
+    - vars/var_kerberos.yml
     - vars/hadoop_config_files/var_core_site.yml
     - vars/hadoop_config_files/var_hdfs_site.yml
     - vars/hadoop_config_files/var_mapred_site.yml
@@ -16,6 +17,7 @@
     - vars/var_basic.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
+    - vars/var_kerberos.yml
     - vars/hadoop_config_files/var_core_site.yml
     - vars/hadoop_config_files/var_hdfs_site.yml
     - vars/hadoop_config_files/var_mapred_site.yml
@@ -32,6 +34,7 @@
     - vars/var_basic.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
+    - vars/var_kerberos.yml
     - vars/hadoop_config_files/var_core_site.yml
     - vars/hadoop_config_files/var_hdfs_site.yml
     - vars/hadoop_config_files/var_mapred_site.yml

@@ -38,12 +38,84 @@ core_site_properties:
     "name": "ha.failover-controller.active-standby-elector.zk.op.retries",
     "value": "120"
   }
-#  - {
-#    "name": "ha.zookeeper.acl",
-#    "value": "sasl:nn:rwcda"
-#  }
+  - {
+    "name": "ha.zookeeper.acl",
+    "value": "sasl:nn:rwcda"
+  }
   - {
     "name": "ha.zookeeper.quorum",
-#    https://gist.github.com/halberom/b1f6eaed16dba1b298e8#gistcomment-2642730
+    #    https://gist.github.com/halberom/b1f6eaed16dba1b298e8#gistcomment-2642730
     "value": "{{ groups['zookeeper'] | zip_longest([], fillvalue='2181') | map('join', ':') | join(',') }}"
   }
+
+  # Kerberos 
+  - {
+    name: "hadoop.http.authentication.cookie.domain",
+    value: "{{ ipaserver_domain}}"
+  }
+  - {
+    name: "hadoop.http.authentication.kerberos.keytab",
+    value: "{{ keytab_dir }}/spnego.service.keytab"
+  }
+  - {
+    name: "hadoop.http.authentication.kerberos.principal",
+    value: "HTTP/_HOST@{{ipaserver_realm}}"
+  }
+  - {
+    name: "hadoop.http.authentication.signature.secret.file",
+    value: "/etc/security/http_secret"
+  }
+  - {
+    name: "",
+    value: ""
+  }
+
+
+  - {
+    name: "hadoop.http.authentication.simple.anonymous.allowed",
+    value: "false"
+  }
+
+  - {
+    name: "hadoop.http.authentication.type",
+    value: "kerberos"
+  }
+
+  - {
+    name: "hadoop.http.filter.initializers",
+    value: "org.apache.hadoop.security.AuthenticationFilterInitializer"
+  }
+
+  - {
+    name: "hadoop.security.auth_to_local",
+    value: "RULE:[1:$1@$0](hdfs@{{ipaserver_realm}})s/.*/hdfs/
+            RULE:[1:$1@$0](spark1@{{ipaserver_realm}})s/.*/spark1/
+            RULE:[1:$1@$0](spark2@{{ipaserver_realm}})s/.*/spark2/
+            RULE:[1:$1@$0](.*@{{ipaserver_realm}})s/@.*//
+            RULE:[2:$1@$0](dn@{{ipaserver_realm}})s/.*/hdfs/
+            RULE:[2:$1@$0](hdfs-nfs@{{ipaserver_realm}})s/.*/hdfs/
+            RULE:[2:$1@$0](hive@{{ipaserver_realm}})s/.*/hive/
+            RULE:[2:$1@$0](jhs@{{ipaserver_realm}})s/.*/mapred/
+            RULE:[2:$1@$0](jn@{{ipaserver_realm}})s/.*/hdfs/
+            RULE:[2:$1@$0](livy1@{{ipaserver_realm}})s/.*/livy1/
+            RULE:[2:$1@$0](livy2@{{ipaserver_realm}})s/.*/livy2/
+            RULE:[2:$1@$0](nfs@{{ipaserver_realm}})s/.*/hdfs/
+            RULE:[2:$1@$0](nm@{{ipaserver_realm}})s/.*/yarn/
+            RULE:[2:$1@$0](nn@{{ipaserver_realm}})s/.*/hdfs/
+            RULE:[2:$1@$0](rm@{{ipaserver_realm}})s/.*/yarn/
+            RULE:[2:$1@$0](yarn@{{ipaserver_realm}})s/.*/yarn/
+            DEFAULT"
+  }
+
+  - {
+    name: "hadoop.security.authentication",
+    value: "kerberos"
+  }
+
+  - {
+    name: "hadoop.security.authorization",
+    value: "true"
+  }
+
+
+
