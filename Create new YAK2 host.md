@@ -74,3 +74,14 @@ echo "$IPA_SERVER:$SYSHOME_DIR      /syshome        nfs4    rw,defaults,_netdev,
 sed -i "s|\(\[domain/${DOMAIN_NAME1}\]\)|\1\nentry_cache_sudo_timeout = 10|g" /etc/sssd/sssd.conf
 mount -a
 ```
+
+11. Fix the kerberos ticket cache locations
+
+```bash
+sed -i "s|default_ccache_name.*|default_ccache_name = /tmp/krb5cc_%{uid}|g" /etc/krb5.conf
+
+echo "export KRB5CCNAME=FILE:/tmp/krb5cc_$UID" > /etc/profile.d/kerberos.sh
+
+sed -i -E 's|^( *default_ccache_name *= *KCM: *)|#\1|' /etc/krb5.conf.d/kcm_default_ccache 
+
+```

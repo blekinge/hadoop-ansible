@@ -2,6 +2,11 @@
 
 #THis playbook registers the nessesary services in freeipa and produces all the keytabs
 
+#Fix kerberos ccache variables on all hosts
+- hosts: all
+  roles:
+    - kerberos
+
 #See https://stackoverflow.com/a/50055245
 - hosts: all
   vars_files:

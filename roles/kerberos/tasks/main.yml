@@ -1,0 +1,22 @@
+---
+- name: set correct ccache
+  replace:
+    path: /etc/krb5.conf
+    regexp: 'default_ccache_name.*'
+    replace: 'default_ccache_name = /tmp/krb5cc_%{uid}'
+
+- name: set correct ccache 2
+  replace:
+    path: /etc/krb5.conf.d/kcm_default_ccache
+    regexp: '^( *default_ccache_name *= *KCM: *)'
+    replace: '#\1'
+
+- name: Copy Kerberos profile files
+  template:
+    src: "{{ item }}"
+    dest: "/etc/profile.d/"
+    mode: 0644
+    owner: "root"
+    group: "root"
+  with_fileglob:
+    - "templates/*"
