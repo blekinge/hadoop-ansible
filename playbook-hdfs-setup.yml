@@ -1,3 +1,12 @@
+# This playbook sets up a hdfs cluster with kerberos and ssl
+
+# Prerequisites
+# - the hosts must have been made and be freeipa clients
+# - The users must have been made
+# - playbook-ssl-certificates.yml
+# - playbook-kerberos-services.yml
+# - playbook-zookeeper.yml
+
 - hosts: hdfs_journal
   vars_files:
     - vars/var_basic.yml
@@ -22,7 +31,6 @@
     - vars/hadoop_config_files/var_hdfs_site.yml
     - vars/hadoop_config_files/var_mapred_site.yml
     - vars/hadoop_config_files/var_yarn_site.yml
-  vars:
   roles:
     - datanode
 

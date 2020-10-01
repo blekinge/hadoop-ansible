@@ -65,11 +65,6 @@ core_site_properties:
     name: "hadoop.http.authentication.signature.secret.file",
     value: "/etc/security/http_secret"
   }
-  - {
-    name: "",
-    value: ""
-  }
-
 
   - {
     name: "hadoop.http.authentication.simple.anonymous.allowed",
@@ -116,6 +111,25 @@ core_site_properties:
     name: "hadoop.security.authorization",
     value: "true"
   }
+  - {
+      name: "hadoop.ssl.client.conf",
+      value: "ssl-client.xml",
+      description: '
+      Resource file from which ssl client keystore information will be extracted.
+      This file is looked up in the classpath, typically it should be in Hadoop
+      conf/ directory. Default value is "ssl-client.xml".'
 
+  }
+  - {
+    name: "hadoop.ssl.server.conf",
+    value: "ssl-server.xml",
+    description: '
+      Resource file from which ssl server keystore information will be extracted. This file is looked up in the classpath, typically it should be in Hadoop conf/ directory
+      '
+  }
+  - {
+      name: "hadoop.proxyuser.HTTP.groups",
+      value: "yakusers"
+  }
 
 

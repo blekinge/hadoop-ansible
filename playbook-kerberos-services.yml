@@ -1,4 +1,7 @@
 
+
+#THis playbook registers the nessesary services in freeipa and produces all the keytabs
+
 #See https://stackoverflow.com/a/50055245
 - hosts: all
   vars_files:

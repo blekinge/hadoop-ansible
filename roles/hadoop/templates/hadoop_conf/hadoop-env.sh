@@ -76,7 +76,7 @@ export HADOOP_CONF_DIR={{ hadoop_config_path }}
 # prefer any Xms setting in their respective _OPT variable.
 # There is no default; the JVM will autoscale based upon machine
 # memory size.
-export HADOOP_HEAPSIZE="1024m"
+export HADOOP_HEAPSIZE="1024M"
 
 # The maximum amount of heap to use (Java -Xmx).  If no unit
 # is provided, it will be converted to MB.  Daemons will
@@ -116,7 +116,6 @@ export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
 # this should be left empty and
 # let users supply it on the command line.
 # export HADOOP_CLIENT_OPTS=""
-export HADOOP_CLIENT_OPTS="-Xmx${HADOOP_HEAPSIZE_MAX}m $HADOOP_CLIENT_OPTS"
 
 #
 # A note about classpaths.
@@ -233,7 +232,6 @@ export HADOOP_DAEMON_ROOT_LOGGER=${HADOOP_DAEMON_ROOT_LOGGER:-"INFO,DRFA"}
 # defaults for the NN and 2NN override this by default.)
 # Java property: hadoop.security.logger
 # export HADOOP_SECURITY_LOGGER=INFO,NullAppender
-export HADOOP_SECURITY_LOGGER=${HADOOP_SECURITY_LOGGER:-"INFO,DRFAS"}
 
 # Default process priority level
 # Note that sub-processes will also run at this level!
@@ -257,10 +255,6 @@ export HADOOP_POLICYFILE="hadoop-policy.xml"
 
 # ???
 export HADOOP_HOME_WARN_SUPPRESS=1
-
-#Basic hadoop log config
-HADOOP_LOG_OPTS="-Dhadoop.security.logger=$HADOOP_SECURITY_LOGGER \
-                 -Dhdfs.audit.logger=$HDFS_AUDIT_LOGGER"
 
 
 
@@ -342,7 +336,7 @@ export JAVA_LIBRARY_PATH=${JAVA_LIBRARY_PATH}:${HADOOP_HOME}/lib/native/
 #
 # This directory contains the logs for secure and privileged processes.
 # Java property: hadoop.log.dir
-export HADOOP_SECURE_LOG=${HADOOP_LOG_DIR}
+export HADOOP_SECURE_LOG="{{ hadoop_log_dir }}/$USER"
 
 #
 # When running a secure daemon, the default value of HADOOP_IDENT_STRING
@@ -360,7 +354,6 @@ export HADOOP_SECURE_LOG=${HADOOP_LOG_DIR}
 # the appropriate _OPTS if one wants something other than INFO,NullAppender
 # Java property: hdfs.audit.logger
 # export HDFS_AUDIT_LOGGER=INFO,NullAppender
-export HDFS_AUDIT_LOGGER=${HDFS_AUDIT_LOGGER:-"INFO,DRFAAUDIT"}
 
 # Specify the JVM options to be used when starting the NameNode.
 # These options will be appended to the options specified as HADOOP_OPTS
@@ -384,7 +377,10 @@ SHARED_HDFS_NAMENODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
                              $GC_LOG_OPTS  \
                              -Xms4096m \
                              -Xmx4096m \
-                             $HADOOP_LOG_OPTS"
+                             $HADOOP_LOG_OPTS \
+                             -Dhadoop.security.logger=INFO,DRFAS \
+                             -Dhdfs.audit.logger=INFO,DRFAAUDIT"
+
 
 #The Primary NameNode opts
 
@@ -430,7 +426,8 @@ export HDFS_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
                              $GC_LOG_OPTS  \
                              -Xms2048m \
                              -Xmx2048m \
-                             $HADOOP_LOG_OPTS"
+                             $HADOOP_LOG_OPTS \
+                             -Dhadoop.security.logger=INFO,DRFAS"
 
 
 # On secure datanodes, user to run the datanode as after dropping privileges.
@@ -458,13 +455,15 @@ export HDFS_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
 
 HADOOP_NFS3_OPTS="-Xmx$HADOOP_HEAPSIZE_MAX \
                   ${HADOOP_LOG_OPTS} \
-                  ${HADOOP_NFS3_OPTS}"
+                  ${HADOOP_NFS3_OPTS} \
+                  -Dhadoop.security.logger=INFO,DRFAS"
 
 # Specify the JVM options to be used when starting the Hadoop portmapper.
 # These options will be appended to the options specified as HADOOP_OPTS
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_PORTMAP_OPTS="-Xmx512m"
+export HDFS_PORTMAP_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
 
 # Supplemental options for priviliged gateways
 # By default, Hadoop uses jsvc which needs to know to launch a
@@ -483,10 +482,7 @@ HADOOP_NFS3_OPTS="-Xmx$HADOOP_HEAPSIZE_MAX \
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_ZKFC_OPTS=""
-
-# TODO Enable ACLs on zookeper znodes if required
-
-#export HADOOP_ZKFC_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username=zookeeper -Djava.security.auth.login.config=/usr/hdp/2.6.5.0-292/hadoop/conf/secure/hdfs_jaas.conf -Dzookeeper.sasl.clientconfig=Client $HADOOP_ZKFC_OPTS"
+export HDFS_ZKFC_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username=zookeeper -Djava.security.auth.login.config={{ hadoop_config_path}}/hdfs_nn_jaas.conf -Dzookeeper.sasl.clientconfig=Client -Dhadoop.security.logger=INFO,DRFAS"
 
 
 ###
@@ -497,6 +493,7 @@ HADOOP_NFS3_OPTS="-Xmx$HADOOP_HEAPSIZE_MAX \
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_JOURNALNODE_OPTS=""
+export HDFS_JOURNALNODE_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
 
 ###
 # HDFS Balancer specific parameters
@@ -508,7 +505,8 @@ HADOOP_NFS3_OPTS="-Xmx$HADOOP_HEAPSIZE_MAX \
 # export HDFS_BALANCER_OPTS=""
 HADOOP_BALANCER_OPTS="-server \
                       -Xmx$HADOOP_HEAPSIZE_MAX \
-                      ${HADOOP_BALANCER_OPTS}"
+                      ${HADOOP_BALANCER_OPTS} \
+                      -Dhadoop.security.logger=INFO,DRFAS"
 
 
 ###
@@ -519,6 +517,7 @@ HADOOP_BALANCER_OPTS="-server \
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_MOVER_OPTS=""
+export HDFS_MOVER_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
 
 ###
 # Router-based HDFS Federation specific parameters
@@ -527,6 +526,7 @@ HADOOP_BALANCER_OPTS="-server \
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_DFSROUTER_OPTS=""
+export HDFS_DFSROUTER_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
 
 ###
 # Ozone Manager specific parameters
@@ -536,6 +536,8 @@ HADOOP_BALANCER_OPTS="-server \
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_OM_OPTS=""
+export HDFS_OM_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
+
 
 ###
 # HDFS StorageContainerManager specific parameters
@@ -545,6 +547,7 @@ HADOOP_BALANCER_OPTS="-server \
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_STORAGECONTAINERMANAGER_OPTS=""
+export HDFS_STORAGECONTAINERMANAGER_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
 
 ###
 # Advanced Users Only!

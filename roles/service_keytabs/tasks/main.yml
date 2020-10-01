@@ -3,7 +3,7 @@
   file:
     owner: root
     group: "{{ hadoop_group }}"
-    mode: 0640
+    mode: 0750
     path: "{{ dir }}"
     state: "directory"
   loop: '{{ kerberos_conf | selectattr("host", "eq", inventory_hostname) | map(attribute="keytab_file") | map("dirname") |unique| list}}'
@@ -14,7 +14,7 @@
   file:
     owner: root
     group: "{{ hadoop_group }}"
-    mode: 0640
+    mode: 0750
     path: "{{ dir }}"
     state: "directory"
   loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | map(attribute="keytab_file") | map("dirname") |unique| list}}'

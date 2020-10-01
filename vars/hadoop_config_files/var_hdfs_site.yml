@@ -1,13 +1,6 @@
 hdfs_site_properties:
   #General
-  - {
-    "name": "dfs.replication",
-    "value": "3"
-  }
-  - {
-    name: "dfs.replication.max",
-    value: 50
-  }
+
   - {
     name: "dfs.support.append",
     value: "true"
@@ -23,10 +16,6 @@ hdfs_site_properties:
   - {
     "name": "dfs.cluster.administrators",
     "value": " hdfs,admins,subadmins"
-  }
-  - {
-    "name": "dfs.permissions.enabled",
-    "value": "true"
   }
   - {
     "name": "dfs.permissions.superusergroup",
@@ -48,10 +37,7 @@ hdfs_site_properties:
     "name": "dfs.namenode.data.dir",
     "value": "{{ hdfs_data_dirs_joined }}"
   }
-  - {
-    "name": "dfs.namenode.acls.enabled",
-    "value": "true"
-  }
+
   - { # TODO
     "name": "dfs.namenode.checkpoint.dir",
     "value": "/hadoop/hdfs/namesecondary"
@@ -68,10 +54,7 @@ hdfs_site_properties:
     "name": "dfs.namenode.servicerpc-bind-host",
     "value": "0.0.0.0"
   }
-  - {
-    "name": "dfs.namenode.safemode.threshold-pct",
-    "value": "0.99"
-  }
+
 
   #Client
   - {
@@ -92,10 +75,7 @@ hdfs_site_properties:
     "name": "dfs.datanode.data.dir",
     "value": "{{ hdfs_data_dirs_joined }}"
   }
-  - {
-    "name": "dfs.datanode.data.dir.perm",
-    "value": 750
-  }
+
   - {
     "name": "dfs.datanode.address",
     "value": "0.0.0.0:{{ hdfs_datanode_port }}"
@@ -134,7 +114,15 @@ hdfs_site_properties:
     "name": "dfs.namenode.http-address.{{ hdfs_name }}.nn2",
     "value": "{{ nn2 }}:9870"
   }
-# TODO https
+  - {
+    "name": "dfs.namenode.https-address.{{ hdfs_name }}.nn1",
+    "value": "{{ nn1 }}:50470"
+  }
+  - {
+    "name": "dfs.namenode.https-address.{{ hdfs_name }}.nn2",
+    "value": "{{ nn2 }}:50470"
+  }
+
   - {
     "name": "dfs.namenode.shared.edits.dir",
     "value": "qjournal://{{ groups['zookeeper'] | zip_longest([], fillvalue='8485') | map('join', ':') | join(';') }}/{{ hdfs_name }}"
@@ -156,14 +144,10 @@ hdfs_site_properties:
     "name": "dfs.ha.automatic-failover.enabled",
     "value": "true"
   }
-
   - {
-    "name": "",
-    "value": ""
+    "name": "dfs.journalnode.rpc-address",
+    "value": "0.0.0.0:8485"
   }
-
-
-
   - {
     "name": "dfs.journalnode.http-address",
     "value": "0.0.0.0:8480"
@@ -173,6 +157,10 @@ hdfs_site_properties:
     "value": "0.0.0.0:8481"
   }
 
+  - {
+    name: "dfs.block.access.token.enable",
+    value: "true"
+  }
   - {
     "name": "dfs.datanode.kerberos.principal",
     "value": "dn/_HOST@{{ipaserver_realm}}"
@@ -219,4 +207,22 @@ hdfs_site_properties:
     "name": "dfs.web.authentication.kerberos.principal",
     "value": "HTTP/_HOST@{{ipaserver_realm}}"
   }
+  - {
+    "name": "dfs.http.policy",
+    "value": "HTTPS_ONLY"
+  }
+  - {
+    "name": "dfs.https.port",
+    "value": "50470"
+  }
+  - {
+    name: "dfs.data.transfer.protection",
+    value: "authentication",
+    description: "
+      authentication : authentication only;
+      integrity : integrity check in addition to authentication;
+      privacy : data encryption in addition to integrity
+      This property is unspecified by default.
+      Setting this property enables SASL for authentication of data transfer protocol. If this is enabled, then dfs.datanode.address must use a non-privileged port, dfs.http.policy must be set to HTTPS_ONLY and the HDFS_DATANODE_SECURE_USER environment variable must be undefined when starting the DataNode process."
 
+  }

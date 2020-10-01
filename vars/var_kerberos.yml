@@ -5,6 +5,7 @@ ipaserver_realm: YAK2.NET
 kinit_principal: "admin@{{ipaserver_realm}}"
 
 keytab_services:
+
   #  HDFS
   - {
     hostgroup: "workers",
@@ -45,6 +46,14 @@ keytab_services:
     owner: "{{ yarn_user }}",
     group: "{{ hadoop_group }}"
   }
+  #    Zookeeper
+  - {
+    hostgroup: "zookeeper",
+    name: "zookeeper",
+    owner: "{{ zookeeper_user }}",
+    group: "{{ hadoop_group }}"
+  }
+
 
 keytab_users:
   - {

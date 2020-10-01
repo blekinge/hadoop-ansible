@@ -24,21 +24,26 @@
   with_items:
     - "{{ zookeeper_create_path }}"
 
+- name: Copy Zookeeper config files
+  template:
+    src: "{{ item }}"
+    dest: "{{ zookeeper_config_path }}/"
+    mode: 0644
+    owner: "root"
+    group: "{{ hadoop_group }}"
+  with_fileglob:
+    - "templates/conf/*"
 
-- name: Copy zookeeper-env.sh
-  template: src=zookeeper-env.sh dest={{ zookeeper_config_path }}/ mode=0644 owner=root group = {{ hadoop_group }}
 
-
-- name: Copy log4j.properties
-  template: src=log4j.properties dest={{ zookeeper_config_path }}/ mode=0644 owner=root group = {{ hadoop_group }}
-
-
-- name: Copy zoo.cfg
-  template: src=zoo.cfg dest={{ zookeeper_config_path }}/ mode=0644 owner=root group = {{ hadoop_group }}
-
-- name: Copy zookeeper systemd service
-  template: src=systemd_zookeeper.service dest=/etc/systemd/system/zookeeper.service mode=0644 owner="root" group="root"
-  when: zookeeper_server
+- name: Copy Hadoop Zookeeper systemd services
+  template:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/
+    mode: 0644
+    owner: "root"
+    group: "root"
+  with_fileglob:
+    - "templates/systemd/*"
 
 - name: zookeeper_id
   template: src=myid dest={{zookeeper_data_dir}}/myid mode=0644 owner="root" group="root"

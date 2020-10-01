@@ -7,6 +7,7 @@ hadoop_download: http://ftp.download-by.net/apache/hadoop/common/hadoop-{{hadoop
 hadoop_path: "/usr/local/hadoop"
 hadoop_home: "{{ hadoop_path }}/hadoop-{{ hadoop_version }}"
 
+zookeeper_user: "zookeeper"
 
 hadoop_config_path: "/etc/hadoop/conf/"
 hadoop_tmp: "/tmp/hadoop"

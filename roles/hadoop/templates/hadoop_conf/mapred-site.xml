@@ -21,6 +21,7 @@
   <property>
     <name>{{ item.name }}</name>
     <value>{{ item.value }}</value>
+    <description>{{ item.value | default("") }}</description>
   </property>
 {% endfor %}
 </configuration>
