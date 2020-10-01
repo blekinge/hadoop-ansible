@@ -6,9 +6,13 @@ keytab_permissions: "0400"
 
 kinit_principal: "admin@{{ipaserver_realm}}"
 
+yarn_nodemanager_service_name: "nm"
+yarn_resourcemanager_service_name: "rm"
+yarn_timelineserver_service_name: "tl"
+
 keytab_users:
   - {
-    host: "{{ groups['ipaserver'] | first }}",
+    host: "{{ groups['ipaserver'] | first }}", #Create this keytab on ipaserver and distribute it to all host
     name: "{{ hdfs_user }}",
     owner: "{{ hdfs_user }}",
     group: "{{ hadoop_group }}"
@@ -47,13 +51,19 @@ keytab_services:
   #    YARN
   - {
     hostgroup: "workers",
-    name: "nm",
+    name: "{{ yarn_nodemanager_service_name }}",
     owner: "{{ yarn_user }}",
     group: "{{ hadoop_group }}"
   }
   - {
     hostgroup: "yarn_resource_manager",
-    name: "rm",
+    name: "{{ yarn_resourcemanager_service_name}}",
+    owner: "{{ yarn_user }}",
+    group: "{{ hadoop_group }}"
+  }
+  - {
+    hostgroup: "yarn_history",
+    name: "{{ yarn_timelineserver_service_name }}",
     owner: "{{ yarn_user }}",
     group: "{{ hadoop_group }}"
   }

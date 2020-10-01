@@ -7,10 +7,10 @@ hadoop_download: http://ftp.download-by.net/apache/hadoop/common/hadoop-{{hadoop
 hadoop_path: "/usr/local/hadoop"
 hadoop_home: "{{ hadoop_path }}/hadoop-{{ hadoop_version }}"
 
-hadoop_config_path: "/etc/hadoop/conf/"
+hadoop_config_path: "/etc/hadoop/conf"
 hadoop_tmp: "/tmp/hadoop"
-hadoop_log_dir: "/var/log/hadoop/"
-hadoop_pid_dir: "/var/run/hadoop/"
+hadoop_log_dir: "/var/log/hadoop"
+hadoop_pid_dir: "/var/run/hadoop"
 
 #Common SSL variables
 ssl_server_dir: /etc/security/ssl
@@ -57,9 +57,12 @@ hdfs_create_path:
 
 
 #YARN
+
+yarn_timeline_store: "/hadoop/yarn/timeline"
 yarn_create_path:
-  - "/var/run/hadoop/{{ yarn_user }}/"
-  - "/var/log/hadoop/{{ yarn_user }}/"
+  - "/var/run/hadoop/{{ yarn_user }}"
+  - "/var/log/hadoop/{{ yarn_user }}"
+  - "{{ yarn_timeline_store }}"
 
 yarn_history_server: "{{ groups['yarn_history'] | first }}"
 #TODO handle more than to yarn resource managers...

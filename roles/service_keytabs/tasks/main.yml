@@ -1,5 +1,5 @@
 ---
-- name: Create keytabs dir
+- name: Create service keytabs dir
   file:
     owner: root
     group: "{{ hadoop_group }}"
@@ -10,7 +10,7 @@
   loop_control:
     loop_var: "dir"
 
-- name: Create keytabs dir
+- name: Create system user keytabs dir
   file:
     owner: root
     group: "{{ hadoop_group }}"
@@ -21,14 +21,16 @@
   loop_control:
     loop_var: "dir"
 
+# Service keytabs are created directly on the host that needs them, as they are host-specific
 - name: Retrieving keytab for host
   include: retrieveKeytab.yml entry="{{item}}"
   with_items: '{{ kerberos_conf | selectattr("host", "eq", inventory_hostname) | list}}'
 
-
+# System user keytabs are created on the ipa server and distributed below
 - name: Retrieving keytab for user
   include: retrieveKeytab.yml entry="{{item}}"
   with_items: '{{ kerberos_conf | selectattr("type", "eq", "USER") | list}}'
+  when: '"ipaserver" in group_names'
 
 
 - name: fetching keytabs for headless users to localhost

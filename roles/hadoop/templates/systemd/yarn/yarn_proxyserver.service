@@ -6,6 +6,11 @@ Requires=network-online.target
 User={{ yarn_user }}
 Group={{ hadoop_group }}
 Type=forking
+# Run ExecStartPre with root-permissions
+PermissionsStartOnly=true
+ExecStartPre=/usr/bin/mkdir -p {{ hadoop_pid_dir }}/{{ yarn_user }}
+ExecStartPre=/usr/bin/chown -R {{ yarn_user }}:{{ hadoop_group }} {{ hadoop_pid_dir }}/{{ yarn_user }}
+# Run ExecStart with User={{ yarn_user }} / Group={{ hadoop_group }}
 ExecStart=/usr/local/bin/hadoop-invoker.sh yarn yarn-env.sh --daemon start proxyserver
 PIDFile={{ hadoop_pid_dir }}/{{ yarn_user }}/hadoop-yarn-proxyserver.pid
 

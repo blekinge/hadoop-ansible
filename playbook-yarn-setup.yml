@@ -1,16 +1,27 @@
 
+- hosts: yarn_history
+  vars_files:
+    - vars/var_basic.yml
+    - vars/var_ports.yml
+    - vars/var_hadoop.yml
+    - vars/var_kerberos.yml
+    - vars/hadoop_config_files/var_hdfs_site.yml
+    - vars/hadoop_config_files/var_core_site.yml
+    - vars/hadoop_config_files/var_mapred_site.yml
+  roles:
+    - yarn_timeline_server
+
+
 - hosts: workers
   vars_files:
     - vars/var_basic.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
-    - vars/hadoop_config_files/var_core_site.yml
+    - vars/var_kerberos.yml
     - vars/hadoop_config_files/var_hdfs_site.yml
+    - vars/hadoop_config_files/var_core_site.yml
     - vars/hadoop_config_files/var_mapred_site.yml
-    - vars/hadoop_config_files/var_yarn_site.yml
-  vars:
   roles:
-    - java
     - yarn_node_manager
 
 
@@ -19,15 +30,11 @@
     - vars/var_basic.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
-    - vars/hadoop_config_files/var_core_site.yml
+    - vars/var_kerberos.yml
     - vars/hadoop_config_files/var_hdfs_site.yml
+    - vars/hadoop_config_files/var_core_site.yml
     - vars/hadoop_config_files/var_mapred_site.yml
-    - vars/hadoop_config_files/var_yarn_site.yml
-  vars:
-    open_firewall: false
-    disable_firewall: true
   roles:
-    - java
-    - firewall_open
     - yarn_resource_manager
+
 

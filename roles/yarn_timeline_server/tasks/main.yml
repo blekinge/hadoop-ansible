@@ -1,0 +1,7 @@
+---
+- name: Start YARN Timeline Server process
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: yarn_timelineserver
+

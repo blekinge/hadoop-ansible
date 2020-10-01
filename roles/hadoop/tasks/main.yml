@@ -24,7 +24,6 @@
   file:
     path: "{{ hadoop_path }}"
     state: directory
-
 - name: Unzip Hadoop
   unarchive:
     src: "{{hadoop_download}}"
@@ -35,11 +34,21 @@
     owner: "root"
 
 
+- name: Copy Hadoop config files
+  template:
+    src: "{{ item }}"
+    dest: "{{ hadoop_config_path }}/"
+    mode: 0644
+    owner: "root"
+    group: "{{ hadoop_group }}"
+  with_fileglob:
+    - "templates/hadoop_conf/*"
+
+
 - name: remove {{ hadoop_home }}/etc/hadoop
   file:
     path: "{{ hadoop_home }}/etc/hadoop"
     state: absent
-
 - name: symlink {{ hadoop_home }}/etc/hadoop to {{ hadoop_config_path }}
   file:
     src: "{{ hadoop_config_path }}"
@@ -56,7 +65,22 @@
     owner: root
     group: hadoop
     mode: '6050'
-
+- name: Copy Hadoop invoker Script
+  template:
+    src: "hadoop-invoker.sh"
+    dest: "/usr/local/bin/"
+    mode: "0755"
+    owner: "root"
+    group: "{{ hadoop_group }}"
+- name: Copy Hadoop profile files
+  template:
+    src: "{{ item }}"
+    dest: "/etc/profile.d/"
+    mode: 0644
+    owner: "root"
+    group: "{{ hadoop_group }}"
+  with_fileglob:
+    - "templates/profile.d/*"
 - name: Copy Hadoop YARN systemd services
   template:
     src: "{{ item }}"
@@ -66,8 +90,6 @@
     group: "root"
   with_fileglob:
     - "templates/systemd/yarn/*"
-
-
 - name: Copy Hadoop HDFS systemd services
   template:
     src: "{{ item }}"
@@ -78,32 +100,4 @@
   with_fileglob:
     - "templates/systemd/hdfs/*"
 
-- name: Copy Hadoop config files
-  template:
-    src: "{{ item }}"
-    dest: "{{ hadoop_config_path }}/"
-    mode: 0644
-    owner: "root"
-    group: "{{ hadoop_group }}"
-  with_fileglob:
-    - "templates/hadoop_conf/*"
 
-- name: Copy Hadoop invoker Script
-  template:
-    src: "hadoop-invoker.sh"
-    dest: "/usr/local/bin/"
-    mode: "0755"
-    owner: "root"
-    group: "{{ hadoop_group }}"
-
-
-
-- name: Copy Hadoop config files
-  template:
-    src: "{{ item }}"
-    dest: "/etc/profile.d/"
-    mode: 0644
-    owner: "root"
-    group: "{{ hadoop_group }}"
-  with_fileglob:
-    - "templates/profile.d/*"

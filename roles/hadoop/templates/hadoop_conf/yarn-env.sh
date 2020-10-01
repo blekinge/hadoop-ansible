@@ -88,7 +88,6 @@ HADOOP_OPTS="$HADOOP_OPTS -Dyarn.policy.file=$YARN_POLICYFILE"
 # restore ordinary behaviour
 unset IFS
 
-#HADOOP_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username=zookeeper -Djava.security.auth.login.config=/etc/hadoop/2.6.5.0-292/0/yarn_jaas.conf -Dzookeeper.sasl.clientconfig=Client $HADOOP_OPTS"
 
 ###
 # Resource Manager specific parameters
@@ -125,7 +124,10 @@ export YARN_RESOURCEMANAGER_HEAPSIZE=2048
 #
 # export YARN_RESOURCEMANAGER_OPTS=
 YARN_RESOURCEMANAGER_OPTS="-Dyarn.server.resourcemanager.appsummary.logger=INFO,RMSUMMARY"
+YARN_RESOURCEMANAGER_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username=zookeeper -Djava.security.auth.login.config={{ hadoop_config_path}}/yarn_jaas.conf -Dzookeeper.sasl.clientconfig=Client $YARN_RESOURCEMANAGER_OPTS"
 export YARN_RESOURCEMANAGER_OPTS="$YARN_RESOURCEMANAGER_OPTS -Drm.audit.logger=INFO,RMAUDIT"
+
+
 
 ###
 # Node Manager specific parameters

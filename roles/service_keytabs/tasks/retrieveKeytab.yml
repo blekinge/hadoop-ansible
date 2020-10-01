@@ -14,7 +14,6 @@
   shell: ipa-getkeytab --server={{groups['ipaserver'] | first }} --principal={{ entry.principal}} --keytab={{ entry.keytab_file }}
   args:
     creates: "{{ entry.keytab_file }}"
-  when: entry.type == "SERVICE"
 
 
 - name: "set permissions for {{ entry.keytab_file }}"

@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <!--
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,11 +14,850 @@
   limitations under the License. See accompanying LICENSE file.
 -->
 <configuration>
-{% for item in yarn_site_properties %}
-  <property>
-    <name>{{ item.name }}</name>
-    <value>{{ item.value }}</value>
-    <description>{{ item.value | default("") }}</description>
-  </property>
-{% endfor %}
+    <property>
+        <name>spark.authenticate</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.acl.enable</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.admin.acl</name>
+        <value>yarn,dr.who,abrsadm</value>
+        <description>yarn,dr.who,abrsadm</description>
+    </property>
+    <property>
+        <name>yarn.application.classpath</name>
+        <value>{{ hadoop_config_path }},{{hadoop_path}}/hadoop-{{hadoop_version}}/lib/*</value>
+        <description>{{ hadoop_config_path }},{{hadoop_path}}/hadoop-{{hadoop_version}}/lib/*</description>
+    </property>
+    <property>
+        <name>yarn.client.nodemanager-connect.max-wait-ms</name>
+        <value>60000</value>
+        <description>60000</description>
+    </property>
+    <property>
+        <name>yarn.client.nodemanager-connect.retry-interval-ms</name>
+        <value>10000</value>
+        <description>10000</description>
+    </property>
+    <property>
+        <name>yarn.http.policy</name>
+        <value>HTTPS_ONLY</value>
+        <description>HTTPS_ONLY</description>
+    </property>
+    <property>
+        <name>yarn.log-aggregation-enable</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.log-aggregation.file-controller.IndexedFormat.class</name>
+        <value>org.apache.hadoop.yarn.logaggregation.filecontroller.ifile.LogAggregationIndexedFileController</value>
+    </property>
+    <property>
+        <name>yarn.log-aggregation.file-controller.TFile.class</name>
+        <value>org.apache.hadoop.yarn.logaggregation.filecontroller.tfile.LogAggregationTFileController</value>
+        <description>org.apache.hadoop.yarn.logaggregation.filecontroller.tfile.LogAggregationTFileController
+        </description>
+    </property>
+    <property>
+        <name>yarn.log-aggregation.file-formats</name>
+        <value>IndexedFormat,TFile</value>
+        <description>IndexedFormat,TFile</description>
+    </property>
+    <property>
+        <name>yarn.log-aggregation.retain-seconds</name>
+        <value>2592000</value>
+        <description>2592000</description>
+    </property>
+    <property>
+        <name>yarn.log.server.url</name>
+        <value>http://{{ yarn_history_server }}:19888/jobhistory/logs</value>
+        <description>http://{{ yarn_history_server }}:19888/jobhistory/logs</description>
+    </property>
+    <property>
+        <name>yarn.log.server.web-service.url</name>
+        <value>http://{{ yarn_history_server }}:8188/ws/v1/applicationhistory</value>
+        <description>http://{{ yarn_history_server }}:8188/ws/v1/applicationhistory</description>
+    </property>
+
+    <property>
+        <name>yarn.node-labels.enabled</name>
+        <value>false</value>
+        <description>false</description>
+    </property>
+    <property>
+        <name>yarn.node-labels.fs-store.retry-policy-spec</name>
+        <value>2000, 500</value>
+        <description>2000, 500</description>
+    </property>
+    <property>
+        <name>yarn.node-labels.fs-store.root-dir</name>
+        <value>/system/yarn/node-labels</value>
+        <description>/system/yarn/node-labels</description>
+    </property>
+
+
+    <property>
+        <name>yarn.nodemanager.address</name>
+        <value>0.0.0.0:45454</value>
+        <description>0.0.0.0:45454</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.admin-env</name>
+        <value>MALLOC_ARENA_MAX=$MALLOC_ARENA_MAX</value>
+        <description>MALLOC_ARENA_MAX=$MALLOC_ARENA_MAX</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+        <description>mapreduce_shuffle</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>
+        <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+        <description>org.apache.hadoop.mapred.ShuffleHandler</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.bind-host</name>
+        <value>0.0.0.0</value>
+        <description>0.0.0.0</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.container-executor.class</name>
+        <value>org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor</value>
+        <description>org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.container-metrics.unregister-delay-ms</name>
+        <value>60000</value>
+        <description>60000</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.container-monitor.interval-ms</name>
+        <value>3000</value>
+        <description>3000</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.delete.debug-delay-sec</name>
+        <value>0</value>
+        <description>0</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage</name>
+        <value>90</value>
+        <description>90</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.disk-health-checker.min-free-space-per-disk-mb</name>
+        <value>1000</value>
+        <description>1000</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.disk-health-checker.min-healthy-disks</name>
+        <value>0.25</value>
+        <description>0.25</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.health-checker.interval-ms</name>
+        <value>135000</value>
+        <description>135000</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.health-checker.script.timeout-ms</name>
+        <value>60000</value>
+        <description>60000</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.kill-escape.launch-command-line</name>
+        <value>slider-agent,LLAP</value>
+        <description>slider-agent,LLAP</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.kill-escape.user</name>
+        <value>hive</value>
+        <description>hive</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.linux-container-executor.cgroups.strict-resource-usage</name>
+        <value>false</value>
+        <description>false</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.linux-container-executor.group</name>
+        <value>{{ hadoop_group }}</value>
+        <description>{{ hadoop_group }}</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.local-dirs</name>
+        <value>{{ yarn_data_dirs_joined }}</value>
+        <description>{{ yarn_data_dirs_joined }}</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.localizer.cache.cleanup.interval-ms</name>
+        <value>600000</value>
+        <description>600000</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.localizer.cache.target-size-mb</name>
+        <value>10240</value>
+        <description>10240</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.log-aggregation.compression-type</name>
+        <value>gz</value>
+        <description>gz</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.log-aggregation.debug-enabled</name>
+        <value>false</value>
+        <description>false</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.log-aggregation.num-log-files-per-app</name>
+        <value>336</value>
+        <description>336</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.log-aggregation.roll-monitoring-interval-seconds</name>
+        <value>3600</value>
+        <description>3600</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.log-dirs</name>
+        <value>{{ hadoop_log_dir }}/{{ yarn_user }}/nodemanager/</value>
+        <description>{{ hadoop_log_dir }}/{{ yarn_user }}/nodemanager/</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.log.retain-seconds</name>
+        <value>2592000</value>
+        <description>2592000</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.pmem-check-enabled</name>
+        <value>false</value>
+        <description>false</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.recovery.dir</name>
+        <value>{{ hadoop_log_dir }}/{{ yarn_user }}/nodemanager/recovery-state</value>
+        <description>{{ hadoop_log_dir }}/{{ yarn_user }}/nodemanager/recovery-state</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.recovery.enabled</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.remote-app-log-dir</name>
+        <value>/history/app-logs</value>
+        <description>/history/app-logs</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.remote-app-log-dir-suffix</name>
+        <value>logs</value>
+        <description>logs</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.resource.cpu-vcores</name>
+        <value>32</value>
+        <description>32</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.resource.memory-mb</name>
+        <value>229376</value>
+        <description>229376</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.resource.percentage-physical-cpu-limit</name>
+        <value>90</value>
+        <description>90</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.vmem-check-enabled</name>
+        <value>false</value>
+        <description>false</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.vmem-pmem-ratio</name>
+        <value>2.1</value>
+        <description>2.1</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.linux-container-executor.group</name>
+        <value>{{ hadoop_group }}</value>
+        <description>{{ hadoop_group }}</description>
+    </property>
+
+
+    <property>
+        <name>yarn.resourcemanager.address</name>
+        <value>{{ yarn_history_server }}:8050</value>
+        <description>{{ yarn_history_server }}:8050</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.am.max-attempts</name>
+        <value>2</value>
+        <description>2</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.bind-host</name>
+        <value>0.0.0.0</value>
+        <description>0.0.0.0</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.connect.max-wait.ms</name>
+        <value>900000</value>
+        <description>900000</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.connect.retry-interval.ms</name>
+        <value>15000</value>
+        <description>15000</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.fs.state-store.retry-policy-spec</name>
+        <value>2000, 500</value>
+        <description>2000, 500</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.fs.state-store.uri</name>
+        <value></value>
+        <description></description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.max-completed-applications</name>
+        <value>20000</value>
+        <description>20000</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.monitor.capacity.preemption.max_ignored_over_capacity</name>
+        <value>0.1</value>
+        <description>0.1</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.monitor.capacity.preemption.max_wait_before_kill</name>
+        <value>1000</value>
+        <description>1000</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.monitor.capacity.preemption.monitoring_interval</name>
+        <value>1000</value>
+        <description>1000</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.monitor.capacity.preemption.natural_termination_factor</name>
+        <value>0.5</value>
+        <description>0.5</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.monitor.capacity.preemption.total_preemption_per_round</name>
+        <value>1.0</value>
+        <description>1.0</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.nodes.exclude-path</name>
+        <value>{{ hadoop_config_path }}/yarn.exclude</value>
+        <description>{{ hadoop_config_path }}/yarn.exclude</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.proxy-user-privileges.enabled</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.proxyuser.*.groups</name>
+        <value></value>
+        <description></description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.proxyuser.*.hosts</name>
+        <value></value>
+        <description></description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.proxyuser.*.users</name>
+        <value></value>
+        <description></description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.recovery.enabled</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.resource-tracker.address</name>
+        <value>{{ yarn_resource_manager_server1 }}:8025</value>
+        <description>{{ yarn_resource_manager_server1 }}:8025</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.scheduler.address</name>
+        <value>{{ yarn_resource_manager_server1 }}:8030</value>
+        <description>{{ yarn_resource_manager_server1 }}:8030</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.scheduler.class</name>
+        <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</value>
+        <description>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.scheduler.monitor.enable</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.scheduler.monitor.policies</name>
+        <!--The system chokes on whitespaces in this name, do do NOT linebreak it-->
+        <value>org.apache.hadoop.yarn.server.resourcemanager.monitor.capacity.ProportionalCapacityPreemptionPolicy</value>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.state-store.max-completed-applications</name>
+        <value>${yarn.resourcemanager.max-completed-applications}</value>
+        <description>${yarn.resourcemanager.max-completed-applications}</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.store.class</name>
+        <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</value>
+        <description>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.system-metrics-publisher.dispatcher.pool-size</name>
+        <value>10</value>
+        <description>10</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.system-metrics-publisher.enabled</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.webapp.delegation-token-auth-filter.enabled</name>
+        <value>false</value>
+        <description>false</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.webapp.https.address</name>
+        <value>{{ yarn_resource_manager_server1 }}:8090</value>
+        <description>{{ yarn_resource_manager_server1 }}:8090</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.work-preserving-recovery.enabled</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.work-preserving-recovery.scheduling-wait-ms</name>
+        <value>10000</value>
+        <description>10000</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.zk-num-retries</name>
+        <value>1000</value>
+        <description>1000</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.zk-retry-interval-ms</name>
+        <value>1000</value>
+        <description>1000</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.zk-state-store.parent-path</name>
+        <value>/rmstore</value>
+        <description>/rmstore</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.zk-timeout-ms</name>
+        <value>10000</value>
+        <description>10000</description>
+    </property>
+
+
+    <property>
+        <name>yarn.scheduler.capacity.ordering-policy.priority-utilization.underutilized-preemption.enabled</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.scheduler.maximum-allocation-mb</name>
+        <value>200704</value>
+        <description>200704</description>
+    </property>
+    <property>
+        <name>yarn.scheduler.maximum-allocation-vcores</name>
+        <value>32</value>
+        <description>32</description>
+    </property>
+    <property>
+        <name>yarn.scheduler.minimum-allocation-mb</name>
+        <value>1024</value>
+        <description>1024</description>
+    </property>
+    <property>
+        <name>yarn.scheduler.minimum-allocation-vcores</name>
+        <value>1</value>
+        <description>1</description>
+    </property>
+
+
+    <property>
+        <name>yarn.timeline-service.address</name>
+        <value>{{ yarn_history_server }}:10200</value>
+        <description>{{ yarn_history_server }}:10200</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.bind-host</name>
+        <value>0.0.0.0</value>
+        <description>0.0.0.0</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.client.fd-flush-interval-secs</name>
+        <value>5</value>
+        <description>5</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.client.max-retries</name>
+        <value>30</value>
+        <description>30</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.client.retry-interval-ms</name>
+        <value>1000</value>
+        <description>1000</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.enabled</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.entity-group-fs-store.active-dir</name>
+        <value>/history/timeline-server/active/</value>
+        <description>/history/timeline-server/active/</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.entity-group-fs-store.app-cache-size</name>
+        <value>10</value>
+        <description>10</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.entity-group-fs-store.cleaner-interval-seconds</name>
+        <value>3600</value>
+        <description>3600</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.entity-group-fs-store.done-dir</name>
+        <value>/history/timeline-server/done/</value>
+        <description>/history/timeline-server/done/</description>
+    </property>
+
+
+    <property>
+        <name>yarn.timeline-service.entity-group-fs-store.retain-seconds</name>
+        <value>2592000</value>
+        <description>2592000</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.entity-group-fs-store.scan-interval-seconds</name>
+        <value>15</value>
+        <description>15</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.entity-group-fs-store.summary-store</name>
+        <value>org.apache.hadoop.yarn.server.timeline.RollingLevelDBTimelineStore</value>
+        <description>org.apache.hadoop.yarn.server.timeline.RollingLevelDBTimelineStore</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.generic-application-history.enabled</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.generic-application-history.fs-history-store.uri</name>
+        <value>/history/timeline-server/generic-history</value>
+        <description>/history/timeline-server/generic-history</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.generic-application-history.max-applications</name>
+        <value>30000</value>
+        <description>30000</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.generic-application-history.store-class</name>
+        <value>org.apache.hadoop.yarn.server.applicationhistoryservice.FileSystemApplicationHistoryStore</value>
+    </property>
+
+    <property>
+        <name>yarn.timeline-service.http-authentication.simple.anonymous.allowed</name>
+        <value>false</value>
+        <description>false</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.leveldb-state-store.path</name>
+        <value>{{ yarn_timeline_store }}</value>
+    </property>
+    <property>
+        <name>yarn.timeline-service.leveldb-timeline-store.max-open-files</name>
+        <value>500</value>
+        <description>500</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.leveldb-timeline-store.path</name>
+        <value>{{ yarn_timeline_store }}</value>
+    </property>
+    <property>
+        <name>yarn.timeline-service.leveldb-timeline-store.read-cache-size</name>
+        <value>4194304</value>
+        <description>4194304</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.leveldb-timeline-store.start-time-read-cache-size</name>
+        <value>10000</value>
+        <description>10000</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.leveldb-timeline-store.start-time-write-cache-size</name>
+        <value>10000</value>
+        <description>10000</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.leveldb-timeline-store.ttl-interval-ms</name>
+        <value>300000</value>
+        <description>300000</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.leveldb-timeline-store.write-buffer-size</name>
+        <value>4194304</value>
+        <description>4194304</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.recovery.enabled</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.rolling-period</name>
+        <value>daily</value>
+        <description>daily</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.state-store-class</name>
+        <value>org.apache.hadoop.yarn.server.timeline.recovery.LeveldbTimelineStateStore</value>
+        <description>org.apache.hadoop.yarn.server.timeline.recovery.LeveldbTimelineStateStore</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.store-class</name>
+        <value>org.apache.hadoop.yarn.server.timeline.EntityGroupFSTimelineStore</value>
+        <description>org.apache.hadoop.yarn.server.timeline.EntityGroupFSTimelineStore</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.ttl-enable</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.ttl-ms</name>
+        <value>2592000000</value>
+        <description>2592000000</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.version</name>
+        <value>1.5</value>
+        <description>1.5</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.webapp.address</name>
+        <value>{{ yarn_history_server }}:8188</value>
+        <description>{{ yarn_history_server }}:8188</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.webapp.https.address</name>
+        <value>{{ yarn_history_server }}:8190</value>
+        <description>{{ yarn_history_server }}:8190</description>
+    </property>
+
+
+    <property>
+        <name>yarn.resourcemanager.ha.enabled</name>
+        <value>true</value>
+        <description>true</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.cluster-id</name>
+        <value>YAK-YARN</value>
+        <description>YAK-YARN</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.ha.rm-ids</name>
+        <value>rm1,rm2</value>
+        <description>rm1,rm2</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.hostname.rm1</name>
+        <value>{{ yarn_resource_manager_server1 }}</value>
+        <description>{{ yarn_resource_manager_server1 }}</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.hostname.rm2</name>
+        <value>{{ yarn_resource_manager_server2 }}</value>
+        <description>{{ yarn_resource_manager_server2 }}</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.admin.address.rm1</name>
+        <value>{{ yarn_resource_manager_server1 }}:8033</value>
+        <description>{{ yarn_resource_manager_server1 }}:8033</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.admin.address.rm2</name>
+        <value>{{ yarn_resource_manager_server2 }}:8033</value>
+        <description>{{ yarn_resource_manager_server2 }}:8033</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.webapp.address.rm1</name>
+        <value>{{ yarn_resource_manager_server1 }}:8088</value>
+        <description>{{ yarn_resource_manager_server1 }}:8088</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.webapp.address.rm2</name>
+        <value>{{ yarn_resource_manager_server2 }}:8088</value>
+        <description>{{ yarn_resource_manager_server2 }}:8088</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.webapp.https.address.rm1</name>
+        <value>{{ yarn_resource_manager_server1 }}:8090</value>
+        <description>{{ yarn_resource_manager_server1 }}:8090</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.webapp.https.address.rm2</name>
+        <value>{{ yarn_resource_manager_server2 }}:8090</value>
+        <description>{{ yarn_resource_manager_server2 }}:8090</description>
+    </property>
+
+
+    <property>
+        <name>hadoop.zk.address</name>
+        <value>{{ groups['zookeeper'] | zip_longest([], fillvalue='2181') | map('join', ':') | join(',') }}</value>
+    </property>
+
+    <property>
+        <name>yarn.resourcemanager.zk-address</name>
+        <value>{{ groups['zookeeper'] | zip_longest([], fillvalue='2181') | map('join', ':') | join(',') }}</value>
+    </property>
+
+
+    <property>
+        <name>hadoop.registry.client.auth</name>
+        <value>kerberos</value>
+    </property>
+
+    <property>
+        <name>hadoop.registry.jaas.context</name>
+        <value>Client</value>
+    </property>
+
+    <property>
+        <name>hadoop.registry.rm.enabled</name>
+        <value>false</value>
+    </property>
+
+    <property>
+        <name>hadoop.registry.secure</name>
+        <value>true</value>
+    </property>
+
+    <property>
+        <name>hadoop.registry.system.accounts</name>
+        <value>sasl:{{ yarn_user}},sasl:{{mapreduce_user}},sasl:{{hadoop_group}},sasl:{{hdfs_user}},sasl:{{ yarn_resourcemanager_service_name }}</value>
+    </property>
+    <property>
+        <name>hadoop.registry.zk.quorum</name>
+        <value>{{ groups['zookeeper'] | zip_longest([], fillvalue='2181') | map('join', ':') | join(',') }}</value>
+    </property>
+
+
+    <!--    Kerberos-->
+    <property>
+        <name>yarn.nodemanager.principal</name>
+        <value>{{ yarn_nodemanager_service_name }}/_HOST@{{ ipaserver_realm }}</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.keytab</name>
+        <value>/etc/security/keytabs/{{ yarn_nodemanager_service_name }}.service.keytab</value>
+    </property>
+
+
+
+    <property>
+        <name>yarn.nodemanager.webapp.spnego-principal</name>
+        <value>HTTP/_HOST@{{ ipaserver_realm }}</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.webapp.spnego-keytab-file</name>
+        <value>/etc/security/keytabs/spnego.service.keytab</value>
+    </property>
+
+
+    <property>
+        <name>yarn.resourcemanager.principal</name>
+        <value>{{ yarn_resourcemanager_service_name }}/_HOST@{{ ipaserver_realm }}</value>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.keytab</name>
+        <value>/etc/security/keytabs/{{ yarn_resourcemanager_service_name }}.service.keytab</value>
+    </property>
+
+    <property>
+        <name>yarn.resourcemanager.webapp.spnego-principal</name>
+        <value>HTTP/_HOST@{{ ipaserver_realm }}</value>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.webapp.spnego-keytab-file</name>
+        <value>/etc/security/keytabs/spnego.service.keytab</value>
+    </property>
+
+
+    <property>
+        <name>yarn.timeline-service.http-authentication.kerberos.principal</name>
+        <value>HTTP/_HOST@{{ ipaserver_realm }}</value>
+    </property>
+    <property>
+        <name>yarn.timeline-service.http-authentication.kerberos.keytab</name>
+        <value>/etc/security/keytabs/spnego.service.keytab</value>
+    </property>
+
+
+
+    <property>
+        <name>yarn.timeline-service.http-authentication.simple.anonymous.allowed</name>
+        <value>false</value>
+    </property>
+
+
+    <property>
+        <name>yarn.timeline-service.http-authentication.type</name>
+        <value>kerberos</value>
+    </property>
+
+    <property>
+        <name>yarn.timeline-service.principal</name>
+        <value>{{ yarn_timelineserver_service_name }}/_HOST@{{ ipaserver_realm }}</value>
+    </property>
+    <property>
+        <name>yarn.timeline-service.keytab</name>
+        <value>/etc/security/keytabs/{{ yarn_timelineserver_service_name }}.service.keytab</value>
+    </property>
+
+
+
+
+    <property>
+        <name>yarn.resourcemanager.zk-acl</name>
+        <value>sasl:{{ yarn_resourcemanager_service_name }}:rwcda</value>
+    </property>
+
+
+
 </configuration>

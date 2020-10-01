@@ -16,7 +16,6 @@
     - vars/hadoop_config_files/var_core_site.yml
     - vars/hadoop_config_files/var_hdfs_site.yml
     - vars/hadoop_config_files/var_mapred_site.yml
-    - vars/hadoop_config_files/var_yarn_site.yml
   roles:
     - journalnode
 
@@ -30,7 +29,6 @@
     - vars/hadoop_config_files/var_core_site.yml
     - vars/hadoop_config_files/var_hdfs_site.yml
     - vars/hadoop_config_files/var_mapred_site.yml
-    - vars/hadoop_config_files/var_yarn_site.yml
   roles:
     - datanode
 
@@ -46,6 +44,5 @@
     - vars/hadoop_config_files/var_core_site.yml
     - vars/hadoop_config_files/var_hdfs_site.yml
     - vars/hadoop_config_files/var_mapred_site.yml
-    - vars/hadoop_config_files/var_yarn_site.yml
   roles:
     - namenode

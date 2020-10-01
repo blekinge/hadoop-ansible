@@ -98,7 +98,7 @@ core_site_properties:
             RULE:[2:$1@$0](nm@{{ipaserver_realm}})s/.*/yarn/
             RULE:[2:$1@$0](nn@{{ipaserver_realm}})s/.*/hdfs/
             RULE:[2:$1@$0](rm@{{ipaserver_realm}})s/.*/yarn/
-            RULE:[2:$1@$0](yarn@{{ipaserver_realm}})s/.*/yarn/
+            RULE:[2:$1@$0](tl@{{ipaserver_realm}})s/.*/yarn/
             DEFAULT"
   }
 

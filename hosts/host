@@ -27,8 +27,6 @@ roda002.yak2.net
 roda003.yak2.net
 roda004.yak2.net
 
-# Comment out this host when generating keytabs as it does not yet exist
-# Comment it in when deploying hdfs as otherwise yarn-site.xml will break and the rest of the process is skipped
+
 [yarn_history]
 hist001.yak2.net
-# TODO create this host
