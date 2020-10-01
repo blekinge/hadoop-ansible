@@ -1,9 +1,5 @@
 ---
+# Secret ssl variables
 ssl_key_pass: ssl_key_pass_value
 ssl_keystore_pass: ssl_keystore_pass_value
 ssl_truststore_pass: ssl_truststore_pass_value
-
-ssl_server_dir: /etc/security/ssl
-ssl_client_dir: /etc/security/ssl
-
-ssl_key_size: 2048

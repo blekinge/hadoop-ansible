@@ -1,0 +1,10 @@
+
+
+#THis playbook installs java on all the hosts
+
+- hosts: all
+  vars_files:
+    - vars/var_basic.yml
+  roles:
+    - java
+

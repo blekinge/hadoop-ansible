@@ -3,7 +3,7 @@ hdfs_datanode_port: 1039
 hdfs_datanode_http_port: 1032
 hdfs_datanode_https_port: 50475
 
-
+#TODO collect these from various config files
 dashbord_port: 9870
 firewall_ports:
   - "{{ hdfs_http_port }}"

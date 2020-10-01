@@ -7,29 +7,36 @@ hadoop_download: http://ftp.download-by.net/apache/hadoop/common/hadoop-{{hadoop
 hadoop_path: "/usr/local/hadoop"
 hadoop_home: "{{ hadoop_path }}/hadoop-{{ hadoop_version }}"
 
-zookeeper_user: "zookeeper"
-
 hadoop_config_path: "/etc/hadoop/conf/"
 hadoop_tmp: "/tmp/hadoop"
-hadoop_dfs_name: "/hdfs/dfs/name"
-hadoop_dfs_journal: "/hdfs/dfs/journal"
 hadoop_log_dir: "/var/log/hadoop/"
 hadoop_pid_dir: "/var/run/hadoop/"
 
+#Common SSL variables
+ssl_server_dir: /etc/security/ssl
+ssl_client_dir: /etc/security/ssl
+ssl_key_size: 2048
+
+
+#Users and groups
 hdfs_user: "hdfs"
 hdfs_group: "hdfs"
-
+yarn_user: "yarn"
+user: "root"
+group: "hadoop"
 hadoop_group: "hadoop"
+mapreduce_user: "mapred"
+zookeeper_user: "zookeeper"
 
+
+#HDFS
+hadoop_dfs_name: "/hdfs/dfs/name"
+hadoop_dfs_journal: "/hdfs/dfs/journal"
 #TODO handle more than 2 namenodes
 nn1: "{{ groups['hdfs_namenode'] | first }}"
 nn2: "{{ groups['hdfs_namenode'] | last }}"
 
-
 hdfs_name: "KAC"
-
-user: "root"
-group: "hadoop"
 
 hdfs_data_dirs:
   - /data/sdb1/hdfs
@@ -49,20 +56,15 @@ hdfs_create_path:
   - "{{ hadoop_pid_dir }}"
 
 
-mapreduce_user: "mapred"
-
-
-yarn_user: "yarn"
+#YARN
 yarn_create_path:
   - "/var/run/hadoop/{{ yarn_user }}/"
   - "/var/log/hadoop/{{ yarn_user }}/"
-
 
 yarn_history_server: "{{ groups['yarn_history'] | first }}"
 #TODO handle more than to yarn resource managers...
 yarn_resource_manager_server1: "{{ groups['yarn_resource_manager'] | first }}"
 yarn_resource_manager_server2: "{{ groups['yarn_resource_manager'] | last }}"
-
 
 yarn_data_dirs:
   - /data/sdb1/yarn

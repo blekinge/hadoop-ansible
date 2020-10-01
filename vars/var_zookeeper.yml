@@ -16,7 +16,6 @@ zookeeper_config_path: "/etc/zookeeper/conf/"
 
 zookeeper_data_dir: "/zookeeper-data/"
 
-zookeeper_user: "zookeeper"
 zookeeper_create_path:
   - "{{zookeeper_data_dir}}"
   - "{{zookeeper_config_path}}"

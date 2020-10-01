@@ -1,8 +1,19 @@
 ---
 ipaserver_domain: yak2.net
 ipaserver_realm: YAK2.NET
+keytab_dir: "/etc/security/keytabs/"
+keytab_permissions: "0400"
 
 kinit_principal: "admin@{{ipaserver_realm}}"
+
+keytab_users:
+  - {
+    host: "{{ groups['ipaserver'] | first }}",
+    name: "{{ hdfs_user }}",
+    owner: "{{ hdfs_user }}",
+    group: "{{ hadoop_group }}"
+  }
+
 
 keytab_services:
 
@@ -55,14 +66,4 @@ keytab_services:
   }
 
 
-keytab_users:
-  - {
-    host: "{{ groups['ipaserver'] | first }}",
-    name: "{{ hdfs_user }}",
-    owner: "{{ hdfs_user }}",
-    group: "{{ hadoop_group }}"
-  }
-
-keytab_dir: "/etc/security/keytabs/"
-keytab_permissions: "0400"
 
