@@ -278,9 +278,6 @@ HADOOP_NAMENODE_GC_OPTS="-XX:ParallelGCThreads=8 \
 #                   -XX:+PrintGCDateStamps"
 
 
-# History server logs
-export HADOOP_MAPRED_LOG_DIR="{{ hadoop_log_dir }}/mapreduce/$USER"
-
 # File naming remote slave hosts.  $HADOOP_HOME/conf/slaves by default.
 # export HADOOP_SLAVES=${HADOOP_HOME}/conf/slaves
 
@@ -291,9 +288,6 @@ export HADOOP_MAPRED_LOG_DIR="{{ hadoop_log_dir }}/mapreduce/$USER"
 # can be useful in large clusters, where, e.g., slave rsyncs can
 # otherwise arrive faster than the master can service them.
 # export HADOOP_SLAVE_SLEEP=0.1
-
-# History server pid
-export HADOOP_MAPRED_PID_DIR={{ hadoop_pid_dir }}/mapreduce/$USER
 
 
 # Add database libraries

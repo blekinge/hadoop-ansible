@@ -52,7 +52,9 @@
     - vars/var_ipa.yml
     - vars/var_hadoop.yml
   roles:
+    - kinit_init
     - ipa_service_definitions
+    - kinit_destroy
 
 - hosts: all
   vars_files:

@@ -1,0 +1,7 @@
+---
+- name: Start Mapreduce History Server process
+  systemd:
+    state: started
+    daemon_reload: yes
+    name: mapreduce_historyserver
+

@@ -10,6 +10,13 @@ yarn_nodemanager_service_name: "nm"
 yarn_resourcemanager_service_name: "rm"
 yarn_timelineserver_service_name: "tl"
 
+hdfs_namenode_service_name: "nn"
+hdfs_datanode_service_name: "dn"
+hdfs_journalnode_service_name: "jn"
+
+mapreduce_historyserver_service_name: "jhs"
+
+zookeeper_service_name: "zookeeper"
 keytab_users:
   - {
     host: "{{ groups['ipaserver'] | first }}", #Create this keytab on ipaserver and distribute it to all host
@@ -23,20 +30,20 @@ keytab_services:
 
   #  HDFS
   - {
-    hostgroup: "workers",
-    name: "dn",
+    hostgroup: "hdfs_datanodes",
+    name: "{{ hdfs_datanode_service_name }}",
     owner: "{{ hdfs_user }}",
     group: "{{ hadoop_group }}"
   }
   - {
-    hostgroup: "hdfs_namenode",
-    name: "nn",
+    hostgroup: "hdfs_namenodes",
+    name: "{{ hdfs_namenode_service_name }}",
     owner: "{{ hdfs_user }}",
     group: "{{ hadoop_group }}"
   }
   - {
-    hostgroup: "hdfs_journal",
-    name: "jn",
+    hostgroup: "hdfs_journals",
+    name: "{{ hdfs_journalnode_service_name }}",
     owner: "{{ hdfs_user }}",
     group: "{{ hadoop_group }}"
   }
@@ -50,30 +57,37 @@ keytab_services:
   }
   #    YARN
   - {
-    hostgroup: "workers",
+    hostgroup: "yarn_nodemanagers",
     name: "{{ yarn_nodemanager_service_name }}",
     owner: "{{ yarn_user }}",
     group: "{{ hadoop_group }}"
   }
   - {
-    hostgroup: "yarn_resource_manager",
+    hostgroup: "yarn_resource_managers",
     name: "{{ yarn_resourcemanager_service_name}}",
     owner: "{{ yarn_user }}",
     group: "{{ hadoop_group }}"
   }
   - {
-    hostgroup: "yarn_history",
+    hostgroup: "yarn_timeline_servers",
     name: "{{ yarn_timelineserver_service_name }}",
     owner: "{{ yarn_user }}",
     group: "{{ hadoop_group }}"
   }
   #    Zookeeper
   - {
-    hostgroup: "zookeeper",
-    name: "zookeeper",
+    hostgroup: "zookeepers",
+    name: "{{ zookeeper_service_name }}",
     owner: "{{ zookeeper_user }}",
     group: "{{ hadoop_group }}"
   }
 
+  #    Mapreduce
+  - {
+    hostgroup: "mapreduce_history_servers",
+    name: "{{ mapreduce_historyserver_service_name }}",
+    owner: "{{ mapreduce_user }}",
+    group: "{{ hadoop_group }}"
+  }
 
 

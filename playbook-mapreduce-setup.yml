@@ -1,10 +1,9 @@
-- hosts: zookeepers
-  become: yes
+
+- hosts: mapreduce_history_servers
   vars_files:
     - vars/var_basic.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_kerberos.yml
-    - vars/var_zookeeper.yml
   roles:
-    - zookeeper
+    - mapreduce_history_server
