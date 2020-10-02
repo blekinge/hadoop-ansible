@@ -18,16 +18,7 @@ ssl_client_dir: /etc/security/ssl
 ssl_key_size: 2048
 
 
-#Users and groups
-hdfs_user: "hdfs"
-hdfs_group: "hdfs"
-yarn_user: "yarn"
-user: "root"
-group: "hadoop"
-hadoop_group: "hadoop"
-mapreduce_user: "mapred"
-zookeeper_user: "zookeeper"
-users_group: "yakusers"
+
 
 #HDFS
 hadoop_dfs_name: "/hdfs/dfs/name"

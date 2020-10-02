@@ -13,7 +13,7 @@
   file:
     path: "{{ item }}"
     owner: "{{ yarn_user }}"
-    group: "{{ hadoop_group }}"
+    group: "{{ yarn_group }}"
     state: directory
     mode: 0750
   with_items:
@@ -23,7 +23,7 @@
   file:
     path: "{{ item }}"
     owner: "{{ mapreduce_user }}"
-    group: "{{ hadoop_group }}"
+    group: "{{ mapreduce_group }}"
     state: directory
     mode: 0750
   with_items:

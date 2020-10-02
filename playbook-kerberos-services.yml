@@ -12,6 +12,7 @@
   vars_files:
     - vars/var_kerberos.yml
     - vars/var_ipa.yml
+    - vars/var_ipa_sensitive.yml
     - vars/var_hadoop.yml
   tasks:
     - set_fact:
@@ -50,6 +51,7 @@
   vars_files:
     - vars/var_kerberos.yml
     - vars/var_ipa.yml
+    - vars/var_ipa_sensitive.yml
     - vars/var_hadoop.yml
   roles:
     - kinit_init
@@ -60,6 +62,7 @@
   vars_files:
     - vars/var_kerberos.yml
     - vars/var_ipa.yml
+    - vars/var_ipa_sensitive.yml
     - vars/var_hadoop.yml
   roles:
     - kinit_init

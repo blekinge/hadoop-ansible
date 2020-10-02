@@ -5,44 +5,44 @@
 
 
     users:
-      - name: hdfs
+      - name: "{{ hdfs_user }}"
         first: Hdfs
-        uid: "{{users_hdfsGroup}}"
-        gid: "{{users_hdfsGroup}}"
-        homedir: /syshome/hdfs
+        uid: "{{uid_hdfsGroup}}"
+        gid: "{{uid_hdfsGroup}}"
+        homedir: "{{ ipaclient_syshome_dir }}/{{ hdfs_user }}"
 
         last: Apache
         userclass: SystemUser
         noprivate: yes
-        shell: /sbin/nologin
+        shell: /bin/bash #Perhaps change this to /sbin/nologin later on
 
-      - name: mapred
+      - name: "{{ mapreduce_user }}"
         first: MapReduce
-        uid: "{{users_hadoopGroup | int + 1}}"
-        gid: "{{users_hadoopGroup}}"
-        homedir: /syshome/mapred
+        uid: "{{uid_hadoopGroup | int + 1}}"
+        gid: "{{uid_hadoopGroup}}"
+        homedir: "{{ ipaclient_syshome_dir }}/{{ mapreduce_user }}"
 
         last: Apache
         userclass: SystemUser
         noprivate: yes
-        shell: /sbin/nologin
+        shell: /bin/bash #Perhaps change this to /sbin/nologin later on
 
-      - name: yarn
+      - name: "{{ yarn_user }}"
         first: Yarn
-        uid: "{{users_hadoopGroup | int + 2}}"
-        gid: "{{users_hadoopGroup}}"
-        homedir: /syshome/yarn
+        uid: "{{uid_hadoopGroup | int + 2}}"
+        gid: "{{uid_hadoopGroup}}"
+        homedir: "{{ ipaclient_syshome_dir }}/{{ yarn_user }}"
 
         last: Apache
         userclass: SystemUser
         noprivate: yes
-        shell: /sbin/nologin
+        shell: /bin/bash #Perhaps change this to /sbin/nologin later on
 
-      - name: zookeeper
+      - name: "{{ zookeeper_user }}"
         first: ZooKeeper
-        uid: "{{users_hadoopGroup| int + 3}}"
-        gid: "{{users_hadoopGroup}}"
-        homedir: /syshome/zookeeper
+        uid: "{{uid_hadoopGroup| int + 3}}"
+        gid: "{{uid_hadoopGroup}}"
+        homedir: "{{ ipaclient_syshome_dir }}/{{ zookeeper_user }}"
 
         last: Apache
         userclass: SystemUser
@@ -52,11 +52,11 @@
 - name: system user groups
   ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: hadoop
+    name: "{{ hadoop_group }}"
     action: member
     user:
-      - hdfs
-      - mapred
-      - yarn
-      - zookeeper
+      - "{{ hdfs_user }}"
+      - "{{ mapreduce_user }}"
+      - "{{ yarn_user }}"
+      - "{{ zookeeper_user }}"
 

@@ -2,8 +2,8 @@
   become: yes
   vars_files:
     - vars/var_ipa.yml
+    - vars/var_ipa_sensitive.yml
   roles:
+    - role: kinit_init
     - role: yak_user_manager
-
-
-#append /etc/nsswitch.conf "sudoers: files sss"
+    - role: kinit_destroy

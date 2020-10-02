@@ -13,6 +13,7 @@
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_kerberos.yml
+    - vars/var_ipa.yml
   roles:
     - journalnode
 
@@ -23,6 +24,7 @@
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_kerberos.yml
+    - vars/var_ipa.yml
   roles:
     - datanode
 
@@ -35,5 +37,6 @@
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_kerberos.yml
+    - vars/var_ipa.yml
   roles:
     - namenode

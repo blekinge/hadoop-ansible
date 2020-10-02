@@ -1,57 +1,36 @@
 ---
 #TODO merge this into one block
-- name: hadoop group
+- name: "{{ hadoop_group }} group"
   ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: hadoop
-    gid: "{{users_hadoopGroup}}"
+    name: "{{ hadoop_group }}"
+    gid: "{{ uid_hadoopGroup }}"
     description: Hadoop System Services
 
-- name: systemservices group
+- name: "{{ systemservices_group }} group"
   ipagroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: systemservices
-    gid: "{{users_systemServiceGroup}}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    name: "{{ systemservices_group }}"
+    gid: "{{ uid_systemserviceGroup }}"
     description: Standard user accounts, for non-hadoop services
 
-- name: subadmins group
+- name: "{{ subadmins_group} group"
   ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: subadmins
-    gid: "{{users_subadminsGroup}}"
+    name: "{{ subadmins_group }}"
+    gid: "{{ uid_subadminsGroup }}"
     description: For daily administration of users and hosts
 
-- name: admins group
+- name: "{{ users_group }} group"
   ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: admins
-    gid: "{{users_adminsGroup}}"
-    description: Account administrators group
-
-- name: subadmins group
-  ipagroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: subadmins
-    gid: "{{users_subadminsGroup}}"
-    description: For daily administration of users and hosts
-
-- name: nahusers group
-  ipagroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: nahusers
-    gid: "{{users_usersGroup}}"
+    name: "{{ users_group }}"
+    gid: "{{ uid_usersGroup }}"
     description: Standard user accounts, for unprivileged users.
 
-- name: hdfs group
+- name: "{{ hdfs_group }} group"
   ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: hdfs
-    gid: "{{users_hdfsGroup}}"
+    name: "{{ hdfs_group }}"
+    gid: "{{ uid_hdfsGroup }}"
     description: HDFS group
-
-- name: p000 group
-  ipagroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: p000
-    gid: "{{users_p000Group}}"
-    description: Group for project p000

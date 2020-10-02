@@ -1,4 +1,4 @@
-[ipaserver]
+[ipaservers]
 fipa001.yak2.net
 
 [hdfs_namenodes]

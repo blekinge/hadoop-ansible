@@ -4,12 +4,12 @@ Requires=network-online.target
 
 [Service]
 User={{ mapreduce_user }}
-Group={{ hadoop_group }}
+Group={{ mapreduce_group }}
 Type=forking
 # Prefix with + to Run ExecStartPre with root-permissions, see https://www.freedesktop.org/software/systemd/man/systemd.service.html#ExecStart=
 ExecStartPre=+/usr/bin/mkdir -p {{ hadoop_pid_dir }}/mapreduce/
-ExecStartPre=+/usr/bin/chown -R {{ mapreduce_user }}:{{ hadoop_group }} {{ hadoop_pid_dir }}/{{ mapreduce_user }}
-# Run ExecStart with User={{ mapreduce_user }} / Group={{ hadoop_group }}
+ExecStartPre=+/usr/bin/chown -R {{ mapreduce_user }}:{{ mapreduce_group }} {{ hadoop_pid_dir }}/{{ mapreduce_user }}
+# Run ExecStart with User={{ mapreduce_user }} / Group={{ mapreduce_group }}
 ExecStart=/usr/local/bin/hadoop-invoker.sh mapred mapred-env.sh --daemon start historyserver
 PIDFile={{ hadoop_pid_dir }}/{{ mapreduce_user }}/hadoop-mapreduce-historyserver.pid
 

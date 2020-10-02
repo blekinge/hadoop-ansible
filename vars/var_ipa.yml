@@ -1,0 +1,53 @@
+---
+# https://github.com/freeipa/ansible-freeipa/blob/master/roles/ipaclient/README.md#base-variables
+
+ipa_domain: yak2.net
+ipa_realm: YAK2.NET
+ipaclient_domain: "{{ ipa_domain }}"
+ipaclient_realm: "{{ ipa_realm }}"
+ipaserver_domain: "{{ ipa_domain }}"
+ipaserver_realm: "{{ ipa_realm }}"
+
+#TODO iprange for nfs export
+ipa_server: "{{ groups['ipaservers'] | first }}"
+
+ipaclient_force_join: false
+ipaclient_ntp_servers:
+  - kac-gway-001.kach.sblokalnet
+
+
+
+ipaserver_autohome_dir: /sto-data/home
+ipaserver_syshome_dir: /sto-data/syshome
+
+ipaclient_autohome_dir: /autohome
+ipaclient_syshome_dir: /syshome
+
+
+#Users and groups
+hadoop_group: "hadoop"
+
+hdfs_user: "hdfs"
+hdfs_group: "hdfs"
+
+yarn_user: "yarn"
+yarn_group: "{{hadoop_group}}"
+
+mapreduce_user: "mapred"
+mapreduce_group: "{{hadoop_group}}"
+
+zookeeper_user: "zookeeper"
+zookeeper_group: "{{hadoop_group}}"
+
+users_group: "yakusers"
+
+systemservices_group: "systemservices"
+subadmins_group: "subadmins"
+
+
+uid_hdfsGroup: 11200
+uid_hadoopGroup: 11000
+uid_systemserviceGroup: 15000
+uid_usersGroup: 20000
+uid_subadminsGroup: 12000
+

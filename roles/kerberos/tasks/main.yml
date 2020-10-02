@@ -11,6 +11,25 @@
     regexp: '^( *default_ccache_name *= *KCM: *)'
     replace: '#\1'
 
+- name: stop sssd KCM service
+  systemd:
+    state: stopped
+    service: sssd-kcm.service
+    enabled: no
+
+- name: stop sssd KCM socket service
+  systemd:
+    state: stopped
+    service: sssd-kcm.socket
+    enabled: no
+
+- name: restart sssd service
+  systemd:
+    state: restarted
+    service: sssd.service
+    enabled: yes
+
+
 - name: Copy Kerberos profile files
   template:
     src: "{{ item }}"

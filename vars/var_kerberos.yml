@@ -1,6 +1,5 @@
 ---
-ipaserver_domain: yak2.net
-ipaserver_realm: YAK2.NET
+
 keytab_dir: "/etc/security/keytabs/"
 keytab_permissions: "0400"
 

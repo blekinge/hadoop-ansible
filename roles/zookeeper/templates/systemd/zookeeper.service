@@ -4,7 +4,7 @@ Requires=network-online.target
 
 [Service]
 User={{ zookeeper_user }}
-Group={{ hadoop_group }}
+Group={{ zookeeper_group }}
 Type=forking
 ExecStart={{zookeeper_home}}/bin/zkServer.sh --config {{zookeeper_config_path}} start {{zookeeper_config_path}}/zoo.cfg
 PIDFile={{ zookeeper_pid_dir }}/zookeeper_server.pid
