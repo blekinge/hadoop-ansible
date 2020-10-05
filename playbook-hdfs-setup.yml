@@ -6,37 +6,37 @@
 # - playbook-ssl-certificates.yml
 # - playbook-kerberos-services.yml
 # - playbook-zookeeper.yml
+#
+#- hosts: journalnodes
+#  vars_files:
+#    - vars/var_java.yml
+#    - vars/var_ports.yml
+#    - vars/var_hadoop.yml
+#    - vars/var_kerberos.yml
+#    - vars/var_ipa.yml
+#  roles:
+#    - hdfs_journalnode
+#
+#
+#- hosts: datanodes
+#  vars_files:
+#    - vars/var_java.yml
+#    - vars/var_ports.yml
+#    - vars/var_hadoop.yml
+#    - vars/var_kerberos.yml
+#    - vars/var_ipa.yml
+#  roles:
+#    - hdfs_datanode
 
-- hosts: hdfs_journal
+
+
+
+- hosts: namenodes
   vars_files:
-    - vars/var_basic.yml
+    - vars/var_java.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_kerberos.yml
     - vars/var_ipa.yml
   roles:
-    - journalnode
-
-
-- hosts: datanodes
-  vars_files:
-    - vars/var_basic.yml
-    - vars/var_ports.yml
-    - vars/var_hadoop.yml
-    - vars/var_kerberos.yml
-    - vars/var_ipa.yml
-  roles:
-    - datanode
-
-
-
-
-- hosts: hdfs_namenode
-  vars_files:
-    - vars/var_basic.yml
-    - vars/var_ports.yml
-    - vars/var_hadoop.yml
-    - vars/var_kerberos.yml
-    - vars/var_ipa.yml
-  roles:
-    - namenode
+    - hdfs_namenode

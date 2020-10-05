@@ -1,7 +1,7 @@
 
-- hosts: yarn_timeline_servers
+- hosts: timeline_servers
   vars_files:
-    - vars/var_basic.yml
+    - vars/var_java.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_kerberos.yml
@@ -10,9 +10,9 @@
     - yarn_timeline_server
 
 
-- hosts: yarn_nodemanagers
+- hosts: nodemanagers
   vars_files:
-    - vars/var_basic.yml
+    - vars/var_java.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_kerberos.yml
@@ -21,14 +21,14 @@
     - yarn_node_manager
 
 
-- hosts: yarn_resource_managers
+- hosts: resource_managers
   vars_files:
-    - vars/var_basic.yml
+    - vars/var_java.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_kerberos.yml
     - vars/var_ipa.yml
   roles:
-    - yarn_resource_managers
+    - yarn_resource_manager
 
 

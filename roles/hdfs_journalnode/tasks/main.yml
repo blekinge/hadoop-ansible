@@ -4,4 +4,4 @@
     state: restarted
     daemon_reload: yes
     name: hdfs_journalnode
-
+    enabled: true

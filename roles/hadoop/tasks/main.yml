@@ -1,5 +1,6 @@
 ---
 - name: Create HDFS Paths
+
   file: 
     path: "{{ item }}"
     owner: "{{ hdfs_user }}"

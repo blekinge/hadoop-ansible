@@ -62,11 +62,11 @@
     </property>
     <property>
         <name>yarn.log.server.url</name>
-        <value>http://{{ yarn_timelineserver }}:19888/jobhistory/logs</value>
+        <value>http://{{ yarn_timelineserver }}:{{yarn_timelineserver_jobhistory_port}}/jobhistory/logs</value>
     </property>
     <property>
         <name>yarn.log.server.web-service.url</name>
-        <value>http://{{ yarn_timelineserver }}:8188/ws/v1/applicationhistory</value>
+        <value>http://{{ yarn_timelineserver }}:{{yarn_timelineserver_http_port}}/ws/v1/applicationhistory</value>
     </property>
     <property>
         <name>yarn.node-labels.enabled</name>
@@ -83,7 +83,7 @@
 
     <property>
         <name>yarn.nodemanager.address</name>
-        <value>0.0.0.0:45454</value>
+        <value>0.0.0.0:{{yarn_nodemanager_port}}</value>
     </property>
     <property>
         <name>yarn.nodemanager.admin-env</name>
@@ -234,10 +234,7 @@
         <value>{{ hadoop_group }}</value>
     </property>
 
-    <property>
-        <name>yarn.resourcemanager.address</name>
-        <value>{{ yarn_timelineserver }}:8050</value>
-    </property>
+
     <property>
         <name>yarn.resourcemanager.am.max-attempts</name>
         <value>2</value>
@@ -310,14 +307,7 @@
         <name>yarn.resourcemanager.recovery.enabled</name>
         <value>true</value>
     </property>
-    <property>
-        <name>yarn.resourcemanager.resource-tracker.address</name>
-        <value>{{ yarn_resource_manager_server1 }}:8025</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.scheduler.address</name>
-        <value>{{ yarn_resource_manager_server1 }}:8030</value>
-    </property>
+
     <property>
         <name>yarn.resourcemanager.scheduler.class</name>
         <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</value>
@@ -351,10 +341,7 @@
         <name>yarn.resourcemanager.webapp.delegation-token-auth-filter.enabled</name>
         <value>false</value>
     </property>
-    <property>
-        <name>yarn.resourcemanager.webapp.https.address</name>
-        <value>{{ yarn_resource_manager_server1 }}:8090</value>
-    </property>
+
     <property>
         <name>yarn.resourcemanager.work-preserving-recovery.enabled</name>
         <value>true</value>
@@ -403,7 +390,7 @@
 
     <property>
         <name>yarn.timeline-service.address</name>
-        <value>{{ yarn_timelineserver }}:10200</value>
+        <value>{{ yarn_timelineserver }}:{{yarn_timelineserver_port2}}</value>
     </property>
     <property>
         <name>yarn.timeline-service.bind-host</name>
@@ -536,11 +523,11 @@
     </property>
     <property>
         <name>yarn.timeline-service.webapp.address</name>
-        <value>{{ yarn_timelineserver }}:8188</value>
+        <value>{{ yarn_timelineserver }}:{{yarn_timelineserver_http_port}}</value>
     </property>
     <property>
         <name>yarn.timeline-service.webapp.https.address</name>
-        <value>{{ yarn_timelineserver }}:8190</value>
+        <value>{{ yarn_timelineserver }}:{{yarn_timelineserver_https_port}}</value>
     </property>
 
     <property>
@@ -551,50 +538,60 @@
         <name>yarn.resourcemanager.cluster-id</name>
         <value>YAK-YARN</value>
     </property>
+
+
+
     <property>
         <name>yarn.resourcemanager.ha.rm-ids</name>
-        <value>rm1,rm2</value>
+        <value>{{ groups['resource_managers'] | join(',') }}</value>
     </property>
+    {% for resource_manager in groups['resource_managers'] %}
     <property>
-        <name>yarn.resourcemanager.hostname.rm1</name>
-        <value>{{ yarn_resource_manager_server1 }}</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.hostname.rm2</name>
-        <value>{{ yarn_resource_manager_server2 }}</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.admin.address.rm1</name>
-        <value>{{ yarn_resource_manager_server1 }}:8033</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.admin.address.rm2</name>
-        <value>{{ yarn_resource_manager_server2 }}:8033</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.webapp.address.rm1</name>
-        <value>{{ yarn_resource_manager_server1 }}:8088</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.webapp.address.rm2</name>
-        <value>{{ yarn_resource_manager_server2 }}:8088</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.webapp.https.address.rm1</name>
-        <value>{{ yarn_resource_manager_server1 }}:8090</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.webapp.https.address.rm2</name>
-        <value>{{ yarn_resource_manager_server2 }}:8090</value>
+        <name>yarn.resourcemanager.hostname.{{resource_manager}}</name>
+        <value>{{ resource_manager }}</value>
     </property>
 
     <property>
+        <name>yarn.resourcemanager.address.{{resource_manager}}</name>
+        <value>{{resource_manager}}:{{yarn_resourcemanager_rpc_port}}</value>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.scheduler.address.{{resource_manager}}</name>
+        <value>{{resource_manager}}:{{yarn_resourcemanager_scheduler_port}}</value>
+    </property>
+
+    <property>
+        <name>yarn.resourcemanager.resource-tracker.address.{{resource_manager}}</name>
+        <value>{{resource_manager}}:{{yarn_resourcemanager_tracker_port}}</value>
+    </property>
+
+    <property>
+        <name>yarn.resourcemanager.admin.address.{{resource_manager}}</name>
+        <value>{{ resource_manager }}:{{yarn_resourcemanager_admin_port}}</value>
+    </property>
+
+    <property>
+        <name>yarn.resourcemanager.webapp.address.{{resource_manager}}</name>
+        <value>{{resource_manager}}:{{yarn_resourcemanager_http_port}}</value>
+    </property>
+
+
+    <property>
+        <name>yarn.resourcemanager.webapp.https.address.{{resource_manager}}</name>
+        <value>{{resource_manager}}:{{yarn_resourcemanager_https_port}}</value>
+    </property>
+
+
+    {% endfor %}
+
+
+    <property>
         <name>hadoop.zk.address</name>
-        <value>{{ groups['zookeepers'] | zip_longest([], fillvalue='2181') | map('join', ':') | join(',') }}</value>
+        <value>{{zookeeper_quorum}}</value>
     </property>
     <property>
         <name>yarn.resourcemanager.zk-address</name>
-        <value>{{ groups['zookeepers'] | zip_longest([], fillvalue='2181') | map('join', ':') | join(',') }}</value>
+        <value>{{zookeeper_quorum}}</value>
     </property>
 
     <property>
@@ -619,7 +616,7 @@
     </property>
     <property>
         <name>hadoop.registry.zk.quorum</name>
-        <value>{{ groups['zookeepers'] | zip_longest([], fillvalue='2181') | map('join', ':') | join(',') }}</value>
+        <value>{{zookeeper_quorum}}</value>
     </property>
 
     <!--    Kerberos-->

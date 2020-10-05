@@ -1,13 +1,21 @@
 ---
 
+- name: install rsync so we can use ansible synchronize
+  dnf:
+    name: rsync
+    state: latest
 
-- name: Create ssl working dir k dir
+
+#All this is done only on ipaserver host
+- name: Create ssl working dir
   file:
     path: "./ssl/"
     state: "directory"
     owner: root
     group: "{{ hadoop_group }}"
-    mode: 0750
+    mode: 0755
+  when: '"ipaserver" in group_names'
+
 
 # Created from https://getthekt.com/securing-hadoop-cluster-part-1-ssltls-for-hdfs-and-yarn/
 - name: Create server ssl key
@@ -58,11 +66,6 @@
     creates: ./ssl/http_secret
   when: '"ipaserver" in group_names'
 
-- name: install rsync
-  dnf:
-   name: rsync
-   state: latest
-
 
 - name: fetching ssl certificates to localhost
   synchronize:
@@ -72,47 +75,59 @@
   with_items:
       - "./ssl/*"
   when: '"ipaserver" in group_names'
+# End of ipaserver-only tasks
+
 
 - name: Create ssl dirs dir
   file:
     path: "{{ dir }}"
     state: "directory"
+    mode: 0755
     owner: root
     group: "{{ hadoop_group }}"
-    mode: 0750
   loop:
     - "{{ ssl_server_dir }}"
     - "{{ ssl_client_dir }}"
   loop_control:
     loop_var: "dir"
 
-- name: uploading ssl certificates to {{ host }}
+- name: "uploading ssl certificates to host"
   copy:
     src: "{{ item }}"
     dest: "{{ ssl_server_dir }}"
-    mode: "0640"
-    group: "{{ hadoop_group}}"
+    mode: "0640" #This is the key, so it must NOT be publically readable
     owner: "root"
+    group: "{{ hadoop_group}}"
   with_fileglob:
     - "./ssl/{{ inventory_hostname }}-keystore.jks"
     - "./ssl/{{ inventory_hostname }}-truststore.jks"
+
+
+- name: "uploading ssl truststore to host"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ssl_server_dir }}"
+    mode: "0644" #There is no risk in having the truststore readable
+    owner: "root"
+    group: "{{ hadoop_group}}"
+  with_fileglob:
     - "./ssl/all.jks"
 
-- name: uploading http secret to {{ host }}
+- name: "uploading http secret to host"
   copy:
     src: "{{ item }}"
     dest: "/etc/security/"
-    mode: "0440"
+    mode: "0440" #Not public
     group: "{{ hadoop_group}}"
     owner: "root"
   with_fileglob:
     - "./ssl/http_secret"
 
-- name: Copy Hadoop config files
+- name: "Uploading hadoop ssl config to host"
   template:
     src: "{{ item }}"
     dest: "{{ hadoop_config_path }}/"
-    mode: 0640
+    mode: 0644
     owner: "root"
     group: "{{ hadoop_group }}"
   with_fileglob:

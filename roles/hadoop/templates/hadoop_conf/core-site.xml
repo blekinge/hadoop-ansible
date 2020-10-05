@@ -59,7 +59,7 @@
   </property>
   <property>
     <name>ha.zookeeper.quorum</name>
-    <value>{{ groups['zookeepers'] | zip_longest([], fillvalue='2181') | map('join', ':') | join(',') }}</value>
+    <value>{{ zookeeper_quorum }}</value>
   </property>
   <property>
     <name>hadoop.http.authentication.cookie.domain</name>

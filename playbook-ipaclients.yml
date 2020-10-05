@@ -1,4 +1,4 @@
-- hosts: all:!ipaservers
+- hosts: ipaclients
   vars_files:
     - vars/var_ipa.yml
     - vars/var_ipa_sensitive.yml

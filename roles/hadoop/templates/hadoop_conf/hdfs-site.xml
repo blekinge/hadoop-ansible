@@ -82,7 +82,7 @@
     </property>
     <property>
         <name>dfs.datanode.address</name>
-        <value>0.0.0.0:{{ hdfs_datanode_port }}</value>
+        <value>0.0.0.0:{{ hdfs_datanode_rpc_port }}</value>
     </property>
     <property>
         <name>dfs.datanode.http.address</name>
@@ -98,35 +98,28 @@
     </property>
     <property>
         <name>dfs.ha.namenodes.{{ hdfs_name }}</name>
-        <value>nn1,nn2</value>
+        <value>{{ groups['namenodes'] | join(',') }}</value>
+    </property>
+    {% for namenode in groups['namenodes'] %}
+    <property>
+        <name>dfs.namenode.rpc-address.{{ hdfs_name }}.{{ namenode }}</name>
+        <value>{{ namenode }}:{{hdfs_namenode_rpc_port}}</value>
     </property>
     <property>
-        <name>dfs.namenode.rpc-address.{{ hdfs_name }}.nn1</name>
-        <value>{{ nn1 }}:8020</value>
+        <name>dfs.namenode.http-address.{{ hdfs_name }}.{{ namenode }}</name>
+        <value>{{ namenode }}:{{hdfs_namenode_http_port}}</value>
     </property>
     <property>
-        <name>dfs.namenode.rpc-address.{{ hdfs_name }}.nn2</name>
-        <value>{{ nn2 }}:8020</value>
+        <name>dfs.namenode.https-address.{{ hdfs_name }}.{{ namenode }}</name>
+        <value>{{ namenode }}:{{hdfs_namenode_https_port}}</value>
     </property>
-    <property>
-        <name>dfs.namenode.http-address.{{ hdfs_name }}.nn1</name>
-        <value>{{ nn1 }}:9870</value>
-    </property>
-    <property>
-        <name>dfs.namenode.http-address.{{ hdfs_name }}.nn2</name>
-        <value>{{ nn2 }}:9870</value>
-    </property>
-    <property>
-        <name>dfs.namenode.https-address.{{ hdfs_name }}.nn1</name>
-        <value>{{ nn1 }}:50470</value>
-    </property>
-    <property>
-        <name>dfs.namenode.https-address.{{ hdfs_name }}.nn2</name>
-        <value>{{ nn2 }}:50470</value>
-    </property>
+    {% endfor %}
+
+
+
     <property>
         <name>dfs.namenode.shared.edits.dir</name>
-        <value>qjournal://{{ groups['zookeepers'] | zip_longest([], fillvalue='8485') | map('join', ':') | join(';') }}/{{ hdfs_name }}
+        <value>qjournal://{{ groups['zookeepers'] | zip_longest([], fillvalue=hdfs_journalnode_rpc_port) | map('join', ':') | join(';') }}/{{ hdfs_name }}
         </value>
     </property>
     <property>
@@ -145,17 +138,28 @@
         <name>dfs.ha.automatic-failover.enabled</name>
         <value>true</value>
     </property>
+
+
+    <property>
+        <name>dfs.ha.zkfc.port</name>
+        <value>8019</value>
+        <description>
+            The port number that the zookeeper failover controller RPC
+            server binds to.
+        </description>
+    </property>
+
     <property>
         <name>dfs.journalnode.rpc-address</name>
-        <value>0.0.0.0:8485</value>
+        <value>0.0.0.0:{{hdfs_journalnode_rpc_port}}</value>
     </property>
     <property>
         <name>dfs.journalnode.http-address</name>
-        <value>0.0.0.0:8480</value>
+        <value>0.0.0.0:{{hdfs_journalnode_http_port}}</value>
     </property>
     <property>
         <name>dfs.journalnode.https-address</name>
-        <value>0.0.0.0:8481</value>
+        <value>0.0.0.0:{{hdfs_journalnode_https_port}}</value>
     </property>
     <property>
         <name>dfs.block.access.token.enable</name>
@@ -211,7 +215,7 @@
     </property>
     <property>
         <name>dfs.https.port</name>
-        <value>50470</value>
+        <value>{{hdfs_namenode_https_port}}</value>
     </property>
     <property>
         <name>dfs.data.transfer.protection</name>

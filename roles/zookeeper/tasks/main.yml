@@ -54,4 +54,5 @@
     state: started
     daemon_reload: yes
     name: zookeeper
+    enabled: true
   when: zookeeper_server and start

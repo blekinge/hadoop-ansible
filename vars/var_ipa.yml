@@ -9,6 +9,7 @@ ipaserver_domain: "{{ ipa_domain }}"
 ipaserver_realm: "{{ ipa_realm }}"
 
 #TODO iprange for nfs export
+IPRANGE1: TODO THIS WILL FAIL FOR yak_user_manager
 ipa_server: "{{ groups['ipaservers'] | first }}"
 
 ipaclient_force_join: false
@@ -26,9 +27,11 @@ ipaclient_syshome_dir: /syshome
 
 #Users and groups
 hadoop_group: "hadoop"
+uid_hadoopGroup: 11000
 
 hdfs_user: "hdfs"
 hdfs_group: "hdfs"
+uid_hdfsGroup: 11200
 
 yarn_user: "yarn"
 yarn_group: "{{hadoop_group}}"
@@ -40,14 +43,13 @@ zookeeper_user: "zookeeper"
 zookeeper_group: "{{hadoop_group}}"
 
 users_group: "yakusers"
+uid_usersGroup: 20000
 
 systemservices_group: "systemservices"
-subadmins_group: "subadmins"
-
-
-uid_hdfsGroup: 11200
-uid_hadoopGroup: 11000
 uid_systemserviceGroup: 15000
-uid_usersGroup: 20000
+
+subadmins_group: "subadmins"
 uid_subadminsGroup: 12000
+
+
 

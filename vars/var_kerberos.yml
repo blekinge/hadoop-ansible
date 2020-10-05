@@ -32,22 +32,22 @@ keytab_services:
     hostgroup: "hdfs_datanodes",
     name: "{{ hdfs_datanode_service_name }}",
     owner: "{{ hdfs_user }}",
-    group: "{{ hadoop_group }}"
+    group: "{{ hdfs_group }}"
   }
   - {
     hostgroup: "hdfs_namenodes",
     name: "{{ hdfs_namenode_service_name }}",
     owner: "{{ hdfs_user }}",
-    group: "{{ hadoop_group }}"
+    group: "{{ hdfs_group }}"
   }
   - {
     hostgroup: "hdfs_journals",
     name: "{{ hdfs_journalnode_service_name }}",
     owner: "{{ hdfs_user }}",
-    group: "{{ hadoop_group }}"
+    group: "{{ hdfs_group }}"
   }
   - {
-    hostgroup: "all",
+    hostgroup: "hadoop",
     service: "HTTP",
     name: "spnego",
     owner: "root",
@@ -59,26 +59,26 @@ keytab_services:
     hostgroup: "yarn_nodemanagers",
     name: "{{ yarn_nodemanager_service_name }}",
     owner: "{{ yarn_user }}",
-    group: "{{ hadoop_group }}"
+    group: "{{ yarn_group }}"
   }
   - {
     hostgroup: "yarn_resource_managers",
     name: "{{ yarn_resourcemanager_service_name}}",
     owner: "{{ yarn_user }}",
-    group: "{{ hadoop_group }}"
+    group: "{{ yarn_group }}"
   }
   - {
     hostgroup: "yarn_timeline_servers",
     name: "{{ yarn_timelineserver_service_name }}",
     owner: "{{ yarn_user }}",
-    group: "{{ hadoop_group }}"
+    group: "{{ yarn_group }}"
   }
   #    Zookeeper
   - {
     hostgroup: "zookeepers",
     name: "{{ zookeeper_service_name }}",
     owner: "{{ zookeeper_user }}",
-    group: "{{ hadoop_group }}"
+    group: "{{ zookeeper_group }}"
   }
 
   #    Mapreduce
@@ -86,7 +86,7 @@ keytab_services:
     hostgroup: "mapreduce_history_servers",
     name: "{{ mapreduce_historyserver_service_name }}",
     owner: "{{ mapreduce_user }}",
-    group: "{{ hadoop_group }}"
+    group: "{{ mapreduce_group }}"
   }
 
 

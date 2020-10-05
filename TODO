@@ -1,0 +1,12 @@
+
+[X] port extraction
+[ ] Firewall setup
+
+[ ] Spark install
+
+[ ] Mapreduce test
+
+[X] better systemd scripts (tempdir, logdir created automatically?)
+
+[ ] Create hdfs basic contents for servers
+

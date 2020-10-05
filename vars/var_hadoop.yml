@@ -23,9 +23,7 @@ ssl_key_size: 2048
 #HDFS
 hadoop_dfs_name: "/hdfs/dfs/name"
 hadoop_dfs_journal: "/hdfs/dfs/journal"
-#TODO handle more than 2 namenodes
-nn1: "{{ groups['hdfs_namenodes'] | first }}"
-nn2: "{{ groups['hdfs_namenodes'] | last }}"
+
 
 hdfs_name: "KAC"
 
@@ -43,22 +41,16 @@ hdfs_create_path:
   - "{{ hadoop_tmp }}"
   - "{{ hadoop_dfs_name }}"
   - "{{ hadoop_dfs_journal }}"
-  - "{{ hadoop_log_dir }}"
-  - "{{ hadoop_pid_dir }}"
 
 
 #YARN
 
 yarn_timeline_store: "/hadoop/yarn/timeline"
 yarn_create_path:
-  - "/var/run/hadoop/{{ yarn_user }}"
-  - "/var/log/hadoop/{{ yarn_user }}"
   - "{{ yarn_timeline_store }}"
 
-yarn_timelineserver: "{{ groups['yarn_timeline_servers'] | first }}"
-#TODO handle more than two yarn resource managers...
-yarn_resource_manager_server1: "{{ groups['yarn_resource_managers'] | first }}"
-yarn_resource_manager_server2: "{{ groups['yarn_resource_managers'] | last }}"
+yarn_timelineserver: "{{ groups['timeline_servers'] | first }}"
+
 
 yarn_data_dirs:
   - /data/sdb1/yarn
@@ -71,10 +63,11 @@ yarn_data_dirs:
 yarn_data_dirs_joined:  "{{ yarn_data_dirs | join(',') }}"
 
 #TODO more than one?
-mapreduce_history_server_host: "{{ groups['mapreduce_history_servers'] | first }}"
+mapreduce_history_server_host: "{{ groups['history_servers'] | first }}"
 mapreduce_create_path:
-  - "/var/run/hadoop/{{ mapreduce_user }}"
-  - "/var/log/hadoop/{{ mapreduce_user }}"
   - "/hadoop/mapreduce"
 
 #TODO create paths on hdfs before service can start...
+
+
+zookeeper_quorum: "{{ groups['zookeepers'] | zip_longest([], fillvalue=zookeeper_port) | map('join', ':') | join(',') }}"

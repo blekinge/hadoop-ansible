@@ -76,7 +76,7 @@
 
     <property>
         <name>mapreduce.jobhistory.address</name>
-        <value>{{ mapreduce_history_server_host }}:10020</value>
+        <value>{{ mapreduce_history_server_host }}:{{mapreduce_history_server_rpc_port}}</value>
     </property>
 
     <!--TODO add subadmins here-->
@@ -87,7 +87,7 @@
 
     <property>
         <name>mapreduce.jobhistory.admin.address</name>
-        <value>{{ mapreduce_history_server_host }}:10033</value>
+        <value>{{ mapreduce_history_server_host }}:{{mapreduce_history_server_admin_port}}</value>
     </property>
 
     <property>
@@ -153,7 +153,7 @@
 
     <property>
         <name>mapreduce.jobhistory.webapp.address</name>
-        <value>{{ mapreduce_history_server_host }}:19888</value>
+        <value>{{ mapreduce_history_server_host }}:{{mapreduce_history_server_http_port}}</value>
     </property>
 
     <property>
@@ -263,7 +263,7 @@
 
     <property>
         <name>mapreduce.shuffle.port</name>
-        <value>13562</value>
+        <value>{{mapreduce_shuffle_port}}</value>
     </property>
 
     <property>

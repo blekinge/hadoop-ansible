@@ -1,0 +1,50 @@
+all:
+  children:
+
+    ipaserver:
+      hosts:
+        fipa001.yak2.net:
+
+    ipaclients:
+      children:
+        hadoop_nodes:
+
+    hadoop_nodes:
+      children:
+
+        hdfs:
+          children:
+            namenodes:
+              hosts:
+                hdfs001.yak2.net:
+                  primary: true
+                hdfs002.yak2.net:
+                  primary: false
+            journalnodes:
+              hosts:
+                zkpr[001:003].yak2.net:
+            datanodes:
+              hosts:
+                roda[001:004].yak2.net:
+
+        zookeepers:
+          hosts:
+            zkpr[001:003].yak2.net:
+
+        yarn:
+          children:
+            resource_managers:
+              hosts:
+                yarn[001:002].yak2.net:
+            nodemanagers:
+              hosts:
+                roda[001:004].yak2.net:
+            timeline_servers:
+              hosts:
+                hist001.yak2.net:
+
+        mapreduce:
+          children:
+            history_servers:
+              hosts:
+                hist001.yak2.net:

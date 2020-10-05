@@ -4,4 +4,4 @@
     state: started
     daemon_reload: yes
     name: yarn_timelineserver
-
+    enabled: true

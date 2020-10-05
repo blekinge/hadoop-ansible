@@ -7,9 +7,9 @@ User={{ hdfs_user }}
 Group={{ hdfs_group }}
 Type=forking
 # Run ExecStartPre with root-permissions
-PermissionsStartOnly=true
-ExecStartPre=/usr/bin/mkdir -p {{ hadoop_pid_dir }}/{{ hdfs_user }}
-ExecStartPre=/usr/bin/chown -R {{ hdfs_user }}:{{ hdfs_group }} {{ hadoop_pid_dir }}/{{ hdfs_user }}
+# Prefix with + to Run ExecStartPre with root-permissions, see https://www.freedesktop.org/software/systemd/man/systemd.service.html#ExecStart=
+ExecStartPre=+/usr/bin/mkdir -p {{ hadoop_pid_dir }}/{{ hdfs_user }} {{ hadoop_log_dir }}/{{ hdfs_user }}
+ExecStartPre=+/usr/bin/chown -R {{ hdfs_user }}:{{ hdfs_group }} {{ hadoop_pid_dir }}/{{ hdfs_user }} {{ hadoop_log_dir }}/{{ hdfs_user }}
 # Run ExecStart with User={{ hdfs_user }} / Group={{ hdfs_group }}
 ExecStart=/usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh --daemon start sps
 PIDFile={{ hadoop_pid_dir }}/{{ hdfs_user }}/hadoop-hdfs-sps.pid
