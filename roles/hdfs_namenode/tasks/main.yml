@@ -1,63 +1,13 @@
 ---
-- name: Stop namenode process
-  systemd:
-    state: stopped
-    daemon_reload: yes
-    name: hdfs_namenode
+- include: initialize_hdfs.yml
+  when: wipe_hdfs | bool
 
-#On the primary, format the filesystem
-- name: Format namenode
-  become: yes
-  become_user: hdfs
-  shell:
-    cmd:
-      echo -e "Y\nN" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -format > "{{ hadoop_dfs_name }}/formatted"
-    executable: /bin/bash
-    creates: "{{ hadoop_dfs_name }}/formatted"
-  when: primary|bool
-
-# Initialize the shared edits
-- name: Initialize shared edit
-  become: yes
-  become_user: hdfs
-  shell:
-    cmd:
-      /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -initializeSharedEdits > "{{ hadoop_dfs_name }}/shared_edits_initialized"
-    executable: /bin/bash
-    creates: "{{ hadoop_dfs_name }}/shared_edits_initialized"
-  when: primary|bool
-
-# And format the zkfc
-- name: Format zkfc
-  become: yes
-  become_user: hdfs
-  shell:
-    cmd:
-      echo -e "Y\nN" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh zkfc -formatZK > "{{ hadoop_dfs_name }}/zkFormatted"
-    executable: /bin/bash
-    creates: "{{ hadoop_dfs_name }}/zkFormatted"
-  when: primary|bool
-
-
-# Then start the primary, so the secondary will have something to sync with
-- name: Start namenode process
-  systemd:
-    state: restarted
-    daemon_reload: yes
-    name: hdfs_namenode
-    enabled: true
-  when: primary|bool
-
-# Sync the secondary namenode
-- name: Bootstrap HA
-  become: yes
-  become_user: hdfs
-  shell:
-    cmd:
-      /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -bootstrapStandby > "{{ hadoop_dfs_name }}/bootstrapped"
-    executable: /bin/bash
-    creates: "{{ hadoop_dfs_name }}/bootstrapped"
-  when: not (primary | bool)
+- name: Create Name dir
+  file:
+    path: "{{hadoop_dfs_name}}"
+    state: directory
+    owner: "{{hdfs_user}}"
+    group: "{{hdfs_user}}"
 
 
 # Start both
@@ -80,23 +30,37 @@
 - name: create basic directory structure
   become: yes
   become_user: hdfs
-  command: |
+  shell: |
+    source /etc/profile.d/hadoop.sh
+    source /etc/profile.d/kerberos.sh
+
+    kinit -kt /etc/security/keytabs/hdfs.headless.keytab hdfs
+    #TODO this should be configurable
     hdfs dfs -mkdir /tmp  \
+        /system \
     	/history /history/app-logs  /history/spark-history    \
-    	/history/mr-history /history/mr-history/done /history/mr-history/tmp
+    	/history/mr-history /history/mr-history/done /history/mr-history/tmp \
     	/history/timeline-server /history/timeline-server/active /history/timeline-server/done /history/timeline-server/generic-history \
-    	/user /user/abrsadm
+    	/user /user/abrsadm;
 
-    hdfs dfs -chmod o+rx /user /history
-    hdfs dfs -chmod a+rwx /tmp
+    hdfs dfs -chmod a+rwx /tmp;
 
-    hdfs dfs -chown -R hdfs:hadoop /history /user
+    hdfs dfs -chmod o+rx /user;
 
-    hdfs dfs -chown -R yarn:hadoop /history/app-logs /history/timeline-server
+    hdfs dfs -chmod -R o+rx /history;
 
-    hdfs dfs -chown -R mapred:hadoop /history/mr-history
+    hdfs dfs -chmod -R a+rwx /history/mr-history/tmp;
 
-    hdfs dfs -chown -R spark:hadoop /history/spark-history
+    hdfs dfs -chown -R hdfs:hadoop /history;
 
-    hdfs dfs -chown -R abrsadm:abrsadm /user/abrsadm
+    hdfs dfs -chown hdfs:hadoop /user;
+
+    hdfs dfs -chown -R yarn:hadoop /history/app-logs /history/timeline-server;
+
+    hdfs dfs -chown -R mapred:hadoop /history/mr-history;
+
+    hdfs dfs -chown -R spark:hadoop /history/spark-history;
+
+    hdfs dfs -chown -R abrsadm:abrsadm /user/abrsadm;
+    kdestroy
   when: primary|bool

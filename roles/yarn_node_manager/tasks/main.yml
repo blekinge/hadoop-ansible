@@ -1,4 +1,27 @@
 ---
+
+
+- name: Create data dirs
+  file:
+    path: "{{item}}"
+    state: directory
+    owner: "{{yarn_user}}"
+    group: "{{yarn_group}}"
+    mode: 0755
+  with_items: "{{yarn_data_dirs}}"
+
+- name: Create other dirs
+  file:
+    path: "{{item}}"
+    state: directory
+    owner: "{{yarn_user}}"
+    group: "{{yarn_group}}"
+    mode: 0755
+  with_items: #TODO get these configurable
+    - /tmp/hadoop/yarn-nm-recovery/
+    - /var/log/hadoop/yarn/userlogs
+
+
 - name: Start node manager process
   systemd:
     state: restarted

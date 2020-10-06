@@ -1,4 +1,12 @@
 ---
+
+- name: Create  Timeline dir
+  file:
+    path: "{{yarn_timeline_store}}"
+    state: directory
+    owner: "{{yarn_user}}"
+    group: "{{yarn_group}}"
+
 - name: Start YARN Timeline Server process
   systemd:
     state: started

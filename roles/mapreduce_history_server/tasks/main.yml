@@ -1,4 +1,29 @@
 ---
+
+- name: Create Mapreduce Paths
+  file:
+    path: "{{ item }}"
+    owner: "{{ mapreduce_user }}"
+    group: "{{ mapreduce_group }}"
+    state: directory
+    mode: 0750
+  with_items:
+    - "{{ mapreduce_create_path }}"
+
+- name: install mapreduce framework in HDFS
+  become: yes
+  become_user: hdfs
+  shell: |
+    source /etc/profile.d/hadoop.sh
+    source /etc/profile.d/kerberos.sh
+
+    kinit -kt /etc/security/keytabs/hdfs.headless.keytab hdfs
+
+    hdfs dfs -mkdir /system /system/mapreduce;
+    hdfs dfs -chmod -R a+rx /system;
+
+    mapred frameworkuploader  -target /system/mapreduce/mapreduce.tar.gz#mr-framework
+
 - name: Start Mapreduce History Server process
   systemd:
     state: started

@@ -1,34 +1,16 @@
 ---
-- name: Create HDFS Paths
 
-  file: 
+- name: Create common dirs
+  file:
     path: "{{ item }}"
-    owner: "{{ hdfs_user }}"
+    owner: "root"
     group: "{{ hadoop_group }}"
     state: directory
-    mode: 0750
+    mode: 0755
   with_items:
-    - "{{ hdfs_create_path }}"
+    - "{{ hadoop_log_dir }}"
+    - "{{hadoop_tmp}}"
 
-- name: Create YARN Paths
-  file:
-    path: "{{ item }}"
-    owner: "{{ yarn_user }}"
-    group: "{{ yarn_group }}"
-    state: directory
-    mode: 0750
-  with_items:
-    - "{{ yarn_create_path }}"
-
-- name: Create Mapreduce Paths
-  file:
-    path: "{{ item }}"
-    owner: "{{ mapreduce_user }}"
-    group: "{{ mapreduce_group }}"
-    state: directory
-    mode: 0750
-  with_items:
-    - "{{ mapreduce_create_path }}"
 
 
 - name: ensure hadoop directory exists

@@ -1,7 +1,30 @@
 ---
+
+
+- name: Stop journalnode process
+  systemd:
+    state: stopped
+    daemon_reload: yes
+    name: hdfs_journalnode
+    enabled: true
+  when: wipe_hdfs | bool
+
+- name: Wipe journal
+  file:
+    path: "{{hadoop_dfs_journal}}"
+    state: absent
+  when: wipe_hdfs | bool
+
+- name: Create  journal dir
+  file:
+    path: "{{hadoop_dfs_journal}}"
+    state: directory
+    owner: "{{hdfs_user}}"
+    group: "{{hdfs_group}}"
+
+
 - name: Start journalnode process
   systemd:
     state: restarted
-    daemon_reload: yes
     name: hdfs_journalnode
     enabled: true

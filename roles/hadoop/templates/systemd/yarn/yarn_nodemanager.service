@@ -7,8 +7,10 @@ User={{ yarn_user }}
 Group={{ yarn_group }}
 Type=forking
 # Prefix with + to Run ExecStartPre with root-permissions, see https://www.freedesktop.org/software/systemd/man/systemd.service.html#ExecStart=
-ExecStartPre=+/usr/bin/mkdir -p {{ hadoop_pid_dir }}/{{ yarn_user }} {{ hadoop_log_dir }}/{{ yarn_user }}
-ExecStartPre=+/usr/bin/chown -R {{ yarn_user }}:{{ yarn_group }} {{ hadoop_pid_dir }}/{{ yarn_user }} {{ hadoop_log_dir }}/{{ yarn_user }}
+ExecStartPre=+/usr/bin/mkdir -p {{ hadoop_pid_dir }}/{{ yarn_user }} {{ hadoop_log_dir }}/{{ yarn_user }} {{ yarn_application_logs_dir }}
+ExecStartPre=+/usr/bin/chown {{ yarn_user }}:{{ yarn_group }} {{ hadoop_pid_dir }}/{{ yarn_user }} {{ hadoop_log_dir }}/{{ yarn_user }} {{ yarn_application_logs_dir }}
+ExecStartPre=+/usr/bin/chmod 0755 {{ hadoop_pid_dir }}/{{ yarn_user }} {{ hadoop_log_dir }}/{{ yarn_user }}
+ExecStartPre=+/usr/bin/chmod 0777 {{ yarn_application_logs_dir }}
 # Run ExecStart with User={{ yarn_user }} / Group={{ yarn_group }}
 ExecStart=/usr/local/bin/hadoop-invoker.sh yarn yarn-env.sh --daemon start nodemanager
 PIDFile={{ hadoop_pid_dir }}/{{ yarn_user }}/hadoop-yarn-nodemanager.pid

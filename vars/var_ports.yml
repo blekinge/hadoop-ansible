@@ -26,7 +26,7 @@ hdfs_failover_controller_port: 8019
 hdfs_nfs_server_port: 2049
 hdfs_nfs_mountd_port: 4242
 
-yarn_timelineserver_jobhistory_port: 19888
+
 yarn_timelineserver_http_port: 8188
 yarn_timelineserver_https_port: 8190
 yarn_timelineserver_port2: 10200
@@ -42,6 +42,8 @@ yarn_resourcemanager_https_port: 8090
 mapreduce_history_server_rpc_port: 10020
 mapreduce_history_server_admin_port: 10033
 mapreduce_history_server_http_port: 19888
+mapreduce_history_server_https_port: 19890
+
 mapreduce_shuffle_port: 13562
 
 #TODO firewall

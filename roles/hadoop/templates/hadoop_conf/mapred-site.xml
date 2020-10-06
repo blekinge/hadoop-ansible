@@ -15,18 +15,16 @@
         <value>2</value>
     </property>
 
-    <!--      TODO-->
     <property>
         <name>mapreduce.application.classpath</name>
         <value>
-            $PWD/mr-framework/hadoop/share/hadoop/mapreduce/*:$PWD/mr-framework/hadoop/share/hadoop/mapreduce/lib/*:$PWD/mr-framework/hadoop/share/hadoop/common/*:$PWD/mr-framework/hadoop/share/hadoop/common/lib/*:$PWD/mr-framework/hadoop/share/hadoop/yarn/*:$PWD/mr-framework/hadoop/share/hadoop/yarn/lib/*:$PWD/mr-framework/hadoop/share/hadoop/hdfs/*:$PWD/mr-framework/hadoop/share/hadoop/hdfs/lib/*:$PWD/mr-framework/hadoop/share/hadoop/tools/lib/*:/usr/hdp/${hdp.version}/hadoop/lib/hadoop-lzo-0.6.0.${hdp.version}.jar:/etc/hadoop/conf/secure
+            $HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*,$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*,$PWD/mr-framework/*,/etc/hadoop/conf/
         </value>
     </property>
 
-    <!--TODO -->
     <property>
         <name>mapreduce.application.framework.path</name>
-        <value>/hdp/apps/${hdp.version}/mapreduce/mapreduce.tar.gz#mr-framework</value>
+        <value>/system/mapreduce/mapreduce.tar.gz#mr-framework</value>
     </property>
 
     <property>
@@ -157,8 +155,16 @@
     </property>
 
     <property>
+        <name>mapreduce.jobhistory.webapp.https.address</name>
+        <value>{{ mapreduce_history_server_host }}:{{mapreduce_history_server_https_port}}</value>
+        <description>
+            The https address the MapReduce JobHistory Server WebApp is on.
+        </description>
+    </property>
+
+    <property>
         <name>mapreduce.jobhistory.webapp.spnego-keytab-file</name>
-        <value>/etc/security/keytabs/spnego.service.keytab</value>
+        <value>{{keytab_dir}}/spnego.service.keytab</value>
     </property>
 
     <property>
@@ -168,7 +174,7 @@
 
     <property>
         <name>mapreduce.map.java.opts</name>
-        <value>-Xmx5734m</value>
+        <value>-Xmx{{ mapreduce_map_java_memory }}</value>
     </property>
 
     <property>
@@ -178,7 +184,7 @@
 
     <property>
         <name>mapreduce.map.memory.mb</name>
-        <value>7168</value>
+        <value>{{ mapreduce_map_yarn_memory }}</value>
     </property>
 
     <property>
@@ -213,7 +219,7 @@
 
     <property>
         <name>mapreduce.reduce.java.opts</name>
-        <value>-Xmx11468m</value>
+        <value>-Xmx{{mapreduce_reduce_java_memory}}</value>
     </property>
 
     <property>
@@ -223,7 +229,7 @@
 
     <property>
         <name>mapreduce.reduce.memory.mb</name>
-        <value>14336</value>
+        <value>{{mapreduce_reduce_yarn_memory}}</value>
     </property>
 
     <property>
@@ -273,7 +279,7 @@
 
     <property>
         <name>mapreduce.task.io.sort.mb</name>
-        <value>1024</value>
+        <value>{{mapreduce_task_sort_memory}}</value>
     </property>
 
     <property>
@@ -283,7 +289,7 @@
 
     <property>
         <name>yarn.app.mapreduce.am.command-opts</name>
-        <value>-Xmx5734m</value>
+        <value>-Xmx{{mapreduce_am_java_memory}}</value>
     </property>
 
     <property>
@@ -293,7 +299,7 @@
 
     <property>
         <name>yarn.app.mapreduce.am.resource.mb</name>
-        <value>7168</value>
+        <value>{{mapreduce_am_yarn_memory}}</value>
     </property>
 
     <property>
@@ -305,5 +311,20 @@
         <name>yarn.app.mapreduce.client.job.max-retries</name>
         <value>30</value>
     </property>
+
+
+    <property>
+        <name>yarn.app.mapreduce.am.env</name>
+        <value>HADOOP_MAPRED_HOME={{hadoop_home}}</value>
+    </property>
+    <property>
+        <name>mapreduce.map.env</name>
+        <value>HADOOP_MAPRED_HOME={{hadoop_home}}</value>
+    </property>
+    <property>
+        <name>mapreduce.reduce.env</name>
+        <value>HADOOP_MAPRED_HOME={{hadoop_home}}</value>
+    </property>
+
 
 </configuration>
