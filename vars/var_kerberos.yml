@@ -29,25 +29,25 @@ keytab_services:
 
   #  HDFS
   - {
-    hostgroup: "hdfs_datanodes",
+    hostgroup: "datanodes",
     name: "{{ hdfs_datanode_service_name }}",
     owner: "{{ hdfs_user }}",
     group: "{{ hdfs_group }}"
   }
   - {
-    hostgroup: "hdfs_namenodes",
+    hostgroup: "namenodes",
     name: "{{ hdfs_namenode_service_name }}",
     owner: "{{ hdfs_user }}",
     group: "{{ hdfs_group }}"
   }
   - {
-    hostgroup: "hdfs_journals",
+    hostgroup: "journalnodes",
     name: "{{ hdfs_journalnode_service_name }}",
     owner: "{{ hdfs_user }}",
     group: "{{ hdfs_group }}"
   }
   - {
-    hostgroup: "hadoop",
+    hostgroup: "hadoop_nodes",
     service: "HTTP",
     name: "spnego",
     owner: "root",
@@ -56,19 +56,19 @@ keytab_services:
   }
   #    YARN
   - {
-    hostgroup: "yarn_nodemanagers",
+    hostgroup: "nodemanagers",
     name: "{{ yarn_nodemanager_service_name }}",
     owner: "{{ yarn_user }}",
     group: "{{ yarn_group }}"
   }
   - {
-    hostgroup: "yarn_resource_managers",
+    hostgroup: "resource_managers",
     name: "{{ yarn_resourcemanager_service_name}}",
     owner: "{{ yarn_user }}",
     group: "{{ yarn_group }}"
   }
   - {
-    hostgroup: "yarn_timeline_servers",
+    hostgroup: "timeline_servers",
     name: "{{ yarn_timelineserver_service_name }}",
     owner: "{{ yarn_user }}",
     group: "{{ yarn_group }}"
@@ -83,7 +83,7 @@ keytab_services:
 
   #    Mapreduce
   - {
-    hostgroup: "mapreduce_history_servers",
+    hostgroup: "history_servers",
     name: "{{ mapreduce_historyserver_service_name }}",
     owner: "{{ mapreduce_user }}",
     group: "{{ mapreduce_group }}"

@@ -1,8 +1,0 @@
-- hosts: all
-  vars_files:
-    - vars/var_ssl.yml
-    - vars/var_ipa.yml
-    - vars/var_hadoop.yml
-    - vars/var_kerberos.yml
-  roles:
-    - ssl_certificates

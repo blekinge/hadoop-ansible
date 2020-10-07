@@ -10,9 +10,9 @@ ipaserver_realm: "{{ ipa_realm }}"
 
 #TODO iprange for nfs export
 IPRANGE1: TODO THIS WILL FAIL FOR yak_user_manager
-ipa_server: "{{ groups['ipaservers'] | first }}"
+ipa_server: "{{ groups['ipaserver'] | first }}"
 
-ipaclient_force_join: false
+ipaclient_force_join: true
 ipaclient_ntp_servers:
   - kac-gway-001.kach.sblokalnet
 
@@ -41,6 +41,9 @@ mapreduce_group: "{{hadoop_group}}"
 
 zookeeper_user: "zookeeper"
 zookeeper_group: "{{hadoop_group}}"
+
+spark_user: "spark2"
+spark_group: "spark2"
 
 users_group: "yakusers"
 uid_usersGroup: 20000

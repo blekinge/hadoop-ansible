@@ -17,7 +17,7 @@
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh
 
-    kinit -kt /etc/security/keytabs/hdfs.headless.keytab hdfs
+    kinit -kt {{keytab_dir}}/{{hdfs_user}}.headless.keytab {{hdfs_user}}
 
     hdfs dfs -mkdir /system /system/mapreduce;
     hdfs dfs -chmod -R a+rx /system;

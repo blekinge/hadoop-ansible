@@ -52,36 +52,4 @@ systemctl reboot
 ```
 This automatically reboots afterwards to ensure that the new kernel and software is loaded.
 
-10. Install IPA client and register host
-```bash
-yum install ipa-client -y
-mkdir -p /autohome
-ipa-client-install --domain=yak2.net  --realm=YAK2.NET --principal=admin --ntp-server=kac-gway-001.kach.sblokalnet --automount-location=default --force-join
-#General values for all hosts
-export SUBNET1="172.16.215"
-export IPRANGE1="${SUBNET1}.0/24"
-export DOMAIN_NAME1="yak2.net"
-export REALM_NAME="YAK2.NET"
-export STO_DATA_DIR=/sto-data
-export SYSHOME_DIR="$STO_DATA_DIR/syshome"
-export AUTOHOME_DIR="$STO_DATA_DIR/home"
-export IPA_SERVER=fipa001.$DOMAIN_NAME1
-#Make mount point
-mkdir -p /syshome
-# _netdev cause the mounting to wait for network to be up
-echo "$IPA_SERVER:$SYSHOME_DIR      /syshome        nfs4    rw,defaults,_netdev,hard,intr,_netdev   0 0" >> /etc/fstab
-#Set the sudo timeout
-sed -i "s|\(\[domain/${DOMAIN_NAME1}\]\)|\1\nentry_cache_sudo_timeout = 10|g" /etc/sssd/sssd.conf
-mount -a
-```
-
-11. Fix the kerberos ticket cache locations
-
-```bash
-sed -i "s|default_ccache_name.*|default_ccache_name = /tmp/krb5cc_%{uid}|g" /etc/krb5.conf
-
-echo "export KRB5CCNAME=FILE:/tmp/krb5cc_$UID" > /etc/profile.d/kerberos.sh
-
-sed -i -E 's|^( *default_ccache_name *= *KCM: *)|#\1|' /etc/krb5.conf.d/kcm_default_ccache 
-
-```
+10. Add the hostname to `hosts/host.yml` and run `playbook-ipaclients.yml` to register it as an ipa client

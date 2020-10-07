@@ -6,6 +6,7 @@ all:
         fipa001.yak2.net:
 
     ipaclients:
+      hosts:
       children:
         hadoop_nodes:
 
@@ -48,3 +49,9 @@ all:
             history_servers:
               hosts:
                 hist001.yak2.net:
+
+        projectnodes:
+          children:
+            proj000:
+              hosts:
+                proj000.yak2.net:

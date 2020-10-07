@@ -1,6 +1,4 @@
 ---
-- include: initialize_hdfs.yml
-  when: wipe_hdfs | bool
 
 - name: Create Name dir
   file:
@@ -8,6 +6,10 @@
     state: directory
     owner: "{{hdfs_user}}"
     group: "{{hdfs_user}}"
+
+
+- include: initialize_hdfs.yml
+  when: wipe_hdfs | bool
 
 
 # Start both
@@ -34,8 +36,8 @@
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh
 
-    kinit -kt /etc/security/keytabs/hdfs.headless.keytab hdfs
-    #TODO this should be configurable
+    kinit -kt {{keytab_dir}}/{{hdfs_user}}.headless.keytab {{hdfs_user}}
+
     hdfs dfs -mkdir /tmp  \
         /system \
     	/history /history/app-logs  /history/spark-history    \
@@ -51,15 +53,15 @@
 
     hdfs dfs -chmod -R a+rwx /history/mr-history/tmp;
 
-    hdfs dfs -chown -R hdfs:hadoop /history;
+    hdfs dfs -chown -R {{hdfs_user}}:{{hadoop_group}} /history;
 
-    hdfs dfs -chown hdfs:hadoop /user;
+    hdfs dfs -chown {{hdfs_user}}:{{hadoop_group}} /user;
 
-    hdfs dfs -chown -R yarn:hadoop /history/app-logs /history/timeline-server;
+    hdfs dfs -chown -R {{yarn_user}}:{{hadoop_group}} /history/app-logs /history/timeline-server;
 
-    hdfs dfs -chown -R mapred:hadoop /history/mr-history;
+    hdfs dfs -chown -R {{mapreduce_user}}:{{hadoop_group}}  /history/mr-history;
 
-    hdfs dfs -chown -R spark:hadoop /history/spark-history;
+    hdfs dfs -chown -R {{spark_user}}:{{hadoop_group}}  /history/spark-history;
 
     hdfs dfs -chown -R abrsadm:abrsadm /user/abrsadm;
     kdestroy

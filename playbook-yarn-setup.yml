@@ -5,6 +5,7 @@
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_kerberos.yml
+    - vars/var_ssl.yml
     - vars/var_ipa.yml
   roles:
     - yarn_timeline_server
@@ -16,6 +17,7 @@
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_kerberos.yml
+    - vars/var_ssl.yml
     - vars/var_ipa.yml
   roles:
     - yarn_node_manager
@@ -27,6 +29,7 @@
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_kerberos.yml
+    - vars/var_ssl.yml
     - vars/var_ipa.yml
   roles:
     - yarn_resource_manager

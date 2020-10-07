@@ -14,12 +14,10 @@ hadoop_tmp: "/tmp/hadoop"
 hadoop_log_dir: "/var/log/hadoop"
 hadoop_pid_dir: "/var/run/hadoop"
 
-#Common SSL variables
-ssl_server_dir: /etc/security/ssl
-ssl_client_dir: /etc/security/ssl
-ssl_key_size: 2048
 
 
+hdfs_namenode_memory: "4096m"
+hdfs_datanode_memory: "2048m"
 
 mapreduce_map_java_memory: "1536m"
 mapreduce_map_yarn_memory: "2048"

@@ -49,6 +49,17 @@
         noprivate: yes
         shell: /sbin/nologin
 
+      - name: "{{ spark_user }}"
+        first: Spark2
+        uid: "{{uid_hadoopGroup| int + 4}}"
+        gid: "{{uid_hadoopGroup}}"
+        homedir: "{{ ipaclient_syshome_dir }}/{{ spark_user }}"
+
+        last: Apache
+        userclass: SystemUser
+        noprivate: yes
+        shell: /sbin/nologin
+
 - name: system user groups
   ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
@@ -59,4 +70,6 @@
       - "{{ mapreduce_user }}"
       - "{{ yarn_user }}"
       - "{{ zookeeper_user }}"
+      - "{{ spark_user }}"
+
 

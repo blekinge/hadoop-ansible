@@ -1,0 +1,15 @@
+[YAK2-sdl8-baseos]
+name=YAK2 Springdale core Base $releasever - $basearch
+#mirrorlist=http://springdale.princeton.edu/data/springdale/$releasever/$basearch/os/BaseOS/mirrorlist
+baseurl=ftp://ftp.dmz.yak2.net/puias/$releasever/$basearch/os/BaseOS
+gpgcheck=1
+gpgkey=ftp://ftp.dmz.yak2.net/pub/rpm-gpg/RPM-GPG-KEY-springdale
+priority=1
+
+[YAK2-sdl8-baseos-updates]
+name=YAK2 Springdale core Updates $releasever - $basearch
+#mirrorlist=http://springdale.princeton.edu/data/springdale/updates/$releasever/BaseOS/$basearch/mirrorlist
+baseurl=ftp://ftp.dmz.yak2.net/puias/updates/$releasever/BaseOS/$basearch
+gpgcheck=1
+gpgkey=ftp://ftp.dmz.yak2.net/pub/rpm-gpg/RPM-GPG-KEY-springdale
+priority=1

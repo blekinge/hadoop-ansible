@@ -1,0 +1,16 @@
+- hosts: ipaclients
+  vars_files:
+    - vars/var_java.yml
+    - vars/var_ipa.yml
+    - vars/var_sensitive.yml
+    - vars/var_hadoop.yml
+    - vars/var_ssl.yml
+    - vars/var_ports.yml
+  roles:
+    - role: updated
+    - role: ipaclient_setup
+    - role: kerberos
+    - role: java
+    - role: ssl_certificates
+    - role: firewall_disabled
+

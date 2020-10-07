@@ -13,7 +13,7 @@
   vars_files:
     - vars/var_kerberos.yml
     - vars/var_ipa.yml
-    - vars/var_ipa_sensitive.yml
+    - vars/var_sensitive.yml
     - vars/var_hadoop.yml
   tasks:
     - set_fact: # set_fact to register this variable
@@ -52,7 +52,7 @@
   vars_files:
     - vars/var_kerberos.yml
     - vars/var_ipa.yml
-    - vars/var_ipa_sensitive.yml
+    - vars/var_sensitive.yml
     - vars/var_hadoop.yml
   roles:
     - kinit_init
@@ -63,7 +63,7 @@
   vars_files:
     - vars/var_kerberos.yml
     - vars/var_ipa.yml
-    - vars/var_ipa_sensitive.yml
+    - vars/var_sensitive.yml
     - vars/var_hadoop.yml
   roles:
     - kinit_init

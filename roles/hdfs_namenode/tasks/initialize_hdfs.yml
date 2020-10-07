@@ -12,8 +12,21 @@
     path: "{{hadoop_dfs_name}}"
     state: absent
 
+
+- name: Create Hadoop Namenode directories
+  file:
+    path: "{{ item }}"
+    owner: "{{ hdfs_user }}"
+    group: "{{ hdfs_group }}"
+    state: directory
+  loop:
+    - "{{ hadoop_pid_dir }}/{{ hdfs_user }}"
+    - "{{ hadoop_log_dir }}/{{ hdfs_user }}"
+    - "{{ hadoop_dfs_name }}"
+
+
 #On the primary, format the filesystem
-- name: Format namenode
+- name: Format Namenode
   become: yes
   become_user: hdfs
   shell:
@@ -37,7 +50,7 @@
   when: primary|bool
 
 # Then start the primary, so the secondary will have something to sync with
-- name: Start namenode process
+- name: Start Primary Namenode process
   systemd:
     state: restarted
     daemon_reload: yes
@@ -46,13 +59,14 @@
   when: primary|bool
 
 
-- name: Stop namenode process
+- name: Stop Secondary Namenode process
   systemd:
-    state: stop
+    state: stopped
     daemon_reload: yes
     name: hdfs_namenode
     enabled: true
   when: not (primary | bool)
+
 
 # Sync the secondary namenode
 - name: Bootstrap HA
@@ -64,6 +78,15 @@
     executable: /bin/bash
     creates: "{{ hadoop_dfs_name }}/bootstrapped"
   when: not (primary | bool)
+
+
+- name: Stop ZKFC
+  systemd:
+    state: stopped
+    daemon_reload: yes
+    name: hdfs_zkfc
+    enabled: true
+  when: primary | bool
 
 # And format the zkfc
 - name: Format zkfc

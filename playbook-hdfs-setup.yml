@@ -8,15 +8,16 @@
 # - playbook-zookeeper.yml
 #
 #
-#- hosts: journalnodes
-#  vars_files:
-#    - vars/var_java.yml
-#    - vars/var_ports.yml
-#    - vars/var_hadoop.yml
-#    - vars/var_kerberos.yml
-#    - vars/var_ipa.yml
-#  roles:
-#    - hdfs_journalnode
+- hosts: journalnodes
+  vars_files:
+    - vars/var_java.yml
+    - vars/var_ports.yml
+    - vars/var_hadoop.yml
+    - vars/var_ssl.yml
+    - vars/var_kerberos.yml
+    - vars/var_ipa.yml
+  roles:
+    - hdfs_journalnode
 
 
 - hosts: datanodes
@@ -24,6 +25,7 @@
     - vars/var_java.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
+    - vars/var_ssl.yml
     - vars/var_kerberos.yml
     - vars/var_ipa.yml
   roles:
@@ -31,13 +33,14 @@
 
 
 
-#
-#- hosts: namenodes
-#  vars_files:
-#    - vars/var_java.yml
-#    - vars/var_ports.yml
-#    - vars/var_hadoop.yml
-#    - vars/var_kerberos.yml
-#    - vars/var_ipa.yml
-#  roles:
-#    - hdfs_namenode
+
+- hosts: namenodes
+  vars_files:
+    - vars/var_java.yml
+    - vars/var_ports.yml
+    - vars/var_hadoop.yml
+    - vars/var_ssl.yml
+    - vars/var_kerberos.yml
+    - vars/var_ipa.yml
+  roles:
+    - hdfs_namenode

@@ -1,0 +1,36 @@
+---
+
+
+- name: Copy updated yum repos
+  template:
+    src: "{{ item }}"
+    dest: "/etc/yum.repos.d/"
+    mode: 0644
+    owner: "root"
+    group: "root"
+  with_fileglob:
+    - "templates/yum.repos.d/*"
+
+
+- name: Install Tools
+  yum:
+    name:
+      - git
+      - rsync
+      - wget
+      - yum-utils
+    state: present
+
+- name: Upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+
+- name: Check if we need to restart
+  shell: /usr/bin/needs-restarting -r
+  ignore_errors: yes
+  register: needs_restarting
+
+- name: reboot
+  reboot:
+  when: needs_restarting.rc != 0

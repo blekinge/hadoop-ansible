@@ -142,7 +142,7 @@
 
     <property>
         <name>dfs.ha.zkfc.port</name>
-        <value>8019</value>
+        <value>{{hdfs_zkfc_port}}</value>
         <description>
             The port number that the zookeeper failover controller RPC
             server binds to.
@@ -171,7 +171,7 @@
     </property>
     <property>
         <name>dfs.datanode.keytab.file</name>
-        <value>/etc/security/keytabs/{{ hdfs_datanode_service_name }}.service.keytab</value>
+        <value>{{keytab_dir}}/{{ hdfs_datanode_service_name }}.service.keytab</value>
     </property>
     <property>
         <name>dfs.encrypt.data.transfer.cipher.suites</name>
@@ -187,7 +187,7 @@
     </property>
     <property>
         <name>dfs.journalnode.keytab.file</name>
-        <value>/etc/security/keytabs/{{ hdfs_journalnode_service_name }}.service.keytab</value>
+        <value>{{keytab_dir}}/{{ hdfs_journalnode_service_name }}.service.keytab</value>
     </property>
     <property>
         <name>dfs.namenode.kerberos.internal.spnego.principal</name>
@@ -199,11 +199,11 @@
     </property>
     <property>
         <name>dfs.namenode.keytab.file</name>
-        <value>/etc/security/keytabs/{{ hdfs_namenode_service_name }}.service.keytab</value>
+        <value>{{keytab_dir}}/{{ hdfs_namenode_service_name }}.service.keytab</value>
     </property>
     <property>
         <name>dfs.web.authentication.kerberos.keytab</name>
-        <value>/etc/security/keytabs/spnego.service.keytab</value>
+        <value>{{keytab_dir}}/spnego.service.keytab</value>
     </property>
     <property>
         <name>dfs.web.authentication.kerberos.principal</name>

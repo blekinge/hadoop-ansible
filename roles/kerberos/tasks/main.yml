@@ -1,4 +1,7 @@
 ---
+- name: ensure ipa is reloaded
+  shell: sss_cache -E
+
 - name: set correct ccache
   replace:
     path: /etc/krb5.conf

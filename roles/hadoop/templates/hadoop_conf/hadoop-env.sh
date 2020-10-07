@@ -369,8 +369,8 @@ export HADOOP_SECURE_LOG="{{ hadoop_log_dir }}/$USER"
 SHARED_HDFS_NAMENODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
                              $HADOOP_NAMENODE_GC_OPTS \
                              $GC_LOG_OPTS  \
-                             -Xms4096m \
-                             -Xmx4096m \
+                             -Xms{{hdfs_namenode_memory}} \
+                             -Xmx{{hdfs_namenode_memory}} \
                              $HADOOP_LOG_OPTS \
                              -Dhadoop.security.logger=INFO,DRFAS \
                              -Dhdfs.audit.logger=INFO,DRFAAUDIT"
@@ -418,8 +418,8 @@ HADOOP_DATANODE_GC_OPTS="-XX:ParallelGCThreads=4 \
 export HDFS_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
                              $HADOOP_DATANODE_GC_OPTS \
                              $GC_LOG_OPTS  \
-                             -Xms2048m \
-                             -Xmx2048m \
+                             -Xms{{hdfs_datanode_memory}} \
+                             -Xmx{{hdfs_datanode_memory}} \
                              $HADOOP_LOG_OPTS \
                              -Dhadoop.security.logger=INFO,DRFAS"
 

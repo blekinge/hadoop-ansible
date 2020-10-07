@@ -1,0 +1,15 @@
+[YAK2-sdl8-appstream]
+name=YAK2 Springdale appstream Base $releasever - $basearch
+#mirrorlist=http://springdale.princeton.edu/data/springdale/$releasever/$basearch/os/AppStream/mirrorlist
+baseurl=ftp://ftp.dmz.yak2.net/puias/$releasever/$basearch/os/AppStream
+gpgcheck=1
+gpgkey=ftp://ftp.dmz.yak2.net/pub/rpm-gpg/RPM-GPG-KEY-springdale
+priority=1
+
+[YAK2-sdl8-appstream-updates]
+name=YAK2 Springdale appstream Updates $releasever - $basearch
+#mirrorlist=http://springdale.princeton.edu/data/springdale/updates/$releasever/AppStream/$basearch/mirrorlist
+baseurl=ftp://ftp.dmz.yak2.net/puias/updates/$releasever/AppStream/$basearch
+gpgcheck=1
+gpgkey=ftp://ftp.dmz.yak2.net/pub/rpm-gpg/RPM-GPG-KEY-springdale
+priority=1

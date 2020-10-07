@@ -1,6 +1,6 @@
 - hosts: zookeepers
   vars_files:
-    - vars/var_basic.yml
+    - vars/var_java.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_kerberos.yml
