@@ -1,5 +1,13 @@
 ---
 
+- name: Start node manager process
+  systemd:
+    state: stopped
+    daemon_reload: yes
+    name: yarn_nodemanager
+    enabled: true
+
+
 
 - name: Create data dirs
   file:
@@ -24,7 +32,7 @@
 
 - name: Start node manager process
   systemd:
-    state: restarted
+    state: started
     daemon_reload: yes
     name: yarn_nodemanager
     enabled: true

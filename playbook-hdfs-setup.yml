@@ -8,6 +8,10 @@
 # - playbook-zookeeper.yml
 #
 #
+
+# The order here is important
+
+  # The journalnodes must exist before the namenodes can run
 - hosts: journalnodes
   vars_files:
     - vars/var_java.yml
@@ -19,21 +23,7 @@
   roles:
     - hdfs_journalnode
 
-
-- hosts: datanodes
-  vars_files:
-    - vars/var_java.yml
-    - vars/var_ports.yml
-    - vars/var_hadoop.yml
-    - vars/var_ssl.yml
-    - vars/var_kerberos.yml
-    - vars/var_ipa.yml
-  roles:
-    - hdfs_datanode
-
-
-
-
+  # The namenodes do not require datanodes
 - hosts: namenodes
   vars_files:
     - vars/var_java.yml
@@ -44,3 +34,15 @@
     - vars/var_ipa.yml
   roles:
     - hdfs_namenode
+
+  # The datanodes become unhappy if they cannot connect to a namenode when starting up
+- hosts: datanodes
+  vars_files:
+    - vars/var_java.yml
+    - vars/var_ports.yml
+    - vars/var_hadoop.yml
+    - vars/var_ssl.yml
+    - vars/var_kerberos.yml
+    - vars/var_ipa.yml
+  roles:
+    - hdfs_datanode

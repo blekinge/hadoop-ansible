@@ -27,13 +27,13 @@ mapreduce_am_java_memory: "1536m"
 mapreduce_am_yarn_memory: 2048
 mapreduce_task_sort_memory: "1024"
 
-yarn_nodemanager_available_cpu_cores: 2
-yarn_nodemanager_available_memory: 3072
+default_yarn_nodemanager_available_cpu_cores: 1
+default_yarn_nodemanager_available_memory: 1024
 
 yarn_scheduler_min_cpu_cores: 1
-yarn_scheduler_max_cpu_cores: "{{yarn_nodemanager_available_cpu_cores}}"
+yarn_scheduler_max_cpu_cores: 2
 yarn_scheduler_min_memory: 1024
-yarn_scheduler_max_memory: "{{yarn_nodemanager_available_memory}}"
+yarn_scheduler_max_memory: 3072
 
 #HDFS
 hadoop_dfs_name: "/hdfs/dfs/name"

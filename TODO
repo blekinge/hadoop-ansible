@@ -4,21 +4,7 @@
 
 [ ] Spark install
 
-[ ] Mapreduce test
-TODO permissions
-Error checking file stats for /var/log/hadoop/yarn/nodemanager -1 Permission denied.
-Did not create any app-log directories
-
-Error checking file stats for /var/log/hadoop/yarn/userlogs -1 Permission denied.
-Did not create any app-log directories
-
-Error checking file stats for /data/sdb1/yarn -1 Permission denied.
-Couldn't get userdir directory for abrsadm.
-
-hdfs dfs -mkdir input
-hdfs dfs -put /usr/local/hadoop/hadoop-3.3.0/LICENSE.txt input/
-yarn jar /usr/local/hadoop/hadoop-3.3.0/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.0.jar wordcount /user/abrsadm/input /user/abrsadm/output
-
+[X] Mapreduce test
 
 [X] better systemd scripts (tempdir, logdir created automatically?)
 

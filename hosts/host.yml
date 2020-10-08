@@ -38,8 +38,13 @@ all:
               hosts:
                 yarn[001:002].yak2.net:
             nodemanagers:
-              hosts:
-                roda[001:004].yak2.net:
+              children:
+                small_yarn_nodes:
+                  vars:
+                    yarn_nodemanager_available_cpu_cores: 2
+                    yarn_nodemanager_available_memory: 3072
+                  hosts:
+                    roda[001:004].yak2.net:
             timeline_servers:
               hosts:
                 hist001.yak2.net:

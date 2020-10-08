@@ -23,7 +23,8 @@ ipaserver_syshome_dir: /sto-data/syshome
 
 ipaclient_autohome_dir: /autohome
 ipaclient_syshome_dir: /syshome
-
+#Nessesary to set up the automount
+ipaautomount_location: "default"
 
 #Users and groups
 hadoop_group: "hadoop"

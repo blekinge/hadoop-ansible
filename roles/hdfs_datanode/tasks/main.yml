@@ -5,7 +5,7 @@
   systemd:
     state: stopped
     daemon_reload: yes
-    name: hdfs_journalnode
+    name: hdfs_datanode
     enabled: true
   when: wipe_hdfs | bool
 

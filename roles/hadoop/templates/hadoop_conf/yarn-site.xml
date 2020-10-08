@@ -217,11 +217,11 @@
     </property>
     <property>
         <name>yarn.nodemanager.resource.cpu-vcores</name>
-        <value>{{yarn_nodemanager_available_cpu_cores}}</value>
+        <value>{{yarn_nodemanager_available_cpu_cores | default(default_yarn_nodemanager_available_cpu_cores)}}</value>
     </property>
     <property>
         <name>yarn.nodemanager.resource.memory-mb</name>
-        <value>{{yarn_nodemanager_available_memory}}</value>
+        <value>{{yarn_nodemanager_available_memory | default(default_yarn_nodemanager_available_memory)}}</value>
     </property>
     <property>
         <name>yarn.nodemanager.resource.percentage-physical-cpu-limit</name>
