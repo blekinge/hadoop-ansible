@@ -1,0 +1,66 @@
+---
+
+- name: Create common dirs
+  file:
+    path: "{{ item }}"
+    owner: "root"
+    group: "{{ spark_group }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - "{{ spark_log_dir }}"
+    - "{{ spark_tmp }}"
+
+
+
+- name: ensure spark directory exists
+  file:
+    path: "{{ spark_path }}"
+    state: directory
+
+
+- name: Unzip Spark
+  unarchive:
+    src: "{{ spark_download }}"
+    dest: "{{ spark_path }}"
+    remote_src: yes
+    creates: "{{ spark_home }}"
+    group: "{{ spark_group }}"
+    owner: "root"
+
+
+- name: Copy spark config files
+  template:
+    src: "{{ item }}"
+    dest: "{{ spark_config_path }}/"
+    mode: 0644
+    owner: "root"
+    group: "{{ spark_group }}"
+  with_fileglob:
+    - "templates/spark_conf/*"
+
+
+- name: remove {{ spark_home }}/conf
+  file:
+    path: "{{ spark_home }}/conf"
+    state: absent
+- name: symlink {{ spark_home }}/conf to {{ spark_config_path }}
+  file:
+    src: "{{ spark_config_path }}"
+    dest:  "{{ spark_home }}/conf"
+    owner: root
+    group: "{{ spark_group }}"
+    state: link
+    force: true
+
+
+- name: Copy Spark profile files
+  template:
+    src: "{{ item }}"
+    dest: "/etc/profile.d/"
+    mode: 0644
+    owner: "root"
+    group: "{{ spark_group }}"
+  with_fileglob:
+    - "templates/profile.d/*"
+

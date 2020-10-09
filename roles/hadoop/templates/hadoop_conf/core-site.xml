@@ -107,6 +107,7 @@
       RULE:[2:$1@$0]({{ hdfs_namenode_service_name }}@{{ipaserver_realm}})s/.*/{{ hdfs_user }}/
       RULE:[2:$1@$0]({{ yarn_resourcemanager_service_name }}@{{ipaserver_realm}})s/.*/{{ yarn_user }}/
       RULE:[2:$1@$0]({{ yarn_timelineserver_service_name }}@{{ipaserver_realm}})s/.*/{{ yarn_user }}/
+      RULE:[2:$1@$0]({{ spark_history_server_service_name }}@{{ipaserver_realm}})s/.*/{{ spark_user }}/
       DEFAULT</value>
   </property>
   <property>

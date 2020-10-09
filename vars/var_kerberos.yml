@@ -14,6 +14,8 @@ hdfs_datanode_service_name: "dn"
 hdfs_journalnode_service_name: "jn"
 
 mapreduce_historyserver_service_name: "jhs"
+spark_history_server_service_name: "shs"
+
 
 zookeeper_service_name: "zookeeper"
 keytab_users:
@@ -89,4 +91,11 @@ keytab_services:
     group: "{{ mapreduce_group }}"
   }
 
+  #    Spark
+  - {
+    hostgroup: "history_servers",
+    name: "{{ spark_history_server_service_name }}",
+    owner: "{{ spark_user }}",
+    group: "{{ spark_group }}"
+  }
 

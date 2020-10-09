@@ -55,6 +55,12 @@ all:
               hosts:
                 hist001.yak2.net:
 
+        spark:
+          children:
+            spark_history_servers:
+              hosts:
+                hist001.yak2.net:
+
         projectnodes:
           children:
             proj000:
