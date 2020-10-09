@@ -12,7 +12,7 @@
 # The order here is important
 
   # The journalnodes must exist before the namenodes can run
-- hosts: journalnodes
+- hosts: hdfs_journalnodes
   vars_files:
     - vars/var_java.yml
     - vars/var_ports.yml
@@ -24,7 +24,7 @@
     - hdfs_journalnode
 
   # The namenodes do not require datanodes
-- hosts: namenodes
+- hosts: hdfs_namenodes
   vars_files:
     - vars/var_java.yml
     - vars/var_ports.yml
@@ -36,7 +36,7 @@
     - hdfs_namenode
 
   # The datanodes become unhappy if they cannot connect to a namenode when starting up
-- hosts: datanodes
+- hosts: hdfs_datanodes
   vars_files:
     - vars/var_java.yml
     - vars/var_ports.yml

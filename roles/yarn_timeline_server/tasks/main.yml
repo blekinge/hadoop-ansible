@@ -11,5 +11,5 @@
   systemd:
     state: started
     daemon_reload: yes
-    name: yarn_timelineserver
+    name: yarn_timeline_server
     enabled: true

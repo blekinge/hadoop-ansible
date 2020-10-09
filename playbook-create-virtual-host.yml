@@ -1,0 +1,166 @@
+---
+
+# Run this as ansible-playbook -i hosts/localhost playbook-create-virtual-host -e shortname=proj001
+- name: oVirt ansible collection
+  hosts: ipaclients
+  connection: local
+  gather_facts: False
+  serial: 1
+  vars_files:
+    - vars/var_sensitive.yml
+    - vars/var_network.yml
+  vars:
+    shortname: "{{  inventory_hostname.split('.')[0] | lower }}"
+    hostname: "{{shortname}}.{{domain}}"
+
+    default_template: "SDL8-4R-30D-MIN-TMPL"
+    default_memory: "4GiB"
+    default_cpu_sockets: 2
+    default_cpu_cores: 1
+    default_description: "{{group_names | sort | join(' ')}}"
+
+
+  #    Set shortname as a commandline param -e shortname=hdfs001
+  tasks:
+    # code from https://www.samdarwin.com/ansible-default-vars/
+    - name: set facts based on defaults
+      set_fact:
+        "{{ item[8:] }}": "{{ lookup('vars', item) }}"
+      when:
+        - item is match("^default_")
+        - vars[item[8:]] is not defined
+      with_items:
+        "{{ vars | list }}"
+
+    - name: setup vm
+      delegate_to: localhost
+      tags: ovirt
+      block:
+        - name: "Simple A record (IPV4 address) lookup for {{hostname}}"
+          shell: "host {{hostname}} {{dns_server}} | grep '{{hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
+          register: hostnumberblob
+
+        - set_fact:
+            hostnumber: "{{ hostnumberblob.stdout }}"
+
+        - debug:
+            var: hostnumber
+
+        # The use of ovirt.ovirt before ovirt_auth is to check if the collection is correctly loaded
+        - name: Obtain SSO token with using username/password credentials
+          ovirt.ovirt.ovirt_auth:
+            url: "https://{{ovirt_api_host}}/ovirt-engine/api"
+            username: "{{ovirt_username}}"
+            password: "{{ ovirt_password }}"
+
+        - debug:
+            msg: "Creating new vm {{shortname}}"
+        # Previous task generated I(ovirt_auth) fact, which you can later use
+        # in different modules as follows:
+
+        - name: "create vm {{shortname}}"
+          ovirt.ovirt.ovirt_vm:
+            auth: "{{ ovirt_auth }}"
+            state: present
+            name: "{{shortname}}"
+            template: "{{template}}"
+            clone: yes
+            cluster: "{{ovirt_cluster}}"
+
+            memory: "{{memory}}"
+            memory_guaranteed: "{{memory}}"
+            cpu_sockets: "{{cpu_sockets}}"
+            cpu_cores: "{{cpu_cores}}"
+            comment: "{{comment | default(omit)}}"
+            description: "{{description | default(omit)}}"
+
+        - debug:
+            msg: "Creating new disks for {{shortname}}"
+
+        - name: "create extra disks"
+          ovirt.ovirt.ovirt_disk:
+            auth: "{{ ovirt_auth }}"
+            activate: yes
+            bootable: no
+            content_type: data
+            format: cow
+            interface: "virtio_scsi"
+            name: "{{shortname}}_{{item.name}}"
+            shareable: no
+            size: "{{item.size}}"
+            state: present
+            storage_domain: "VMs"
+            vm_name: "{{shortname}}"
+            wait: yes
+          when: host_disks is defined
+          loop: "{{ host_disks }}"
+
+        - name: "create {{nic1}} nic"
+          ovirt.ovirt.ovirt_nic:
+            auth: "{{ ovirt_auth }}"
+            state: present
+            vm: "{{shortname}}"
+            name: nic1
+            profile: "{{nic1}}"
+            network: "{{nic1}}"
+          register: nic1_added
+
+        - name: "create {{nic2}} nic"
+          ovirt.ovirt.ovirt_nic:
+            auth: "{{ ovirt_auth }}"
+            state: present
+            vm: "{{shortname}}"
+            name: nic2
+            profile: "{{nic2}}"
+            network: "{{nic2}}"
+          register: nic2_added
+
+        - debug:
+            msg: "Starting {{shortname}}"
+
+        - name: "Started vm {{shortname}}"
+          ovirt.ovirt.ovirt_vm:
+            auth: "{{ ovirt_auth }}"
+            state: running
+            name: "{{shortname}}"
+            cluster: "{{ovirt_cluster}}"
+        - name: setup network
+          when: nic1_added.changed or nic2_added.changed
+          block:
+            # There is almost certainly a better way of doing this but this works
+            - name: "ssh to host and change hostname"
+              shell: ssh root@{{new_vm_ip}} hostnamectl set-hostname {{hostname}}
+
+            - name: "ssh to host and setup network {{nic1}}"
+              shell: "ssh root@{{new_vm_ip}} nmcli con add type ethernet con-name {{nic1}} ifname ens3 ipv4.method manual ipv4.addresses {{nic1_subnet}}.{{hostnumber}}/24 ipv4.dns {{dns1}},{{dns2}} ipv4.dns-search {{dns_search_domains}} ipv4.gateway {{gateway}}"
+
+            - name: "ssh to host and setup network {{nic2}}"
+              shell: "ssh root@{{new_vm_ip}} 'nmcli con add type ethernet con-name {{nic2}} ifname ens4 ipv4.method manual ipv4.addresses {{nic2_subnet}}.{{hostnumber}}/24 ipv4.routes \"{{nic2_routes}}\"'"
+
+            - name: "ssh to host and remove old networks"
+              shell: "ssh root@{{new_vm_ip}} 'nmcli con del ens4; nmcli con del ens3;'"
+
+            - name: "Reboot vm to activate new networks"
+              ovirt.ovirt.ovirt_vm:
+                auth: "{{ ovirt_auth }}"
+                state: reboot
+                name: "{{shortname}}"
+                cluster: "{{ovirt_cluster}}"
+
+        - name: "Ensure vm is started"
+          ovirt.ovirt.ovirt_vm:
+            auth: "{{ ovirt_auth }}"
+            state: running
+            name: "{{shortname}}"
+            cluster: "{{ovirt_cluster}}"
+
+      always:
+        - name: Always revoke the SSO token
+          ovirt_auth:
+            state: absent
+            ovirt_auth: "{{ ovirt_auth }}"
+
+
+
+  collections:
+    - ovirt.ovirt

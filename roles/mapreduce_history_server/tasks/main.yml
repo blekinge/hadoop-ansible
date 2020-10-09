@@ -28,5 +28,6 @@
   systemd:
     state: started
     daemon_reload: yes
-    name: mapreduce_historyserver
+    enabled: yes
+    name: mapreduce_history_server
 

@@ -1,5 +1,5 @@
 
-- hosts: history_servers
+- hosts: mapreduce_history_servers
   vars_files:
     - vars/var_java.yml
     - vars/var_ports.yml

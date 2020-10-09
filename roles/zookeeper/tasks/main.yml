@@ -45,14 +45,3 @@
   with_fileglob:
     - "templates/systemd/*"
 
-- name: zookeeper_id
-  template: src=myid dest={{zookeeper_data_dir}}/myid mode=0644 owner="root" group="root"
-  when: zookeeper_server
-
-- name: Start zookeeper server
-  systemd:
-    state: started
-    daemon_reload: yes
-    name: zookeeper
-    enabled: true
-  when: zookeeper_server and start

@@ -31,19 +31,19 @@ keytab_services:
 
   #  HDFS
   - {
-    hostgroup: "datanodes",
+    hostgroup: "hdfs_datanodes",
     name: "{{ hdfs_datanode_service_name }}",
     owner: "{{ hdfs_user }}",
     group: "{{ hdfs_group }}"
   }
   - {
-    hostgroup: "namenodes",
+    hostgroup: "hdfs_namenodes",
     name: "{{ hdfs_namenode_service_name }}",
     owner: "{{ hdfs_user }}",
     group: "{{ hdfs_group }}"
   }
   - {
-    hostgroup: "journalnodes",
+    hostgroup: "hdfs_journalnodes",
     name: "{{ hdfs_journalnode_service_name }}",
     owner: "{{ hdfs_user }}",
     group: "{{ hdfs_group }}"
@@ -58,26 +58,26 @@ keytab_services:
   }
   #    YARN
   - {
-    hostgroup: "nodemanagers",
+    hostgroup: "yarn_node_managers",
     name: "{{ yarn_nodemanager_service_name }}",
     owner: "{{ yarn_user }}",
     group: "{{ yarn_group }}"
   }
   - {
-    hostgroup: "resource_managers",
+    hostgroup: "yarn_resource_managers",
     name: "{{ yarn_resourcemanager_service_name}}",
     owner: "{{ yarn_user }}",
     group: "{{ yarn_group }}"
   }
   - {
-    hostgroup: "timeline_servers",
+    hostgroup: "yarn_timeline_servers",
     name: "{{ yarn_timelineserver_service_name }}",
     owner: "{{ yarn_user }}",
     group: "{{ yarn_group }}"
   }
   #    Zookeeper
   - {
-    hostgroup: "zookeepers",
+    hostgroup: "zookeeper_servers",
     name: "{{ zookeeper_service_name }}",
     owner: "{{ zookeeper_user }}",
     group: "{{ zookeeper_group }}"
@@ -85,7 +85,7 @@ keytab_services:
 
   #    Mapreduce
   - {
-    hostgroup: "history_servers",
+    hostgroup: "mapreduce_history_servers",
     name: "{{ mapreduce_historyserver_service_name }}",
     owner: "{{ mapreduce_user }}",
     group: "{{ mapreduce_group }}"
@@ -93,7 +93,7 @@ keytab_services:
 
   #    Spark
   - {
-    hostgroup: "history_servers",
+    hostgroup: "spark_history_servers",
     name: "{{ spark_history_server_service_name }}",
     owner: "{{ spark_user }}",
     group: "{{ spark_group }}"

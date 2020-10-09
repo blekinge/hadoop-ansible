@@ -3,5 +3,5 @@
   systemd:
     state: restarted
     daemon_reload: yes
-    name: yarn_resourcemanager
+    name: yarn_resource_manager
     enabled: true

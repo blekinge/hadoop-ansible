@@ -1,0 +1,10 @@
+
+- hosts: mapreduce_history_servers
+  serial: 1
+  tasks:
+    - name: restart mapreduce_historyserver
+      systemd:
+        state: restarted
+        name: mapreduce_historyserver
+        daemon_reload: yes
+

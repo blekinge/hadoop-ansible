@@ -1,5 +1,5 @@
 
-- hosts: timeline_servers
+- hosts: yarn_timeline_servers
   vars_files:
     - vars/var_java.yml
     - vars/var_ports.yml
@@ -11,7 +11,7 @@
     - yarn_timeline_server
 
 
-- hosts: nodemanagers
+- hosts: yarn_node_managers
   vars_files:
     - vars/var_java.yml
     - vars/var_ports.yml
@@ -23,7 +23,7 @@
     - yarn_node_manager
 
 
-- hosts: resource_managers
+- hosts: yarn_resource_managers
   vars_files:
     - vars/var_java.yml
     - vars/var_ports.yml

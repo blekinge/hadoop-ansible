@@ -20,12 +20,12 @@ hdfs_namenode_memory: "4096m"
 hdfs_datanode_memory: "2048m"
 
 mapreduce_map_java_memory: "1536m"
-mapreduce_map_yarn_memory: "2048"
+mapreduce_map_yarn_memory: 2048
 mapreduce_reduce_java_memory: "1536m"
-mapreduce_reduce_yarn_memory: "2048"
+mapreduce_reduce_yarn_memory: 2048
 mapreduce_am_java_memory: "1536m"
 mapreduce_am_yarn_memory: 2048
-mapreduce_task_sort_memory: "1024"
+mapreduce_task_sort_memory: 1024
 
 default_yarn_nodemanager_available_cpu_cores: 1
 default_yarn_nodemanager_available_memory: 1024
@@ -58,7 +58,7 @@ hdfs_data_dirs_joined:  "{{ hdfs_data_dirs | join(',') }}"
 yarn_timeline_store: "/hadoop/yarn/timeline"
 
 
-yarn_timelineserver: "{{ groups['timeline_servers'] | first }}"
+yarn_timelineserver: "{{ groups['yarn_timeline_servers'] | first }}"
 
 
 yarn_data_dirs:
@@ -75,10 +75,10 @@ yarn_application_logs_dir: "{{ hadoop_log_dir }}/{{ yarn_user }}/application-log
 #yarn_user_logs: "/hadoop/yarn/
 
 #TODO more than one?
-mapreduce_history_server_host: "{{ groups['history_servers'] | first }}"
+mapreduce_history_server_host: "{{ groups['mapreduce_history_servers'] | first }}"
 mapreduce_create_path:
   - "/hadoop/mapreduce"
 
 
 
-zookeeper_quorum: "{{ groups['zookeepers'] | zip_longest([], fillvalue=zookeeper_port) | map('join', ':') | join(',') }}"
+zookeeper_quorum: "{{ groups['zookeeper_servers'] | zip_longest([], fillvalue=zookeeper_port) | map('join', ':') | join(',') }}"

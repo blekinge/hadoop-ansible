@@ -19,6 +19,7 @@
       - rsync
       - wget
       - yum-utils
+      - python36
     state: present
 
 - name: Upgrade all packages

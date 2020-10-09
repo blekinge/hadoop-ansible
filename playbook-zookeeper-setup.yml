@@ -1,0 +1,11 @@
+- hosts: zookeeper_servers
+  vars_files:
+    - vars/var_java.yml
+    - vars/var_ports.yml
+    - vars/var_hadoop.yml
+    - vars/var_kerberos.yml
+    - vars/var_zookeeper.yml
+    - vars/var_ipa.yml
+  roles:
+    - zookeeper
+    - zookeeper_server

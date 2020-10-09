@@ -12,6 +12,6 @@ spark_tmp: "/tmp/spark"
 spark_log_dir: "/var/log/spark"
 spark_pid_dir: "/var/run/spark"
 
-spark_history_server: "{{ groups['timeline_servers'] | first }}"
+spark_history_server: "{{ groups['spark_history_servers'] | first }}"
 
 spark_classpath: "{{hadoop_home}}/share/hadoop/common/*:{{hadoop_home}}/share/hadoop/common/lib/*:{{hadoop_home}}/share/hadoop/client/hadoop-client-api-{{hadoop_version}}.jar:{{hadoop_home}}/share/hadoop/client/hadoop-client-runtime-{{hadoop_version}}.jar:{{hadoop_home}}/share/hadoop/hdfs/*:{{hadoop_home}}/share/hadoop/hdfs/lib/*:{{hadoop_home}}/share/hadoop/yarn/*:{{hadoop_home}}/share/hadoop/yarn/lib/*"

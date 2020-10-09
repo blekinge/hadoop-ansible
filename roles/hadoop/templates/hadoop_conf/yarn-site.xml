@@ -545,9 +545,9 @@
 
     <property>
         <name>yarn.resourcemanager.ha.rm-ids</name>
-        <value>{{ groups['resource_managers'] | join(',') }}</value>
+        <value>{{ groups['yarn_resource_managers'] | join(',') }}</value>
     </property>
-    {% for resource_manager in groups['resource_managers'] %}
+    {% for resource_manager in groups['yarn_resource_managers'] %}
     <property>
         <name>yarn.resourcemanager.hostname.{{resource_manager}}</name>
         <value>{{ resource_manager }}</value>

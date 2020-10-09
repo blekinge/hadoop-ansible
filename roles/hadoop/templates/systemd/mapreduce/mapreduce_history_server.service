@@ -7,11 +7,11 @@ User={{ mapreduce_user }}
 Group={{ mapreduce_group }}
 Type=forking
 # Prefix with + to Run ExecStartPre with root-permissions, see https://www.freedesktop.org/software/systemd/man/systemd.service.html#ExecStart=
-ExecStartPre=+/usr/bin/mkdir -p {{ hadoop_pid_dir }}/mapred {{ hadoop_log_dir }}/{{ mapreduce_user }}
-ExecStartPre=+/usr/bin/chown -R {{ mapreduce_user }}:{{ mapreduce_group }} {{ hadoop_pid_dir }}/mapred {{ hadoop_log_dir }}/{{ mapreduce_user }}
+ExecStartPre=+/usr/bin/mkdir -p {{ hadoop_pid_dir }}/{{ mapreduce_user }} {{ hadoop_log_dir }}/{{ mapreduce_user }}
+ExecStartPre=+/usr/bin/chown -R {{ mapreduce_user }}:{{ mapreduce_group }} {{ hadoop_pid_dir }}/{{ mapreduce_user }} {{ hadoop_log_dir }}/{{ mapreduce_user }}
 # Run ExecStart with User={{ mapreduce_user }} / Group={{ mapreduce_group }}
 ExecStart=/usr/local/bin/hadoop-invoker.sh mapred mapred-env.sh --daemon start historyserver
-PIDFile={{ hadoop_pid_dir }}/mapred/hadoop-mapred-historyserver.pid
+PIDFile={{ hadoop_pid_dir }}/{{ mapreduce_user }}/hadoop-mapred-historyserver.pid
 
 [Install]
 WantedBy=multi-user.target

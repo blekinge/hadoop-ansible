@@ -1,0 +1,8 @@
+- hosts: zookeeper_servers
+  serial: 1
+  tasks:
+      - name: restart zookeeper_server
+        systemd:
+          state: restarted
+          name: zookeeper
+          daemon_reload: yes

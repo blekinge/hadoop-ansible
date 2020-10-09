@@ -98,9 +98,9 @@
     </property>
     <property>
         <name>dfs.ha.namenodes.{{ hdfs_name }}</name>
-        <value>{{ groups['namenodes'] | join(',') }}</value>
+        <value>{{ groups['hdfs_namenodes'] | join(',') }}</value>
     </property>
-    {% for namenode in groups['namenodes'] %}
+    {% for namenode in groups['hdfs_namenodes'] %}
     <property>
         <name>dfs.namenode.rpc-address.{{ hdfs_name }}.{{ namenode }}</name>
         <value>{{ namenode }}:{{hdfs_namenode_rpc_port}}</value>
@@ -119,7 +119,7 @@
 
     <property>
         <name>dfs.namenode.shared.edits.dir</name>
-        <value>qjournal://{{ groups['zookeepers'] | zip_longest([], fillvalue=hdfs_journalnode_rpc_port) | map('join', ':') | join(';') }}/{{ hdfs_name }}
+        <value>qjournal://{{ groups['zookeeper_servers'] | zip_longest([], fillvalue=hdfs_journalnode_rpc_port) | map('join', ':') | join(';') }}/{{ hdfs_name }}
         </value>
     </property>
     <property>

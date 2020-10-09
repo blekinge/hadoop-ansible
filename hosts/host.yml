@@ -1,12 +1,18 @@
+localhost:
+  vars: # Needed so I can use my local virtualenv python (nessesary for ovirt module) when creating new VMs
+    ansible_python_interpreter: python
+  hosts:
+    localhost
+
 all:
   children:
+
 
     ipaserver:
       hosts:
         fipa001.yak2.net:
 
     ipaclients:
-      hosts:
       children:
         hadoop_nodes:
 
@@ -15,43 +21,48 @@ all:
 
         hdfs:
           children:
-            namenodes:
+            hdfs_namenodes:
               hosts:
                 hdfs001.yak2.net:
                   primary: true
+                  comment: "Primary"
                 hdfs002.yak2.net:
                   primary: false
-            journalnodes:
+                  comment: "Secondary"
+            hdfs_journalnodes:
               hosts:
                 zkpr[001:003].yak2.net:
-            datanodes:
+            hdfs_datanodes:
               hosts:
                 roda[001:004].yak2.net:
+                  host_disks:
+                    - name: HDFS
+                      size: 1024GiB
+                      mount: /data/sdb1
 
-        zookeepers:
+        zookeeper_servers:
           hosts:
             zkpr[001:003].yak2.net:
 
         yarn:
           children:
-            resource_managers:
+            yarn_resource_managers:
               hosts:
                 yarn[001:002].yak2.net:
-            nodemanagers:
-              children:
-                small_yarn_nodes:
-                  vars:
-                    yarn_nodemanager_available_cpu_cores: 2
-                    yarn_nodemanager_available_memory: 3072
-                  hosts:
-                    roda[001:004].yak2.net:
-            timeline_servers:
+            yarn_node_managers:
+              hosts:
+                roda[001:004].yak2.net:
+                  memory: 8Gib
+                  cpu_sockets: 4
+                  yarn_nodemanager_available_cpu_cores: 2
+                  yarn_nodemanager_available_memory: 3072
+            yarn_timeline_servers:
               hosts:
                 hist001.yak2.net:
 
         mapreduce:
           children:
-            history_servers:
+            mapreduce_history_servers:
               hosts:
                 hist001.yak2.net:
 
@@ -66,3 +77,9 @@ all:
             proj000:
               hosts:
                 proj000.yak2.net:
+            proj001:
+              hosts:
+                proj001.yak2.net:
+            proj002:
+              hosts:
+                proj002.yak2.net:

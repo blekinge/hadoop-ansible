@@ -37,5 +37,6 @@
   systemd:
     state: restarted
     daemon_reload: yes
+    enabled: true
     name: spark_history_server
 
