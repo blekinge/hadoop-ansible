@@ -26,6 +26,13 @@
     group: "{{ hadoop_group }}"
     owner: "root"
 
+- name: "Link {{hadoop_home}} to {{ hadoop_path }}/current"
+  file:
+    src: "{{hadoop_home}}"
+    dest: "{{ hadoop_path }}/current"
+    state: link
+
+
 
 - name: Copy Hadoop config files
   template:

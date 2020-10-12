@@ -1,10 +1,6 @@
 
 - hosts: mapreduce_history_servers
   vars_files:
-    - vars/var_java.yml
-    - vars/var_ports.yml
-    - vars/var_hadoop.yml
-    - vars/var_kerberos.yml
     - vars/var_ipa.yml
   roles:
     - mapreduce_history_server

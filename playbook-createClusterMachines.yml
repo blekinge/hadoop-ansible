@@ -1,0 +1,33 @@
+# This playbook creates the hosts as virtual VMs in Ovirt
+- name: oVirt ansible collection
+  hosts: VMs
+  gather_facts: False
+  serial: 1 # Only create and run 1 at a time. This is nessesary to set the network up correctly
+  vars_files:
+    - vars/var_sensitive.yml
+  # Configure the machines in hosts.yml
+  roles:
+    - ovirt_new_vm
+  collections: # This require the ovirt-ansible plugin installed
+    - ovirt.ovirt
+
+
+- hosts: ipaserver
+  vars_files:
+    - vars/var_sensitive.yml
+  roles:
+    - role: ssl_certificates_creator
+    - role: ipa_service_definitions
+
+- hosts: ipaclients
+  vars_files:
+    - vars/var_sensitive.yml
+  roles:
+    - role: updated
+    - role: java # Install java
+    - role: ipaclient_setup # Set up the ipa clients
+    - role: kerberos # Create the relevant kerberos keytabs
+    - role: firewalled # Set up the firewall
+    - role: ssl_certificates_recipient #Create the ssl certificates
+    - role: service_keytabs
+

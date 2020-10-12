@@ -1,0 +1,5 @@
+---
+- name: "Open Firewall for group {{item}}"
+  include: open_firewall.yml rolename={{item}}
+  loop: "{{ group_names }}"
+

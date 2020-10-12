@@ -1,19 +1,104 @@
-localhost:
-  vars: # Needed so I can use my local virtualenv python (nessesary for ovirt module) when creating new VMs
-    ansible_python_interpreter: python
-  hosts:
-    localhost
+
 
 all:
-  children:
+  hosts:
+    localhost: # Needed so I can use my local virtualenv python (nessesary for ovirt module) when creating new VMs
+      ansible_connection: local
+      ansible_python_interpreter: "python"
 
+  vars:
+    ipa_domain: yak2.net
+    ipa_realm: YAK2.NET
+    ipaclient_domain: "{{ ipa_domain }}"
+    ipaclient_realm: "{{ ipa_realm }}"
+    ipaserver_domain: "{{ ipa_domain }}"
+    ipaserver_realm: "{{ ipa_realm }}"
+
+    ipaclient_force_join: true
+    ipaclient_ntp_servers:
+      - kac-gway-001.kach.sblokalnet
+
+  children:
+    VMs: # This is the group of VMs created by playbook-create-virtual-host.yml
+      vars:
+        template: SDL8-4R-30D-MIN-TMPL
+        memory: 4GiB
+        cpu_sockets: 2
+        cpu_cores: 1
+
+
+        # The network settings used when creating new virtual hosts for the cluster
+        domain: yak2.net
+        domain_nfs: "nfs.{{domain}}"
+        domain_adm: "adm.{{domain}}" # 172.16.216
+        domain_dmz: "dmz.{{domain}}"
+
+        dns_search_domains: "{{ [domain,domain_nfs,domain_adm,domain_dmz] | join(',') }}"
+
+        # DNS server used to look up the ip of the new host
+        # The host should be added to DNS prior to creation
+        dns_server: "bind001.{{domain}}"
+
+        # Nic1 profile
+        nic1: "yak2net"
+        nic1_subnet: 172.16.215
+        nic1_domain: "{{domain}}"
+
+        #The dns servers to configure for the new host
+        dns1: "{{nic1_subnet}}.52" #bind001
+        dns2: "{{nic1_subnet}}.53" #bind002
+
+        # New VMs are always created with this ip, so we can ssh to this and set up the machine
+        new_vm_ip: "{{nic1_subnet}}.254"
+
+        # The gateway to use
+        gateway: "{{nic1_subnet}}.51"
+
+
+        nic2: "ovirtmgmt"
+        nic2_subnet: 172.16.216
+        nic2_domain: "{{domain_adm}}"
+
+        nic2_routes_list:
+          - "172.16.7.0/24"
+          - "172.16.216.1,172.18.0.0/16"
+          - "172.16.216.1,172.28.1.0/24"
+          - "172.16.216.1,130.225.24.0/23"
+          - "172.16.216.1,130.226.220.0/24"
+          - "172.16.216.1"
+
+        nic2_routes: "{{ nic2_routes_list | join(' ') }}"
+
+      hosts:
+        # The "short name", ie. the first part of the name here will be used as the name of the VM
+        # IF you have to use a "wrong" hostname or an IP here, use the variables "hostname" and "shortname" to set
+        #   the correct hostname for the host
+        hdfs[001:002].yak2.net:
+        zkpr[001:003].yak2.net:
+        roda[001:004].yak2.net:
+          memory: 8GiB
+          cpu_sockets: 4
+
+          host_disks: # This is how to create additional disks
+            - name: HDFS
+              size: 1024GiB
+              mount: /data/sdb1
+        yarn[001:002].yak2.net:
+        hist001.yak2.net: #Example of how to set hostname
+          hostname:  hist001.yak2.net
+          shortname:  hist001
+        proj[000:003].yak2.net:
+          host_disks: # This is how to create additional disks
+            - name: data
+              size: 10GiB
+              mount: /data/sdb1
 
     ipaserver:
-      hosts:
+      hosts: # There can be only one here
         fipa001.yak2.net:
 
     ipaclients:
-      children:
+      children: #Mark all hadoop nodes as ipa-clients
         hadoop_nodes:
 
     hadoop_nodes:
@@ -35,10 +120,8 @@ all:
             hdfs_datanodes:
               hosts:
                 roda[001:004].yak2.net:
-                  host_disks:
-                    - name: HDFS
-                      size: 1024GiB
-                      mount: /data/sdb1
+                  hdfs_data_dirs:
+                    - /data/sdb1/hdfs
 
         zookeeper_servers:
           hosts:
@@ -52,10 +135,10 @@ all:
             yarn_node_managers:
               hosts:
                 roda[001:004].yak2.net:
-                  memory: 8Gib
-                  cpu_sockets: 4
                   yarn_nodemanager_available_cpu_cores: 2
                   yarn_nodemanager_available_memory: 3072
+                  yarn_data_dirs:
+                    - /data/sdb1/yarn
             yarn_timeline_servers:
               hosts:
                 hist001.yak2.net:
@@ -63,13 +146,13 @@ all:
         mapreduce:
           children:
             mapreduce_history_servers:
-              hosts:
+              hosts: # There can be only one here
                 hist001.yak2.net:
 
         spark:
           children:
             spark_history_servers:
-              hosts:
+              hosts: # There can be only one here
                 hist001.yak2.net:
 
         projectnodes:

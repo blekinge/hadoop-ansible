@@ -52,3 +52,4 @@
   with_fileglob:
     - "./keytabs/*"
   when: '"ipaserver" not in group_names'
+

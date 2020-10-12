@@ -1,0 +1,4 @@
+---
+dependencies:
+  - role: spark
+  - role: ssl_certificates_recipient

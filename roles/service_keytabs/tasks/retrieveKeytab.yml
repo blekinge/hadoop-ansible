@@ -10,10 +10,18 @@
   shell: kinit -kt {{ entry.keytab_file }} {{ entry.principal}} -c test.ticket || rm {{ entry.keytab_file }}
   when: keytab_file.stat.exists == True
 
+- name: kinit
+  include_role:
+    name: kinit_init
+
 - name: "getKeytab for {{ entry.principal }}"
   shell: ipa-getkeytab --server={{groups['ipaserver'] | first }} --principal={{ entry.principal}} --keytab={{ entry.keytab_file }}
   args:
     creates: "{{ entry.keytab_file }}"
+
+- name: kdestroy
+  include_role:
+    name: kinit_destroy
 
 
 - name: "set permissions for {{ entry.keytab_file }}"

@@ -1,13 +1,5 @@
 - hosts: history_servers
   vars_files:
-    - vars/var_java.yml
-    - vars/var_ports.yml
-    - vars/var_hadoop.yml
-    - vars/var_spark.yml
-    - vars/var_ssl.yml
-    - vars/var_sensitive.yml
-    - vars/var_kerberos.yml
     - vars/var_ipa.yml
   roles:
-    - role: spark
     - role: spark_history_server

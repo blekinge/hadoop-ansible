@@ -1,0 +1,62 @@
+---
+
+- name: install rsync so we can use ansible synchronize
+  package:
+    name: rsync
+    state: present
+
+
+- name: Create ssl dirs dir
+  file:
+    path: "{{ dir }}"
+    state: "directory"
+    mode: 0755
+    owner: root
+    group: "{{ hadoop_group }}"
+  loop:
+    - "{{ ssl_server_dir }}"
+    - "{{ ssl_client_dir }}"
+  loop_control:
+    loop_var: "dir"
+
+- name: "uploading ssl certificates to host"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ssl_server_dir }}"
+    mode: "0640" #This is the key, so it must NOT be publically readable
+    owner: "root"
+    group: "{{ hadoop_group}}"
+  with_fileglob:
+    - "./ssl/{{ inventory_hostname }}-keystore.jks"
+    - "./ssl/{{ inventory_hostname }}-truststore.jks"
+
+
+- name: "uploading ssl truststore to host"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ssl_server_dir }}"
+    mode: "0644" #There is no risk in having the truststore readable
+    owner: "root"
+    group: "{{ hadoop_group}}"
+  with_fileglob:
+    - "./ssl/all.jks"
+
+- name: "uploading http secret to host"
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/security/"
+    mode: "0440" #Not public
+    group: "{{ hadoop_group}}"
+    owner: "root"
+  with_fileglob:
+    - "./ssl/http_secret"
+
+- name: "Uploading hadoop ssl config to host"
+  template:
+    src: "{{ item }}"
+    dest: "{{ hadoop_config_path }}/"
+    mode: 0644
+    owner: "root"
+    group: "{{ hadoop_group }}"
+  with_fileglob:
+    - "templates/hadoop_conf/*"

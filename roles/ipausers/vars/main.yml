@@ -1,0 +1,47 @@
+---
+# https://github.com/freeipa/ansible-freeipa/blob/master/roles/ipaclient/README.md#base-variables
+
+#TODO iprange for nfs export
+IPRANGE1: TODO THIS WILL FAIL FOR yak_user_manager
+ipa_server: "{{ groups['ipaserver'] | first }}"
+
+
+default_ipaserver_autohome_dir: /sto-data/home
+default_ipaserver_syshome_dir: /sto-data/syshome
+
+default_ipaclient_autohome_dir: /autohome
+default_ipaclient_syshome_dir: /syshome
+#Nessesary to set up the automount
+default_ipaautomount_location: "default"
+
+#Users and groups
+default_hadoop_group: "hadoop"
+default_uid_hadoopGroup: 11000
+
+default_hdfs_user: "hdfs"
+default_hdfs_group: "hdfs"
+default_uid_hdfsGroup: 11200
+
+default_yarn_user: "yarn"
+default_yarn_group: "{{hadoop_group}}"
+
+default_mapreduce_user: "mapred"
+default_mapreduce_group: "{{hadoop_group}}"
+
+default_zookeeper_user: "zookeeper"
+default_zookeeper_group: "{{hadoop_group}}"
+
+default_spark_user: "spark2"
+default_spark_group: "spark2"
+
+default_users_group: "yakusers"
+default_uid_usersGroup: 20000
+
+default_systemservices_group: "systemservices"
+default_uid_systemserviceGroup: 15000
+
+default_subadmins_group: "subadmins"
+default_uid_subadminsGroup: 12000
+
+
+

@@ -1,5 +1,0 @@
----
-#Common SSL variables
-ssl_server_dir: /etc/security/ssl
-ssl_client_dir: /etc/security/ssl
-ssl_key_size: 2048

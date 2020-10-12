@@ -1,0 +1,102 @@
+---
+
+default_keytab_dir: "/etc/security/keytabs/"
+default_keytab_permissions: "0400"
+
+default_kinit_principal: "admin@{{ipaserver_realm}}"
+
+default_yarn_nodemanager_service_name: "nm"
+default_yarn_resourcemanager_service_name: "rm"
+default_yarn_timelineserver_service_name: "tl"
+
+default_hdfs_namenode_service_name: "nn"
+default_hdfs_datanode_service_name: "dn"
+default_hdfs_journalnode_service_name: "jn"
+
+default_mapreduce_historyserver_service_name: "jhs"
+default_spark_history_server_service_name: "shs"
+
+
+default_zookeeper_service_name: "zookeeper"
+
+default_keytab_users:
+  - {
+    host: "{{ groups['ipaserver'] | first }}", #Create this keytab on ipaserver and distribute it to all host
+    name: "{{ hdfs_user }}",
+    owner: "{{ hdfs_user }}",
+    group: "{{ hadoop_group }}"
+  }
+
+
+default_keytab_services:
+
+  #  HDFS
+  - {
+    hostgroup: "hdfs_datanodes",
+    name: "{{ hdfs_datanode_service_name }}",
+    owner: "{{ hdfs_user }}",
+    group: "{{ hdfs_group }}"
+  }
+  - {
+    hostgroup: "hdfs_namenodes",
+    name: "{{ hdfs_namenode_service_name }}",
+    owner: "{{ hdfs_user }}",
+    group: "{{ hdfs_group }}"
+  }
+  - {
+    hostgroup: "hdfs_journalnodes",
+    name: "{{ hdfs_journalnode_service_name }}",
+    owner: "{{ hdfs_user }}",
+    group: "{{ hdfs_group }}"
+  }
+  - {
+    hostgroup: "hadoop_nodes",
+    service: "HTTP",
+    name: "spnego",
+    owner: "root",
+    group: "{{ hadoop_group }}",
+    permissions: "0440"
+  }
+  #    YARN
+  - {
+    hostgroup: "yarn_node_managers",
+    name: "{{ yarn_nodemanager_service_name }}",
+    owner: "{{ yarn_user }}",
+    group: "{{ yarn_group }}"
+  }
+  - {
+    hostgroup: "yarn_resource_managers",
+    name: "{{ yarn_resourcemanager_service_name}}",
+    owner: "{{ yarn_user }}",
+    group: "{{ yarn_group }}"
+  }
+  - {
+    hostgroup: "yarn_timeline_servers",
+    name: "{{ yarn_timelineserver_service_name }}",
+    owner: "{{ yarn_user }}",
+    group: "{{ yarn_group }}"
+  }
+  #    Zookeeper
+  - {
+    hostgroup: "zookeeper_servers",
+    name: "{{ zookeeper_service_name }}",
+    owner: "{{ zookeeper_user }}",
+    group: "{{ zookeeper_group }}"
+  }
+
+  #    Mapreduce
+  - {
+    hostgroup: "mapreduce_history_servers",
+    name: "{{ mapreduce_historyserver_service_name }}",
+    owner: "{{ mapreduce_user }}",
+    group: "{{ mapreduce_group }}"
+  }
+
+  #    Spark
+  - {
+    hostgroup: "spark_history_servers",
+    name: "{{ spark_history_server_service_name }}",
+    owner: "{{ spark_user }}",
+    group: "{{ spark_group }}"
+  }
+

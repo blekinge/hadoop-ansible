@@ -14,35 +14,35 @@
   # The journalnodes must exist before the namenodes can run
 - hosts: hdfs_journalnodes
   vars_files:
-    - vars/var_java.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_ssl.yml
     - vars/var_kerberos.yml
     - vars/var_ipa.yml
   roles:
+    - default_values
     - hdfs_journalnode
 
   # The namenodes do not require datanodes
 - hosts: hdfs_namenodes
   vars_files:
-    - vars/var_java.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_ssl.yml
     - vars/var_kerberos.yml
     - vars/var_ipa.yml
   roles:
+    - default_values
     - hdfs_namenode
 
   # The datanodes become unhappy if they cannot connect to a namenode when starting up
 - hosts: hdfs_datanodes
   vars_files:
-    - vars/var_java.yml
     - vars/var_ports.yml
     - vars/var_hadoop.yml
     - vars/var_ssl.yml
     - vars/var_kerberos.yml
     - vars/var_ipa.yml
   roles:
+    - default_values
     - hdfs_datanode

@@ -1,7 +1,15 @@
 ---
+- name: kinit
+  include_role:
+    name: kinit_init
+
 - name: Create service definitions in FreeIPA
   ipaservice:
     ipaadmin_password: "{{ ipaadmin_password }}"
     service: "{{ item.principal }}"
     host: "{{ item.host }}"
   with_items: '{{ kerberos_conf | selectattr("type", "eq", "SERVICE") | list }}'
+
+- name: kdestroy
+  include_role:
+    name: kinit_destroy
