@@ -1,5 +1,3 @@
 - hosts: history_servers
-  vars_files:
-    - vars/var_ipa.yml
   roles:
     - role: spark_history_server

@@ -1,5 +1,3 @@
 - hosts: hadoop_nodes
-  vars_files:
-    - vars/var_ipa.yml
   roles:
     - role: spark
