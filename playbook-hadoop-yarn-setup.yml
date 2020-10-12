@@ -1,21 +1,15 @@
 
 - hosts: yarn_timeline_servers
-  vars_files:
-    - vars/var_ipa.yml
   roles:
     - yarn_timeline_server
 
 
 - hosts: yarn_node_managers
-  vars_files:
-    - vars/var_ipa.yml
   roles:
     - yarn_node_manager
 
 
 - hosts: yarn_resource_managers
-  vars_files:
-    - vars/var_ipa.yml
   roles:
     - yarn_resource_manager
 

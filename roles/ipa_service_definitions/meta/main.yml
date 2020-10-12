@@ -1,4 +1,5 @@
 ---
 dependencies:
   - role: default_values
+  - role: ipausers
   - role: kerberos_config

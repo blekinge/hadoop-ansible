@@ -3,3 +3,4 @@ dependencies:
   - role: default_values
   - role: java
   - role: hadoop
+  - role: firewalled

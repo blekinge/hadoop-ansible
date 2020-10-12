@@ -4,3 +4,4 @@ dependencies:
   - role: java
   - role: firewalled
   - role: ipausers
+  - role: kerberos_config

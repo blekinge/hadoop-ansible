@@ -1,5 +1,0 @@
-- hosts: zookeeper_servers
-  vars_files:
-    - vars/var_ipa.yml
-  roles:
-    - zookeeper_server

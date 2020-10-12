@@ -1,6 +1,4 @@
 
 - hosts: mapreduce_history_servers
-  vars_files:
-    - vars/var_ipa.yml
   roles:
     - mapreduce_history_server

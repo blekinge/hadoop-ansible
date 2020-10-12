@@ -25,7 +25,6 @@
 - name: Retrieving keytab for host
   include: retrieveKeytab.yml entry="{{item}}"
   with_items: '{{ kerberos_conf | selectattr("host", "eq", inventory_hostname) | list}}'
-  when: '"ipaserver" not in group_names'
   #DO NOT DO THIS FOR THE IPA SERVER AS YOU MIGHT OVERWRITE SOMETHING IT USES.
   # the spnego/HTTP certificate has the same principal as /var/lib/ipa/gssproxy/http.keytab and will break the server when
   #   regenerated
