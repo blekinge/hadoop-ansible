@@ -1,4 +1,0 @@
-
-- hosts: mapreduce_history_servers
-  roles:
-    - mapreduce_history_server

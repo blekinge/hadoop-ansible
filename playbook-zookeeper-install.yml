@@ -1,7 +1,0 @@
-- hosts: hadoop_nodes
-  roles:
-    - zookeeper
-
-- hosts: zookeeper_servers
-  roles:
-    - zookeeper_server

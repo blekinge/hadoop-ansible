@@ -1,9 +1,0 @@
-- hosts: history_servers
-  serial: 1
-  tasks:
-  - name: Start Spark History Server process
-    systemd:
-      state: restarted
-      daemon_reload: yes
-      name: spark_history_server
-

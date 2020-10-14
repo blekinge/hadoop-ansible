@@ -1,3 +1,0 @@
-- hosts: hadoop_nodes
-  roles:
-    - role: spark

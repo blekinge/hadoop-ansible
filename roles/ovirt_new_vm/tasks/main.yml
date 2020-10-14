@@ -133,6 +133,7 @@
         ovirt_auth: "{{ ovirt_auth }}"
 
 
+#TODO device names?
 - name: format extra disks
   include: task_format_disk.yml mount="{{item.mount}}" device="sd{{letters[idx+1]}}"
   when: host_disks is defined

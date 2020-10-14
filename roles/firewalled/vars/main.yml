@@ -2,20 +2,22 @@
 # This file defines all the ports used by the system, for easier firewall config
 
 
-ports: { # This dict maps host group names to ports
-  "hdfs_namenodes": [ "{{hdfs_namenode_rpc_port}}","{{hdfs_namenode_http_port}}","{{hdfs_namenode_https_port}}", "{{hdfs_zkfc_port}}" ],
-  "hdfs_journalnodes": [ "{{hdfs_journalnode_rpc_port}}","{{hdfs_journalnode_https_port}}","{{hdfs_journalnode_https_port}}" ],
-  "hdfs_datanodes": [ "{{hdfs_datanode_rpc_port}}", "{{hdfs_datanode_ipc_port}}", "{{hdfs_datanode_http_port}}", "{{hdfs_datanode_https_port}}" ],
+ports: { # This dict maps roles names to ports
+  "hdfs_namenode": [ "{{hdfs_namenode_rpc_port}}","{{hdfs_namenode_http_port}}","{{hdfs_namenode_https_port}}", "{{hdfs_zkfc_port}}" ],
+  "hdfs_journalnode": [ "{{hdfs_journalnode_rpc_port}}","{{hdfs_journalnode_https_port}}","{{hdfs_journalnode_https_port}}" ],
+  "hdfs_datanode": [ "{{hdfs_datanode_rpc_port}}", "{{hdfs_datanode_ipc_port}}", "{{hdfs_datanode_http_port}}", "{{hdfs_datanode_https_port}}" ],
 
-  "yarn_timeline_servers": [ "{{yarn_timelineserver_http_port}}", "{{yarn_timelineserver_https_port}}", "{{yarn_timelineserver_port2}}" ],
-  "yarn_node_managers": [ "{{yarn_nodemanager_port}}", "{{mapreduce_shuffle_port}}" ],
-  "yarn_resource_managers": [ "{{yarn_resourcemanager_rpc_port}}","{{yarn_resourcemanager_scheduler_port}}","{{yarn_resourcemanager_tracker_port}}","{{yarn_resourcemanager_admin_port}}","{{yarn_resourcemanager_http_port}}","{{yarn_resourcemanager_https_port}}" ],
+  "yarn_timeline_server": [ "{{yarn_timelineserver_http_port}}", "{{yarn_timelineserver_https_port}}", "{{yarn_timelineserver_port2}}" ],
+  "yarn_node_manager": [ "{{yarn_nodemanager_port}}", "{{mapreduce_shuffle_port}}" ],
+  "yarn_resource_manager": [ "{{yarn_resourcemanager_rpc_port}}","{{yarn_resourcemanager_scheduler_port}}","{{yarn_resourcemanager_tracker_port}}","{{yarn_resourcemanager_admin_port}}","{{yarn_resourcemanager_http_port}}","{{yarn_resourcemanager_https_port}}" ],
 
-  "mapreduce_history_servers": [ "{{mapreduce_history_server_rpc_port}}","{{mapreduce_history_server_admin_port}}","{{mapreduce_history_server_http_port}}","{{mapreduce_history_server_https_port}}" ],
+  "mapreduce_history_server": [ "{{mapreduce_history_server_rpc_port}}","{{mapreduce_history_server_admin_port}}","{{mapreduce_history_server_http_port}}","{{mapreduce_history_server_https_port}}" ],
 
-  "zookeeper_servers": [ "{{zookeeper_port}}", "{{zookeeper_leader_election_port}}", "{{zookeeper_follower_port}}" ],
+  "spark_history_server": [ "{{spark_history_server_http_port}}","{{spark_history_server_https_port}}" ],
 
-  "hadoop_nodes":[] # This ensures firewall is started for all hadoop nodes
+  "zookeeper_server": [ "{{zookeeper_port}}", "{{zookeeper_leader_election_port}}", "{{zookeeper_follower_port}}" ],
+
+  "hadoop":[] # This ensures firewall is started for all hadoop nodes
 }
 
 zookeeper_port: 2181
@@ -72,4 +74,4 @@ mapreduce_shuffle_port: 13562
 
 spark_history_server_https_port: 18480
 spark_history_server_http_port: 18080
-spark_ui_http_port:
+spark_ui_http_port: ""

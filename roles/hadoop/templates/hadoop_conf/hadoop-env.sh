@@ -59,7 +59,7 @@ export JAVA_HOME={{ jvm_home }}
 
 # Location of Hadoop.  By default, Hadoop will attempt to determine
 # this location based upon its execution path.
-export HADOOP_HOME={{hadoop_path}}/hadoop-{{hadoop_version}}
+export HADOOP_HOME={{current_hadoop_home}}
 
 # Location of Hadoop's configuration information.  i.e., where this
 # file is living. If this is not defined, Hadoop will attempt to

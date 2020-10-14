@@ -19,6 +19,10 @@
     state: directory
 
 
+- debug:
+    msg: "Downloading Spark from {{spark_download}}"
+
+
 - name: Unzip Spark
   unarchive:
     src: "{{ spark_download }}"
@@ -27,6 +31,13 @@
     creates: "{{ spark_home }}"
     group: "{{ spark_group }}"
     owner: "root"
+
+
+- name: "Link {{spark_home}} to {{current_spark_home}}"
+  file:
+    src: "{{spark_home}}"
+    dest: "{{current_spark_home}}"
+    state: link
 
 
 - name: Copy spark config files

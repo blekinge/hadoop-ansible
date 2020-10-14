@@ -3,5 +3,5 @@ dependencies:
   - role: default_values
   - role: java
   - role: firewalled
-  - role: ipausers
+  - role: ipa_systemusers_config
   - role: kerberos_config

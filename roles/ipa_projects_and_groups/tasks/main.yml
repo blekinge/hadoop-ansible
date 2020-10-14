@@ -1,0 +1,7 @@
+---
+
+- name: "Project Group {{group}}"
+  loop: "{{projects}}"
+  loop_control:
+    loop_var: group
+  include_tasks: createGroupAndUsers.yml

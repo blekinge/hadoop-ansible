@@ -4,14 +4,25 @@
     path: "{{ zookeeper_path }}"
     state: directory
 
+
+- debug:
+    msg: "Downloading Zookeeper from {{zookeeper_download}}"
+
 - name: Unzip Zookeeper
   unarchive:
     src: "{{ zookeeper_download }}"
     dest: "{{ zookeeper_path }}"
     remote_src: yes
-    creates: "{{ zookeeper_path }}/zookeeper-{{ zookeeper_version }}"
+    creates: "{{zookeeper_home}}"
     group: "{{ zookeeper_group }}"
     owner: "root"
+
+
+- name: "Link {{zookeeper_home}} to {{current_zookeeper_home}}"
+  file:
+    src: "{{zookeeper_home}}"
+    dest: "{{current_zookeeper_home}}"
+    state: link
 
 
 - name: Create Zookeeper Paths

@@ -60,7 +60,7 @@ SPARK_IDENT_STRING=$USER
 # The scheduling priority for daemons. (Default: 0)
 SPARK_NICENESS=0
 
-export HADOOP_HOME="{{hadoop_home}}"
+export HADOOP_HOME="{{current_hadoop_home}}"
 export HADOOP_CONF_DIR="{{hadoop_config_path}}"
 
 # The java implementation to use.

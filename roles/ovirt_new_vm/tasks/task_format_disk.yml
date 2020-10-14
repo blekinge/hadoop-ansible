@@ -1,5 +1,6 @@
 ---
 
+#TODO lsblk to part+fs all disks
 - parted:
     device: "/dev/{{device}}"
     number: 1
@@ -7,11 +8,12 @@
     state: present
 
 - filesystem:
-    fstype: ext4
+    fstype: xfs
     dev: "/dev/{{device}}1"
 
+# TODO blkid
 - mount:
-    fstype: ext4
+    fstype: xfs
     src: "/dev/{{device}}1"
     path: "{{mount}}"
     state: mounted

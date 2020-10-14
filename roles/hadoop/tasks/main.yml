@@ -1,5 +1,19 @@
 ---
 
+- name: Check for single yarn_timeline_server
+  fail: msg="Single host check failed."
+  when: "groups['yarn_timeline_servers'] |length  != 1"
+
+
+- name: Check for single mapreduce_history_server
+  fail: msg="Single host check failed."
+  when: "groups['mapreduce_history_servers'] |length  != 1"
+
+
+- name: Check for single spark_history_server
+  fail: msg="Single host check failed."
+  when: "groups['spark_history_servers'] |length  != 1"
+
 - name: Create common dirs
   file:
     path: "{{ item }}"
@@ -17,6 +31,12 @@
   file:
     path: "{{ hadoop_path }}"
     state: directory
+
+
+- debug:
+    msg: "Downloading hadoop from {{hadoop_download}}"
+
+
 - name: Unzip Hadoop
   unarchive:
     src: "{{hadoop_download}}"
@@ -26,10 +46,10 @@
     group: "{{ hadoop_group }}"
     owner: "root"
 
-- name: "Link {{hadoop_home}} to {{ hadoop_path }}/current"
+- name: "Link {{hadoop_home}} to {{current_hadoop_home}}"
   file:
     src: "{{hadoop_home}}"
-    dest: "{{ hadoop_path }}/current"
+    dest: "{{current_hadoop_home}}"
     state: link
 
 

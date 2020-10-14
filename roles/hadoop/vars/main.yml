@@ -9,6 +9,8 @@ default_hadoop_download: http://ftp.download-by.net/apache/hadoop/common/hadoop-
 default_hadoop_path: "/usr/local/hadoop"
 default_hadoop_home: "{{ hadoop_path }}/hadoop-{{ hadoop_version }}"
 
+default_current_hadoop_home: "{{ hadoop_path }}/current"
+
 default_hadoop_config_path: "/etc/hadoop/conf"
 default_hadoop_tmp: "/tmp/hadoop"
 default_hadoop_log_dir: "/var/log/hadoop"

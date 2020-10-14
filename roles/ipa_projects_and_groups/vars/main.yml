@@ -1,0 +1,7 @@
+default_projects: []
+
+default_common_usergroups: []
+
+default_shell: /bin/bash
+
+default_hdfs_delegation_host:  "{{ groups['hdfs'] | first }}"

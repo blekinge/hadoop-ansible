@@ -1,8 +1,24 @@
+# You will make one inventory file per cluster. So all cluster-specific settings should go into this file
 
+# These are the magical hostgroups that are automagically bound to roles and behaivours
+# VMs: Machines to auto-create in ovirt
+# ipaserver: the FreeIPA server to register all hosts to
+# ipaclients: The list of hosts to setup as ipa clients
+# hadoop_nodes: = role hadoop, role zookeeper, role spark
+# hdfs_namenodes: = role hdfs_namenode
+# hdfs_journalnodes: = role hdfs_journalnode
+# hdfs_datanodes: = role hdfs_datanode
+# zookeeper_servers: = role zookeeper_server
+# yarn_resource_managers: = role yarn_resource_manager
+# yarn_node_managers: = role yarn_node_manager
+# yarn_timeline_servers: = role yarn_timeline_server
+# mapreduce_history_servers: = role mapreduce_history_server
+# spark_history_servers: = spark_history_server
 
 all:
   hosts:
     localhost: # Needed so I can use my local virtualenv python (nessesary for ovirt module) when creating new VMs
+      # see ovirt_sdk_setup.sh for how to set this up
       ansible_connection: local
       ansible_python_interpreter: "python"
 
@@ -14,13 +30,68 @@ all:
     ipaserver_domain: "{{ ipa_domain }}"
     ipaserver_realm: "{{ ipa_realm }}"
 
-    ipaclient_force_join: true
+    ipaclient_force_join: false
     ipaclient_ntp_servers:
       - kac-gway-001.kach.sblokalnet
+
+    # Wipe HDFS and set up fresh
+    wipe_hdfs: false
+
+    # These are the groups that all project users will be made member of
+    common_usergroups:
+      - "{{users_group}}"
+      #TODO vpnu group
+
+    subadmins:
+
+
+    projects:
+      - name: "{{subadmins_group}}"
+        gid: "{{uid_subadminsGroup}}"
+        users:
+          - username: abrsadm
+            firstname: Asger
+            lastname: Blekinge
+            mobile: +450000000
+            email: "abr@kb.dk"
+
+          - username: tbasadm
+            firstname: Tony
+            lastname: BA
+            mobile: +450000000
+            email: "tba@kb.dk"
+
+      - name: p000
+        gid: 20000
+        users:
+          - username: p000user
+            firstname: p00
+            lastname: User
+            mobile: +450000000
+            email: "p000user@{{ipa_domain}}"
+            uid: 20003 # Use can specify uid and gid explictly
+            gid: 20004
+          - username: userp000
+            firstname: p00
+            lastname: User2
+            mobile: +450000000
+            email: "userp000@{{ipa_domain}}"
+            # If uid or gid is not specified, use group gid + position in this list.
+
+      - name: p001
+        gid: 20100
+
+    #the hadoop node  to delegate to for creating HDFS user home when creating new users
+    #hdfs_delegation_host: "{{ groups['hdfs'] | first }}"
 
   children:
     VMs: # This is the group of VMs created by playbook-create-virtual-host.yml
       vars:
+        domain: yak2.net
+
+        ovirt_api_host: "ovim001.adm.{{domain}}"
+        ovirt_cluster: "KAC"
+
         template: SDL8-4R-30D-MIN-TMPL
         memory: 4GiB
         cpu_sockets: 2
@@ -28,7 +99,6 @@ all:
 
 
         # The network settings used when creating new virtual hosts for the cluster
-        domain: yak2.net
         domain_nfs: "nfs.{{domain}}"
         domain_adm: "adm.{{domain}}" # 172.16.216
         domain_dmz: "dmz.{{domain}}"
@@ -109,11 +179,9 @@ all:
             hdfs_namenodes:
               hosts:
                 hdfs001.yak2.net:
-                  primary: true
+                  primary: true # The primary node is the one whose hdfs gets propagated to the other namenodes
                   comment: "Primary"
                 hdfs002.yak2.net:
-                  primary: false
-                  comment: "Secondary"
             hdfs_journalnodes:
               hosts:
                 zkpr[001:003].yak2.net:

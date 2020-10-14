@@ -29,7 +29,7 @@ if [ -f "{{ hadoop_config_path }}/hadoop-env.sh" ]; then
   source "{{ hadoop_config_path }}/hadoop-env.sh"
 fi
 
-export HADOOP_YARN_HOME="{{ hadoop_home }}"
+export HADOOP_YARN_HOME="{{ current_hadoop_home }}"
 HADOOP_OPTS="$HADOOP_OPTS -Dyarn.home.dir=$HADOOP_YARN_HOME"
 
 export HADOOP_LOG_DIR="{{ hadoop_log_dir }}/{{ yarn_user }}"

@@ -8,16 +8,3 @@
     group: root
     mode: '0622'
     state: directory
-
-#
-#
-#- name: autohomes
-#  file:
-#    path: "{{ ipaserver_autohome_dir }}/{{ item.user }}"
-#    owner: "{{ item.user }}"
-#    group: "{{ item.group }}"
-#    mode: '0600'
-#    state: directory
-#  loop:
-#    - { user: nahuser, group: nahuser}
-#    - { user: vagrant, group: vagrant}

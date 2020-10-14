@@ -1,0 +1,5 @@
+---
+
+- name: Check for single freeipa server
+  fail: msg="Single host check failed."
+  when: " groups['ipaserver'] |length  != 1"

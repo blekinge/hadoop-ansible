@@ -1,3 +1,0 @@
-- hosts: history_servers
-  roles:
-    - role: spark_history_server

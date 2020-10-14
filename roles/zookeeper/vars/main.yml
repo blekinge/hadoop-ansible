@@ -7,6 +7,9 @@ default_zookeeper_path: "/usr/local/zookeeper"
 
 default_zookeeper_home: "{{zookeeper_path}}/apache-zookeeper-{{zookeeper_version}}-bin"
 
+default_current_zookeeper_home: "{{ zookeeper_path }}/current"
+
+
 default_zookeeper_log_path: "/var/log/zookeeper/"
 default_zookeeper_pid_dir: "/var/run/zookeeper/"
 

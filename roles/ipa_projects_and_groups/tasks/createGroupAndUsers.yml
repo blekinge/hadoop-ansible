@@ -1,0 +1,34 @@
+---
+
+- name: "Project Group {{group.name}}"
+  ipagroup:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: "{{ group.name }}"
+    gidnumber: "{{ group.gid }}"
+
+- debug:
+    var: hdfs_delegation_host
+
+- name: "HDFS project dir /projects/{{ group.name }}"
+  become: yes
+  become_user: "{{hdfs_user}}"
+  delegate_to: "{{hdfs_delegation_host}}"
+  delegate_facts: false
+  shell: |
+    set -e # Fail on anything
+    source /etc/profile.d/hadoop.sh
+    source /etc/profile.d/kerberos.sh
+    kinit -kt {{keytab_dir}}/{{hdfs_user}}.headless.keytab {{hdfs_user}};
+    hdfs dfs -mkdir -p /projects/{{ group.name }};
+    hdfs dfs -chown {{ hdfs_user }}:{{ group.name }} /projects/{{ group.name }};
+    hdfs dfs -chmod 0770 /projects/{{ group.name }};
+    hdfs dfs -chmod 0755 /projects;
+#    kdestroy
+
+
+- name: "Project Users for {{group}}"
+  loop: "{{group.users | default([])}}"
+  loop_control:
+    loop_var: user
+    index_var: user_num
+  include_tasks: createUser.yml

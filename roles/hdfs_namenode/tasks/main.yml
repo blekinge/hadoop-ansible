@@ -33,6 +33,7 @@
   become: yes
   become_user: hdfs
   shell: |
+    set -e # Fail on anything
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh
 

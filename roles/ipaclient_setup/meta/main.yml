@@ -1,5 +1,5 @@
 ---
 dependencies:
   - role: default_values
-  - role: ipausers
+  - role: ipa_systemusers_config
   - role: ipaclient

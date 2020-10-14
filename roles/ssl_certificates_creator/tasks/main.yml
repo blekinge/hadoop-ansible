@@ -46,7 +46,7 @@
   loop_control:
       loop_var: "ssl_host"
 
-- name: Create a single trust tore file that contains the public key from all certificates.
+- name: Create a single trust store file that contains the public key from all certificates.
   shell: |
     keytool -list -keystore ./ssl/all.jks  -storepass {{ ssl_truststore_pass | quote }}  -alias {{ ssl_host  }} ||
     keytool -import -noprompt -alias {{ ssl_host | quote }} -file ./ssl/{{ ssl_host  }}.crt -keystore ./ssl/all.jks -storepass {{ ssl_truststore_pass | quote }}

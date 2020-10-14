@@ -1,0 +1,66 @@
+---
+
+#This could probably be done nicer in python, but whatever
+# Read the user password from a password file. If it is not found, generate a new one, store it and return in
+- name: "Computing / Reading passsword for {{ user.username }}"
+  delegate_to: localhost
+  shell: "cat 'passwords/{{ user.username }}.password' || (./passPhraseGen.sh -j '' -c -l 1 -m 25 | tee  'passwords/{{ user.username }}.password')"
+  register: newPassword
+
+
+- name: "Project user {{user.username}}"
+  ipauser:
+    ipaadmin_password: "{{ipaadmin_password}}"
+
+    name: "{{ user.username }}"
+
+    first: "{{user.firstname}}"
+    last: "{{user.lastname}}"
+    mobile: "{{user.mobile}}"
+
+    uid: "{{user.uid | default(group.gid | int + user_num + 1) }}"
+    gid: "{{user.gid | default(group.gid | int + user_num + 1)}}"
+
+    homedir: "{{ ipaclient_autohome_dir }}/{{ user.username }}"
+    shell: "{{shell}}"
+    password: "{{newPassword.stdout}}"
+    update_password: on_create
+  register: ipauser_result
+
+- debug:
+    var: ipauser_result
+
+
+- name: "Put {{user.username}} in {{users_group}}"
+  loop: "{{common_usergroups | default([]) + [group.name]}}"
+  loop_control:
+    loop_var: common_group
+  ipagroup:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: "{{ common_group }}"
+    action: member
+    state: present
+    user: "{{ user.username }}"
+
+
+- name: user home
+  delegate_to: "{{ ipa_server }}"
+  file:
+    state: directory
+    path: "{{ ipaserver_autohome_dir }}/{{ user.username }}"
+    owner: "{{ user.username }}"
+    group: "{{ user.username }}"
+    mode: 0650
+
+- name: HDFS user home
+  become: yes
+  become_user: hdfs
+  delegate_to: "{{ groups['hdfs'] | first }}"
+  shell: |
+    set -e # Fail on anything
+    source /etc/profile.d/hadoop.sh
+    source /etc/profile.d/kerberos.sh
+    kinit -kt {{keytab_dir}}/{{hdfs_user}}.headless.keytab {{hdfs_user}};
+    hdfs dfs -mkdir -p /user/{{ user.username }};
+    hdfs dfs -chown -R {{ user.username }}:{{ user.username }} /user/{{ user.username }};
+#    kdestroy

@@ -21,12 +21,14 @@ default_zookeeper_service_name: "zookeeper"
 
 default_keytab_users:
   - {
-    host: "{{ groups['ipaserver'] | first }}", #Create this keytab on ipaserver and distribute it to all host
+    host: "{{ ipa_server }}", #Create this keytab on ipaserver and distribute it to all host
     name: "{{ hdfs_user }}",
     owner: "{{ hdfs_user }}",
     group: "{{ hadoop_group }}"
   }
 
+#TODO bind on roles, not hostgroups
+#TODO what about multiple clusters
 
 default_keytab_services:
 

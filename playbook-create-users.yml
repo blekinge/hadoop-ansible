@@ -1,0 +1,5 @@
+- hosts: ipaserver
+  vars_files:
+    - vars/var_sensitive.yml
+  roles:
+    - role: ipa_projects_and_groups
