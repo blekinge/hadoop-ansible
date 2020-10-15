@@ -1,6 +1,6 @@
 # You will make one inventory file per cluster. So all cluster-specific settings should go into this file
 
-# These are the magical hostgroups that are automagically bound to roles and behaivours
+# These are the magical hostgroups that are automagically bound to roles and behaviours
 # VMs: Machines to auto-create in ovirt
 # ipaserver: the FreeIPA server to register all hosts to
 # ipaclients: The list of hosts to setup as ipa clients
@@ -22,7 +22,7 @@ all:
       ansible_connection: local
       ansible_python_interpreter: "python"
 
-  vars:
+  vars: #Configure your cluster below
     ipa_domain: yak2.net
     ipa_realm: YAK2.NET
     ipaclient_domain: "{{ ipa_domain }}"
@@ -30,21 +30,39 @@ all:
     ipaserver_domain: "{{ ipa_domain }}"
     ipaserver_realm: "{{ ipa_realm }}"
 
-    ipaclient_force_join: false
+    ipaclient_force_join: true
     ipaclient_ntp_servers:
       - kac-gway-001.kach.sblokalnet
 
-    # Wipe HDFS and set up fresh
+    autohome_nfs_export_iprange: "172.16.215.0/24"
+    # Wipe HDFS and set up fresh. Nessesary for new installs
     wipe_hdfs: false
+
+
+
+    #users_group: "yakusers"
+    #uid_usersGroup: 20000
+
+
+    #subadmins_group: "subadmins"
+    #uid_subadminsGroup: 12000
+
+
+
+    extra_user_groups:
+      - name: vpnu
+        gid: 10067
+        description: VPN access group
+
+    # User groups are the groups that will be made beforehand
+    user_groups: "{{ standard_user_groups + extra_user_groups }}"
 
     # These are the groups that all project users will be made member of
     common_usergroups:
       - "{{users_group}}"
-      #TODO vpnu group
+      - vpnu
 
-    subadmins:
-
-
+    # Here you can set up which "project" groups to that should be created
     projects:
       - name: "{{subadmins_group}}"
         gid: "{{uid_subadminsGroup}}"
@@ -69,7 +87,7 @@ all:
             lastname: User
             mobile: +450000000
             email: "p000user@{{ipa_domain}}"
-            uid: 20003 # Use can specify uid and gid explictly
+            uid: 20003 # You can specify uid and gid explictly
             gid: 20004
           - username: userp000
             firstname: p00
@@ -81,13 +99,16 @@ all:
       - name: p001
         gid: 20100
 
+    # Hostname of the ipa server.
+    #ipa_server: "{{ groups['ipaserver'] | first }}"
+
     #the hadoop node  to delegate to for creating HDFS user home when creating new users
     #hdfs_delegation_host: "{{ groups['hdfs'] | first }}"
 
   children:
     VMs: # This is the group of VMs created by playbook-create-virtual-host.yml
       vars:
-        domain: yak2.net
+        domain: "{{ipa_domain}}"
 
         ovirt_api_host: "ovim001.adm.{{domain}}"
         ovirt_cluster: "KAC"

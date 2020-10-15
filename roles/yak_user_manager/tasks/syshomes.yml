@@ -1,121 +1,47 @@
 ---
-- name: Create ipaserver_syshome_dir
+- name: "Create {{ ipaserver_syshome_dir }}"
   file:
     path: "{{ ipaserver_syshome_dir }}"
     owner: root
     group: root
-    mode: '0622'
+    mode: '0755'
     state: directory
 
 - name: Create syshomes for syshome users
   file:
     path: "{{ ipaserver_syshome_dir }}/{{ item.user }}"
-    owner: "{{ item.user }}"
-    group: "{{ item.group }}"
-    mode: '0600'
+    owner: "{{ item.uid }}"
+    group: "{{ item.gid }}"
+    mode: '0700'
     state: directory
-  loop:
-    - { user: "{{hdfs_user}}", group: "{{hdfs_group}}" }
-    - { user: "{{mapreduce_user}}", group: "{{mapreduce_group}}" }
-    - { user: "{{yarn_user}}", group: "{{yarn_group}}" }
-    - { user: "{{zookeeper_user}}", group: "{{zookeeper_group}}" }
+  loop: "{{system_users}}"
 
-- name: link syshomes from {{ ipaserver_syshome_dir }} to {{ ipaclient_syshome_dir }}
+- name: "Create {{ ipaclient_syshome_dir }}"
+  file:
+    path: "{{ ipaclient_syshome_dir }}"
+    owner: root
+    group: root
+    mode: '0755'
+    state: directory
+
+- name: "link syshomes from {{ ipaserver_syshome_dir }} to {{ ipaclient_syshome_dir }}"
   file:
     src: "{{ ipaserver_syshome_dir }}/{{ item.user }}"
     dest: "{{ ipaclient_syshome_dir }}/{{ item.user }}"
-    #    owner: "{{ item.user }}"
-    #    group: "{{ item.group }}"
-    #    mode: '0600'
     state: link
-  loop:
-    - { user: "{{hdfs_user}}", group: "{{hdfs_group}}" }
-    - { user: "{{mapreduce_user}}", group: "{{mapreduce_group}}" }
-    - { user: "{{yarn_user}}", group: "{{yarn_group}}" }
-    - { user: "{{zookeeper_user}}", group: "{{zookeeper_group}}" }
+  loop: "{{system_users}}"
 
 #NFS exports this folder
 - name: setup nfs exports
   lineinfile:
     path: /etc/exports
     state: present
-    line: "{{ ipaserver_syshome_dir }} {{ IPRANGE1 }}(rw,sec=sys,fsid=1339)"
+    line: "{{ ipaserver_syshome_dir }} {{ autohome_nfs_export_iprange }}(rw,sec=sys,fsid=1339)"
 
 - name: NFS syshome server
   systemd:
     name: nfs-server
-    state: started
+    state: restarted
     enabled: yes
     daemon_reload: yes
-
-
-
-#Add the NFS service principal for the server and client to Kerberos.
-- name: FreeIPA automount setup service
-  ipaservice:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: "nfs/{{ inventory_hostname }}"
-    state: present
-    force: yes
-
-
-#https://blog.delouw.ch/2015/03/14/using-ipa-to-provide-automount-maps-for-nfsv4-home-directories/
-
-#This require the ipa admintools to be installed and the host to be an ipa client
-- block:
-
-    - name: setup autohome
-      shell: |
-        #Add the auto.home map
-        ipa automountmap-add default auto.home
-
-        #And add the auto.home map to auto.master
-        ipa automountkey-add default --key "{{ ipaclient_autohome_dir }}" --info auto.home auto.master
-
-        #Finally add the key to the auto.home map
-        ipa automountkey-add default \
-          --key "*" \
-          --info "-fstype=nfs4,rw,sec=krb5,intr,hard {{ inventory_hostname }}:{{ ipaclient_autohome_dir }}/&" \
-          auto.home
-
-    - name: Tell your NFS service to use NFSv4
-      lineinfile:
-        path: /etc/sysconfig/nfs
-        state: present
-        line: 'SECURE_NFS="yes"'
-
-    - name: setup autohome
-      shell: ipa-getkeytab --server {{ inventory_hostname }} -p "nfs/{{ inventory_hostname }}" -k /etc/krb5.keytab
-
-
-    - name: Autohome dir
-      file:
-        path: "{{ ipaserver_autohome_dir }}"
-        owner: root
-        group: root
-        mode: '0622'
-        state: directory
-
-    - name: #Create your NFS share and start the NFS server
-      lineinfile:
-        path: /etc/exports
-        state: present
-        line: "{{ ipaserver_autohome_dir }}    {{  IPRANGE1 }}(rw,sec=sys:krb5:krb5i:krb5p)"
-
-    - name: admin home
-      file:
-        path: "{{ ipaserver_autohome_dir }}/admin"
-        owner: admin
-        group: admin
-        mode: '0600'
-        state: directory
-
-
-    - name: NFS autohome server
-      systemd:
-        name: nfs-server
-        state: started
-        enabled: yes
-        daemon_reload: yes
-
 

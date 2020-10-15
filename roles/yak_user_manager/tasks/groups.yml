@@ -1,36 +1,10 @@
 ---
-#TODO merge this into one block
-- name: "{{ hadoop_group }} group"
+
+- name: Create user groups
+  loop: "{{user_groups}}"
   ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{ hadoop_group }}"
-    gid: "{{ uid_hadoopGroup }}"
-    description: Hadoop System Services
+    name: "{{ item.name }}"
+    gid: "{{ item.gid }}"
+    description: "{{item.description}}"
 
-- name: "{{ systemservices_group }} group"
-  ipagroup:
-    ipaadmin_password: "{{ ipaadmin_password }}"
-    name: "{{ systemservices_group }}"
-    gid: "{{ uid_systemserviceGroup }}"
-    description: Standard user accounts, for non-hadoop services
-
-- name: "{{ subadmins_group} group"
-  ipagroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{ subadmins_group }}"
-    gid: "{{ uid_subadminsGroup }}"
-    description: For daily administration of users and hosts
-
-- name: "{{ users_group }} group"
-  ipagroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{ users_group }}"
-    gid: "{{ uid_usersGroup }}"
-    description: Standard user accounts, for unprivileged users.
-
-- name: "{{ hdfs_group }} group"
-  ipagroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{ hdfs_group }}"
-    gid: "{{ uid_hdfsGroup }}"
-    description: HDFS group

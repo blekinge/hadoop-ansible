@@ -10,10 +10,10 @@
     - '!env_reset'
     - 'env_delete-=PATH'
 
-- name: Subadmin Sudo rules
+- name: "{{subadmins_group}} Sudo rules"
   ipasudorule:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: subadmins
+    name: "{{subadmins_group}}"
     hostcategory: all
     cmdcategory: all
     runasusercategory: all
@@ -22,5 +22,5 @@
       - '!requiretty'
       - '!authenticate'
     group:
-      - subadmins
-      - admins
+      - "{{subadmins_group}}"
+      - "{{ipa_admin_group}}"

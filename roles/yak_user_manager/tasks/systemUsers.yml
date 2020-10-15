@@ -1,75 +1,29 @@
 ---
+
+
 - name: system users
+  loop: "{{system_users}}"
   ipauser:
     ipaadmin_password: "{{ipaadmin_password}}"
+    name: "{{item.user}}"
+    first: "{{item.user}}"
+    last: "System User"
+    userclass: SystemUser
+
+    uid: "{{item.uid | default(omit)}}"
+    gid: "{{item.gid | default(omit)}}"
+    homedir: "{{ipaclient_syshome_dir}}/{{item.user}}"
+    shell: "{{item.shell | default('/bin/bash')}}"
+    noprivate: yes
 
 
-    users:
-      - name: "{{ hdfs_user }}"
-        first: Hdfs
-        uid: "{{uid_hdfsGroup}}"
-        gid: "{{uid_hdfsGroup}}"
-        homedir: "{{ ipaclient_syshome_dir }}/{{ hdfs_user }}"
-
-        last: Apache
-        userclass: SystemUser
-        noprivate: yes
-        shell: /bin/bash #Perhaps change this to /sbin/nologin later on
-
-      - name: "{{ mapreduce_user }}"
-        first: MapReduce
-        uid: "{{uid_hadoopGroup | int + 1}}"
-        gid: "{{uid_hadoopGroup}}"
-        homedir: "{{ ipaclient_syshome_dir }}/{{ mapreduce_user }}"
-
-        last: Apache
-        userclass: SystemUser
-        noprivate: yes
-        shell: /bin/bash #Perhaps change this to /sbin/nologin later on
-
-      - name: "{{ yarn_user }}"
-        first: Yarn
-        uid: "{{uid_hadoopGroup | int + 2}}"
-        gid: "{{uid_hadoopGroup}}"
-        homedir: "{{ ipaclient_syshome_dir }}/{{ yarn_user }}"
-
-        last: Apache
-        userclass: SystemUser
-        noprivate: yes
-        shell: /bin/bash #Perhaps change this to /sbin/nologin later on
-
-      - name: "{{ zookeeper_user }}"
-        first: ZooKeeper
-        uid: "{{uid_hadoopGroup| int + 3}}"
-        gid: "{{uid_hadoopGroup}}"
-        homedir: "{{ ipaclient_syshome_dir }}/{{ zookeeper_user }}"
-
-        last: Apache
-        userclass: SystemUser
-        noprivate: yes
-        shell: /sbin/nologin
-
-      - name: "{{ spark_user }}"
-        first: Spark2
-        uid: "{{uid_hadoopGroup| int + 4}}"
-        gid: "{{uid_hadoopGroup}}"
-        homedir: "{{ ipaclient_syshome_dir }}/{{ spark_user }}"
-
-        last: Apache
-        userclass: SystemUser
-        noprivate: yes
-        shell: /sbin/nologin
-
-- name: system user groups
+- name: "Add system users to group {{hadoop_group}}"
+  loop: "{{system_users}}"
   ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{ hadoop_group }}"
     action: member
-    user:
-      - "{{ hdfs_user }}"
-      - "{{ mapreduce_user }}"
-      - "{{ yarn_user }}"
-      - "{{ zookeeper_user }}"
-      - "{{ spark_user }}"
+    user: "{{item.user}}"
+
 
 

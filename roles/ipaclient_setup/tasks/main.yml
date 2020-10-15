@@ -5,19 +5,15 @@
       state: directory
       mode: '0755'
 
-- name: create {{ipaclient_syshome_dir}}
-  file:
-        path: "{{ipaclient_syshome_dir}}"
-        state: directory
-        mode: '0755'
 
 - name: "Mount {{ipaclient_syshome_dir}}"
   mount:
-        path: "{{ipaclient_syshome_dir}}"
-        src: "{{ipa_server}}:{{ipaserver_syshome_dir}}"
-        fstype: "nfs4"
-        opts: "rw,defaults,_netdev,hard,intr,_netdev"
-        state: mounted
+      path: "{{ipaclient_syshome_dir}}"
+      src: "{{ipa_server}}:{{ipaserver_syshome_dir}}"
+      fstype: "nfs4"
+      opts: "rw,defaults,_netdev,hard,intr,_netdev"
+      state: mounted
+
 
 - name: ensure ipa is reloaded
   shell: sss_cache -E

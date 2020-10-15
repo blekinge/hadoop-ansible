@@ -3,7 +3,7 @@
 default_keytab_dir: "/etc/security/keytabs/"
 default_keytab_permissions: "0400"
 
-default_kinit_principal: "admin@{{ipaserver_realm}}"
+default_kinit_principal: "{{ipa_admin_user}}@{{ipaserver_realm}}"
 
 default_yarn_nodemanager_service_name: "nm"
 default_yarn_resourcemanager_service_name: "rm"
