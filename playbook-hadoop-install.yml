@@ -13,3 +13,5 @@
     - role: hadoop
     - role: zookeeper
     - role: spark
+
+#TODO use the ipa server as storage for system user keytabs, not the local host

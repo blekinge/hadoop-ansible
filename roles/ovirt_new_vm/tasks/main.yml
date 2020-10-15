@@ -120,6 +120,8 @@
             state: reboot
             name: "{{shortname}}"
             cluster: "{{ovirt_cluster}}"
+            wait: yes
+
 
     - name: "Ensure vm is started"
       ovirt.ovirt.ovirt_vm:
@@ -127,6 +129,7 @@
         state: running
         name: "{{shortname}}"
         cluster: "{{ovirt_cluster}}"
+        wait: yes
 
   always:
     - name: Always revoke the SSO token

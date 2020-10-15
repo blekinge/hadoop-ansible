@@ -9,3 +9,5 @@
     - vars[item[8:]] is not defined
   with_items:
     "{{ vars | list }}"
+  no_log: True
+  changed_when: false

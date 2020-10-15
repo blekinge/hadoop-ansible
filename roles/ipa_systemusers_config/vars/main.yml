@@ -50,7 +50,7 @@ default_zookeeper_uid: "{{uid_hadoopGroup|int+3}}"
 default_zookeeper_gid: "{{uid_hadoopGroup}}"
 
 default_spark_user: "spark"
-default_spark_group: "spark"
+default_spark_group: "{{hadoop_group}}"
 default_spark_uid: "{{uid_hadoopGroup|int+4}}"
 default_spark_gid: "{{uid_hadoopGroup}}"
 

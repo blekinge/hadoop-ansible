@@ -28,7 +28,6 @@ default_keytab_users:
   }
 
 #TODO bind on roles, not hostgroups
-#TODO what about multiple clusters
 
 default_keytab_services:
 

@@ -41,7 +41,7 @@ all:
 
 
     #users_group: "yakusers"
-    #uid_usersGroup: 20000
+    uid_usersGroup: 19900
 
 
     #subadmins_group: "subadmins"
@@ -178,7 +178,7 @@ all:
         hist001.yak2.net: #Example of how to set hostname
           hostname:  hist001.yak2.net
           shortname:  hist001
-        proj[000:002].yak2.net:
+        proj[000:001].yak2.net:
           host_disks: # This is how to create additional disks
             - name: data
               size: 10GiB
@@ -252,6 +252,3 @@ all:
             proj001:
               hosts:
                 proj001.yak2.net:
-            proj002:
-              hosts:
-                proj002.yak2.net:
