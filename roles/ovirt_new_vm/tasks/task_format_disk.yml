@@ -1,19 +1,17 @@
 ---
 
-#TODO lsblk to part+fs all disks
 - parted:
-    device: "/dev/{{device}}"
+    device: "{{device}}"
     number: 1
     flags: [ lvm ]
     state: present
 
 - filesystem:
     fstype: xfs
-    dev: "/dev/{{device}}1"
+    dev: "{{device}}-part1"
 
-# TODO blkid
 - mount:
     fstype: xfs
-    src: "/dev/{{device}}1"
+    src: "{{device}}-part1"
     path: "{{mount}}"
     state: mounted

@@ -50,6 +50,9 @@
         msg: "Creating new disks for {{shortname}}"
 
     - name: "create extra disks"
+      when: host_disks is defined
+      loop: "{{ host_disks }}"
+      register: attached_disks
       ovirt.ovirt.ovirt_disk:
         auth: "{{ ovirt_auth }}"
         activate: yes
@@ -59,13 +62,12 @@
         interface: "virtio_scsi"
         name: "{{shortname}}_{{item.name}}"
         shareable: no
+        sparse: yes
         size: "{{item.size}}"
         state: present
         storage_domain: "VMs"
         vm_name: "{{shortname}}"
         wait: yes
-      when: host_disks is defined
-      loop: "{{ host_disks }}"
 
     - name: "create {{nic1}} nic"
       ovirt.ovirt.ovirt_nic:
@@ -133,9 +135,8 @@
         ovirt_auth: "{{ ovirt_auth }}"
 
 
-#TODO device names?
-- name: format extra disks
-  include: task_format_disk.yml mount="{{item.mount}}" device="sd{{letters[idx+1]}}"
+- name: format+mount extra disks
+  include: task_format_disk.yml mount="{{item.mount}}" device="/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_{{(attached_disks.results[idx]['id'])[0:20]}}"
   when: host_disks is defined
   loop: "{{host_disks}}"
   loop_control:
