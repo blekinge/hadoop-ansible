@@ -1,0 +1,15 @@
+## This playbook creates the hosts as virtual VMs in Ovirt
+
+- name: oVirt ansible collection
+  hosts: VMs
+  gather_facts: False
+  serial: 1 # Only create and run 1 at a time.
+  # This is nessesary to set the network up correctly, as otherwise the temp ips will clash
+  vars_files:
+    - vars/var_sensitive.yml
+  # Configure the machines in hosts.yml
+  roles:
+    - ovirt_new_vm
+  collections: # This require the ovirt-ansible plugin installed. See ovirt_sdk_setup.sh
+    - ovirt.ovirt
+

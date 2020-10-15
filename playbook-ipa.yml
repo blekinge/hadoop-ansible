@@ -1,0 +1,26 @@
+
+
+- hosts: ipaclients
+  vars_files:
+    - vars/var_sensitive.yml
+  roles:
+    - role: updated
+    - role: java # Install java
+    - role: ipaclient_setup # Set up the ipa clients
+    - role: firewalled # Set up the firewall
+
+
+# Now that the hosts have been added as ipa clients, we can setup the kerberos services
+- hosts: ipaserver
+  vars_files:
+    - vars/var_sensitive.yml
+  roles:
+    - role: kinit_init
+    - role: yak_user_manager
+    - role: ssl_certificates_creator
+    - role: ipa_service_definitions
+    - role: kerberos_system_user_keytabs
+      vars:
+        create_system_user_keytabs: true
+    - role: kinit_destroy
+
