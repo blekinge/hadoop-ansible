@@ -12,7 +12,7 @@
   register: keytab_valid
 
 - name: "Create keytab for {{ entry.principal }}"
-  when: keytab_valid.rc != 0
+  when: keytab_valid is skipped or keytab_valid.rc != 0
   block:
     - name: remove invalid keytab file
       file:
