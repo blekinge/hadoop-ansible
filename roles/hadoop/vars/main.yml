@@ -60,7 +60,7 @@ hdfs_data_dirs_joined:  "{{ hdfs_data_dirs | join(',') }}"
 default_yarn_timeline_store: "/hadoop/yarn/timeline"
 
 
-yarn_timelineserver: "{{ groups['yarn_timeline_servers'] | first }}"
+default_yarn_timelineserver: "{{ groups['yarn_timeline_servers'] | first }}"
 
 
 default_yarn_data_dirs: []
@@ -77,10 +77,12 @@ default_yarn_application_logs_dir: "{{ hadoop_log_dir }}/{{ yarn_user }}/applica
 #yarn_user_logs: "/hadoop/yarn/
 
 #TODO more than one?
-mapreduce_history_server_host: "{{ groups['mapreduce_history_servers'] | first }}"
+default_mapreduce_history_server_host: "{{ groups['mapreduce_history_servers'] | first }}"
+
 default_mapreduce_create_path:
   - "/hadoop/mapreduce"
 
+default_mapreduce_jobhistory_recovery_store_leveldb_path: /hadoop/mapreduce/jhs
 
 
-zookeeper_quorum: "{{ groups['zookeeper_servers'] | zip_longest([], fillvalue=zookeeper_port) | map('join', ':') | join(',') }}"
+default_zookeeper_quorum: "{{ groups['zookeeper_servers'] | zip_longest([], fillvalue=zookeeper_port) | map('join', ':') | join(',') }}"

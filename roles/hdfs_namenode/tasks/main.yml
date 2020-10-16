@@ -6,10 +6,14 @@
     state: directory
     owner: "{{hdfs_user}}"
     group: "{{hdfs_user}}"
+  register: hadoop_dfs_name_dir_status
 
+- name: check if Fresh HDFS install
+  set_fact:
+    fresh_HDFS: '{{hadoop_dfs_name_dir_status.changed == true and hadoop_dfs_name_dir_status.diff.before.state == "absent"}}'
 
 - include: initialize_hdfs.yml
-  when: wipe_hdfs | bool
+  when: fresh_HDFS | bool or wipe_hdfs | bool
 
 
 # Start both
@@ -32,14 +36,14 @@
 - name: create basic directory structure
   become: yes
   become_user: hdfs
-  shell: |
+  shell: | #TODO make this configurable
     set -e # Fail on anything
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh
 
     kinit -kt {{keytab_dir}}/{{hdfs_user}}.headless.keytab {{hdfs_user}}
 
-    hdfs dfs -mkdir /tmp  \
+    hdfs dfs -mkdir -p /tmp  \
         /system \
     	/history /history/app-logs  /history/spark-history    \
     	/history/mr-history /history/mr-history/done /history/mr-history/tmp \
@@ -64,6 +68,5 @@
 
     hdfs dfs -chown -R {{spark_user}}:{{hadoop_group}}  /history/spark-history;
 
-    hdfs dfs -chown -R abrsadm:abrsadm /user/abrsadm;
     kdestroy
   when: primary|bool

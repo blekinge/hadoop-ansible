@@ -50,5 +50,7 @@
 # Spark
 
 - hosts: spark_history_servers
+  vars_files: #Spark history server has it's own ssl setup that require the ssl passwords again
+    - vars/var_sensitive.yml
   roles:
     - role: spark_history_server

@@ -143,10 +143,9 @@
         <value>org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService</value>
     </property>
 
-    <!--TODO path for storage here-->
     <property>
         <name>mapreduce.jobhistory.recovery.store.leveldb.path</name>
-        <value>/hadoop/mapreduce/jhs</value>
+        <value>{{mapreduce_jobhistory_recovery_store_leveldb_path}}</value>
     </property>
 
     <property>

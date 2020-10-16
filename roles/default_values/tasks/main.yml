@@ -7,7 +7,7 @@
   when:
     - item is match("^default_")
     - vars[item[8:]] is not defined
-  with_items:
+  loop:
     "{{ vars | list }}"
-  no_log: True
-  changed_when: false
+  loop_control:
+    label: "{{item[8:]}}={{lookup('vars',item)}}"

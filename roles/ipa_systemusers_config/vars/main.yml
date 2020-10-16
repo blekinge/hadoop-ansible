@@ -1,7 +1,6 @@
 ---
 # https://github.com/freeipa/ansible-freeipa/blob/master/roles/ipaclient/README.md#base-variables
 
-#TODO iprange for nfs export
 default_ipa_server: "{{ groups['ipaserver'] | first }}"
 
 default_ipa_admin_user: admin
