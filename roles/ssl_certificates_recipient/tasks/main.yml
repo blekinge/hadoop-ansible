@@ -19,37 +19,37 @@
   loop_control:
     loop_var: "dir"
 
-- name: "uploading ssl certificates to host"
-  copy:
-    src: "{{ item }}"
-    dest: "{{ ssl_server_dir }}"
-    mode: "0640" #This is the key, so it must NOT be publically readable
-    owner: "root"
-    group: "{{ hadoop_group}}"
-  with_fileglob:
-    - "./ssl/{{ inventory_hostname }}-keystore.jks"
-    - "./ssl/{{ inventory_hostname }}-truststore.jks"
+
+- name: "uploading ssl certs to {{inventory_hostname}}"
+  throttle: 2
+  delegate_to: "{{ipa_server}}"
+  synchronize:
+    src: "{{ item.file }}"
+    dest: "{{ item.dest | default(ssl_server_dir) }}"
+    archive: no
+    mode: push
+  loop:
+    - file: "/root/ssl/{{ inventory_hostname }}-keystore.jks"
+    - file: "/root/ssl/{{ inventory_hostname }}-truststore.jks"
+    - file: "/root/ssl/all.jks"
+    - file: "/root/ssl/http_secret"
+      dest: "/etc/security/"
 
 
-- name: "uploading ssl truststore to host"
-  copy:
-    src: "{{ item }}"
-    dest: "{{ ssl_server_dir }}"
-    mode: "0644" #There is no risk in having the truststore readable
-    owner: "root"
-    group: "{{ hadoop_group}}"
-  with_fileglob:
-    - "./ssl/all.jks"
+- name: "Setting permissions"
+  file:
+    path: "{{item.file}}"
+    mode: "{{item.mode | default('0440')}}" #Not public
+    group: "{{item.group | default(hadoop_group)}}"
+    owner: "{{item.owner | default('root')}}"
+  loop:
+    - file: "{{ ssl_server_dir }}/{{ inventory_hostname }}-keystore.jks"
+    - file: "{{ ssl_server_dir }}/{{ inventory_hostname }}-truststore.jks"
+    - file: "{{ ssl_server_dir }}/all.jks"
+      mode: '0444'
+    - file: /etc/security/http_secret
 
-- name: "uploading http secret to host"
-  copy:
-    src: "{{ item }}"
-    dest: "/etc/security/"
-    mode: "0440" #Not public
-    group: "{{ hadoop_group}}"
-    owner: "root"
-  with_fileglob:
-    - "./ssl/http_secret"
+
 
 - name: "Uploading hadoop ssl config to host"
   template:

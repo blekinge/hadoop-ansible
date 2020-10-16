@@ -61,11 +61,3 @@
   args:
     creates: ./ssl/http_secret
 
-
-- name: fetching ssl certificates to localhost
-  synchronize:
-    src: "{{ item }}"
-    dest: ssl/
-    mode: pull
-  with_items:
-      - "./ssl/*"

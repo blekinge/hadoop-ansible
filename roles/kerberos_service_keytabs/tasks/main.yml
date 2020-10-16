@@ -10,23 +10,12 @@
   loop_control:
     loop_var: "dir"
 
-- name: Create system user keytabs dir
-  file:
-    owner: root
-    group: "{{ hadoop_group }}"
-    mode: 0750
-    path: "{{ dir }}"
-    state: "directory"
-  loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | map(attribute="keytab_file") | map("dirname") |unique| list}}'
-  loop_control:
-    loop_var: "dir"
-
 # Service keytabs are created directly on the host that needs them, as they are host-specific
 - name: Retrieving keytab for host
   include_tasks: retrieveKeytab.yml
   vars:
     entry: "{{item}}"
   with_items: '{{ kerberos_conf | selectattr("host", "eq", inventory_hostname) | list}}'
-  #DO NOT DO THIS FOR THE IPA SERVER AS YOU MIGHT OVERWRITE SOMETHING IT USES.
+  #DO NOT DO THIS FOR THE IPA SERVER AS YOU MIGHT OVERWRITE SOMETHING IT USES. TODO make this into a fail: task
   # the spnego/HTTP certificate has the same principal as /var/lib/ipa/gssproxy/http.keytab and will break the server when
   #   regenerated

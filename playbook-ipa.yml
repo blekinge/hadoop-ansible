@@ -19,9 +19,7 @@
     - role: yak_user_manager
     - role: ssl_certificates_creator
     - role: ipa_service_definitions
-    - role: kerberos_system_user_keytabs
-      vars:
-        create_system_user_keytabs: true
+    - role: kerberos_system_user_keytabs_create
     - role: kinit_destroy
 
 #TODO use the ipa server as storage for system user keytabs, not the local host

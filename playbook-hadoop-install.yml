@@ -8,10 +8,7 @@
     - role: ssl_certificates_recipient #Upload ssl certificates to host
     - role: kerberos_service_keytabs #Create the service keytabs
     - role: kerberos_system_user_keytabs
-      vars:
-        upload_system_user_keytabs: true
     - role: hadoop
     - role: zookeeper
     - role: spark
 
-#TODO use the ipa server as storage for system user keytabs, not the local host
