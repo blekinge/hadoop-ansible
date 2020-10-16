@@ -1,0 +1,5 @@
+---
+
+#TODO let this default to true if there is no HDFS and false otherwise
+# Wipe HDFS and set up fresh. Nessesary for new installs
+wipe_hdfs: false

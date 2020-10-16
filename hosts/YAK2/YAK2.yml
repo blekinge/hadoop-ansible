@@ -1,0 +1,87 @@
+# You will make one inventory file per cluster. So all cluster-specific settings should go into this file
+
+# These are the magical hostgroups that are automagically bound to roles and behaviours
+# VMs: Machines to auto-create in ovirt
+# ipaserver: the FreeIPA server to register all hosts to
+# ipaclients: The list of hosts to setup as ipa clients
+# hadoop_nodes: = role hadoop, role zookeeper, role spark
+# hdfs_namenodes: = role hdfs_namenode
+# hdfs_journalnodes: = role hdfs_journalnode
+# hdfs_datanodes: = role hdfs_datanode
+# zookeeper_servers: = role zookeeper_server
+# yarn_resource_managers: = role yarn_resource_manager
+# yarn_node_managers: = role yarn_node_manager
+# yarn_timeline_servers: = role yarn_timeline_server
+# mapreduce_history_servers: = role mapreduce_history_server
+# spark_history_servers: = spark_history_server
+
+all:
+ children:
+    ipaserver: # Singular form as there can be only one here
+      hosts:
+        fipa001.yak2.net:
+
+    ipaclients:
+      children: #Mark all hadoop nodes as ipa-clients
+        hadoop_nodes:
+
+    hadoop_nodes:
+      children:
+
+        hdfs:
+          children:
+            hdfs_namenodes:
+              hosts:
+                hdfs001.yak2.net:
+                  primary: true # The primary node is the one whose hdfs gets propagated to the other namenodes
+                  comment: "Primary"
+                hdfs002.yak2.net:
+            hdfs_journalnodes:
+              hosts:
+                zkpr[001:003].yak2.net:
+            hdfs_datanodes:
+              hosts:
+                roda[001:004].yak2.net:
+                  hdfs_data_dirs:
+                    - /data/sdb1/hdfs
+
+        zookeeper_servers:
+          hosts:
+            zkpr[001:003].yak2.net:
+
+        yarn:
+          children:
+            yarn_resource_managers:
+              hosts:
+                yarn[001:002].yak2.net:
+            yarn_node_managers:
+              hosts:
+                roda[001:004].yak2.net:
+                  yarn_nodemanager_available_cpu_cores: 2
+                  yarn_nodemanager_available_memory: 3072
+                  yarn_data_dirs:
+                    - /data/sdb1/yarn
+            yarn_timeline_servers:
+              hosts:
+                hist001.yak2.net:
+
+        mapreduce:
+          children:
+            mapreduce_history_servers:
+              hosts: # There can be only one here
+                hist001.yak2.net:
+
+        spark:
+          children:
+            spark_history_servers:
+              hosts: # There can be only one here
+                hist001.yak2.net:
+
+        projectnodes:
+          children:
+            proj000:
+              hosts:
+                proj000.yak2.net:
+            proj001:
+              hosts:
+                proj001.yak2.net:

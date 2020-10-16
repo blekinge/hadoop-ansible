@@ -1,0 +1,66 @@
+---
+
+#shell: /bin/bash
+
+#users_group: "yakusers"
+uid_usersGroup: 19900
+
+
+#subadmins_group: "subadmins"
+#uid_subadminsGroup: 12000
+
+
+
+
+# These are the groups that all project users will be made member of
+# common_usergroups: []
+common_usergroups:
+  - "{{users_group}}"
+  - vpnu
+
+# Here you can set up which "project" groups to that should be created
+# projects: []
+projects:
+  - name: "{{subadmins_group}}"
+    gid: "{{uid_subadminsGroup}}"
+    users:
+      - username: abrsadm
+        firstname: Asger
+        lastname: Blekinge
+        mobile: +450000000
+        email: "abr@kb.dk"
+
+      - username: tbasadm
+        firstname: Tony
+        lastname: BA
+        mobile: +450000000
+        email: "tba@kb.dk"
+
+  - name: p000
+    gid: 20000
+    users:
+      - username: p000user
+        firstname: p00
+        lastname: User
+        mobile: +450000000
+        email: "p000user@{{ipa_domain}}"
+        uid: 20003 # You can specify uid and gid explictly
+        gid: 20004
+      - username: userp000
+        firstname: p00
+        lastname: User2
+        mobile: +450000000
+        email: "userp000@{{ipa_domain}}"
+        # If uid or gid is not specified, use group gid + position in this list.
+
+  - name: p001
+    gid: 20100
+
+
+#the hadoop node  to delegate to for creating HDFS user home when creating new users
+#hdfs_delegation_host: "{{ groups['hdfs'] | first }}"
+
+
+
+
+

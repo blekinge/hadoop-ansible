@@ -1,0 +1,14 @@
+---
+
+ipa_domain: yak2.net
+domain: "{{ipa_domain}}"
+ipa_realm: YAK2.NET
+ipaclient_domain: "{{ ipa_domain }}"
+ipaclient_realm: "{{ ipa_realm }}"
+ipaserver_domain: "{{ ipa_domain }}"
+ipaserver_realm: "{{ ipa_realm }}"
+
+ipaclient_force_join: true
+ipaclient_ntp_servers:
+  - kac-gway-001.kach.sblokalnet
+
