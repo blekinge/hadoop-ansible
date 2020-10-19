@@ -1,9 +1,0 @@
----
-
-extra_user_groups:
-  - name: vpnu
-    gid: 10067
-    description: VPN access group
-
-# User groups are the groups that will be made beforehand
-user_groups: "{{ standard_user_groups + extra_user_groups }}"

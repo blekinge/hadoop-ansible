@@ -1,4 +1,7 @@
 ---
+autohome_nfs_export_iprange: "172.16.215.0/24"
+
+install_hadoop: false
 
 #shell: /bin/bash
 
@@ -11,12 +14,6 @@ uid_usersGroup: 19900
 
 
 
-
-# These are the groups that all project users will be made member of
-# common_usergroups: []
-common_usergroups:
-  - "{{users_group}}"
-  - vpnu
 
 # Here you can set up which "project" groups to that should be created
 # projects: []
@@ -61,6 +58,17 @@ projects:
 #hdfs_delegation_host: "{{ groups['hdfs'] | first }}"
 
 
+
+
+
+
+extra_users_groups:
+  - name: vpnu
+    gid: 10067
+    description: VPN access group
+
+# User groups are the groups that will be made beforehand
+initial_users_groups: "{{ standard_user_groups + extra_users_groups }}"
 
 
 
