@@ -9,5 +9,5 @@
     - vars[item[8:]] is not defined
   loop:
     "{{ vars | list }}"
-  loop_control:
-    label: "{{item[8:]}}={{lookup('vars',item)}}"
+#  loop_control: # This labelling seems to fail some times. TODO investigate
+#    label: "{{item[8:]}}={{lookup('vars',item)}}"
