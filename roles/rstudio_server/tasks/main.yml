@@ -1,0 +1,126 @@
+- name: Install dependencies
+  package:
+    name:
+      - R-devel
+      - texlive-framed
+      - texlive-titling
+    state: present
+
+- name: Check the newest version of RStudio
+  uri: url=http://download2.rstudio.org/current.ver return_content=yes
+  register: rstudio_version
+  become: no
+
+- name: convert gpg
+  shell: "{{ item }}"
+  args:
+    creates: rstudio-signing.key
+  with_items:
+    - gpg --keyserver hkp://keys.gnupg.net --recv-keys 3F32EE77E331692F
+    - gpg --armor --export 3F32EE77E331692F > rstudio-signing.key
+
+- name: Import Rstudio GPG key.
+  rpm_key:
+    key: rstudio-signing.key
+    state: present
+
+- name: Get the archive of RStudio Server
+  get_url:
+    url: "https://download2.rstudio.org/server/centos8/x86_64/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','')}}-x86_64.rpm"
+    dest: /tmp/rstudio.rpm
+  become: no
+
+
+- name: rstudio install
+  package:
+    name: /tmp/rstudio.rpm
+    state: present
+
+- name: Stop rstudio server if running
+  shell: rstudio-server stop
+
+- name: remove local rstudio-server user
+  user:
+    name: rstudio-server
+    state: absent
+    remove: yes
+    local: yes
+
+
+- name: setup PAM
+  copy:
+    backup: yes
+    src: /etc/pam.d/login
+    dest: /etc/pam.d/rstudio
+    remote_src: yes
+
+- name: Restrict users to humans
+  lineinfile:
+    path: /etc/rstudio/rstudio-server.conf
+    line: "auth-required-user-group={{users_group}}"
+    regexp: "^auth-required-user-group=.*$"
+    create: yes
+
+- name: "RStudio should run as {{rstudio_user}}"
+  lineinfile:
+    path: /etc/rstudio/rstudio-server.conf
+    line: "server-user={{rstudio_user}}"
+    regexp: "^server-user=.*$"
+    create: yes
+
+
+- name: "RStudio port"
+  lineinfile:
+    path: /etc/rstudio/rstudio-server.conf
+    line: "www-port={{rstudio_server_http_port}}"
+    regexp: "^www-port==.*$"
+    create: yes
+
+- name: Create rstudio logging folder if it did not exist already
+  file:
+    state: directory
+    path:
+      - /var/log/rstudio-server
+      - /var/lib/rstudio-server
+    owner: "{{rstudio_user}}"
+    group: "{{rstudio_group}}"
+    recurse: yes
+
+#https://community.rstudio.com/t/rserver-1692-error-system-error-13-permission-denied/46972/7
+- name: Put SELinux in permissive mode, logging actions that would be blocked.
+  ansible.posix.selinux:
+    policy: targeted
+    state: permissive
+
+- name: Start RStudio Server service
+  systemd:
+    service: rstudio-server
+    state: restarted
+
+- name: Configure Spark home
+  lineinfile:
+    path:  /usr/lib64/R/etc/Renviron
+    line: "SPARK_HOME={{current_spark_home}}"
+    regexp: "^SPARK_HOME=.*$"
+    create: yes
+
+- name: install Sparklyr dependencies
+  package:
+    name:
+      - libxml2-devel
+      - libcurl-devel
+      - openssl-devel
+    state: present
+
+#If nessesary, remove all installed packages. This can solve problems with installed packages that have been compiled to an older R version
+#
+#sudo R --vanilla << EOR
+#remove.packages( installed.packages( priority = "NA" )[,1] )
+#EOR
+# IT would be nice to get the output here, but alas, this is ansible and output is bad...
+# https://github.com/ansible/proposals/issues/92
+# https://github.com/allx/remote_logging
+# https://stackoverflow.com/questions/41194021/how-can-i-show-progress-for-a-long-running-ansible-task
+- name: install R Sparklyr
+  shell: Rscript -e 'install.packages("sparklyr", repos="http://cran.rstudio.com/")'
+

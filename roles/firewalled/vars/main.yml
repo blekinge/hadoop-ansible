@@ -71,7 +71,7 @@ default_spark_driver_http_portrange: "{{spark_driver_http_port}}-{{spark_driver_
 default_spark_blockmanager_http_port: 12500
 default_spark_blockmanager_http_portrange: "{{spark_blockmanager_http_port}}-{{spark_blockmanager_http_port|int+spark_portrange_width|int}}"
 
-
+default_rstudio_server_http_port: 8787
 
 
 #This reference the ports above so it must come after, due to the way that default_values work
@@ -105,6 +105,8 @@ default_ports_per_role: { # This dict maps roles names to ports
   "spark_client": [ "{{spark_ui_http_portrange}}",
                     "{{spark_driver_http_portrange}}",
                     "{{spark_blockmanager_http_portrange}}" ],
+
+  "rstudio_server": [ "{{rstudio_server_http_port}}" ],
 
   "hadoop": [ ] # This ensures that the firewall is started for all hadoop nodes
 

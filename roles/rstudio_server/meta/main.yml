@@ -1,0 +1,7 @@
+---
+dependencies:
+  - role: default_values
+  - role: epel_repo
+  - role: ipa_systemusers_config
+  - role: firewalled
+  - role: spark_client

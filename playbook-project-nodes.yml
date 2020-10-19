@@ -1,0 +1,5 @@
+
+- hosts: projectnodes
+  roles:
+    - spark_client
+    - rstudio_server
