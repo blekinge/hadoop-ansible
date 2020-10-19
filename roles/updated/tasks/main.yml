@@ -29,8 +29,9 @@
 
 - name: Check if we need to restart
   shell: /usr/bin/needs-restarting -r
-  ignore_errors: yes
   register: needs_restarting
+  failed_when: needs_restarting.rc >= 2
+
 
 - name: reboot
   reboot:
