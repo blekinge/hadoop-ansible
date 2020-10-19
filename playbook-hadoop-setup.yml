@@ -54,3 +54,7 @@
     - vars/var_sensitive.yml
   roles:
     - role: spark_history_server
+
+- hosts: projectnodes
+  roles:
+    - spark_client
