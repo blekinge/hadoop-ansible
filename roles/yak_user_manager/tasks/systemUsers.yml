@@ -14,14 +14,14 @@
     gid: "{{item.gid | default(omit)}}"
     homedir: "{{ipaclient_syshome_dir}}/{{item.user}}"
     shell: "{{item.shell | default('/bin/bash')}}"
-    noprivate: yes
+    noprivate: "{{ not item.private_group | default('yes')}}"
 
 
-- name: "Add system users to group {{hadoop_group}}"
+- name: "Add system users to system groups "
   loop: "{{system_users}}"
   ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{ hadoop_group }}"
+    name: "{{ item.extra_groups }}"
     action: member
     user: "{{item.user}}"
 
