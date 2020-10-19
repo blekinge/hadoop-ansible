@@ -55,10 +55,24 @@ default_mapreduce_history_server_https_port: 19890
 
 default_mapreduce_shuffle_port: 13562
 
+default_mapreduce_am_portrange: "50000-50200"
 
 default_spark_history_server_https_port: 18480
 default_spark_history_server_http_port: 18080
-default_spark_ui_http_port: ""        #TODO         spark_ui_http_port
+
+default_spark_portrange_width: 50
+
+default_spark_ui_http_port: 4400
+default_spark_ui_http_portrange: "{{spark_ui_http_port}}-{{spark_ui_http_port|int+spark_portrange_width|int}}"
+
+default_spark_driver_http_port: 12000
+default_spark_driver_http_portrange: "{{spark_driver_http_port}}-{{spark_driver_http_port|int+spark_portrange_width|int}}"
+
+default_spark_blockmanager_http_port: 12500
+default_spark_blockmanager_http_portrange: "{{spark_blockmanager_http_port}}-{{spark_blockmanager_http_port|int+spark_portrange_width|int}}"
+
+
+
 
 #This reference the ports above so it must come after, due to the way that default_values work
 default_ports_per_role: { # This dict maps roles names to ports
@@ -67,8 +81,19 @@ default_ports_per_role: { # This dict maps roles names to ports
   "hdfs_datanode": [ "{{hdfs_datanode_rpc_port}}", "{{hdfs_datanode_ipc_port}}", "{{hdfs_datanode_http_port}}", "{{hdfs_datanode_https_port}}" ],
 
   "yarn_timeline_server": [ "{{yarn_timelineserver_http_port}}", "{{yarn_timelineserver_https_port}}", "{{yarn_timelineserver_port2}}" ],
-  "yarn_node_manager": [ "{{yarn_nodemanager_port}}", "{{mapreduce_shuffle_port}}" ],
-  "yarn_resource_manager": [ "{{yarn_resourcemanager_rpc_port}}","{{yarn_resourcemanager_scheduler_port}}","{{yarn_resourcemanager_tracker_port}}","{{yarn_resourcemanager_admin_port}}","{{yarn_resourcemanager_http_port}}","{{yarn_resourcemanager_https_port}}" ],
+  "yarn_node_manager": [ "{{yarn_nodemanager_port}}",
+                         "{{mapreduce_shuffle_port}}",
+                         "{{mapreduce_am_portrange}}",
+                         "{{spark_ui_http_portrange}}",
+                         "{{spark_driver_http_portrange}}",
+                         "{{spark_blockmanager_http_portrange}}"
+  ],
+  "yarn_resource_manager": [ "{{yarn_resourcemanager_rpc_port}}",
+                             "{{yarn_resourcemanager_scheduler_port}}",
+                             "{{yarn_resourcemanager_tracker_port}}",
+                             "{{yarn_resourcemanager_admin_port}}",
+                             "{{yarn_resourcemanager_http_port}}",
+                             "{{yarn_resourcemanager_https_port}}" ],
 
   "mapreduce_history_server": [ "{{mapreduce_history_server_rpc_port}}","{{mapreduce_history_server_admin_port}}","{{mapreduce_history_server_http_port}}","{{mapreduce_history_server_https_port}}" ],
 
@@ -76,5 +101,11 @@ default_ports_per_role: { # This dict maps roles names to ports
 
   "zookeeper_server": [ "{{zookeeper_port}}", "{{zookeeper_leader_election_port}}", "{{zookeeper_follower_port}}" ],
 
-  "hadoop":[] # This ensures that the firewall is started for all hadoop nodes
+
+  "spark_client": [ "{{spark_ui_http_portrange}}",
+                    "{{spark_driver_http_portrange}}",
+                    "{{spark_blockmanager_http_portrange}}" ],
+
+  "hadoop": [ ] # This ensures that the firewall is started for all hadoop nodes
+
 }

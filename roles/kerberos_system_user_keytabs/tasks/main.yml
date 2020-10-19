@@ -13,7 +13,7 @@
 
 
 
-- name: "uploading headless keytabs to {{ inventory_hostname }}"
+- name: "uploading headless keytabs to hosts"
   throttle: 2
   delegate_to: "{{ipa_server}}"
   synchronize:
