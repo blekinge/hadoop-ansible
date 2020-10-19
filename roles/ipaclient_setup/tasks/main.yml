@@ -1,9 +1,63 @@
 ---
-- name: create {{ipaclient_autohome_dir}}
+- name: "create {{ipaclient_autohome_dir}}"
   file:
       path: "{{ipaclient_autohome_dir}}"
       state: directory
       mode: '0755'
+
+- name: check for autofs in /etc/sssd/sssd.conf
+  shell: grep '^services *=' /etc/sssd/sssd.conf | grep -q autofs
+  register: autofsEnabled
+  failed_when: autofsEnabled.rc >= 2
+  changed_when: autofsEnabled.rc == 1
+
+- name: setup automount as the ipaclient module did not do it correctly
+  when: autofsEnabled.rc == 1
+  replace:
+    path: /etc/sssd/sssd.conf
+    regexp: '^(services *= *[^\n]*)$'
+    replace: '\1, autofs'
+  register: service_autofs_changed
+
+
+- name: check for homedir in /etc/sssd/sssd.conf
+  shell: grep '^homedir_substring *=' /etc/sssd/sssd.conf | grep -v -q '= */home *$'
+  register: homedirCorrect
+  failed_when: homedirCorrect.rc >= 2
+  changed_when: homedirCorrect.rc == 1
+
+- name: setup homedir as the ipaclient module did not do it correctly
+  when: homedirCorrect.rc == 1
+  replace:
+    path: /etc/sssd/sssd.conf
+    regexp: '^homedir_substring *= [^\n]*$'
+    replace: 'homedir_substring = {{ipaclient_autohome_dir}}'
+  register: homedir_substring_changed
+
+
+- name: add missing automount config to /etc/sssd/sssd.conf
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    line: autofs_provider = ipa
+    insertbefore: '^\[sssd\]$'
+  register: autofs_provider_changed
+
+- name: add missing automount config to /etc/sssd/sssd.conf
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    line: ipa_automount_location = default
+    insertbefore: '^\[sssd\]$'
+  register: automount_location_changed
+
+- name: restart sssd after changes in /etc/sssd/sssd.conf
+  when: autofs_provider_changed.changed or
+    automount_location_changed.changed or
+    homedir_substring_changed.changed or
+    service_autofs_changed.changed
+  systemd:
+    service: sssd
+    state: restarted
+
 
 
 - name: "Mount {{ipaclient_syshome_dir}}"

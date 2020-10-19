@@ -30,11 +30,11 @@
 
         ipa automountkey-show {{ipaautomount_location}}  \
                               --key "*" \
-                              --info "-fstype=nfs4,rw,sec=krb5,intr,hard {{ inventory_hostname }}:{{ ipaclient_autohome_dir }}/&" \
+                              --info "-fstype=nfs4,rw,sec=krb5,intr,hard {{ inventory_hostname }}:{{ ipaserver_autohome_dir }}/&" \
                               auto.home || \
           ipa automountkey-add {{ipaautomount_location}} \
             --key "*" \
-            --info "-fstype=nfs4,rw,sec=krb5,intr,hard {{ inventory_hostname }}:{{ ipaclient_autohome_dir }}/&" \
+            --info "-fstype=nfs4,rw,sec=krb5:krb5i,intr,hard {{ inventory_hostname }}:{{ ipaserver_autohome_dir }}/&" \
             auto.home;
 
 

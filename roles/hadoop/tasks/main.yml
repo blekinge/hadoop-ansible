@@ -1,132 +1,136 @@
 ---
 
-- name: Check for single yarn_timeline_server
-  fail: msg="Single host check failed."
-  when: "groups['yarn_timeline_servers'] |length  != 1"
+- name: install Hadoop
+  when: install_hadoop | default(true) # So we can depend on this role just for the vars, if nessesary
+  block:
+
+    - name: Check for single yarn_timeline_server
+      fail: msg="Single host check failed."
+      when: "groups['yarn_timeline_servers'] |length  != 1"
 
 
-- name: Check for single mapreduce_history_server
-  fail: msg="Single host check failed."
-  when: "groups['mapreduce_history_servers'] |length  != 1"
+    - name: Check for single mapreduce_history_server
+      fail: msg="Single host check failed."
+      when: "groups['mapreduce_history_servers'] |length  != 1"
 
 
-- name: Check for single spark_history_server
-  fail: msg="Single host check failed."
-  when: "groups['spark_history_servers'] |length  != 1"
+    - name: Check for single spark_history_server
+      fail: msg="Single host check failed."
+      when: "groups['spark_history_servers'] |length  != 1"
 
-- name: Create common dirs
-  file:
-    path: "{{ item }}"
-    owner: "root"
-    group: "{{ hadoop_group }}"
-    state: directory
-    mode: 0755
-  with_items:
-    - "{{ hadoop_log_dir }}"
-    - "{{hadoop_tmp}}"
-
-
-
-- name: ensure hadoop directory exists
-  file:
-    path: "{{ hadoop_path }}"
-    state: directory
-
-
-- debug:
-    msg: "Downloading hadoop from {{hadoop_download}}"
-
-
-- name: Unzip Hadoop
-  unarchive:
-    src: "{{hadoop_download}}"
-    dest: "{{ hadoop_path }}"
-    remote_src: yes
-    creates: "{{ hadoop_home }}"
-    group: "{{ hadoop_group }}"
-    owner: "root"
-
-- name: "Link {{hadoop_home}} to {{current_hadoop_home}}"
-  file:
-    src: "{{hadoop_home}}"
-    dest: "{{current_hadoop_home}}"
-    state: link
+    - name: Create common dirs
+      file:
+        path: "{{ item }}"
+        owner: "root"
+        group: "{{ hadoop_group }}"
+        state: directory
+        mode: 0755
+      with_items:
+        - "{{ hadoop_log_dir }}"
+        - "{{hadoop_tmp}}"
 
 
 
-- name: Copy Hadoop config files
-  template:
-    src: "{{ item }}"
-    dest: "{{ hadoop_config_path }}/"
-    mode: 0644
-    owner: "root"
-    group: "{{ hadoop_group }}"
-  with_fileglob:
-    - "templates/hadoop_conf/*"
+    - name: ensure hadoop directory exists
+      file:
+        path: "{{ hadoop_path }}"
+        state: directory
 
 
-- name: remove {{ hadoop_home }}/etc/hadoop
-  file:
-    path: "{{ hadoop_home }}/etc/hadoop"
-    state: absent
-- name: symlink {{ hadoop_home }}/etc/hadoop to {{ hadoop_config_path }}
-  file:
-    src: "{{ hadoop_config_path }}"
-    dest:  "{{ hadoop_home }}/etc/hadoop"
-    owner: root
-    group: "{{ hadoop_group }}"
-    state: link
-    force: true
+    - debug:
+        msg: "Downloading hadoop from {{hadoop_download}}"
 
-- name: Install fixed container-executor
-  copy:
-    src: container-executor
-    dest: "{{ hadoop_home }}/bin/"
-    owner: root
-    group: hadoop
-    mode: '6050'
-- name: Copy Hadoop invoker Script
-  template:
-    src: "hadoop-invoker.sh"
-    dest: "/usr/local/bin/"
-    mode: "0755"
-    owner: "root"
-    group: "{{ hadoop_group }}"
-- name: Copy Hadoop profile files
-  template:
-    src: "{{ item }}"
-    dest: "/etc/profile.d/"
-    mode: 0644
-    owner: "root"
-    group: "{{ hadoop_group }}"
-  with_fileglob:
-    - "templates/profile.d/*"
-- name: Copy Hadoop YARN systemd services
-  template:
-    src: "{{ item }}"
-    dest: /etc/systemd/system/
-    mode: 0644
-    owner: "root"
-    group: "root"
-  with_fileglob:
-    - "templates/systemd/yarn/*"
-- name: Copy Hadoop HDFS systemd services
-  template:
-    src: "{{ item }}"
-    dest: /etc/systemd/system/
-    mode: 0644
-    owner: "root"
-    group: "root"
-  with_fileglob:
-    - "templates/systemd/hdfs/*"
-- name: Copy Hadoop Mapreduce systemd services
-  template:
-    src: "{{ item }}"
-    dest: /etc/systemd/system/
-    mode: 0644
-    owner: "root"
-    group: "root"
-  with_fileglob:
-    - "templates/systemd/mapreduce/*"
+
+    - name: Unzip Hadoop
+      unarchive:
+        src: "{{hadoop_download}}"
+        dest: "{{ hadoop_path }}"
+        remote_src: yes
+        creates: "{{ hadoop_home }}"
+        group: "{{ hadoop_group }}"
+        owner: "root"
+
+    - name: "Link {{hadoop_home}} to {{current_hadoop_home}}"
+      file:
+        src: "{{hadoop_home}}"
+        dest: "{{current_hadoop_home}}"
+        state: link
+
+
+
+    - name: Copy Hadoop config files
+      template:
+        src: "{{ item }}"
+        dest: "{{ hadoop_config_path }}/"
+        mode: 0644
+        owner: "root"
+        group: "{{ hadoop_group }}"
+      with_fileglob:
+        - "templates/hadoop_conf/*"
+
+
+    - name: remove {{ hadoop_home }}/etc/hadoop
+      file:
+        path: "{{ hadoop_home }}/etc/hadoop"
+        state: absent
+    - name: symlink {{ hadoop_home }}/etc/hadoop to {{ hadoop_config_path }}
+      file:
+        src: "{{ hadoop_config_path }}"
+        dest:  "{{ hadoop_home }}/etc/hadoop"
+        owner: root
+        group: "{{ hadoop_group }}"
+        state: link
+        force: true
+
+    - name: Install fixed container-executor
+      copy:
+        src: container-executor
+        dest: "{{ hadoop_home }}/bin/"
+        owner: root
+        group: hadoop
+        mode: '6050'
+    - name: Copy Hadoop invoker Script
+      template:
+        src: "hadoop-invoker.sh"
+        dest: "/usr/local/bin/"
+        mode: "0755"
+        owner: "root"
+        group: "{{ hadoop_group }}"
+    - name: Copy Hadoop profile files
+      template:
+        src: "{{ item }}"
+        dest: "/etc/profile.d/"
+        mode: 0644
+        owner: "root"
+        group: "{{ hadoop_group }}"
+      with_fileglob:
+        - "templates/profile.d/*"
+    - name: Copy Hadoop YARN systemd services
+      template:
+        src: "{{ item }}"
+        dest: /etc/systemd/system/
+        mode: 0644
+        owner: "root"
+        group: "root"
+      with_fileglob:
+        - "templates/systemd/yarn/*"
+    - name: Copy Hadoop HDFS systemd services
+      template:
+        src: "{{ item }}"
+        dest: /etc/systemd/system/
+        mode: 0644
+        owner: "root"
+        group: "root"
+      with_fileglob:
+        - "templates/systemd/hdfs/*"
+    - name: Copy Hadoop Mapreduce systemd services
+      template:
+        src: "{{ item }}"
+        dest: /etc/systemd/system/
+        mode: 0644
+        owner: "root"
+        group: "root"
+      with_fileglob:
+        - "templates/systemd/mapreduce/*"
 
 

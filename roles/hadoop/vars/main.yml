@@ -1,7 +1,7 @@
 ---
 
-
 default_wipe_hdfs: false
+
 # hadoop basic vars
 # Set a local file here, if you do not want to download it dynamicallyl
 default_hadoop_version: "3.3.0"

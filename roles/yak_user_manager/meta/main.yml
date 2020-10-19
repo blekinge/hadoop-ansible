@@ -2,3 +2,4 @@
 dependencies:
   - role: default_values
   - role: ipa_systemusers_config
+  - role: hadoop
