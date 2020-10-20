@@ -18,6 +18,7 @@
 
 # Start both
 - name: Start namenode process
+  throttle: 1
   systemd:
     state: restarted
     daemon_reload: yes
@@ -26,6 +27,7 @@
 
 # Start the failover controllers
 - name: Start namenode zkfc process
+  throttle: 1
   systemd:
     state: restarted
     daemon_reload: yes
@@ -48,7 +50,7 @@
     	/history /history/app-logs  /history/spark-history    \
     	/history/mr-history /history/mr-history/done /history/mr-history/tmp \
     	/history/timeline-server /history/timeline-server/active /history/timeline-server/done /history/timeline-server/generic-history \
-    	/user /user/abrsadm;
+    	/user;
 
     hdfs dfs -chmod a+rwx /tmp;
 

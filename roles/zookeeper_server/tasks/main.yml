@@ -4,8 +4,9 @@
   template: src=myid dest={{zookeeper_data_dir}}/myid mode=0644 owner="root" group="root"
 
 - name: Start zookeeper server
+  throttle: 1
   systemd:
-    state: started
+    state: restarted
     daemon_reload: yes
     name: zookeeper
     enabled: true

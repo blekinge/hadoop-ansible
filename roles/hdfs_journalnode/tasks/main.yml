@@ -24,6 +24,7 @@
 
 
 - name: Start journalnode process
+  throttle: 1
   systemd:
     state: restarted
     name: hdfs_journalnode

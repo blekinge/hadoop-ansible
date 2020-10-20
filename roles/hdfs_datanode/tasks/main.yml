@@ -28,6 +28,7 @@
 
 
 - name: Start datanode process
+  throttle: 1
   systemd:
     state: restarted
     daemon_reload: yes
