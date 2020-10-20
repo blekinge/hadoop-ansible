@@ -19,6 +19,11 @@ spark_history_server_service_name: "shs"
 
 zookeeper_service_name: "zookeeper"
 
+hive_metastore_service_name: "hms"
+
+hive_server2_service_name: "hs2"
+
+
 keytab_users:
   - {
     host: "{{ ipa_server }}", #Create this keytab on ipaserver and distribute it to all host
@@ -101,3 +106,16 @@ keytab_services:
     group: "{{ spark_group }}"
   }
 
+  #    Hive
+  - {
+    hostgroup: "hive_servers",
+    name: "{{ hive_metastore_service_name }}",
+    owner: "{{ hive_user }}",
+    group: "{{ hive_group }}"
+  }
+  - {
+    hostgroup: "hive_servers",
+    name: "{{ hive_server2_service_name }}",
+    owner: "{{ hive_user }}",
+    group: "{{ hive_group }}"
+  }

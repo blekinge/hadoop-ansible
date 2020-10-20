@@ -92,8 +92,6 @@
   <property>
     <name>hadoop.security.auth_to_local</name>
     <value>RULE:[1:$1@$0]({{ hdfs_user }}@{{ipaserver_realm}})s/.*/{{ hdfs_user }}/
-      RULE:[1:$1@$0](spark1@{{ipaserver_realm}})s/.*/spark1/
-      RULE:[1:$1@$0](spark2@{{ipaserver_realm}})s/.*/spark2/
       RULE:[1:$1@$0](.*@{{ipaserver_realm}})s/@.*//
       RULE:[2:$1@$0]({{ hdfs_datanode_service_name }}@{{ipaserver_realm}})s/.*/{{ hdfs_user }}/
       RULE:[2:$1@$0](hdfs-nfs@{{ipaserver_realm}})s/.*/{{ hdfs_user }}/
@@ -130,4 +128,12 @@
     <name>hadoop.proxyuser.HTTP.groups</name>
     <value>{{ users_group }}</value>
   </property>
+
+  <property>
+    <name>spark.authenticate</name>
+    <value>true</value>
+    <description>Prevents spark from breaking with "java.lang.IllegalArgumentException: requirement failed: A secret key must be specified via the spark.authenticate.secret config."</description>
+  </property>
+
+
 </configuration>
