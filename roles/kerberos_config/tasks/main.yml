@@ -7,7 +7,7 @@
       {%- set _= temp_dic.update({'host': host }) -%}
       {%- set _= temp_dic.update({'type': 'SERVICE' }) -%}
       {%- set _= temp_dic.update({'principal': ( service.service | default(service.name))+'/'+host+'@'+ipaserver_realm }) -%}
-      {%- set _= temp_dic.update({'keytab_file': keytab_dir+service.name+'.service.keytab' }) -%}
+      {%- set _= temp_dic.update({'keytab_file': keytab_dir+'/'+service.name+'.service.keytab' }) -%}
       {%- set _= temp_dic.update({'owner': service.owner }) -%}
       {%- set _= temp_dic.update({'group': service.group }) -%}
       {%- set _= temp_dic.update({'file_permissions': service.permissions | default(keytab_permissions) }) -%}

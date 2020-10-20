@@ -1,6 +1,6 @@
 ---
 
-keytab_dir: "/etc/security/keytabs/"
+keytab_dir: "/etc/security/keytabs"
 keytab_permissions: "0400"
 
 kinit_principal: "{{ipa_admin_user}}@{{ipaserver_realm}}"
