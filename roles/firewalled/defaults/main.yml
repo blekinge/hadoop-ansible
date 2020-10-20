@@ -1,4 +1,3 @@
-
 # This file defines all the ports used by the system, for easier firewall config
 
 
@@ -86,8 +85,7 @@ ports_per_role: { # This dict maps roles names to ports
                          "{{mapreduce_am_portrange}}",
                          "{{spark_ui_http_portrange}}",
                          "{{spark_driver_http_portrange}}",
-                         "{{spark_blockmanager_http_portrange}}"
-  ],
+                         "{{spark_blockmanager_http_portrange}}"],
   "yarn_resource_manager": [ "{{yarn_resourcemanager_rpc_port}}",
                              "{{yarn_resourcemanager_scheduler_port}}",
                              "{{yarn_resourcemanager_tracker_port}}",
