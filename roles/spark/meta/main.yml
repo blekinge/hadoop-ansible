@@ -1,6 +1,5 @@
 ---
 dependencies:
-  - role: default_values
   - role: java
   - role: hadoop
 #    install_hadoop: false # hack to skip the hadoop install while testing

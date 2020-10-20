@@ -1,6 +1,5 @@
 ---
 dependencies:
-  - role: default_values
   - role: java
   - role: firewalled
   - role: ipa_systemusers_config

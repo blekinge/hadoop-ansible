@@ -38,8 +38,8 @@
 
 - name: "Setting permissions"
   file:
-    path: "{{item.file}}"
-    mode: "{{item.mode | default('0440')}}" #Not public
+    path:  "{{item.file}}"
+    mode:  "{{item.mode  | default('0440')}}" #Not public
     group: "{{item.group | default(hadoop_group)}}"
     owner: "{{item.owner | default('root')}}"
   loop:
