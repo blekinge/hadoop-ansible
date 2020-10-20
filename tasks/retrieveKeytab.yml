@@ -10,6 +10,7 @@
   shell: kinit -kt {{ entry.keytab_file }} {{ entry.principal}} -c test.ticket && rm test.ticket
   when: keytab_file.stat.exists == True
   register: keytab_valid
+  failed_when: keytab_valid.rc >= 2
 
 - name: "Create keytab for {{ entry.principal }}"
   when: keytab_valid is skipped or keytab_valid.rc != 0
