@@ -22,7 +22,7 @@
     </property>
     <property>
         <name>yarn.admin.acl</name>
-        <value>yarn,dr.who,abrsadm</value>
+        <value>{{yarn_user}} {{subadmins_group}}</value>
     </property>
     <property>
         <name>yarn.application.classpath</name>

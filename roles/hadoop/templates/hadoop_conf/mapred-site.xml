@@ -39,7 +39,7 @@
 
     <property>
         <name>mapreduce.cluster.administrators</name>
-        <value> {{ hadoop_group }},admins,subadmins</value>
+        <value>{{mapreduce_user}} {{ hadoop_group }},{{subadmins_group}}</value>
     </property>
 
     <property>
@@ -77,10 +77,9 @@
         <value>{{ mapreduce_history_server_host }}:{{mapreduce_history_server_rpc_port}}</value>
     </property>
 
-    <!--TODO add subadmins here-->
     <property>
         <name>mapreduce.jobhistory.admin.acl</name>
-        <value>{{yarn_user}}</value>
+        <value>{{yarn_user}} {{subadmins_group}}</value>
     </property>
 
     <property>
