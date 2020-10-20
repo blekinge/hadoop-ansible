@@ -1,0 +1,14 @@
+---
+
+#Defaults if the relevant field have not been set
+
+shortname: "{{  inventory_hostname.split('.')[0] | lower }}"
+hostname: "{{shortname}}.{{domain}}"
+
+template: "SDL8-4R-30D-MIN-TMPL"
+memory: "4GiB"
+cpu_sockets: 2
+cpu_cores: 1
+description: "{{group_names | sort | join(' ')}}"
+
+letters: "abcdefghicklmopqrstuvwxyz" #For format to figure out the letter code of the new disk

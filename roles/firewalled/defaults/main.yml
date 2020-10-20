@@ -4,78 +4,78 @@
 
 
 # ZooKeeper
-default_zookeeper_port: 2181
-default_zookeeper_leader_election_port: 3888
-default_zookeeper_follower_port: 2888
+zookeeper_port: 2181
+zookeeper_leader_election_port: 3888
+zookeeper_follower_port: 2888
 
 
 # HDFS
-default_hdfs_namenode_rpc_port: 8020
-default_hdfs_namenode_http_port: 9870
-default_hdfs_namenode_https_port: 9871
+hdfs_namenode_rpc_port: 8020
+hdfs_namenode_http_port: 9870
+hdfs_namenode_https_port: 9871
 
-default_hdfs_zkfc_port: 8019
+hdfs_zkfc_port: 8019
 
-default_hdfs_secondarynamenode_http_port: 9868
-default_hdfs_secondarynamenode_https_port: 9869
+hdfs_secondarynamenode_http_port: 9868
+hdfs_secondarynamenode_https_port: 9869
 
-default_hdfs_namenode_backup_rpc_port: 50100
-default_hdfs_namenode_backup_http_port: 50105
+hdfs_namenode_backup_rpc_port: 50100
+hdfs_namenode_backup_http_port: 50105
 
-default_hdfs_journalnode_http_port: 8480
-default_hdfs_journalnode_https_port: 8481
-default_hdfs_journalnode_rpc_port: 8485
+hdfs_journalnode_http_port: 8480
+hdfs_journalnode_https_port: 8481
+hdfs_journalnode_rpc_port: 8485
 
-default_hdfs_datanode_https_port: 9865
-default_hdfs_datanode_rpc_port: 9866
-default_hdfs_datanode_ipc_port: 9867
-default_hdfs_datanode_http_port: 50475
+hdfs_datanode_https_port: 9865
+hdfs_datanode_rpc_port: 9866
+hdfs_datanode_ipc_port: 9867
+hdfs_datanode_http_port: 50475
 
-default_hdfs_nfs_server_port: 2049
-default_hdfs_nfs_mountd_port: 4242
+hdfs_nfs_server_port: 2049
+hdfs_nfs_mountd_port: 4242
 
 
-default_yarn_timelineserver_http_port: 8188
-default_yarn_timelineserver_https_port: 8190
-default_yarn_timelineserver_port2: 10200
+yarn_timelineserver_http_port: 8188
+yarn_timelineserver_https_port: 8190
+yarn_timelineserver_port2: 10200
 
-default_yarn_nodemanager_port: 45454
+yarn_nodemanager_port: 45454
 
-default_yarn_resourcemanager_rpc_port: 8050
-default_yarn_resourcemanager_scheduler_port: 8030
-default_yarn_resourcemanager_tracker_port: 8025
-default_yarn_resourcemanager_admin_port: 8033
-default_yarn_resourcemanager_http_port: 8088
-default_yarn_resourcemanager_https_port: 8090
+yarn_resourcemanager_rpc_port: 8050
+yarn_resourcemanager_scheduler_port: 8030
+yarn_resourcemanager_tracker_port: 8025
+yarn_resourcemanager_admin_port: 8033
+yarn_resourcemanager_http_port: 8088
+yarn_resourcemanager_https_port: 8090
 
-default_mapreduce_history_server_rpc_port: 10020
-default_mapreduce_history_server_admin_port: 10033
-default_mapreduce_history_server_http_port: 19888
-default_mapreduce_history_server_https_port: 19890
+mapreduce_history_server_rpc_port: 10020
+mapreduce_history_server_admin_port: 10033
+mapreduce_history_server_http_port: 19888
+mapreduce_history_server_https_port: 19890
 
-default_mapreduce_shuffle_port: 13562
+mapreduce_shuffle_port: 13562
 
-default_mapreduce_am_portrange: "50000-50200"
+mapreduce_am_portrange: "50000-50200"
 
-default_spark_history_server_https_port: 18480
-default_spark_history_server_http_port: 18080
+spark_history_server_https_port: 18480
+spark_history_server_http_port: 18080
 
-default_spark_portrange_width: 50
+spark_portrange_width: 50
 
-default_spark_ui_http_port: 4400
-default_spark_ui_http_portrange: "{{spark_ui_http_port}}-{{spark_ui_http_port|int+spark_portrange_width|int}}"
+spark_ui_http_port: 4400
+spark_ui_http_portrange: "{{spark_ui_http_port}}-{{spark_ui_http_port|int+spark_portrange_width|int}}"
 
-default_spark_driver_http_port: 12000
-default_spark_driver_http_portrange: "{{spark_driver_http_port}}-{{spark_driver_http_port|int+spark_portrange_width|int}}"
+spark_driver_http_port: 12000
+spark_driver_http_portrange: "{{spark_driver_http_port}}-{{spark_driver_http_port|int+spark_portrange_width|int}}"
 
-default_spark_blockmanager_http_port: 12500
-default_spark_blockmanager_http_portrange: "{{spark_blockmanager_http_port}}-{{spark_blockmanager_http_port|int+spark_portrange_width|int}}"
+spark_blockmanager_http_port: 12500
+spark_blockmanager_http_portrange: "{{spark_blockmanager_http_port}}-{{spark_blockmanager_http_port|int+spark_portrange_width|int}}"
 
-default_rstudio_server_http_port: 8787
+rstudio_server_http_port: 8787
 
 
 #This reference the ports above so it must come after, due to the way that default_values work
-default_ports_per_role: { # This dict maps roles names to ports
+ports_per_role: { # This dict maps roles names to ports
   "hdfs_namenode": [ "{{hdfs_namenode_rpc_port}}","{{hdfs_namenode_http_port}}","{{hdfs_namenode_https_port}}", "{{hdfs_zkfc_port}}" ],
   "hdfs_journalnode": [ "{{hdfs_journalnode_rpc_port}}","{{hdfs_journalnode_https_port}}","{{hdfs_journalnode_https_port}}" ],
   "hdfs_datanode": [ "{{hdfs_datanode_rpc_port}}", "{{hdfs_datanode_ipc_port}}", "{{hdfs_datanode_http_port}}", "{{hdfs_datanode_https_port}}" ],

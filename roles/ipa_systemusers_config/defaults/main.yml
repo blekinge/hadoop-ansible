@@ -1,0 +1,111 @@
+---
+# https://github.com/freeipa/ansible-freeipa/blob/master/roles/ipaclient/README.md#base-variables
+
+ipa_server: "{{ groups['ipaserver'] | first }}"
+
+ipa_admin_user: admin
+ipa_admin_group: admins
+
+ipaserver_autohome_dir: /sto-data/home
+ipaserver_syshome_dir: /sto-data/syshome
+
+ipaclient_autohome_dir: /autohome
+ipaclient_syshome_dir: /syshome
+#Nessesary to set up the automount
+ipaautomount_location: "default"
+
+#Users and groups
+hadoop_group: "hadoop"
+uid_hadoopGroup: 11000
+
+users_group: "yakusers"
+uid_usersGroup: 20000
+
+systemservices_group: "systemservices"
+uid_systemserviceGroup: 15000
+
+subadmins_group: "subadmins"
+uid_subadminsGroup: 12000
+
+
+hdfs_user: "hdfs"
+hdfs_group: "{{hdfs_user}}"
+hdfs_uid: 11200
+hdfs_gid: "{{hdfs_uid}}"
+
+yarn_user: "yarn"
+yarn_group: "{{hadoop_group}}"
+yarn_uid: "{{uid_hadoopGroup|int+2}}"
+yarn_gid: "{{uid_hadoopGroup}}"
+
+mapreduce_user: "mapred"
+mapreduce_group: "{{hadoop_group}}"
+mapreduce_uid: "{{uid_hadoopGroup|int+1}}"
+mapreduce_gid: "{{uid_hadoopGroup}}"
+
+zookeeper_user: "zookeeper"
+zookeeper_group: "{{hadoop_group}}"
+zookeeper_uid: "{{uid_hadoopGroup|int+3}}"
+zookeeper_gid: "{{uid_hadoopGroup}}"
+
+spark_user: "spark"
+spark_group: "{{hadoop_group}}"
+spark_uid: "{{uid_hadoopGroup|int+4}}"
+spark_gid: "{{uid_hadoopGroup}}"
+
+rstudio_user: "rstudio-server"
+rstudio_group: "{{rstudio_user}}"
+rstudio_uid: "{{uid_systemserviceGroup|int+4}}"
+rstudio_gid: "{{rstudio_uid}}"
+
+
+system_users:
+  - user: "{{hdfs_user}}"
+    group: "{{hdfs_group}}"
+    uid: "{{hdfs_uid}}"
+    gid: "{{hdfs_gid}}"
+    private_group: "{{hdfs_group != hadoop_group}}"
+    extra_groups: ["{{hadoop_group}}"]
+
+  - user: "{{yarn_user}}"
+    group: "{{yarn_group}}"
+    uid: "{{yarn_uid}}"
+    gid: "{{yarn_gid}}"
+    private_group: "{{yarn_group != hadoop_group}}"
+    extra_groups: ["{{hadoop_group}}"]
+
+  - user: "{{mapreduce_user}}"
+    group: "{{mapreduce_group}}"
+    uid: "{{mapreduce_uid}}"
+    gid: "{{mapreduce_gid}}"
+    private_group: "{{mapreduce_group != hadoop_group}}"
+    extra_groups: ["{{hadoop_group}}"]
+
+
+  - user: "{{zookeeper_user}}"
+    group: "{{zookeeper_group}}"
+    uid: "{{zookeeper_uid}}"
+    gid: "{{zookeeper_gid}}"
+    private_group: "{{zookeeper_group != hadoop_group}}"
+    extra_groups: ["{{hadoop_group}}"]
+
+  - user: "{{spark_user}}"
+    group: "{{spark_group}}"
+    uid: "{{spark_uid}}"
+    gid: "{{spark_gid}}"
+    private_group: "{{spark_group != hadoop_group}}"
+    extra_groups: ["{{hadoop_group}}"]
+
+  - user: "{{rstudio_user}}"
+    group: "{{rstudio_group}}"
+    uid: "{{rstudio_uid}}"
+    gid: "{{rstudio_gid}}"
+    private_group: yes
+    extra_groups: ["{{systemservices_group}}"]
+
+#
+#  - user: "{{ipa_admin_user}}"
+#    group: "{{ipa_admin_group}}"
+
+
+initial_user_groups: "{{standard_user_groups}}"

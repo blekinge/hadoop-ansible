@@ -1,0 +1,7 @@
+projects: []
+
+common_usergroups: []
+
+shell: /bin/bash
+
+hdfs_delegation_host:  "{{ groups['hdfs'] | first }}"

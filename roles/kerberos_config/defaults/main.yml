@@ -1,25 +1,25 @@
 ---
 
-default_keytab_dir: "/etc/security/keytabs/"
-default_keytab_permissions: "0400"
+keytab_dir: "/etc/security/keytabs/"
+keytab_permissions: "0400"
 
-default_kinit_principal: "{{ipa_admin_user}}@{{ipaserver_realm}}"
+kinit_principal: "{{ipa_admin_user}}@{{ipaserver_realm}}"
 
-default_yarn_nodemanager_service_name: "nm"
-default_yarn_resourcemanager_service_name: "rm"
-default_yarn_timelineserver_service_name: "tl"
+yarn_nodemanager_service_name: "nm"
+yarn_resourcemanager_service_name: "rm"
+yarn_timelineserver_service_name: "tl"
 
-default_hdfs_namenode_service_name: "nn"
-default_hdfs_datanode_service_name: "dn"
-default_hdfs_journalnode_service_name: "jn"
+hdfs_namenode_service_name: "nn"
+hdfs_datanode_service_name: "dn"
+hdfs_journalnode_service_name: "jn"
 
-default_mapreduce_historyserver_service_name: "jhs"
-default_spark_history_server_service_name: "shs"
+mapreduce_historyserver_service_name: "jhs"
+spark_history_server_service_name: "shs"
 
 
-default_zookeeper_service_name: "zookeeper"
+zookeeper_service_name: "zookeeper"
 
-default_keytab_users:
+keytab_users:
   - {
     host: "{{ ipa_server }}", #Create this keytab on ipaserver and distribute it to all host
     name: "{{ hdfs_user }}",
@@ -29,7 +29,7 @@ default_keytab_users:
 
 #TODO bind on roles, not hostgroups
 
-default_keytab_services:
+keytab_services:
 
   #  HDFS
   - {

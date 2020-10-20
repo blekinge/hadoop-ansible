@@ -1,5 +1,0 @@
----
-
-#Common SSL variables
-default_ssl_server_dir: /etc/security/ssl
-default_ssl_client_dir: /etc/security/ssl
