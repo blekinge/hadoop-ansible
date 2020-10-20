@@ -1,3 +1,9 @@
 ---
-- include: redhat.yml
-#  when: ansible_os_family == 'RedHat'
+- name: Install OpenJdk.
+  yum: name={{ java_packages }} state=present
+
+- name: Copy Java Home Script
+  template: src=java_home.sh dest=/etc/profile.d
+#
+#- name: Set Java Home Script
+#  shell: source /etc/profile.d/java_home.sh
