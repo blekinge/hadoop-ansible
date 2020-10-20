@@ -26,3 +26,39 @@
     dest: "{{current_hive_home}}"
     state: link
 
+
+- name: Copy hive config files
+  template:
+    src: "{{ item }}"
+    dest: "{{ hive_config_path }}/"
+    mode: 0644
+    owner: "root"
+    group: "{{ hive_group }}"
+  with_fileglob:
+    - "templates/hive_conf/*"
+
+
+- name: remove {{ hive_home }}/conf
+  file:
+    path: "{{ hive_home }}/conf"
+    state: absent
+- name: symlink {{ hive_home }}/conf to {{ hive_config_path }}
+  file:
+    src: "{{ hive_config_path }}"
+    dest:  "{{ hive_home }}/conf"
+    owner: root
+    group: "{{ hive_group }}"
+    state: link
+    force: true
+
+
+- name: Copy Hive profile files
+  template:
+    src: "{{ item }}"
+    dest: "/etc/profile.d/"
+    mode: 0644
+    owner: "root"
+    group: "{{ hive_group }}"
+  with_fileglob:
+    - "templates/profile.d/*"
+
