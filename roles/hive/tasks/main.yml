@@ -1,0 +1,28 @@
+
+
+- name: ensure  directory exists
+  file:
+    path: "{{ hive_path }}"
+    state: directory
+
+
+- debug:
+    msg: "Downloading hive from {{hive_download}}"
+
+
+- name: Unzip hive
+  unarchive:
+    src: "{{ hive_download }}"
+    dest: "{{ hive_path }}"
+    remote_src: yes
+    creates: "{{ hive_home }}"
+    group: "{{ hive_group }}"
+    owner: "root"
+
+
+- name: "Link {{hive_home}} to {{current_hive_home}}"
+  file:
+    src: "{{hive_home}}"
+    dest: "{{current_hive_home}}"
+    state: link
+

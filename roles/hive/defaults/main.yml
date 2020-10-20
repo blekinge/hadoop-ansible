@@ -1,0 +1,15 @@
+---
+
+# hadoop basic vars
+# Set a local file here, if you do not want to download it dynamicallyl
+hive_version: "3.1.2"
+hive_download: "https://mirrors.dotsrc.org/apache/hive/hive-{{hive_version}}/apache-hive-{{hive_version}}-bin.tar.gz"
+hive_path: "/usr/local/hive"
+hive_home: "{{ hive_path }}/apache-hive-{{hive_version}}-bin"
+
+current_hive_home: "{{ hive_path }}/current"
+
+hive_config_path: "/etc/hive/conf"
+hive_tmp: "/tmp/hive"
+hive_log_dir: "/var/log/hive"
+hive_pid_dir: "/var/run/hive"

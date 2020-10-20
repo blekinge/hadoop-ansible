@@ -4,3 +4,4 @@ dependencies:
   - role: java
   - role: hadoop
   - role: firewalled
+  - role: hive

@@ -53,6 +53,11 @@ spark_group: "{{hadoop_group}}"
 spark_uid: "{{uid_hadoopGroup|int+4}}"
 spark_gid: "{{uid_hadoopGroup}}"
 
+hive_user: "hive"
+hive_group: "{{hadoop_group}}"
+hive_uid: "{{uid_hadoopGroup|int+5}}"
+hive_gid: "{{uid_hadoopGroup}}"
+
 rstudio_user: "rstudio-server"
 rstudio_group: "{{rstudio_user}}"
 rstudio_uid: "{{uid_systemserviceGroup|int+4}}"
@@ -95,6 +100,14 @@ system_users:
     gid: "{{spark_gid}}"
     private_group: "{{spark_group != hadoop_group}}"
     extra_groups: ["{{hadoop_group}}"]
+
+  - user: "{{hive_user}}"
+    group: "{{hive_group}}"
+    uid: "{{hive_uid}}"
+    gid: "{{hive_gid}}"
+    private_group: "{{hive_group != hadoop_group}}"
+    extra_groups: ["{{hadoop_group}}"]
+
 
   - user: "{{rstudio_user}}"
     group: "{{rstudio_group}}"
