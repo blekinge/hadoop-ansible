@@ -19,7 +19,7 @@
       {%- set _= temp_dic.update({'host': user.host }) -%}
       {%- set _= temp_dic.update({'type': 'USER' }) -%}
       {%- set _= temp_dic.update({'principal': user.name+'@'+ipaserver_realm }) -%}
-      {%- set _= temp_dic.update({'keytab_file': keytab_dir+user.name+'.headless.keytab' }) -%}
+      {%- set _= temp_dic.update({'keytab_file': keytab_dir+'/'+user.name+'.headless.keytab' }) -%}
       {%- set _= temp_dic.update({'owner': user.owner }) -%}
       {%- set _= temp_dic.update({'group': user.group }) -%}
       {%- set _= temp_dic.update({'file_permissions': entry.permissions | default(keytab_permissions) }) -%}
