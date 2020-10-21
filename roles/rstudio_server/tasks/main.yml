@@ -6,11 +6,6 @@
       - texlive-titling
     state: present
 
-- name: Check the newest version of RStudio
-  uri: url=http://download2.rstudio.org/current.ver return_content=yes
-  register: rstudio_version
-  become: no
-
 - name: convert gpg
   shell: "{{ item }}"
   args:
@@ -24,11 +19,26 @@
     key: rstudio-signing.key
     state: present
 
-- name: Get the archive of RStudio Server
+- name: get newest version of RStudio
+  when: rstudio_version_fixed is not defined
+  block:
+    - name: Check the newest version of RStudio
+      uri: url=http://download2.rstudio.org/current.ver return_content=yes
+      register: rstudio_version
+      become: no
+
+    - name: Get the archive of RStudio Server
+      get_url:
+        url: "{{rstudio_download_url}}/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','')}}-x86_64.rpm"
+        dest: /tmp/rstudio.rpm
+      become: no
+
+- name: "Get version {{ rstudio_version_fixed }}  of RStudio Server"
   get_url:
-    url: "https://download2.rstudio.org/server/centos8/x86_64/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','')}}-x86_64.rpm"
+    url: "{{rstudio_download_url}}/rstudio-server-rhel-{{ rstudio_version_fixed }}-x86_64.rpm"
     dest: /tmp/rstudio.rpm
   become: no
+  when: rstudio_version_fixed is defined
 
 
 - name: rstudio install
@@ -88,7 +98,7 @@
 
 #https://community.rstudio.com/t/rserver-1692-error-system-error-13-permission-denied/46972/7
 - name: Put SELinux in permissive mode, logging actions that would be blocked.
-  ansible.posix.selinux:
+  ansible.posix.selinux: #TODO RStudio SELinux
     policy: targeted
     state: permissive
 
@@ -96,6 +106,8 @@
   systemd:
     service: rstudio-server
     state: restarted
+    enabled: yes
+    daemon_reload: yes
 
 - name: Configure Spark home
   lineinfile:
@@ -117,11 +129,10 @@
 #sudo R --vanilla << EOR
 #remove.packages( installed.packages( priority = "NA" )[,1] )
 #EOR
+
 # IT would be nice to get the output here, but alas, this is ansible and output is bad...
 # https://github.com/ansible/proposals/issues/92
 # https://github.com/allx/remote_logging
 # https://stackoverflow.com/questions/41194021/how-can-i-show-progress-for-a-long-running-ansible-task
 - name: install R Sparklyr
   shell: Rscript -e 'install.packages("sparklyr", repos="http://cran.rstudio.com/")'
-
-# TODO   Failed during initialize_connection: java.lang.IllegalArgumentException: Unable to instantiate SparkSession with Hive support because Hive classes are not found.
