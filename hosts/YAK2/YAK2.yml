@@ -78,10 +78,7 @@ all:
                 hist001.yak2.net:
 
         projectnodes:
-          children:
-            proj000:
-              hosts:
-                proj000.yak2.net:
-            proj001:
-              hosts:
-                proj001.yak2.net:
+          hosts:
+            proj000.yak2.net:
+            proj001.yak2.net:
+            proj002.yak2.net:
