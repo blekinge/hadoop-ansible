@@ -15,7 +15,7 @@
     state: absent
   when: wipe_hdfs | bool
 
-- name: Create  journal dir
+- name: Create journal dir
   file:
     path: "{{hadoop_dfs_journal}}"
     state: directory

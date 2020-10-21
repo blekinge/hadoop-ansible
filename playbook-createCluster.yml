@@ -7,10 +7,6 @@
   import_playbook: playbook-ipa.yml
 
 
-- name: Hadoop Install
-  import_playbook: playbook-hadoop-install.yml
-
-
 - name: Setup cluster
   import_playbook: playbook-hadoop-setup.yml
 
@@ -18,4 +14,10 @@
 # Now that hdfs is running, we can create the human users
 - name: Create users
   import_playbook: playbook-create-users.yml
+
+
+
+# Create the project nodes
+- name: Create Project Nodes
+  import_playbook: playbook-project-nodes.yml
 
