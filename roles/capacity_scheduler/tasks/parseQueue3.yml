@@ -1,0 +1,4 @@
+---
+- name: handle queue
+  include: leafNodes.yml leaf={{queue3}} leafName={{queueName3}} subqueues={{queue3.children | default([]) | map(attribute="name") | join(',')}}
+

@@ -33,26 +33,25 @@ projects:
         mobile: +450000000
         email: "tba@kb.dk"
 
-  - name: p000
-    gid: 20000
-    users:
-      - username: p000user
-        firstname: p00
-        lastname: User
-        mobile: +450000000
-        email: "p000user@{{ipa_domain}}"
-        uid: 20003 # You can specify uid and gid explictly
-        gid: 20004
-      - username: userp000
-        firstname: p00
-        lastname: User2
-        mobile: +450000000
-        email: "userp000@{{ipa_domain}}"
-        # If uid or gid is not specified, use group gid + position in this list.
-
   - name: p001
     gid: 20100
+    users:
+      - username: userp001
+        firstname: p001
+        lastname: User2
+        mobile: +450000000
+        email: "userp001@{{ipa_domain}}"
+        # If uid or gid is not specified, use group gid + position in this list.
 
+  - name: p002
+    gid: 20200
+    users:
+      - username: userp002
+        firstname: p002
+        lastname: User
+        mobile: +450000000
+        email: "userp002@{{ipa_domain}}"
+        # If uid or gid is not specified, use group gid + position in this list.
 
 #the hadoop node  to delegate to for creating HDFS user home when creating new users
 #hdfs_delegation_host: "{{ groups['hdfs'] | first }}"

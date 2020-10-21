@@ -3,3 +3,102 @@
 #TODO let this default to true if there is no HDFS and false otherwise
 # Wipe HDFS and set up fresh. Nessesary for new installs
 wipe_hdfs: false
+
+#Each level must sum capacity to 100
+queue_mappings:
+  - "g:p001:p001-interactive"
+  - "g:p002:p002-interactive"
+  - "g:{{users_group}}:default"
+
+
+yarn_queues:
+  - name: root
+    admins: "{{yarn_user}}"
+    submitters: "{{yarn_user}}"
+    capacity: 100
+    ordering: priority-utilization
+    max_capacity: 100
+
+    children:
+      - name: default
+        admins: "{{yarn_user}} {{subadmins_group}}"
+        submitters: "{{yarn_user}} {{subadmins_group}}"
+        capacity: 20
+        max_capacity: 100
+        minimum_user_limit: 25
+        user_limit: 100
+        ordering: fair
+        size_based: true
+        priority: 0
+        state: RUNNING
+
+      - name: p001
+        admins: " p001"
+        submitters: " p001"
+        capacity: 40
+        max_capacity: 100
+        minimum_user_limit: 25
+        user_limit: 100
+        ordering: priority-utilization
+        priority: 1
+        state: RUNNING
+
+        children:
+          - name: p001_batch
+            admins: " p001"
+            submitters: " p001"
+            capacity: 30
+            max_capacity: 100
+            minimum_user_limit: 25
+            user_limit: 100
+            ordering: fifo
+            priority: 1
+            state: RUNNING
+
+          - name: p001_interactive
+            admins: " p001"
+            submitters: " p001"
+            capacity: 70
+            max_capacity: 80
+            minimum_user_limit: 25
+            user_limit: 100
+            ordering: fair
+            priority: 2
+            size_based: true
+            state: RUNNING
+
+
+      - name: p002
+        admins: " p002"
+        submitters: " p002"
+        capacity: 40
+        max_capacity: 100
+        minimum_user_limit: 25
+        user_limit: 100
+        ordering: priority-utilization
+        priority: 1
+        state: RUNNING
+
+        children:
+          - name: p002_batch
+            admins: " p002"
+            submitters: " p002"
+            capacity: 30
+            max_capacity: 100
+            minimum_user_limit: 25
+            user_limit: 100
+            ordering: fifo
+            priority: 1
+            state: RUNNING
+
+          - name: p002_interactive
+            admins: " p002"
+            submitters: " p002"
+            capacity: 70
+            max_capacity: 80
+            minimum_user_limit: 25
+            user_limit: 100
+            ordering: fair
+            priority: 2
+            size_based: true
+            state: RUNNING

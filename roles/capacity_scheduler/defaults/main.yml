@@ -1,0 +1,29 @@
+capacity_queues: []
+
+
+#Each level must sum capacity to 100
+queue_mappings:
+  - "g:{{users_group}}:default"
+
+
+
+yarn_queues:
+  - name: root
+    admins: "{{yarn_user}}"
+    submitters: "{{yarn_user}}"
+    capacity: 100
+    ordering: priority-utilization
+    max_capacity: 100
+
+    children:
+      - name: default
+        admins: "{{yarn_user}} {{subadmins_group}}"
+        submitters: "{{yarn_user}} {{subadmins_group}}"
+        capacity: 100
+        max_capacity: 100
+        minimum_user_limit: 25
+        user_limit: 100
+        ordering: fair
+        size_based: true
+        priority: 0
+        state: RUNNING

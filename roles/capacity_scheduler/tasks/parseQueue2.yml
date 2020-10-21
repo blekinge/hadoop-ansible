@@ -1,0 +1,11 @@
+---
+- name: handle queue
+  include: leafNodes.yml leaf={{queue2}} leafName={{queueName2}} subqueues={{queue2.children | default([]) | map(attribute="name") | join(',')}}
+
+
+- name: subqueues
+  include: parseQueue3.yml queue3={{subqueue2}} queueName3={{queueName2}}.{{subqueue2.name}}
+  loop: "{{queue2.children }}"
+  when: queue2.children is defined
+  loop_control:
+    loop_var: subqueue2

@@ -17,9 +17,7 @@
 
     <property>
         <name>yarn.scheduler.capacity.queue-mappings</name>
-        <value>
-            g:p002:p002-interactive,g:yakusers:default
-        </value>
+        <value>{{queue_mappings | default([]) | join(',')}}</value>
     </property>
 
     <property>
@@ -32,244 +30,73 @@
         <value>org.apache.hadoop.yarn.util.resource.DominantResourceCalculator</value>
     </property>
 
+
+
+
+
     <property>
         <name>yarn.scheduler.capacity.root.accessible-node-labels</name>
         <value>*</value>
     </property>
 
+    {% for queue in capacity_queues %}
     <property>
-        <name>yarn.scheduler.capacity.root.acl_administer_queue</name>
-        <value>yarn</value>
+        <name>yarn.scheduler.capacity.{{queue.longname}}.acl_administer_queue</name>
+        <value>{{queue.admins | default('')}}</value>
     </property>
 
     <property>
-        <name>yarn.scheduler.capacity.root.acl_submit_applications</name>
-        <value></value>
+        <name>yarn.scheduler.capacity.{{queue.longname}}.acl_submit_applications</name>
+        <value>{{queue.submitters | default('')}}</value>
+    </property>
+
+
+    <property>
+        <name>yarn.scheduler.capacity.{{queue.longname}}.capacity</name>
+        <value>{{queue.capacity | default(100)}}</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.{{queue.longname}}.maximum-capacity</name>
+        <value>{{queue.max_capacity | default(100)}}</value>
     </property>
 
     <property>
-        <name>yarn.scheduler.capacity.root.capacity</name>
-        <value>100</value>
+        <name>yarn.scheduler.capacity.{{queue.longname}}.ordering-policy</name>
+        <value>{{queue.ordering | default('fifo')}}</value>
     </property>
 
     <property>
-        <name>yarn.scheduler.capacity.root.default.acl_administer_queue</name>
-        <value>yarn subadmins</value>
+        <name>yarn.scheduler.capacity.{{queue.longname}}.priority</name>
+        <value>{{queue.priority | default(0)}}</value>
     </property>
 
     <property>
-        <name>yarn.scheduler.capacity.root.default.acl_submit_applications</name>
-        <value>yarn subadmins</value>
+        <name>yarn.scheduler.capacity.{{queue.longname}}.queues</name>
+        <value>{{queue.subqueues | default('')}}</value>
     </property>
 
     <property>
-        <name>yarn.scheduler.capacity.root.default.capacity</name>
-        <value>20</value>
+        <name>yarn.scheduler.capacity.{{queue.longname}}.state</name>
+        <value>{{queue.state | default('RUNNING')}}</value>
     </property>
 
     <property>
-        <name>yarn.scheduler.capacity.root.default.maximum-capacity</name>
-        <value>100</value>
+        <name>yarn.scheduler.capacity.{{queue.longname}}.minimum-user-limit-percent</name>
+        <value>{{queue.minimum_user_limit | default(25)}}</value>
     </property>
 
     <property>
-        <name>yarn.scheduler.capacity.root.default.minimum-user-limit-percent</name>
-        <value>25</value>
+        <name>yarn.scheduler.capacity.{{queue.longname}}.ordering-policy.fair.enable-size-based-weight</name>
+        <value>{{queue.size_based | default('false')}}</value>
     </property>
 
-    <property>
-        <name>yarn.scheduler.capacity.root.default.ordering-policy</name>
-        <value>fair</value>
-    </property>
 
-    <property>
-        <name>yarn.scheduler.capacity.root.default.ordering-policy.fair.enable-size-based-weight</name>
-        <value>true</value>
-    </property>
 
-    <property>
-        <name>yarn.scheduler.capacity.root.default.priority</name>
-        <value>0</value>
-    </property>
 
-    <property>
-        <name>yarn.scheduler.capacity.root.default.state</name>
-        <value>RUNNING</value>
-    </property>
+    {% endfor %}
 
-    <property>
-        <name>yarn.scheduler.capacity.root.default.user-limit-factor</name>
-        <value>100</value>
-    </property>
 
-    <property>
-        <name>yarn.scheduler.capacity.root.maximum-capacity</name>
-        <value>100</value>
-    </property>
 
-    <property>
-        <name>yarn.scheduler.capacity.root.ordering-policy</name>
-        <value>priority-utilization</value>
-    </property>
 
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.acl_administer_queue</name>
-        <value>p002</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.acl_submit_applications</name>
-        <value>p002</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.capacity</name>
-        <value>80</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.maximum-capacity</name>
-        <value>100</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.minimum-user-limit-percent</name>
-        <value>25</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.ordering-policy</name>
-        <value>priority-utilization</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-batch.acl_administer_queue</name>
-        <value> p002</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-batch.acl_submit_applications</name>
-        <value> p002</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-batch.capacity</name>
-        <value>30</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-batch.maximum-capacity</name>
-        <value>100</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-batch.minimum-user-limit-percent</name>
-        <value>25</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-batch.ordering-policy</name>
-        <value>fifo</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-batch.priority</name>
-        <value>1</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-batch.state</name>
-        <value>RUNNING</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-batch.user-limit-factor</name>
-        <value>100</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-interactive.acl_administer_queue</name>
-        <value> p002</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-interactive.acl_submit_applications</name>
-        <value> p002</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-interactive.capacity</name>
-        <value>70</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-interactive.maximum-capacity</name>
-        <value>80</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-interactive.minimum-user-limit-percent</name>
-        <value>25</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-interactive.ordering-policy</name>
-        <value>fair</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-interactive.ordering-policy.fair.enable-size-based-weight</name>
-        <value>true</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-interactive.priority</name>
-        <value>2</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-interactive.state</name>
-        <value>RUNNING</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.p002-interactive.user-limit-factor</name>
-        <value>100</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.priority</name>
-        <value>1</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.queues</name>
-        <value>p002-batch,p002-interactive</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.state</name>
-        <value>RUNNING</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.p002.user-limit-factor</name>
-        <value>100</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.priority</name>
-        <value>0</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.queues</name>
-        <value>default,p002</value>
-    </property>
-
-    <property>
-        <name>yarn.scheduler.capacity.root.state</name>
-        <value>RUNNING</value>
-    </property>
 
 </configuration>
