@@ -1,6 +1,6 @@
 ---
 dependencies:
-  - role: java
+  - role: java_1_8_installed
   - role: hadoop
 #    install_hadoop: false # hack to skip the hadoop install while testing
   - role: firewalled

@@ -5,7 +5,7 @@
     - vars/var_sensitive.yml
   roles:
     - role: updated
-    - role: java # Install java
+    - role: java_1_8_installed # Install java
     - role: ipaclient_setup # Set up the ipa clients
     - role: firewalled # Set up the firewall
 

@@ -1,6 +1,7 @@
 ---
 dependencies:
-  - role: java
+  - role: java_1_8_installed
   - role: firewalled
   - role: ipa_systemusers_config
   - role: kerberos_config
+  - role: capacity_scheduler

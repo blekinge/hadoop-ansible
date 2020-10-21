@@ -1,5 +1,5 @@
 ---
 dependencies:
-  - role: java
+  - role: java_1_8_installed
   - role: hadoop
   - role: firewalled
