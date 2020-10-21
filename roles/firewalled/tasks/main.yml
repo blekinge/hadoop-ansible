@@ -1,4 +1,11 @@
 ---
+- name: install firewalld
+  package:
+    state: present
+    name:
+      - firewalld
+      - python3-firewall
+
 - name: "Open Firewall for group {{item}}"
   include: open_firewall.yml rolename={{item}}
   loop: "{{ ansible_role_names }}"
