@@ -10,6 +10,9 @@
   loop_control:
     loop_var: "dir"
 
+- name: kinit admin
+  include_tasks: kinit_admin.yml
+
 # Service keytabs are created directly on the host that needs them, as they are host-specific
 - name: Retrieving keytab for host
   include_tasks: retrieveKeytab.yml
@@ -19,3 +22,6 @@
   #DO NOT DO THIS FOR THE IPA SERVER AS YOU MIGHT OVERWRITE SOMETHING IT USES. TODO make this into a fail: task
   # the spnego/HTTP certificate has the same principal as /var/lib/ipa/gssproxy/http.keytab and will break the server when
   #   regenerated
+
+- name: kdestroy
+  include_tasks: kdestroy.yml

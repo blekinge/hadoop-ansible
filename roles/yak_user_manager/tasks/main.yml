@@ -4,12 +4,12 @@
     name: "bind-utils"
     state: present
 
-
+- include_tasks: kinit_admin.yml
 - include: groups.yml
 - include: systemUsers.yml
 - include: syshomes.yml
 - include: autohomes.yml
 - include: sudorules.yml
-
+- include_tasks: kdestroy.yml
 
 

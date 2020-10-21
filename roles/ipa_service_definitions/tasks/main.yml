@@ -1,7 +1,6 @@
 ---
 - name: kinit
-  include_role:
-    name: kinit_init
+  include_tasks: kinit_admin.yml
 
 - name: Create service definitions in FreeIPA
   ipaservice:
@@ -11,5 +10,4 @@
   with_items: '{{ kerberos_conf | selectattr("type", "eq", "SERVICE") | list }}'
 
 - name: kdestroy
-  include_role:
-    name: kinit_destroy
+  include_tasks: kdestroy.yml

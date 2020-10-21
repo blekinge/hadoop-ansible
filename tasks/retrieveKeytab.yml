@@ -20,19 +20,10 @@
         path: "{{ entry.keytab_file }}"
         state: absent
 
-    - name: kinit
-      include_role:
-        name: kinit_init
-
     - name: "getKeytab for {{ entry.principal }}"
       shell: ipa-getkeytab --server={{ipa_server}} --principal={{ entry.principal}} --keytab={{ entry.keytab_file }}
       args:
         creates: "{{ entry.keytab_file }}"
-
-    - name: kdestroy
-      include_role:
-        name: kinit_destroy
-
 
 - name: "set permissions for {{ entry.keytab_file }}"
   file:
