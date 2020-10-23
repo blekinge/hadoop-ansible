@@ -980,6 +980,7 @@ c.JupyterHub.authenticator_class = KerberosPAMAuthenticator
 #  Defaults to an empty set, in which case no user has admin access.
 #c.Authenticator.admin_users = set()
 #TODO admin users
+c.Authenticator.admin_users = set('abrsadm')
 
 ## The max age (in seconds) of authentication info before forcing a refresh of
 #  user auth info.
