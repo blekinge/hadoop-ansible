@@ -21,3 +21,15 @@
 
 [ ] Ansible lærings-resourcer
 [ ] Ansible module docs
+
+Dask is teh new multicore framework for python
+Dask works on HPC, kubernetes and YARN
+Dask on Yarn: https://yarn.dask.org/en/latest/index.html
+Dask is an alternative to Spark.
+
+Jupyterhub directly on yarn:  https://jupyterhub-on-hadoop.readthedocs.io/en/latest/
+This bypasses the need for a project node for jupyter... :)
+Jupyterhub becomes a hadoop service with a keytab, that uses proxyusers to start a jupyterlab container
+
+
+https://spark.rstudio.com/guides/arrow/

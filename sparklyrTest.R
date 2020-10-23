@@ -1,4 +1,5 @@
 library(sparklyr)
+library(arrow)
 
 # get the default config
 conf <- spark_config()

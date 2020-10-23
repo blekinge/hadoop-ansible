@@ -4,5 +4,8 @@
 - hosts: proj000.yak2.net
   vars_files:
     -  vars/var_sensitive.yml
+  vars:
+    install_hadoop: false
   roles:
+    - rstudio_server
     - jupyterhub
