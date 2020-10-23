@@ -1,0 +1,239 @@
+---
+
+# PAM
+- name: Allow jupyterhub to handle login sessions
+  block:
+    - name: setup PAM
+      copy:
+        backup: yes
+        src: /etc/pam.d/login
+        dest: /etc/pam.d/jupyterhub
+        remote_src: yes
+
+    - name: Install systemd login permissions for jupyter
+      template:
+        src: "templates/dbus/jupyterhub.conf"
+        dest: /etc/dbus-1/system.d/
+        mode: 0644
+        owner: "root"
+        group: "root"
+      register: dbus
+
+    - name: Restart systemd
+      when: dbus.changed
+      systemd:
+        state: restarted
+        name: "{{item}}"
+      loop:
+        - dbus
+        - systemd-logind
+
+# SSL
+- name: create jupyterhub ssl certificate
+  block:
+
+    # TODO use real certificates...
+    - name: Generate RSA key with password
+      command:
+        "openssl genrsa -out {{ssl_cert_dir}}/jupyterhub.key -passout pass:{{jupyterhub_ssl_password}} -aes256 4096"
+      args:
+        creates: "{{ssl_cert_dir}}/jupyterhub.key"
+
+    - name: Create a certificate request (jupyterhub.csr) for our org and server from the RSA key (jupyterhub.key)
+      command:
+        "openssl req -sha256 -passin pass:{{jupyterhub_ssl_password}} -subj '/C=DK/ST=Aarhus/L=Springfield/O=Royal\ Library/CN={{inventory_hostname}}' -new -key {{ssl_cert_dir}}/jupyterhub.key -out {{ssl_cert_dir}}/jupyterhub.csr"
+      args:
+        creates: "{{ssl_cert_dir}}/jupyterhub.csr"
+
+    - name: Create the Certificate Key (jupyterhub.cert.key) from the RSA key
+      command:
+        "openssl rsa -passin pass:{{jupyterhub_ssl_password}} -in {{ssl_cert_dir}}/jupyterhub.key -out {{ssl_cert_dir}}/jupyterhub.cert.key"
+      args:
+        creates: "{{ssl_cert_dir}}/jupyterhub.cert.key"
+
+
+    - name: Create a Certificate (jupyterhub.cert) from the certificate request (jupyterhub.csr) and the certificate key (jupyterhub.cert.key)
+      command:
+        "openssl x509 -passin pass:{{jupyterhub_ssl_password}} -in {{ssl_cert_dir}}/jupyterhub.csr -out {{ssl_cert_dir}}/jupyterhub.cert -req -signkey {{ssl_cert_dir}}/jupyterhub.cert.key"
+      args:
+        creates: "{{ssl_cert_dir}}/jupyterhub.cert"
+
+    - name: permissions for jupyterhub certificates
+      file:
+        state: file
+        path: "{{item}}"
+        owner: "{{ jupyterhub_user }}"
+        group: "{{ jupyterhub_group }}"
+        mode: 0500
+      loop:
+        - "{{ssl_cert_dir}}/jupyterhub.key"
+        - "{{ssl_cert_dir}}/jupyterhub.csr"
+        - "{{ssl_cert_dir}}/jupyterhub.cert.key"
+        - "{{ssl_cert_dir}}/jupyterhub.cert"
+
+# Sudorules
+- name: "jupyterhub Sudo rules"
+  delegate_to: "{{ipa_server}}"
+  block:
+    - include_tasks: kinit_admin.yml
+
+    # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudocmd.md
+    - name: "sudo command /usr/bin/sudospawner"
+      ipasudocmd:
+        ipaadmin_password: "{{ipaadmin_password}}"
+        name: /usr/bin/sudospawner
+        state: present
+
+    - name: "sudo command /usr/local/bin/sudospawner"
+      ipasudocmd:
+        ipaadmin_password: "{{ipaadmin_password}}"
+        name: /usr/local/bin/sudospawner # #Sometimes it gets installed in /usr/local
+        state: present
+
+    # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudocmdgroup.md
+    - name: "Create sudo command group {{jupyterhub_user}}_cmdgroup"
+      ipasudocmdgroup:
+        ipaadmin_password: "{{ipaadmin_password}}"
+        name: "{{jupyterhub_user}}_cmdgroup"
+        action: sudocmdgroup
+
+    # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudocmdgroup.md
+    - name: "Add commands to {{jupyterhub_user}}_cmdgroup"
+      ipasudocmdgroup:
+        ipaadmin_password: "{{ipaadmin_password}}"
+        name: "{{jupyterhub_user}}_cmdgroup"
+        sudocmd:
+          - /usr/bin/sudospawner
+          - /usr/local/bin/sudospawner
+        action: member
+
+
+    # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudorule.md
+    - name: "jupyterhub Sudo rule"
+      ipasudorule:
+        ipaadmin_password: "{{ipaadmin_password}}"
+        name: "{{jupyterhub_user}}_sudorule"
+        hostcategory: all
+        runasusercategory: all
+        runasgroupcategory: all
+        sudooption:
+          - '!requiretty'
+          - '!authenticate'
+        user:
+          - "{{jupyterhub_user}}"
+        allow_sudocmdgroup:
+          - "{{jupyterhub_user}}_cmdgroup"
+
+  always:
+    - include_tasks: kdestroy.yml
+
+# Install
+- name: Install jupyterhub
+  block:
+    - name: Install NodeJS and Python
+      package:
+        state: present
+        name:
+          - npm
+          - nodejs
+          - python3
+          - python3-pip
+
+    #https://docs.ansible.com/ansible/2.3/npm_module.html
+    - name: Install npm dependencies
+      npm:
+        name: "{{item}}"
+        global: yes
+      loop:
+        - configurable-http-proxy
+        - commander
+        - winston
+
+    #https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
+    - name: Update python pip package
+      pip:
+        name: pip
+        executable: pip3
+        state: latest
+
+    - name: Install jupyterhub by pip
+      pip:
+        name: "{{item}}"
+        executable: pip3
+        state: latest
+      loop:
+        - jupyterhub
+        - jupyter
+        - jupyterlab
+        - sudospawner
+
+
+    - name: Install sudospawner for jupyter
+      template:
+        src: "templates/bin/sudospawner-singleuser"
+        dest: /usr/local/bin/
+        mode: 0755
+        owner: "root"
+        group: "root"
+
+# Config
+- name: Install jupyterhub config
+  block:
+    - name: Copy Jupyter systemd services
+      template:
+        src: "templates/systemd/jupyterhub.service"
+        dest: /etc/systemd/system/
+        mode: 0644
+        owner: "root"
+        group: "root"
+
+    - name: Create jupyterhub config directory
+      file:
+        path: /etc/jupyterhub/
+        mode: 0755
+        state: directory
+        owner: "root"
+        group: "root"
+
+    - name: Copy Jupyterhub config
+      template:
+        src: templates/jupyterhub/jupyterhub_config.py
+        dest: /etc/jupyterhub/jupyterhub_config.py
+        mode: 0644
+        owner: "root"
+        group: "root"
+
+    - name: profile.d
+      template:
+        src: "{{item}}"
+        dest: /etc/profile.d/
+        mode: 0644
+        owner: "root"
+        group: "root"
+      with_fileglob:
+        - templates/profile.d/*
+
+- name: install pyspark kernel
+  block:
+    - name: Create kernel directory
+      file:
+        path: /usr/local/share/jupyter/kernels/pyspark/
+        mode: 0755
+        state: directory
+        owner: "root"
+        group: "root"
+
+    - name: Install kernel config
+      template:
+        src: templates/kernels/pyspark.json
+        dest: /usr/local/share/jupyter/kernels/pyspark/kernel.json
+        mode: 0644
+        owner: "root"
+        group: "root"
+
+# Start
+- name: Start Jupyterhub process
+  systemd:
+    state: restarted
+    name: jupyterhub
+    enabled: true

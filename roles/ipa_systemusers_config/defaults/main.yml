@@ -64,6 +64,11 @@ rstudio_uid: "{{uid_systemserviceGroup|int+4}}"
 rstudio_gid: "{{rstudio_uid}}"
 
 
+jupyterhub_user: "jupyterhub"
+jupyterhub_group: "{{jupyterhub_user}}"
+jupyterhub_uid: "{{uid_systemserviceGroup|int+5}}"
+jupyterhub_gid: "{{jupyterhub_uid}}"
+
 system_users:
   - user: "{{hdfs_user}}"
     group: "{{hdfs_group}}"
@@ -116,6 +121,13 @@ system_users:
     private_group: yes
     extra_groups: ["{{systemservices_group}}"]
 
+
+  - user: "{{jupyterhub_user}}"
+    group: "{{jupyterhub_group}}"
+    uid: "{{jupyterhub_uid}}"
+    gid: "{{jupyterhub_gid}}"
+    private_group: yes
+    extra_groups: ["{{systemservices_group}}"]
 #
 #  - user: "{{ipa_admin_user}}"
 #    group: "{{ipa_admin_group}}"

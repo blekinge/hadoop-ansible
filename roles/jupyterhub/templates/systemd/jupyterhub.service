@@ -1,0 +1,27 @@
+[Unit]
+Description=Jupyterhub
+#So this can start after the network service have started
+After=network-online.target
+
+[Service]
+# The system user for jupyterhub
+User={{jupyterhub_user}}
+
+# Two ways of specifying the runtime directory
+RuntimeDirectory=jupyterhub
+WorkingDirectory=/var/run/jupyterhub
+
+ # Prefix with + to Run ExecStartPre with root-permissions, see https://www.freedesktop.org/software/systemd/man/systemd.service.html#ExecStart=
+# This sets up the logging directory
+ExecStartPre=+/usr/bin/mkdir -p {{jupyterhub_log_dir}}
+ExecStartPre=+/usr/bin/touch {{jupyterhub_log_dir}}/jupyterhub.log
+ExecStartPre=+/usr/bin/chown {{jupyterhub_user}} {{jupyterhub_log_dir}} -R
+
+# Param explanation
+# Config = path to config file
+# Log file = the log file we did all the work above to get writable
+# ip = the ip where the server will listen.
+ExecStart=/usr/local/bin/jupyterhub --config=/etc/jupyterhub/jupyterhub_config.py
+
+[Install]
+WantedBy=multi-user.target

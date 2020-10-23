@@ -1,10 +1,8 @@
 # The order here is important
 
 # The namenodes do not require datanodes, but the datanodes require namenodes
-- hosts: proj001
-  vars:
-    spark_portrange_width: 50
-    spark_ui_http_port: "4400-{{4400+spark_portrange_width}}"
-  tasks:
-    - debug:
-        var: spark_ui_http_port
+- hosts: proj000.yak2.net
+  vars_files:
+    -  vars/var_sensitive.yml
+  roles:
+    - jupyterhub

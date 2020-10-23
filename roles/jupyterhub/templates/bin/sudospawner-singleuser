@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+# This is executed as the logged in user
+
+# The KerberosAuthenticator (see jupyterhub_config.sh) sets the env KERBEROS_PASSWORD
+
+# Use kinit to do authentication again, this time after sudoing to the desired notebook
+# server user so that the kerberos cred cache is created
+echo $KERBEROS_PASSWORD | kinit -V
+
+unset KERBEROS_PASSWORD
+# Clear the kerberos password that we set in the environment in our custom spawner so that
+# its not visible to the notebook server and kernels.
+
+# Delegate launch to the notebook server.
+exec "$(dirname "$0")/jupyterhub-singleuser" $@
