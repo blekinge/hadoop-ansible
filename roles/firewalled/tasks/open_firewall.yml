@@ -1,12 +1,4 @@
 ---
-- name: "Ensure firewall is started"
-  systemd:
-    state: started
-    name: firewalld
-    daemon_reload: yes
-  when: ports[rolename] is defined
-
-
 - name: "Open Firewall ports for {{rolename}}"
   firewalld:
     port: '{{port}}/tcp'
