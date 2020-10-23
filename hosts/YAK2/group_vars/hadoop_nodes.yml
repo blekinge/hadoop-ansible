@@ -6,8 +6,8 @@ wipe_hdfs: false
 
 #Each level must sum capacity to 100
 queue_mappings:
-  - "g:p001:p001-interactive"
-  - "g:p002:p002-interactive"
+  - "g:p001:p001_interactive"
+  - "g:p002:p002_interactive"
   - "g:{{users_group}}:default"
 
 
