@@ -4,13 +4,14 @@
 # Wipe HDFS and set up fresh. Nessesary for new installs
 wipe_hdfs: false
 
-#Each level must sum capacity to 100
+
+#The mentioned queues must exist...
 queue_mappings:
   - "g:p001:p001_interactive"
   - "g:p002:p002_interactive"
   - "g:{{users_group}}:default"
 
-
+#Each level must sum capacity to 100
 yarn_queues:
   - name: root
     admins: "{{yarn_user}}"

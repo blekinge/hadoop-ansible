@@ -1,7 +1,7 @@
 ---
 
 - name: Create and Add items to dictionary
-  include: parseQueue1.yml queue={{queue}} queueName={{queue.name}}
+  include: parseQueue1.yml queue1={{queue}} queueName1={{queue.name}}
   loop: "{{yarn_queues }}"
   loop_control:
     loop_var: queue
