@@ -5,5 +5,44 @@ ssl_cert_dir: /etc/ssl/certs
 jupyterhub_log_dir: /var/log/jupyterhub
 
 jupyterlabs_extensions:
+# https://jupyterlab-code-formatter.readthedocs.io/en/latest/installation.html
+# https://github.com/itsjafer/jupyterlab-sparkmonitor#readme
+
+
+npm_dependencies:
+  - configurable-http-proxy
+  - commander
+  - winston
+
+jupyterhub_base_packages:
+  - jupyterhub
+  - jupyter
+  - jupyterlab
+  - sudospawner
+
+jupyterhub_pip_extensions:
   - jupyterlab-git
-  - @jupyterlab/toc
+  - jupyterlab_latex
+  - jupyterlab-commenting-service
+  - jupyterlab_proxy_gui
+  # https://jupyterhub-on-hadoop.readthedocs.io/en/latest/
+
+jupyterlabs_npm_extensions:
+  - "@jupyterlab/git"
+  - "@jupyterlab/toc"
+  - "@jupyterlab/latex"
+  - "@jupyterlab/debugger"
+  - "@jupyterlab/celltags"
+  - "@jupyterlab/commenting-extension"
+  - "@jupyterlab/shortcutui"
+  - "@jupyterlab/inspector"
+  - "jupyterlab-proxy-gui"
+  - "jupyterlab-favorites"
+  - "jupyterlab-execute-time"
+  - "jupyterlab-spreadsheet"
+  - "@krassowski/jupyterlab_go_to_definition"
+  - "@loganamcnichols/cell-indents"
+  - "@epi2melabs/jupyterlab-autorun-cells"
+  - "jupyterlab-logout"
+  - "jupyterlab-topbar-extension"
+

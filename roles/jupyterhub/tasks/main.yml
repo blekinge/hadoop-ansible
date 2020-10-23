@@ -144,10 +144,7 @@
       npm:
         name: "{{item}}"
         global: yes
-      loop:
-        - configurable-http-proxy
-        - commander
-        - winston
+      loop: "{{npm_dependencies}}"
 
     #https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
     - name: Update python pip package
@@ -161,11 +158,8 @@
         name: "{{item}}"
         executable: pip3
         state: latest
-      loop:
-        - jupyterhub
-        - jupyter
-        - jupyterlab
-        - sudospawner
+      loop: "{{jupyterhub_base_packages}}"
+
 
 
     - name: Install sudospawner for jupyter
@@ -231,9 +225,22 @@
         owner: "root"
         group: "root"
 
+
+- name: Install extra jupyter extensions
+  pip:
+    name: "{{item}}"
+    executable: pip3
+    state: latest
+  loop: "{{jupyterhub_pip_extensions}}"
+
+
+- name: Enable jupyterlabs extensions
+  command: "jupyter labextension install {{jupyterlabs_npm_extensions | join(' ')}}"
+
 # Start
 - name: Start Jupyterhub process
   systemd:
     state: restarted
     name: jupyterhub
     enabled: true
+    daemon_reload: yes
