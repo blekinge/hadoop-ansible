@@ -2,3 +2,5 @@
 dependencies:
   - role: ipa_systemusers_config
   - role: hadoop
+    vars:
+      install_hadoop: false
