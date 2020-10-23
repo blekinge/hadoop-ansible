@@ -14,10 +14,18 @@
 - hosts: ipaserver
   vars_files:
     - vars/var_sensitive.yml
+  vars:
+    create_users: yes
+    create_certificates: yes
+    create_ipa_services: yes
+    create_keytabs: yes
   roles:
     - role: yak_user_manager
+      when: create_users | bool
     - role: ssl_certificates_creator
+      when: create_certificates | bool
     - role: ipa_service_definitions
+      when: ipa_services | bool
     - role: kerberos_system_user_keytabs_create
+      when: create_keytabs | bool
 
-#TODO use the ipa server as storage for system user keytabs, not the local host

@@ -1,8 +1,8 @@
 
 [X] port extraction
-[ ] Firewall setup
+[X] Firewall setup
 
-[ ] Spark install
+[X] Spark install
 
 [X] Mapreduce test
 
@@ -10,3 +10,14 @@
 
 [X] Create hdfs basic contents for servers
 
+[X] Rstudio
+
+[X] Ovirt playbook
+
+[X] yarn queue config
+
+[ ] Jupyterhub
+
+
+[ ] Ansible lærings-resourcer
+[ ] Ansible module docs
