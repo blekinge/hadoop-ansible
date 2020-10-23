@@ -66,5 +66,10 @@
     - role: spark_history_server
 
 - hosts: projectnodes
+  vars_files:
+    - vars/var_sensitive.yml
+#  vars:
+#    install_hadoop: false
   roles:
-    - spark_client
+    - jupyterhub
+    - rstudio_server
