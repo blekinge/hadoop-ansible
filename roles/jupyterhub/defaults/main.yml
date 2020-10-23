@@ -24,8 +24,6 @@ jupyterhub_pip_extensions:
   - jupyterlab-git
   - jupyterlab_latex
   - jupyterlab-commenting-service
-  - jupyterlab_proxy_gui
-  # https://jupyterhub-on-hadoop.readthedocs.io/en/latest/
 
 jupyterlabs_npm_extensions:
   - "@jupyterlab/git"
@@ -36,7 +34,6 @@ jupyterlabs_npm_extensions:
   - "@jupyterlab/commenting-extension"
   - "@jupyterlab/shortcutui"
   - "@jupyterlab/inspector"
-  - "jupyterlab-proxy-gui"
   - "jupyterlab-favorites"
   - "jupyterlab-execute-time"
   - "jupyterlab-spreadsheet"
