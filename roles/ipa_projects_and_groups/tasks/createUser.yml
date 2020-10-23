@@ -32,7 +32,7 @@
 
 
 - name: "Put {{user.username}} in {{users_group}}"
-  loop: "{{initial_users_groups | default([]) + [group.name]}}"
+  loop: "{{initial_users_groups | default([]) | map(attribute='name') | list + [group.name]}}"
   loop_control:
     loop_var: common_group
   ipagroup:
@@ -50,7 +50,7 @@
     path: "{{ ipaserver_autohome_dir }}/{{ user.username }}"
     owner: "{{ user.username }}"
     group: "{{ user.username }}"
-    mode: 0650
+    mode: 0750
 
 - name: HDFS user home
   become: yes
