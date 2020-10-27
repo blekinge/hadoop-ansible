@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Script to generate passwords for new users
 
 SCRIPT_DIR=$(dirname "$(readlink -f -- ${BASH_SOURCE[0]})")
 
