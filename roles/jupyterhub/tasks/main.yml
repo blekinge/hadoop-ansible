@@ -209,7 +209,7 @@
 
 - name: install pyspark kernel
   block:
-    - name: Create kernel directory
+    - name: Create jupyter kernel directory
       file:
         path: /usr/local/share/jupyter/kernels/pyspark/
         mode: 0755
@@ -217,7 +217,7 @@
         owner: "root"
         group: "root"
 
-    - name: Install kernel config
+    - name: Install jupyter kernel config
       template:
         src: templates/kernels/pyspark.json
         dest: /usr/local/share/jupyter/kernels/pyspark/kernel.json
