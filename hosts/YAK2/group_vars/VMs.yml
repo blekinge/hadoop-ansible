@@ -1,0 +1,61 @@
+---
+
+ovirt_api_host: "ovim001.adm.{{domain}}"
+ovirt_username: "admin@internal"
+ovirt_password: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  62303835323530373561336366316562393762626366333735616665623864613237636332636432
+  3434366263313839613936633162616438383962366330610a613266326230393030656566376633
+  36666661666262303639636664656465326164646531323834353834646335663335303633353439
+  3238326464363035320a313336636464343733376465323966303237333964376137633161323937
+  31386466643531353536656235613163646334633536346362303264313234623732666663653961
+  3334376262616464613130306432633736613632386236626338
+ovirt_cluster: "KAC"
+
+
+template: SDL8-4R-30D-MIN-TMPL
+memory: 4GiB
+cpu_sockets: 2
+cpu_cores: 1
+
+
+# The network settings used when creating new virtual hosts for the cluster
+domain_nfs: "nfs.{{domain}}"
+domain_adm: "adm.{{domain}}" # 172.16.216
+domain_dmz: "dmz.{{domain}}"
+
+dns_search_domains: "{{ [domain,domain_nfs,domain_adm,domain_dmz] | join(',') }}"
+
+# DNS server used to look up the ip of the new host
+# The host should be added to DNS prior to creation
+dns_server: "bind001.{{domain}}"
+
+# Nic1 profile
+nic1: "yak2net"
+nic1_subnet: 172.16.215
+nic1_domain: "{{domain}}"
+
+#The dns servers to configure for the new host
+dns1: "{{nic1_subnet}}.52" #bind001
+dns2: "{{nic1_subnet}}.53" #bind002
+
+# New VMs are always created with this ip, so we can ssh to this and set up the machine
+new_vm_ip: "{{nic1_subnet}}.254"
+
+# The gateway to use
+gateway: "{{nic1_subnet}}.51"
+
+
+nic2: "ovirtmgmt"
+nic2_subnet: 172.16.216
+nic2_domain: "{{domain_adm}}"
+
+nic2_routes_list:
+  - "172.16.7.0/24"
+  - "172.16.216.1,172.18.0.0/16"
+  - "172.16.216.1,172.28.1.0/24"
+  - "172.16.216.1,130.225.24.0/23"
+  - "172.16.216.1,130.226.220.0/24"
+  - "172.16.216.1"
+
+nic2_routes: "{{ nic2_routes_list | join(' ') }}"

@@ -2,8 +2,6 @@
 
 # And now that the ipa server is ready, we can setup services and ssl
 - hosts: hadoop_nodes
-  vars_files:
-    - vars/var_sensitive.yml
   roles:
     - role: ssl_certificates_recipient #Upload ssl certificates to host
     - role: kerberos_service_keytabs #Create the service keytabs

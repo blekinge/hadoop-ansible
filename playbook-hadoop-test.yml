@@ -2,8 +2,6 @@
 
 # The namenodes do not require datanodes, but the datanodes require namenodes
 - hosts: proj000.yak2.net
-  vars_files:
-    -  vars/var_sensitive.yml
   vars:
     install_hadoop: false
   roles:

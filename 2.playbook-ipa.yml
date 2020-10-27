@@ -12,8 +12,6 @@
 
 # Now that the hosts have been added as ipa clients, we can setup the kerberos services
 - hosts: ipaserver
-  vars_files:
-    - vars/var_sensitive.yml
   vars:
     create_users: yes
     create_certificates: yes

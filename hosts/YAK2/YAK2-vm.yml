@@ -1,4 +1,3 @@
-# You will make one inventory file per cluster. So all cluster-specific settings should go into this file
 
 all:
   hosts:
@@ -10,58 +9,6 @@ all:
 
   children:
     VMs: # This is the group of VMs created by playbook-create-virtual-host.yml
-      vars:
-
-        ovirt_api_host: "ovim001.adm.{{domain}}"
-        ovirt_cluster: "KAC"
-
-        template: SDL8-4R-30D-MIN-TMPL
-        memory: 4GiB
-        cpu_sockets: 2
-        cpu_cores: 1
-
-
-        # The network settings used when creating new virtual hosts for the cluster
-        domain_nfs: "nfs.{{domain}}"
-        domain_adm: "adm.{{domain}}" # 172.16.216
-        domain_dmz: "dmz.{{domain}}"
-
-        dns_search_domains: "{{ [domain,domain_nfs,domain_adm,domain_dmz] | join(',') }}"
-
-        # DNS server used to look up the ip of the new host
-        # The host should be added to DNS prior to creation
-        dns_server: "bind001.{{domain}}"
-
-        # Nic1 profile
-        nic1: "yak2net"
-        nic1_subnet: 172.16.215
-        nic1_domain: "{{domain}}"
-
-        #The dns servers to configure for the new host
-        dns1: "{{nic1_subnet}}.52" #bind001
-        dns2: "{{nic1_subnet}}.53" #bind002
-
-        # New VMs are always created with this ip, so we can ssh to this and set up the machine
-        new_vm_ip: "{{nic1_subnet}}.254"
-
-        # The gateway to use
-        gateway: "{{nic1_subnet}}.51"
-
-
-        nic2: "ovirtmgmt"
-        nic2_subnet: 172.16.216
-        nic2_domain: "{{domain_adm}}"
-
-        nic2_routes_list:
-          - "172.16.7.0/24"
-          - "172.16.216.1,172.18.0.0/16"
-          - "172.16.216.1,172.28.1.0/24"
-          - "172.16.216.1,130.225.24.0/23"
-          - "172.16.216.1,130.226.220.0/24"
-          - "172.16.216.1"
-
-        nic2_routes: "{{ nic2_routes_list | join(' ') }}"
-
       hosts:
         # The "short name", ie. the first part of the name here will be used as the name of the VM
         # IF you have to use a "wrong" hostname or an IP here, use the variables "hostname" and "shortname" to set

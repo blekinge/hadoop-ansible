@@ -1,23 +1,23 @@
 
 - name: VMs
-  import_playbook: playbook-ovirt-vms.yml
+  import_playbook: 1.playbook-ovirt-vms.yml
 
 
 - name: IPA server and clients setup
-  import_playbook: playbook-ipa.yml
+  import_playbook: 2.playbook-ipa.yml
 
 
 - name: Setup cluster
-  import_playbook: playbook-hadoop-setup.yml
+  import_playbook: 3.playbook-hadoop-setup.yml
 
 
 # Now that hdfs is running, we can create the human users
 - name: Create users
-  import_playbook: playbook-create-users.yml
+  import_playbook: 4.playbook-create-users.yml
 
 
 
 # Create the project nodes
 - name: Create Project Nodes
-  import_playbook: playbook-project-nodes.yml
+  import_playbook: 5.playbook-project-nodes.yml
 
