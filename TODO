@@ -18,6 +18,15 @@
 
 [X] Jupyterhub
 
+[-] FreeIPA server setup
+
+[-] Zabbix server setup
+
+[ ] Zabbix agent setup
+
+[ ] HDFS Log aggregation
+
+[ ] SSL certs
 
 [ ] Ansible lærings-resourcer
 [ ] Ansible module docs

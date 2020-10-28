@@ -6,6 +6,7 @@
     state: enabled
     zone: public
     immediate: yes
+    #TODO description
   loop: "{{ports_per_role[rolename]}}"
   when: ports_per_role[rolename] is defined
   loop_control:
