@@ -1,0 +1,35 @@
+---
+- name: "Setup {{sealbin_user}}"
+  block:
+    - name: "Add {{sealbin_user}} group"
+      group:
+        name: "{{sealbin_user}}"
+        gid: "{{sealbin_user_gid}}"
+        state: present
+
+    - name: "Add the user '{{sealbin_user}}' appending the groups 'adm' and 'wheel' to the user's groups"
+      user:
+        name: "{{sealbin_user}}"
+        uid: "{{sealbin_user_uid}}"
+        shell: /bin/bash
+        group: "{{sealbin_user}}"
+        groups: adm,wheel
+        append: yes
+        create_home: yes
+        home: "/home/{{sealbin_user}}"
+        state: present
+
+    - name: "Copy sudoers file to give {{sealbin_user}} sudo rights"
+      template:
+        src: sudoers
+        dest: /etc/sudoers.d/ansible
+        owner: root
+        group: root
+        mode: '0644'
+
+
+    - name: "Set authorized key for user {{sealbin_user}} copying it from current user"
+      ansible.posix.authorized_key:
+        user: "{{sealbin_user}}"
+        state: present
+        key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
