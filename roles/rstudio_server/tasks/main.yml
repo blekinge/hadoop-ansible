@@ -25,19 +25,16 @@
     - name: Check the newest version of RStudio
       uri: url=http://download2.rstudio.org/current.ver return_content=yes
       register: rstudio_version
-      become: no
 
     - name: Get the archive of RStudio Server
       get_url:
         url: "{{rstudio_download_url}}/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','')}}-x86_64.rpm"
         dest: /tmp/rstudio.rpm
-      become: no
 
 - name: "Get version {{ rstudio_version_fixed }}  of RStudio Server"
   get_url:
     url: "{{rstudio_download_url}}/rstudio-server-rhel-{{ rstudio_version_fixed }}-x86_64.rpm"
     dest: /tmp/rstudio.rpm
-  become: no
   when: rstudio_version_fixed is defined
 
 
@@ -98,7 +95,7 @@
 
 #https://community.rstudio.com/t/rserver-1692-error-system-error-13-permission-denied/46972/7
 - name: Put SELinux in permissive mode, logging actions that would be blocked.
-  ansible.posix.selinux: #TODO RStudio SELinux
+  ansible.posi-x.selinux: #TODO RStudio SELinux
     policy: targeted
     state: permissive
 
