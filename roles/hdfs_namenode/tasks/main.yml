@@ -37,7 +37,7 @@
 
 - name: create basic directory structure
   become: yes
-  become_user: hdfs
+  become_user: "{{hdfs_user}}"
   shell: | #TODO make this configurable
     set -e # Fail on anything
     source /etc/profile.d/hadoop.sh

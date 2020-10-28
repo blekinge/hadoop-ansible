@@ -54,7 +54,7 @@
 
 - name: HDFS user home
   become: yes
-  become_user: hdfs
+  become_user: "{{hdfs_user}}"
   delegate_to: "{{ groups['hdfs'] | first }}"
   shell: |
     set -e # Fail on anything

@@ -12,7 +12,7 @@
 
 - name: install mapreduce framework in HDFS
   become: yes
-  become_user: hdfs
+  become_user: "{{hdfs_user}}"
   shell: |
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh
