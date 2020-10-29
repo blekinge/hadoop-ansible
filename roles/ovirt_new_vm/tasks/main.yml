@@ -2,6 +2,7 @@
 - name: setup vm
   delegate_to: localhost
   connection: local
+  become: no
   throttle: 1
   block:
     # This DNS looks up the vm to determine it's configured IP address
@@ -103,16 +104,16 @@
       block:
         # There is almost certainly a better way of doing this but this works
         - name: "ssh to host and change hostname"
-          shell: ssh root@{{new_vm_ip}} hostnamectl set-hostname {{hostname}}
+          shell: "ssh -o 'StrictHostKeyChecking no'  root@{{new_vm_ip}} hostnamectl set-hostname {{hostname}}"
 
         - name: "ssh to host and setup network {{nic1}}"
-          shell: "ssh root@{{new_vm_ip}} nmcli con add type ethernet con-name {{nic1}} ifname ens3 ipv4.method manual ipv4.addresses {{nic1_subnet}}.{{hostnumber}}/24 ipv4.dns {{dns1}},{{dns2}} ipv4.dns-search {{dns_search_domains}} ipv4.gateway {{gateway}}"
+          shell: "ssh -o 'StrictHostKeyChecking no' root@{{new_vm_ip}} nmcli con add type ethernet con-name {{nic1}} ifname ens3 ipv4.method manual ipv4.addresses {{nic1_subnet}}.{{hostnumber}}/24 ipv4.dns {{dns1}},{{dns2}} ipv4.dns-search {{dns_search_domains}} ipv4.gateway {{gateway}}"
 
         - name: "ssh to host and setup network {{nic2}}"
-          shell: "ssh root@{{new_vm_ip}} 'nmcli con add type ethernet con-name {{nic2}} ifname ens4 ipv4.method manual ipv4.addresses {{nic2_subnet}}.{{hostnumber}}/24 ipv4.routes \"{{nic2_routes}}\"'"
+          shell: "ssh -o 'StrictHostKeyChecking no' root@{{new_vm_ip}} 'nmcli con add type ethernet con-name {{nic2}} ifname ens4 ipv4.method manual ipv4.addresses {{nic2_subnet}}.{{hostnumber}}/24 ipv4.routes \"{{nic2_routes}}\"'"
 
         - name: "ssh to host and remove old networks"
-          shell: "ssh root@{{new_vm_ip}} 'nmcli con del ens4; nmcli con del ens3;'"
+          shell: "ssh -o 'StrictHostKeyChecking no' root@{{new_vm_ip}} 'nmcli con del ens4; nmcli con del ens3;'"
 
         - name: "Reboot vm to activate new networks"
           ovirt.ovirt.ovirt_vm:
