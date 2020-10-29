@@ -1,6 +1,4 @@
 ---
-- include_tasks: kinit_admin.yml
-
 
 - name: system users
   loop: "{{system_users}}"
@@ -26,6 +24,3 @@
     action: member
     user: "{{item.user}}"
 
-
-
-- include_tasks: kdestroy.yml

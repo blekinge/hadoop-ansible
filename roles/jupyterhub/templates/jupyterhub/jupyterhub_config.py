@@ -911,7 +911,7 @@ c.Spawner.default_url = '/lab'
 c.PAMAuthenticator.encoding = 'utf8'
 
 ## The name of the PAM service to use for authentication
-c.PAMAuthenticator.service = '{{jupyterhub_user}}'
+c.PAMAuthenticator.service = '{{jupyterhub_user.user}}'
 
 ## Commented out as we override it later in this file
 #c.JupyterHub.authenticator_class = PAMAuthenticator

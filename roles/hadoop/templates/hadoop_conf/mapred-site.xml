@@ -39,7 +39,7 @@
 
     <property>
         <name>mapreduce.cluster.administrators</name>
-        <value>{{mapreduce_user}} {{ hadoop_group }},{{subadmins_group}}</value>
+        <value>{{mapreduce_user.user}} {{ hadoop_group }},{{subadmins_group}}</value>
     </property>
 
     <property>
@@ -79,7 +79,7 @@
 
     <property>
         <name>mapreduce.jobhistory.admin.acl</name>
-        <value>{{yarn_user}} {{subadmins_group}}</value>
+        <value>{{yarn_user.user}} {{subadmins_group}}</value>
     </property>
 
     <property>

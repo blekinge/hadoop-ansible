@@ -14,7 +14,7 @@
     dest: "{{ zookeeper_path }}"
     remote_src: yes
     creates: "{{zookeeper_home}}"
-    group: "{{ zookeeper_group }}"
+    group: "{{ zookeeper_user.group }}"
     owner: "root"
 
 
@@ -28,8 +28,8 @@
 - name: Create Zookeeper Paths
   file:
     path: "{{ item }}"
-    owner: "{{ zookeeper_user }}"
-    group: "{{ zookeeper_group }}"
+    owner: "{{ zookeeper_user.user }}"
+    group: "{{ zookeeper_user.group }}"
     state: directory
     mode: 0755
   with_items:
@@ -41,7 +41,7 @@
     dest: "{{ zookeeper_config_path }}/"
     mode: 0644
     owner: "root"
-    group: "{{ zookeeper_group }}"
+    group: "{{ zookeeper_user.group }}"
   with_fileglob:
     - "templates/conf/*"
 

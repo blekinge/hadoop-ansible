@@ -4,8 +4,8 @@
   file:
     path: "{{hadoop_dfs_name}}"
     state: directory
-    owner: "{{hdfs_user}}"
-    group: "{{hdfs_user}}"
+    owner: "{{hdfs_user.user}}"
+    group: "{{hdfs_user.user}}"
   register: hadoop_dfs_name_dir_status
 
 - name: check if Fresh HDFS install
@@ -37,13 +37,13 @@
 
 - name: create basic directory structure
   become: yes
-  become_user: "{{hdfs_user}}"
+  become_user: "{{hdfs_user.user}}"
   shell: | #TODO make this configurable
     set -e # Fail on anything
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh
 
-    kinit -kt {{keytab_dir}}/{{hdfs_user}}.headless.keytab {{hdfs_user}}
+    kinit -kt {{keytab_dir}}/{{hdfs_user.user}}.headless.keytab {{hdfs_user.user}}
 
     hdfs dfs -mkdir -p /tmp  \
         /system \
@@ -60,15 +60,15 @@
 
     hdfs dfs -chmod -R a+rwx /history/mr-history/tmp;
 
-    hdfs dfs -chown -R {{hdfs_user}}:{{hadoop_group}} /history;
+    hdfs dfs -chown -R {{hdfs_user.user}}:{{hadoop_group}} /history;
 
-    hdfs dfs -chown {{hdfs_user}}:{{hadoop_group}} /user;
+    hdfs dfs -chown {{hdfs_user.user}}:{{hadoop_group}} /user;
 
-    hdfs dfs -chown -R {{yarn_user}}:{{hadoop_group}} /history/app-logs /history/timeline-server;
+    hdfs dfs -chown -R {{yarn_user.user}}:{{hadoop_group}} /history/app-logs /history/timeline-server;
 
-    hdfs dfs -chown -R {{mapreduce_user}}:{{hadoop_group}}  /history/mr-history;
+    hdfs dfs -chown -R {{mapreduce_user.user}}:{{hadoop_group}}  /history/mr-history;
 
-    hdfs dfs -chown -R {{spark_user}}:{{hadoop_group}}  /history/spark-history;
+    hdfs dfs -chown -R {{spark_user.user}}:{{hadoop_group}}  /history/spark-history;
 
     kdestroy
   when: primary|bool

@@ -1,5 +1,15 @@
 ---
 
+
+- name: Create user groups
+  loop: "{{initial_user_groups}}"
+  ipagroup:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: "{{ item.name }}"
+    gid: "{{ item.gid }}"
+    description: "{{item.description}}"
+
+
 - name: "Project Group {{group}}"
   loop: "{{projects}}"
   loop_control:

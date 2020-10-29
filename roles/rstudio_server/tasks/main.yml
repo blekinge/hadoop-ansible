@@ -68,10 +68,10 @@
     regexp: "^auth-required-user-group=.*$"
     create: yes
 
-- name: "RStudio should run as {{rstudio_user}}"
+- name: "RStudio should run as {{rstudio_user.user}}"
   lineinfile:
     path: /etc/rstudio/rstudio-server.conf
-    line: "server-user={{rstudio_user}}"
+    line: "server-user={{rstudio_user.user}}"
     regexp: "^server-user=.*$"
     create: yes
 
@@ -89,8 +89,8 @@
     path:
       - /var/log/rstudio-server
       - /var/lib/rstudio-server
-    owner: "{{rstudio_user}}"
-    group: "{{rstudio_group}}"
+    owner: "{{rstudio_user.user}}"
+    group: "{{rstudio_user.group}}"
     recurse: yes
 
 #https://community.rstudio.com/t/rserver-1692-error-system-error-13-permission-denied/46972/7

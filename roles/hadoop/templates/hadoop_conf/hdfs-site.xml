@@ -30,11 +30,11 @@
     </property>
     <property>
         <name>dfs.cluster.administrators</name>
-        <value>{{ hdfs_user }},admins,subadmins</value>
+        <value>{{ hdfs_user.user }},admins,subadmins</value>
     </property>
     <property>
         <name>dfs.permissions.superusergroup</name>
-        <value>{{ hdfs_group }}</value>
+        <value>{{ hdfs_user.group }}</value>
     </property>
     <property>
         <name>dfs.webhdfs.enabled</name>

@@ -13,8 +13,8 @@
   file:
     path: "{{item}}"
     state: directory
-    owner: "{{yarn_user}}"
-    group: "{{yarn_group}}"
+    owner: "{{yarn_user.user}}"
+    group: "{{yarn_user.group}}"
     mode: 0755
   with_items: "{{yarn_data_dirs}}"
 
@@ -22,8 +22,8 @@
   file:
     path: "{{item}}"
     state: directory
-    owner: "{{yarn_user}}"
-    group: "{{yarn_group}}"
+    owner: "{{yarn_user.user}}"
+    group: "{{yarn_user.group}}"
     mode: 0755
   with_items: #TODO get these configurable
     - /tmp/hadoop/yarn-nm-recovery/

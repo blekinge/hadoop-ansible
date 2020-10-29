@@ -251,7 +251,7 @@ export HADOOP_POLICYFILE="hadoop-policy.xml"
 #
 # .. and then use it as per the b option under the namenode.
 
-#export HADOOP_SECURE_USER=${HADOOP_SECURE_USER:-"{{ hdfs_user }}"}
+#export HADOOP_SECURE_USER=${HADOOP_SECURE_USER:-"{{ hdfs_user.user }}"}
 
 # ???
 export HADOOP_HOME_WARN_SUPPRESS=1
@@ -431,7 +431,7 @@ export HDFS_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
 # using non-privileged ports.
 # This will replace the hadoop.id.str Java property in secure mode.
 # export HDFS_DATANODE_SECURE_USER=hdfs
-#export HDFS_DATANODE_SECURE_USER={{ hdfs_user }}
+#export HDFS_DATANODE_SECURE_USER={{ hdfs_user.user }}
 
 # Supplemental options for secure datanodes
 # By default, Hadoop uses jsvc which needs to know to launch a
@@ -559,4 +559,4 @@ export HDFS_STORAGECONTAINERMANAGER_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
 #
 # For example, to limit who can execute the namenode command,
 # export HDFS_NAMENODE_USER=hdfs
-export HDFS_NAMENODE_USER={{ hdfs_user }}
+export HDFS_NAMENODE_USER={{ hdfs_user.user }}

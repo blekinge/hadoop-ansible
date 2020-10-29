@@ -32,18 +32,18 @@ fi
 export HADOOP_YARN_HOME="{{ current_hadoop_home }}"
 HADOOP_OPTS="$HADOOP_OPTS -Dyarn.home.dir=$HADOOP_YARN_HOME"
 
-export HADOOP_LOG_DIR="{{ hadoop_log_dir }}/{{ yarn_user }}"
+export HADOOP_LOG_DIR="{{ hadoop_log_dir }}/{{ yarn_user.user }}"
 export HADOOP_DAEMON_ROOT_LOGGER="INFO,EWMA,DRFA"
 
-export HADOOP_PID_DIR="{{ hadoop_pid_dir }}/{{ yarn_user }}"
+export HADOOP_PID_DIR="{{ hadoop_pid_dir }}/{{ yarn_user.user }}"
 export HADOOP_LIBEXEC_DIR="$HADOOP_YARN_HOME/libexec"
 export HADOOP_CONF_DIR="{{ hadoop_config_path }}"
 
 # User for YARN daemons
-HADOOP_IDENT_STRING="{{ yarn_user }}"
+HADOOP_IDENT_STRING="{{ yarn_user.user}}"
 HADOOP_OPTS="$HADOOP_OPTS -Dyarn.id.str=$HADOOP_IDENT_STRING"
 
-export HADOOP_YARN_USER="${HADOOP_YARN_USER:-{{ yarn_user }}}"
+export HADOOP_YARN_USER="${HADOOP_YARN_USER:-{{ yarn_user.user }}}"
 
 # The java implementation to use.  Required.
 export JAVA_HOME="{{ jvm_home }}"

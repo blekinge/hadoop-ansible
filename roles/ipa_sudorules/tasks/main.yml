@@ -1,5 +1,4 @@
 ---
-- include_tasks: kinit_admin.yml
 
 
 - name: Default Sudo rules
@@ -28,4 +27,3 @@
       - "{{subadmins_group}}"
       - "{{ipa_admin_group}}"
 
-- include_tasks: kdestroy.yml

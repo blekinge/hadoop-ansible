@@ -9,16 +9,16 @@ queue_mappings:
 
 yarn_queues:
   - name: root
-    admins: "{{yarn_user}}"
-    submitters: "{{yarn_user}}"
+    admins: "{{yarn_user.user}}"
+    submitters: "{{yarn_user.user}}"
     capacity: 100
     ordering: priority-utilization
     max_capacity: 100
 
     children:
       - name: default
-        admins: "{{yarn_user}} {{subadmins_group}}"
-        submitters: "{{yarn_user}} {{subadmins_group}}"
+        admins: "{{yarn_user.user}} {{subadmins_group}}"
+        submitters: "{{yarn_user.user}} {{subadmins_group}}"
         capacity: 100
         max_capacity: 100
         minimum_user_limit: 25

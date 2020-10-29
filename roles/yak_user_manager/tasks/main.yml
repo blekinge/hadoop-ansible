@@ -1,5 +1,0 @@
----
-- name: Install - Ensure that bind-utils server packages are installed
-  package:
-    name: "bind-utils"
-    state: present

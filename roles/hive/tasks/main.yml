@@ -16,7 +16,7 @@
     dest: "{{ hive_path }}"
     remote_src: yes
     creates: "{{ hive_home }}"
-    group: "{{ hive_group }}"
+    group: "{{ hive_user.group }}"
     owner: "root"
 
 
@@ -33,7 +33,7 @@
     dest: "{{ hive_config_path }}/"
     mode: 0644
     owner: "root"
-    group: "{{ hive_group }}"
+    group: "{{ hive_user.group }}"
   with_fileglob:
     - "templates/hive_conf/*"
 
@@ -47,7 +47,7 @@
     src: "{{ hive_config_path }}"
     dest:  "{{ hive_home }}/conf"
     owner: root
-    group: "{{ hive_group }}"
+    group: "{{ hive_user.group }}"
     state: link
     force: true
 
@@ -58,7 +58,7 @@
     dest: "/etc/profile.d/"
     mode: 0644
     owner: "root"
-    group: "{{ hive_group }}"
+    group: "{{ hive_user.group }}"
   with_fileglob:
     - "templates/profile.d/*"
 

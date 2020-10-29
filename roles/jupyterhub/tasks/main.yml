@@ -62,8 +62,8 @@
       file:
         state: file
         path: "{{item}}"
-        owner: "{{ jupyterhub_user }}"
-        group: "{{ jupyterhub_group }}"
+        owner: "{{ jupyterhub_user.user }}"
+        group: "{{ jupyterhub_user.group }}"
         mode: 0500
       loop:
         - "{{ssl_cert_dir}}/jupyterhub.key"
@@ -91,17 +91,17 @@
         state: present
 
     # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudocmdgroup.md
-    - name: "Create sudo command group {{jupyterhub_user}}_cmdgroup"
+    - name: "Create sudo command group {{jupyterhub_user.user}}_cmdgroup"
       ipasudocmdgroup:
         ipaadmin_password: "{{ipaadmin_password}}"
-        name: "{{jupyterhub_user}}_cmdgroup"
+        name: "{{jupyterhub_user.user}}_cmdgroup"
         action: sudocmdgroup
 
     # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudocmdgroup.md
-    - name: "Add commands to {{jupyterhub_user}}_cmdgroup"
+    - name: "Add commands to {{jupyterhub_user.user}}_cmdgroup"
       ipasudocmdgroup:
         ipaadmin_password: "{{ipaadmin_password}}"
-        name: "{{jupyterhub_user}}_cmdgroup"
+        name: "{{jupyterhub_user.user}}_cmdgroup"
         sudocmd:
           - /usr/bin/sudospawner
           - /usr/local/bin/sudospawner
@@ -112,7 +112,7 @@
     - name: "jupyterhub Sudo rule"
       ipasudorule:
         ipaadmin_password: "{{ipaadmin_password}}"
-        name: "{{jupyterhub_user}}_sudorule"
+        name: "{{jupyterhub_user.user}}_sudorule"
         hostcategory: all
         runasusercategory: all
         runasgroupcategory: all
@@ -120,9 +120,9 @@
           - '!requiretty'
           - '!authenticate'
         user:
-          - "{{jupyterhub_user}}"
+          - "{{jupyterhub_user.user}}"
         allow_sudocmdgroup:
-          - "{{jupyterhub_user}}_cmdgroup"
+          - "{{jupyterhub_user.user}}_cmdgroup"
 
   always:
     - include_tasks: kdestroy.yml

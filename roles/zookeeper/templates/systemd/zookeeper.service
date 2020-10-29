@@ -3,13 +3,13 @@ Description=Zookeeper service
 Requires=network-online.target
 
 [Service]
-User={{ zookeeper_user }}
-Group={{ zookeeper_group }}
+User={{ zookeeper_user.user }}
+Group={{ zookeeper_user.group }}
 Type=forking
 # Prefix with + to Run ExecStartPre with root-permissions, see https://www.freedesktop.org/software/systemd/man/systemd.service.html#ExecStart=
 ExecStartPre=+/usr/bin/mkdir -p {{ zookeeper_pid_dir }}
-ExecStartPre=+/usr/bin/chown -R {{ zookeeper_user }}:{{ zookeeper_group }} {{ zookeeper_pid_dir }}
-# Run ExecStart with User={{ hdfs_user }} / Group={{ hdfs_group }}
+ExecStartPre=+/usr/bin/chown -R {{ zookeeper_user.user }}:{{ zookeeper_user.group }} {{ zookeeper_pid_dir }}
+
 ExecStart={{zookeeper_home}}/bin/zkServer.sh --config {{zookeeper_config_path}} start {{zookeeper_config_path}}/zoo.cfg
 PIDFile={{ zookeeper_pid_dir }}/zookeeper_server.pid
 

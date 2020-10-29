@@ -19,8 +19,8 @@
   file:
     path: "{{hadoop_dfs_journal}}"
     state: directory
-    owner: "{{hdfs_user}}"
-    group: "{{hdfs_group}}"
+    owner: "{{hdfs_user.user}}"
+    group: "{{hdfs_user.group}}"
 
 
 - name: Start journalnode process

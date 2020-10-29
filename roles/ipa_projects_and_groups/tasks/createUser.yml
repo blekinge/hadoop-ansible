@@ -54,13 +54,13 @@
 
 - name: HDFS user home
   become: yes
-  become_user: "{{hdfs_user}}"
+  become_user: "{{hdfs_user.user}}"
   delegate_to: "{{ groups['hdfs'] | first }}"
   shell: |
     set -e # Fail on anything
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh
-    kinit -kt {{keytab_dir}}/{{hdfs_user}}.headless.keytab {{hdfs_user}};
+    kinit -kt {{keytab_dir}}/{{hdfs_user.user}}.headless.keytab {{hdfs_user.user}};
     hdfs dfs -mkdir -p /user/{{ user.username }};
     hdfs dfs -chown -R {{ user.username }}:{{ user.username }} /user/{{ user.username }};
 #    kdestroy

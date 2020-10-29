@@ -13,6 +13,6 @@ standard_user_groups:
   - name: "{{ users_group }}"
     gid: "{{ uid_usersGroup }}"
     description: Standard user accounts, for unprivileged users.
-  - name: "{{ hdfs_group }}"
+  - name: "{{ hdfs_user.group }}"
     gid: "{{ hdfs_gid }}"
     description: HDFS group

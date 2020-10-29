@@ -73,8 +73,8 @@ yarn_data_dirs: []
 
 yarn_data_dirs_joined:  "{{ yarn_data_dirs | join(',') }}"
 
-yarn_application_logs_dir: "{{ hadoop_log_dir }}/{{ yarn_user }}/application-logs/"
-#yarn_user_logs: "/hadoop/yarn/
+yarn_application_logs_dir: "{{ hadoop_log_dir }}/{{ yarn_user.user }}/application-logs/"
+#yarn_user.user_logs: "/hadoop/yarn/
 
 #TODO more than one?
 mapreduce_history_server_host: "{{ groups['mapreduce_history_servers'] | first }}"

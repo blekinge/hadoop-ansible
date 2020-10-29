@@ -22,7 +22,7 @@
     </property>
     <property>
         <name>yarn.admin.acl</name>
-        <value>{{yarn_user}} {{subadmins_group}}</value>
+        <value>{{yarn_user.user}} {{subadmins_group}}</value>
     </property>
     <property>
         <name>yarn.application.classpath</name>
@@ -614,7 +614,7 @@
     </property>
     <property>
         <name>hadoop.registry.system.accounts</name>
-        <value>sasl:{{ yarn_user}},sasl:{{mapreduce_user}},sasl:{{hadoop_group}},sasl:{{hdfs_user}},sasl:{{ yarn_resourcemanager_service_name }}</value>
+        <value>sasl:{{ yarn_user.user}},sasl:{{mapreduce_user.user}},sasl:{{hadoop_group}},sasl:{{hdfs_user.user}},sasl:{{ yarn_resourcemanager_service_name }}</value>
     </property>
     <property>
         <name>hadoop.registry.zk.quorum</name>

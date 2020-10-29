@@ -3,8 +3,8 @@
 - name: Create Mapreduce Paths
   file:
     path: "{{ item }}"
-    owner: "{{ mapreduce_user }}"
-    group: "{{ mapreduce_group }}"
+    owner: "{{ mapreduce_user.user }}"
+    group: "{{ mapreduce_user.group }}"
     state: directory
     mode: 0750
   with_items:
@@ -12,12 +12,12 @@
 
 - name: install mapreduce framework in HDFS
   become: yes
-  become_user: "{{hdfs_user}}"
+  become_user: "{{hdfs_user.user}}"
   shell: |
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh
 
-    kinit -kt {{keytab_dir}}/{{hdfs_user}}.headless.keytab {{hdfs_user}}
+    kinit -kt {{keytab_dir}}/{{hdfs_user.user}}.headless.keytab {{hdfs_user.user}}
 
     hdfs dfs -mkdir /system /system/mapreduce;
     hdfs dfs -chmod -R a+rx /system;

@@ -4,8 +4,8 @@
   file:
     path: "{{yarn_timeline_store}}"
     state: directory
-    owner: "{{yarn_user}}"
-    group: "{{yarn_group}}"
+    owner: "{{yarn_user.user}}"
+    group: "{{yarn_user.group}}"
 
 - name: Start YARN Timeline Server process
   systemd:
