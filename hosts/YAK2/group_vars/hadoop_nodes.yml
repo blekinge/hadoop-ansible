@@ -1,5 +1,15 @@
 ---
 
+
+hadoop_nodes_zabbix_host_groups__to_merge:
+  - "yak2-hadoop"
+
+
+hadoop_version: "3.3.0"
+zookeeper_version: "3.6.2"
+spark_version: "3.0.1"
+
+
 #TODO let this default to true if there is no HDFS and false otherwise
 # Wipe HDFS and set up fresh. Nessesary for new installs
 wipe_hdfs: false

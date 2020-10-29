@@ -6,10 +6,6 @@ java_packages:
   - "java-1.8.0-openjdk"
   - "java-1.8.0-openjdk-devel"
 
-hadoop_version: "3.3.0"
-zookeeper_version: "3.6.2"
-spark_version: "3.0.1"
-
 
 ipa_domain: yak2.net
 domain: "{{ipa_domain}}"

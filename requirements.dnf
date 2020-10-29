@@ -1,0 +1,8 @@
+# Ovirt
+libcurl-devel
+gcc
+libxml2-devel
+python3-devel
+
+#Zabbix
+python3-netaddr

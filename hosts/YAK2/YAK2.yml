@@ -4,6 +4,7 @@
 # VMs: Machines to auto-create in ovirt
 # ipaserver: the FreeIPA server to register all hosts to
 # ipaclients: The list of hosts to setup as ipa clients
+# zabbix_nodes: The list of hosts to setup zabbix agent on
 # hadoop_nodes: = role hadoop, role zookeeper, role spark
 # hdfs_namenodes: = role hdfs_namenode
 # hdfs_journalnodes: = role hdfs_journalnode
@@ -25,6 +26,10 @@ all:
     ipaclients:
       children: #Mark all hadoop nodes as ipa-clients
         hadoop_nodes:
+
+    zabbix_nodes:
+      children: #Mark all nodes as zabbix_nodes
+        ipaclients:
 
     hadoop_nodes:
       children:

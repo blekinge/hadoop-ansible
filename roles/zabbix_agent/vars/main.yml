@@ -1,0 +1,4 @@
+---
+
+zabbix_agent_listenport: "{{zabbix_agent_port | string}}"
+zabbix_useuip: "1"

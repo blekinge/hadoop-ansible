@@ -1,0 +1,5 @@
+zabbix-api
+ovirt-engine-sdk-python
+
+# Nessesary for the merge_vars action plugin to merge zabbix host groups list
+ansible_merge_vars

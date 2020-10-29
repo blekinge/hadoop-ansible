@@ -1,0 +1,7 @@
+---
+
+hdfs_datanodes_zabbix_host_groups__to_merge:
+  - "yak2-datanode"
+
+zabbix_link_templates:
+  - "Template OS Linux HDP DataNode"

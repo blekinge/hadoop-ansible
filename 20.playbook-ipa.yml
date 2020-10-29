@@ -5,7 +5,14 @@
     - ansible_account
 
 
+- hosts: zabbix_nodes
+  roles:
+    - role: zabbix_agent
+
+
+
 - hosts: ipaclients
+  throttle: 5
   roles:
     - role: updated
     - role: java_1_8_installed # Install java
@@ -26,7 +33,7 @@
     - role: ssl_certificates_creator
       when: create_certificates | bool
     - role: ipa_service_definitions
-      when: ipa_services | bool
+      when: create_ipa_services | bool
     - role: kerberos_system_user_keytabs_create
       when: create_keytabs | bool
 

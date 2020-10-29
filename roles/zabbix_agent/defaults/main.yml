@@ -1,0 +1,12 @@
+
+zabbix_agent_os_family: RedHat
+
+zabbix_api_create_hosts: true
+zabbix_api_create_hostgroup: true
+
+zabbix_link_templates:
+  - "Template OS Linux"
+
+zabbix_selinux: true
+
+zabbix_agent_firewalld_enable: true
