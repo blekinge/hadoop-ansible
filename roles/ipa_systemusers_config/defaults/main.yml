@@ -132,5 +132,7 @@ system_users:
 #  - user: "{{ipa_admin_user}}"
 #    group: "{{ipa_admin_group}}"
 
-
-initial_user_groups: "{{standard_user_groups}}"
+default_user_groups__to_merge:
+  - name: "{{ users_group }}"
+    gid: "{{ uid_usersGroup }}"
+    description: Standard user accounts, for unprivileged users.

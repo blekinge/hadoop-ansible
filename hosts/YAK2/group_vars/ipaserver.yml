@@ -13,61 +13,60 @@ uid_usersGroup: 19900
 #uid_subadminsGroup: 12000
 
 
-
-
 # Here you can set up which "project" groups to that should be created
 # projects: []
 projects:
-  - name: "{{subadmins_group}}"
-    gid: "{{uid_subadminsGroup}}"
-    users:
-      - username: abrsadm
-        firstname: Asger
-        lastname: Blekinge
-        mobile: +450000000
-        email: "abr@kb.dk"
-
-      - username: tbasadm
-        firstname: Tony
-        lastname: BA
-        mobile: +450000000
-        email: "tba@kb.dk"
-
-  - name: p001
-    gid: 20100
-    users:
-      - username: userp001
-        firstname: p001
-        lastname: User2
-        mobile: +450000000
-        email: "userp001@{{ipa_domain}}"
-        # If uid or gid is not specified, use group gid + position in this list.
-
-  - name: p002
-    gid: 20200
-    users:
-      - username: userp002
-        firstname: p002
-        lastname: User
-        mobile: +450000000
-        email: "userp002@{{ipa_domain}}"
-        # If uid or gid is not specified, use group gid + position in this list.
-
-#the hadoop node  to delegate to for creating HDFS user home when creating new users
-#hdfs_delegation_host: "{{ groups['hdfs'] | first }}"
+  - "{{subadmin_project}}"
+  - "{{p001_project}}"
+  - "{{p002_project}}"
 
 
 
+subadmin_project:
+  name: "{{subadmins_group}}"
+  gid: "{{uid_subadminsGroup}}"
+  project_host: proj000.yak2.net
+  users:
+    - username: abrsadm
+      firstname: Asger
+      lastname: Blekinge
+      mobile: +450000000
+      email: "abr@kb.dk"
 
+    - username: tbasadm
+      firstname: Tony
+      lastname: BA
+      mobile: +450000000
+      email: "tba@kb.dk"
 
+p001_project:
+  name: p001
+  gid: 20100
+  project_host: proj001.yak2.net
+  users:
+    - username: userp001
+      firstname: p001
+      lastname: User2
+      mobile: +450000000
+      email: "userp001@{{ipa_domain}}"
+      # If uid or gid is not specified, use group gid + position in this list.
 
-extra_users_groups:
+p002_project:
+  name: p002
+  gid: 20200
+  project_host: proj002.yak2.net
+  users:
+    - username: userp002
+      firstname: p002
+      lastname: User
+      mobile: +450000000
+      email: "userp002@{{ipa_domain}}"
+      # If uid or gid is not specified, use group gid + position in this list.
+
+# User groups are the groups that all new (human) users will be made member of
+vpnu_user_groups__to_merge:
   - name: vpnu
     gid: 10067
     description: VPN access group
-
-# User groups are the groups that will be made beforehand
-initial_users_groups: "{{ standard_user_groups + extra_users_groups }}"
-
 
 

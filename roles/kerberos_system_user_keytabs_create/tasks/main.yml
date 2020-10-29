@@ -12,15 +12,19 @@
     loop_var: "dir"
 
 
-- name: kinit_admin
-  include_tasks: kinit_admin.yml
-
-# System user keytabs are created on the ipa server and distributed below
 - name: Retrieving keytab for user
-  include_tasks: retrieveKeytab.yml
-  vars:
-    entry: "{{item}}"
-  with_items: '{{ kerberos_conf | selectattr("type", "eq", "USER") | list}}'
+  become: no
+  remote_user: root
+  block:
+    - name: kinit_admin
+      include_tasks: kinit_admin.yml
 
-- name: kdestroy
-  include_tasks: kdestroy.yml
+    # System user keytabs are created on the ipa server and distributed below
+    - name: Retrieving keytab for user
+      include_tasks: retrieveKeytab.yml
+      vars:
+        entry: "{{item}}"
+      with_items: '{{ kerberos_conf | selectattr("type", "eq", "USER") | list}}'
+
+    - name: kdestroy
+      include_tasks: kdestroy.yml

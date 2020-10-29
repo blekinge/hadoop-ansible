@@ -3,16 +3,3 @@
   package:
     name: "bind-utils"
     state: present
-
-- name: setup users
-  block:
-    - include_tasks: kinit_admin.yml
-    - include: groups.yml
-    - include: systemUsers.yml
-    - include: syshomes.yml
-    - include: autohomes.yml
-    - include: sudorules.yml
-  always:
-    - include_tasks: kdestroy.yml
-
-

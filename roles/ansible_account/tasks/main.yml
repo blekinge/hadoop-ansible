@@ -16,10 +16,10 @@
         groups: adm,wheel
         append: yes
         create_home: yes
-        home: "/home/{{sealbin_user}}"
+        home: "{{sealbin_home}}"
         state: present
 
-    - name: "Copy sudoers file to give {{sealbin_user}} sudo rights"
+    - name: "Upload sudoers config file to give {{sealbin_user}} sudo rights"
       template:
         src: sudoers
         dest: /etc/sudoers.d/ansible
@@ -33,3 +33,31 @@
         user: "{{sealbin_user}}"
         state: present
         key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+
+- name: configure ssh root logins
+  block:
+
+    - name: disable root logins directly
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: PermitRootLogin no
+      when: not (permit_root_logins | bool)
+      register: root_logins_denied
+
+    - name: enable root logins directly
+      remote_user: "{{sealbin_user}}"
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: PermitRootLogin yes
+      register: root_logins_permitted
+      when: permit_root_logins  | bool
+
+    - systemd:
+        service: sshd
+        state: reloaded
+        enabled: yes
+      remote_user: "{{sealbin_user}}"
+      when: (root_logins_permitted is defined and root_logins_permitted.changed) or (root_logins_denied is defined and root_logins_denied.changed)
+

@@ -3,6 +3,8 @@
 keytab_dir: "/etc/security/keytabs"
 keytab_permissions: "0400"
 
+temp_keytab_dir: "/tmp/temp_keytabs"
+
 kinit_principal: "{{ipa_admin_user}}@{{ipaserver_realm}}"
 
 yarn_nodemanager_service_name: "nm"

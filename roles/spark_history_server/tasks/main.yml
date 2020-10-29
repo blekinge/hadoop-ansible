@@ -1,7 +1,7 @@
 ---
 
 
-- name: Copy spark config files
+- name: Upload spark config files
   template:
     src: "{{ item }}"
     dest: "{{ spark_config_path }}/"
@@ -13,7 +13,7 @@
 
 
 
-- name: Copy Spark invoker Script
+- name: Upload Spark invoker Script
   template:
     src: "spark-invoker.sh"
     dest: "/usr/local/bin/"
@@ -22,7 +22,7 @@
     group: "{{ spark_group }}"
 
 
-- name: Copy Spark systemd services
+- name: Upload Spark systemd services
   template:
     src: "{{ item }}"
     dest: /etc/systemd/system/

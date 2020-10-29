@@ -68,7 +68,7 @@
 
 
 
-- name: Copy spark config files
+- name: Upload spark config files
   template:
     src: "{{ item }}"
     dest: "{{ spark_config_path }}/"
@@ -93,7 +93,7 @@
     force: true
 
 
-- name: Copy Spark profile files
+- name: Upload Spark profile files
   template:
     src: "{{ item }}"
     dest: "/etc/profile.d/"

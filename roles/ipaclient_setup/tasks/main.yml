@@ -103,7 +103,7 @@
     enabled: yes
 
 
-- name: Copy Kerberos profile files
+- name: Upload Kerberos profile files
   template:
     src: "{{ item }}"
     dest: "/etc/profile.d/"

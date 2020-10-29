@@ -2,7 +2,7 @@
 - name: Install OpenJdk.
   yum: name={{ java_packages }} state=present
 
-- name: Copy Java Home Script
+- name: Upload Java Home Script
   template: src=java_home.sh dest=/etc/profile.d
 #
 #- name: Set Java Home Script

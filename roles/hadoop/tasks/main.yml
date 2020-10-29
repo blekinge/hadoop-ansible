@@ -58,7 +58,7 @@
 
 
 
-    - name: Copy Hadoop config files
+    - name: Upload Hadoop config files
       template:
         src: "{{ item }}"
         dest: "{{ hadoop_config_path }}/"
@@ -89,14 +89,14 @@
         owner: root
         group: hadoop
         mode: '6050'
-    - name: Copy Hadoop invoker Script
+    - name: Upload Hadoop invoker Script
       template:
         src: "hadoop-invoker.sh"
         dest: "/usr/local/bin/"
         mode: "0755"
         owner: "root"
         group: "{{ hadoop_group }}"
-    - name: Copy Hadoop profile files
+    - name: Upload Hadoop profile files
       template:
         src: "{{ item }}"
         dest: "/etc/profile.d/"
@@ -105,7 +105,7 @@
         group: "{{ hadoop_group }}"
       with_fileglob:
         - "templates/profile.d/*"
-    - name: Copy Hadoop YARN systemd services
+    - name: Upload Hadoop YARN systemd services
       template:
         src: "{{ item }}"
         dest: /etc/systemd/system/
@@ -114,7 +114,7 @@
         group: "root"
       with_fileglob:
         - "templates/systemd/yarn/*"
-    - name: Copy Hadoop HDFS systemd services
+    - name: Upload Hadoop HDFS systemd services
       template:
         src: "{{ item }}"
         dest: /etc/systemd/system/
@@ -123,7 +123,7 @@
         group: "root"
       with_fileglob:
         - "templates/systemd/hdfs/*"
-    - name: Copy Hadoop Mapreduce systemd services
+    - name: Upload Hadoop Mapreduce systemd services
       template:
         src: "{{ item }}"
         dest: /etc/systemd/system/

@@ -1,8 +1,20 @@
 
-- hosts: all
+# Enable the {{sealbin_user}} account and disable ssh logins to root
+- hosts: all:!localhost
   remote_user: root
+  ignore_unreachable: yes
   roles:
     - ansible_account
+  tasks:
+    - meta: clear_host_errors
+
+
+
+- hosts: hadoop_nodes
+  roles:
+    - role: updated
+    - role: java_1_8_installed
+    - role: firewalled
 
 
 - hosts: zabbix_nodes
@@ -10,19 +22,16 @@
     - role: zabbix_agent
 
 
-
 - hosts: ipaclients
-  throttle: 5
+  throttle: 5 # It seems that if every node tries to register at the same time, some of them will fail
   roles:
-    - role: updated
-    - role: java_1_8_installed # Install java
     - role: ipaclient_setup # Set up the ipa clients
-    - role: firewalled # Set up the firewall
 
 
 # Now that the hosts have been added as ipa clients, we can setup the kerberos services
 - hosts: ipaserver
   vars:
+    # These vars allow us to turn of some of these features when running
     create_users: yes
     create_certificates: yes
     create_ipa_services: yes
@@ -37,3 +46,9 @@
     - role: kerberos_system_user_keytabs_create
       when: create_keytabs | bool
 
+# And now that the ipa server is ready, we can setup services and ssl
+- hosts: hadoop_nodes
+  roles:
+    - role: ssl_certificates_recipient #Upload ssl certificates to host
+    - role: kerberos_service_keytabs #Create the service keytabs
+    - role: kerberos_system_user_keytabs

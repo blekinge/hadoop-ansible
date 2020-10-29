@@ -1,4 +1,7 @@
 ---
+- include_tasks: kinit_admin.yml
+
+
 - name: "Create {{ ipaserver_syshome_dir }}"
   file:
     path: "{{ ipaserver_syshome_dir }}"
@@ -45,3 +48,4 @@
     enabled: yes
     daemon_reload: yes
 
+- include_tasks: kdestroy.yml

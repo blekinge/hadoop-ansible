@@ -3,3 +3,10 @@
 - name: Check for single freeipa server
   fail: msg="Single host check failed."
   when: " groups['ipaserver'] |length  != 1"
+
+
+- name: Merge user group list
+  merge_vars:
+    suffix_to_merge: user_groups__to_merge
+    merged_var_name: initial_user_groups
+    expected_type: 'list'

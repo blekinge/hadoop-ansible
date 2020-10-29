@@ -1,5 +1,7 @@
 ---
 
+- include_tasks: kinit_admin.yml
+
 - name: Create user groups
   loop: "{{initial_user_groups}}"
   ipagroup:
@@ -8,3 +10,4 @@
     gid: "{{ item.gid }}"
     description: "{{item.description}}"
 
+- include_tasks: kdestroy.yml

@@ -173,7 +173,7 @@
 # Config
 - name: Install jupyterhub config
   block:
-    - name: Copy Jupyter systemd services
+    - name: Upload Jupyter systemd services
       template:
         src: "templates/systemd/jupyterhub.service"
         dest: /etc/systemd/system/
@@ -189,7 +189,7 @@
         owner: "root"
         group: "root"
 
-    - name: Copy Jupyterhub config
+    - name: Upload Jupyterhub config
       template:
         src: templates/jupyterhub/jupyterhub_config.py
         dest: /etc/jupyterhub/jupyterhub_config.py

@@ -27,7 +27,7 @@
     state: link
 
 
-- name: Copy hive config files
+- name: Upload hive config files
   template:
     src: "{{ item }}"
     dest: "{{ hive_config_path }}/"
@@ -52,7 +52,7 @@
     force: true
 
 
-- name: Copy Hive profile files
+- name: Upload Hive profile files
   template:
     src: "{{ item }}"
     dest: "/etc/profile.d/"

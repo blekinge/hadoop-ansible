@@ -1,7 +1,7 @@
 ---
 
 
-- name: Copy updated yum repos
+- name: Upload updated yum repos
   template:
     src: "{{ item }}"
     dest: "/etc/yum.repos.d/"

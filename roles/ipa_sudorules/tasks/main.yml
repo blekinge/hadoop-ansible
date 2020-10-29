@@ -1,4 +1,7 @@
 ---
+- include_tasks: kinit_admin.yml
+
+
 - name: Default Sudo rules
   ipasudorule:
     ipaadmin_password: "{{ipaadmin_password}}"
@@ -6,9 +9,9 @@
     hostcategory: all
     usercategory: all
     sudooption:
-    - '!requiretty'
-    - '!env_reset'
-    - 'env_delete-=PATH'
+      - '!requiretty'
+      - '!env_reset'
+      - 'env_delete-=PATH'
 
 - name: "{{subadmins_group}} Sudo rules"
   ipasudorule:
@@ -24,3 +27,5 @@
     group:
       - "{{subadmins_group}}"
       - "{{ipa_admin_group}}"
+
+- include_tasks: kdestroy.yml

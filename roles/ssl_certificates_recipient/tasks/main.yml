@@ -19,22 +19,25 @@
   loop_control:
     loop_var: "dir"
 
-
 - name: "uploading ssl certs to {{inventory_hostname}}"
   throttle: 2
   delegate_to: "{{ipa_server}}"
+  become: no
+  # Be {{sealbin_user}} on the src(fipa001) side
+  # This allows us to use agent our agent forwarding so {{ipa_serve}} can ssh to the right host
   synchronize:
     src: "{{ item.file }}"
     dest: "{{ item.dest | default(ssl_server_dir) }}"
     archive: no
     mode: push
+    # Be root on the dest side, so we can create the files in /etc
+    rsync_path: sudo rsync
   loop:
-    - file: "/root/ssl/{{ inventory_hostname }}-keystore.jks"
-    - file: "/root/ssl/{{ inventory_hostname }}-truststore.jks"
-    - file: "/root/ssl/all.jks"
-    - file: "/root/ssl/http_secret"
+    - file: "{{temp_ssl_dir}}/{{ inventory_hostname }}-keystore.jks"
+    - file: "{{temp_ssl_dir}}/{{ inventory_hostname }}-truststore.jks"
+    - file: "{{temp_ssl_dir}}/all.jks"
+    - file: "{{temp_ssl_dir}}/http_secret"
       dest: "/etc/security/"
-
 
 - name: "Setting permissions"
   file:

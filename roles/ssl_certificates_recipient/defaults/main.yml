@@ -3,3 +3,7 @@
 #Common SSL variables
 ssl_server_dir: /etc/ssl
 ssl_client_dir: /etc/ssl
+
+
+sealbin_user: "sealbin"
+temp_ssl_dir: "/home/{{sealbin_user}}/ssl"

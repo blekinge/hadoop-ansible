@@ -1,4 +1,6 @@
 ---
+- include_tasks: kinit_admin.yml
+
 
 #Add the NFS service principal for the server and client to Kerberos.
 - name: FreeIPA automount setup service
@@ -81,3 +83,4 @@
         daemon_reload: yes
 
 
+- include_tasks: kdestroy.yml

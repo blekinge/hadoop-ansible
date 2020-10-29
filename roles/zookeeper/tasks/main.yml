@@ -35,7 +35,7 @@
   with_items:
     - "{{ zookeeper_create_path }}"
 
-- name: Copy Zookeeper config files
+- name: Upload Zookeeper config files
   template:
     src: "{{ item }}"
     dest: "{{ zookeeper_config_path }}/"
@@ -46,7 +46,7 @@
     - "templates/conf/*"
 
 
-- name: Copy Hadoop Zookeeper systemd services
+- name: Upload Hadoop Zookeeper systemd services
   template:
     src: "{{ item }}"
     dest: /etc/systemd/system/
