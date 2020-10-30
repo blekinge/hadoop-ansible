@@ -13,7 +13,7 @@
   file:
     path: "{{item}}"
     state: directory
-    owner: "{{yarn_user.user}}"
+    owner: "{{yarn_user.name}}"
     group: "{{yarn_user.group}}"
     mode: 0755
   with_items: "{{yarn_data_dirs}}"
@@ -22,7 +22,7 @@
   file:
     path: "{{item}}"
     state: directory
-    owner: "{{yarn_user.user}}"
+    owner: "{{yarn_user.name}}"
     group: "{{yarn_user.group}}"
     mode: 0755
   with_items: #TODO get these configurable

@@ -3,8 +3,9 @@
 
 ipa_server: "{{ groups['ipaserver'] | first }}"
 
-ipa_admin_user: admin
-ipa_admin_group: admins
+ipa_admin_user:
+  name: admin
+  group: admins
 
 ipaserver_autohome_dir: /sto-data/home
 ipaserver_syshome_dir: /sto-data/syshome
@@ -15,82 +16,104 @@ ipaclient_syshome_dir: /syshome
 ipaautomount_location: "default"
 
 #Users and groups
-hadoop_group: "hadoop"
-uid_hadoopGroup: 11000
+hadoop_group:
+  name: "hadoop"
+  gid: 11000
+  description: Hadoop System Services
 
-users_group: "yakusers"
-uid_usersGroup: 20000
 
-systemservices_group: "systemservices"
-uid_systemserviceGroup: 15000
+users_group:
+  name: "yakusers"
+  gid: 20000
+  description: Standard user accounts, for unprivileged users.
 
-subadmins_group: "subadmins"
-uid_subadminsGroup: 12000
+
+systemservices_group:
+  name: "systemservices"
+  gid: 15000
+  description: Standard user accounts, for non-hadoop services
+
+
+subadmins_group:
+  name: "subadmins"
+  gid: 12000
+  description: For daily administration of users and hosts
+
+#These are the user groups that are automatically created
+standard_user_groups:
+  - "{{ hadoop_group }}"
+  - "{{ systemservices_group }}"
+  - "{{ subadmins_group }}"
+  - "{{ users_group }}"
+
+# These groups are also automaticall created, and all new users will be made members of them
+default_user_groups:
+  - "{{ users_group }}"
 
 
 hdfs_user:
-  user: "hdfs"
+  name: "hdfs"
   group: "hdfs"
   uid: 11200
   gid: 11200
   private_group: yes
-  extra_groups: [ "{{hadoop_group}}" ]
+  extra_groups: [ "{{hadoop_group.name}}" ]
 
 yarn_user:
-  user: "yarn"
-  group: "{{hadoop_group}}"
-  uid: "{{uid_hadoopGroup|int+2}}"
-  gid: "{{uid_hadoopGroup}}"
+  name: "yarn"
+  group: "{{hadoop_group.name}}"
+  uid: "{{hadoop_group.gid|int+2}}"
+  gid: "{{hadoop_group.gid}}"
   private_group: no
-  extra_groups: ["{{hadoop_group}}"]
+  extra_groups: ["{{hadoop_group.name}}"]
 
 mapreduce_user:
-  user: "mapred"
-  group: "{{hadoop_group}}"
-  uid: "{{uid_hadoopGroup|int+1}}"
-  gid: "{{uid_hadoopGroup}}"
+  name: "mapred"
+  group: "{{hadoop_group.name}}"
+  uid: "{{hadoop_group.gid|int+1}}"
+  gid: "{{hadoop_group.gid}}"
   private_group: no
-  extra_groups: ["{{hadoop_group}}"]
+  extra_groups: ["{{hadoop_group.name}}"]
 
 zookeeper_user:
-  user: "zookeeper"
-  group: "{{hadoop_group}}"
-  uid: "{{uid_hadoopGroup|int+3}}"
-  gid: "{{uid_hadoopGroup}}"
+  name: "zookeeper"
+  group: "{{hadoop_group.name}}"
+  uid: "{{hadoop_group.gid|int+3}}"
+  gid: "{{hadoop_group.gid}}"
   private_group: no
-  extra_groups: ["{{hadoop_group}}"]
+  extra_groups: ["{{hadoop_group.name}}"]
 
 spark_user:
-  user: "spark"
-  group: "{{hadoop_group}}"
-  uid: "{{uid_hadoopGroup|int+4}}"
-  gid: "{{uid_hadoopGroup}}"
+  name: "spark"
+  group: "{{hadoop_group.name}}"
+  uid: "{{hadoop_group.gid|int+4}}"
+  gid: "{{hadoop_group.gid}}"
   private_group: no
-  extra_groups: ["{{hadoop_group}}"]
+  extra_groups: ["{{hadoop_group.name}}"]
 
 hive_user:
-  user: "hive"
-  group: "{{hadoop_group}}"
-  uid: "{{uid_hadoopGroup|int+5}}"
-  gid: "{{uid_hadoopGroup}}"
+  name: "hive"
+  group: "{{hadoop_group.name}}"
+  uid: "{{hadoop_group.gid|int+5}}"
+  gid: "{{hadoop_group.gid}}"
   private_group: no
-  extra_groups: ["{{hadoop_group}}"]
+  extra_groups: ["{{hadoop_group.name}}"]
 
 rstudio_user:
-  user: "rstudio-server"
+  name: "rstudio-server"
   group: "rstudio-server"
-  uid: "{{uid_systemserviceGroup|int+4}}"
-  gid: "{{uid_systemserviceGroup|int+4}}"
+  uid: "{{systemservices_group.gid|int+4}}"
+  gid: "{{systemservices_group.gid|int+4}}"
   private_group: yes
-  extra_groups: ["{{systemservices_group}}"]
+  extra_groups: ["{{systemservices_group.name}}"]
 
 jupyterhub_user:
-  user: "jupyterhub"
+  name: "jupyterhub"
   group: "jupyterhub"
-  uid: "{{uid_systemserviceGroup|int+5}}"
-  gid: "{{uid_systemserviceGroup|int+5}}"
+  uid: "{{systemservices_group.gid|int+5}}"
+  gid: "{{systemservices_group.gid|int+5}}"
   private_group: yes
-  extra_groups: ["{{systemservices_group}}"]
+  extra_groups: ["{{systemservices_group.name}}"]
 
 system_users:
   - "{{hdfs_user}}"
@@ -102,8 +125,3 @@ system_users:
   - "{{rstudio_user}}"
   - "{{jupyterhub_user}}"
 
-
-default_user_groups__to_merge:
-  - name: "{{ users_group }}"
-    gid: "{{ uid_usersGroup }}"
-    description: Standard user accounts, for unprivileged users.

@@ -68,9 +68,9 @@
 
     - name: admin home
       file:
-        path: "{{ ipaserver_autohome_dir }}/{{ipa_admin_user}}"
-        owner: "{{ipa_admin_user}}"
-        group: "{{ipa_admin_group}}"
+        path: "{{ ipaserver_autohome_dir }}/{{ipa_admin_user.name}}"
+        owner: "{{ipa_admin_user.name}}"
+        group: "{{ipa_admin_user.group}}"
         mode: '0700'
         state: directory
 

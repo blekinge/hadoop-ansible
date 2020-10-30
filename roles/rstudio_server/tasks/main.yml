@@ -68,10 +68,10 @@
     regexp: "^auth-required-user-group=.*$"
     create: yes
 
-- name: "RStudio should run as {{rstudio_user.user}}"
+- name: "RStudio should run as {{rstudio_user.name}}"
   lineinfile:
     path: /etc/rstudio/rstudio-server.conf
-    line: "server-user={{rstudio_user.user}}"
+    line: "server-user={{rstudio_user.name}}"
     regexp: "^server-user=.*$"
     create: yes
 
@@ -89,7 +89,7 @@
     path:
       - /var/log/rstudio-server
       - /var/lib/rstudio-server
-    owner: "{{rstudio_user.user}}"
+    owner: "{{rstudio_user.name}}"
     group: "{{rstudio_user.group}}"
     recurse: yes
 

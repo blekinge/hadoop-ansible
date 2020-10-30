@@ -21,7 +21,7 @@
   file:
     path: "{{item}}"
     state: directory
-    owner: "{{hdfs_user.user}}"
+    owner: "{{hdfs_user.name}}"
     group: "{{hdfs_user.group}}"
     mode: 0750
   with_items: "{{hdfs_data_dirs}}"

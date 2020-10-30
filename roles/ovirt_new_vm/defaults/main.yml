@@ -11,4 +11,3 @@ cpu_sockets: 2
 cpu_cores: 1
 description: "{{group_names | sort | join(' ')}}"
 
-letters: "abcdefghicklmopqrstuvwxyz" #For format to figure out the letter code of the new disk

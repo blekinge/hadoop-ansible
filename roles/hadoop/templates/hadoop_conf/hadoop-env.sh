@@ -251,7 +251,7 @@ export HADOOP_POLICYFILE="hadoop-policy.xml"
 #
 # .. and then use it as per the b option under the namenode.
 
-#export HADOOP_SECURE_USER=${HADOOP_SECURE_USER:-"{{ hdfs_user.user }}"}
+#export HADOOP_SECURE_USER=${HADOOP_SECURE_USER:-"{{ hdfs_user.name }}"}
 
 # ???
 export HADOOP_HOME_WARN_SUPPRESS=1
@@ -431,7 +431,7 @@ export HDFS_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
 # using non-privileged ports.
 # This will replace the hadoop.id.str Java property in secure mode.
 # export HDFS_DATANODE_SECURE_USER=hdfs
-#export HDFS_DATANODE_SECURE_USER={{ hdfs_user.user }}
+#export HDFS_DATANODE_SECURE_USER={{ hdfs_user.name }}
 
 # Supplemental options for secure datanodes
 # By default, Hadoop uses jsvc which needs to know to launch a
@@ -476,7 +476,7 @@ export HDFS_PORTMAP_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_ZKFC_OPTS=""
-export HDFS_ZKFC_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username=zookeeper -Djava.security.auth.login.config={{ hadoop_config_path}}/hdfs_nn_jaas.conf -Dzookeeper.sasl.clientconfig=Client -Dhadoop.security.logger=INFO,DRFAS"
+export HDFS_ZKFC_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username={{zookeeper_user.name}} -Djava.security.auth.login.config={{ hadoop_config_path}}/hdfs_nn_jaas.conf -Dzookeeper.sasl.clientconfig=Client -Dhadoop.security.logger=INFO,DRFAS"
 
 
 ###
@@ -559,4 +559,4 @@ export HDFS_STORAGECONTAINERMANAGER_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
 #
 # For example, to limit who can execute the namenode command,
 # export HDFS_NAMENODE_USER=hdfs
-export HDFS_NAMENODE_USER={{ hdfs_user.user }}
+export HDFS_NAMENODE_USER={{ hdfs_user.name }}

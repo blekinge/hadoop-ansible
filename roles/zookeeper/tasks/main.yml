@@ -28,7 +28,7 @@
 - name: Create Zookeeper Paths
   file:
     path: "{{ item }}"
-    owner: "{{ zookeeper_user.user }}"
+    owner: "{{ zookeeper_user.name }}"
     group: "{{ zookeeper_user.group }}"
     state: directory
     mode: 0755

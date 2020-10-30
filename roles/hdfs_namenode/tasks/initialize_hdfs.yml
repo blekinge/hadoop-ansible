@@ -16,19 +16,19 @@
 - name: Create Hadoop Namenode directories
   file:
     path: "{{ item }}"
-    owner: "{{ hdfs_user.user }}"
+    owner: "{{ hdfs_user.name }}"
     group: "{{ hdfs_user.group }}"
     state: directory
   loop:
-    - "{{ hadoop_pid_dir }}/{{ hdfs_user.user }}"
-    - "{{ hadoop_log_dir }}/{{ hdfs_user.user }}"
+    - "{{ hadoop_pid_dir }}/{{ hdfs_user.name }}"
+    - "{{ hadoop_log_dir }}/{{ hdfs_user.name }}"
     - "{{ hadoop_dfs_name }}"
 
 
 #On the primary, format the filesystem
 - name: Format Namenode
   become: yes
-  become_user: "{{hdfs_user.user}}"
+  become_user: "{{hdfs_user.name}}"
   shell:
     cmd:
       echo -e "Y\nN" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -format > "{{ hadoop_dfs_name }}/formatted"
@@ -40,7 +40,7 @@
 # Initialize the shared edits
 - name: Initialize shared edit
   become: yes
-  become_user: "{{hdfs_user.user}}"
+  become_user: "{{hdfs_user.name}}"
   shell:
     cmd:
       echo -e "Y\nN" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -initializeSharedEdits > "{{ hadoop_dfs_name }}/shared_edits_initialized"
@@ -71,7 +71,7 @@
 # Sync the secondary namenode
 - name: Bootstrap HA
   become: yes
-  become_user: "{{hdfs_user.user}}"
+  become_user: "{{hdfs_user.name}}"
   shell:
     cmd:
       echo -e "Y\n" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -bootstrapStandby > "{{ hadoop_dfs_name }}/bootstrapped"
@@ -91,7 +91,7 @@
 # And format the zkfc
 - name: Format zkfc
   become: yes
-  become_user: "{{hdfs_user.user}}"
+  become_user: "{{hdfs_user.name}}"
   shell:
     cmd:
       echo -e "Y\nN" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh zkfc -formatZK > "{{ hadoop_dfs_name }}/zkFormatted"

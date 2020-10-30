@@ -19,7 +19,7 @@
   file:
     path: "{{hadoop_dfs_journal}}"
     state: directory
-    owner: "{{hdfs_user.user}}"
+    owner: "{{hdfs_user.name}}"
     group: "{{hdfs_user.group}}"
 
 

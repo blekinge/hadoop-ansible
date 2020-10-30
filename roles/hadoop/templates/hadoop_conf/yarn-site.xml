@@ -22,7 +22,7 @@
     </property>
     <property>
         <name>yarn.admin.acl</name>
-        <value>{{yarn_user.user}} {{subadmins_group}}</value>
+        <value>{{yarn_user.name}} {{subadmins_group.name}}</value>
     </property>
     <property>
         <name>yarn.application.classpath</name>
@@ -151,7 +151,7 @@
     </property>
     <property> <!--This should match field in container-executor.cfg -->
         <name>yarn.nodemanager.linux-container-executor.group</name>
-        <value>{{ hadoop_group }}</value>
+        <value>{{ hadoop_group.name }}</value>
     </property>
     <property> <!--This should match field in container-executor.cfg -->
         <name>yarn.nodemanager.local-dirs</name>
@@ -614,7 +614,7 @@
     </property>
     <property>
         <name>hadoop.registry.system.accounts</name>
-        <value>sasl:{{ yarn_user.user}},sasl:{{mapreduce_user.user}},sasl:{{hadoop_group}},sasl:{{hdfs_user.user}},sasl:{{ yarn_resourcemanager_service_name }}</value>
+        <value>sasl:{{ yarn_user.name}},sasl:{{mapreduce_user.name}},sasl:{{hadoop_group.name}},sasl:{{hdfs_user.name}},sasl:{{ yarn_resourcemanager_service_name }}</value>
     </property>
     <property>
         <name>hadoop.registry.zk.quorum</name>

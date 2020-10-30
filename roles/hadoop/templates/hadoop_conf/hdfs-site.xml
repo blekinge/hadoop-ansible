@@ -30,7 +30,7 @@
     </property>
     <property>
         <name>dfs.cluster.administrators</name>
-        <value>{{ hdfs_user.user }},admins,subadmins</value>
+        <value> {{ hdfs_user.group }},{{ ipa_admin_user.group }},{{ subadmins_group.name }}</value>
     </property>
     <property>
         <name>dfs.permissions.superusergroup</name>

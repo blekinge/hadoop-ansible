@@ -2,7 +2,7 @@
 - name: Create service keytabs dir
   file:
     owner: root
-    group: "{{ hadoop_group }}"
+    group: "{{ hadoop_group.name }}"
     mode: 0750
     path: "{{ dir }}"
     state: "directory"

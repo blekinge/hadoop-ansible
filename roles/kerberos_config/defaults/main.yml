@@ -5,7 +5,7 @@ keytab_permissions: "0400"
 
 temp_keytab_dir: "/tmp/temp_keytabs"
 
-kinit_principal: "{{ipa_admin_user}}@{{ipaserver_realm}}"
+kinit_principal: "{{ipa_admin_user.name}}@{{ipaserver_realm}}"
 
 yarn_nodemanager_service_name: "nm"
 yarn_resourcemanager_service_name: "rm"
@@ -29,9 +29,9 @@ hive_server2_service_name: "hs2"
 keytab_users:
   - {
     host: "{{ ipa_server }}", #Create this keytab on ipaserver and distribute it to all host
-    name: "{{ hdfs_user.user }}",
-    owner: "{{ hdfs_user.user }}",
-    group: "{{ hadoop_group }}"
+    name: "{{ hdfs_user.name }}",
+    owner: "{{ hdfs_user.name }}",
+    group: "{{ hadoop_group.name }}"
   }
 
 #TODO bind on roles, not hostgroups
@@ -42,19 +42,19 @@ keytab_services:
   - {
     hostgroup: "hdfs_datanodes",
     name: "{{ hdfs_datanode_service_name }}",
-    owner: "{{ hdfs_user.user }}",
+    owner: "{{ hdfs_user.name }}",
     group: "{{ hdfs_user.group }}"
   }
   - {
     hostgroup: "hdfs_namenodes",
     name: "{{ hdfs_namenode_service_name }}",
-    owner: "{{ hdfs_user.user }}",
+    owner: "{{ hdfs_user.name }}",
     group: "{{ hdfs_user.group }}"
   }
   - {
     hostgroup: "hdfs_journalnodes",
     name: "{{ hdfs_journalnode_service_name }}",
-    owner: "{{ hdfs_user.user }}",
+    owner: "{{ hdfs_user.name }}",
     group: "{{ hdfs_user.group }}"
   }
   - {
@@ -62,33 +62,33 @@ keytab_services:
     service: "HTTP",
     name: "spnego",
     owner: "root",
-    group: "{{ hadoop_group }}",
+    group: "{{ hadoop_group.name }}",
     permissions: "0440"
   }
   #    YARN
   - {
     hostgroup: "yarn_node_managers",
     name: "{{ yarn_nodemanager_service_name }}",
-    owner: "{{ yarn_user.user }}",
+    owner: "{{ yarn_user.name }}",
     group: "{{ yarn_user.group }}"
   }
   - {
     hostgroup: "yarn_resource_managers",
     name: "{{ yarn_resourcemanager_service_name}}",
-    owner: "{{ yarn_user.user }}",
+    owner: "{{ yarn_user.name }}",
     group: "{{ yarn_user.group }}"
   }
   - {
     hostgroup: "yarn_timeline_servers",
     name: "{{ yarn_timelineserver_service_name }}",
-    owner: "{{ yarn_user.user }}",
+    owner: "{{ yarn_user.name }}",
     group: "{{ yarn_user.group }}"
   }
   #    Zookeeper
   - {
     hostgroup: "zookeeper_servers",
     name: "{{ zookeeper_service_name }}",
-    owner: "{{ zookeeper_user.user }}",
+    owner: "{{ zookeeper_user.name }}",
     group: "{{ zookeeper_user.group }}"
   }
 
@@ -96,7 +96,7 @@ keytab_services:
   - {
     hostgroup: "mapreduce_history_servers",
     name: "{{ mapreduce_historyserver_service_name }}",
-    owner: "{{ mapreduce_user.user }}",
+    owner: "{{ mapreduce_user.name }}",
     group: "{{ mapreduce_user.group }}"
   }
 
@@ -104,7 +104,7 @@ keytab_services:
   - {
     hostgroup: "spark_history_servers",
     name: "{{ spark_history_server_service_name }}",
-    owner: "{{ spark_user.user }}",
+    owner: "{{ spark_user.name }}",
     group: "{{ spark_user.group }}"
   }
 
@@ -112,12 +112,12 @@ keytab_services:
   - {
     hostgroup: "hive_servers",
     name: "{{ hive_metastore_service_name }}",
-    owner: "{{ hive_user.user }}",
+    owner: "{{ hive_user.name }}",
     group: "{{ hive_user.group }}"
   }
   - {
     hostgroup: "hive_servers",
     name: "{{ hive_server2_service_name }}",
-    owner: "{{ hive_user.user }}",
+    owner: "{{ hive_user.name }}",
     group: "{{ hive_user.group }}"
   }

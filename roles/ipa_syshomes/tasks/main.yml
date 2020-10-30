@@ -11,7 +11,7 @@
 
 - name: Create syshomes for syshome users
   file:
-    path: "{{ ipaserver_syshome_dir }}/{{ item.user }}"
+    path: "{{ ipaserver_syshome_dir }}/{{ item.name }}"
     owner: "{{ item.uid }}"
     group: "{{ item.gid }}"
     mode: '0700'
@@ -28,8 +28,8 @@
 
 - name: "link syshomes from {{ ipaserver_syshome_dir }} to {{ ipaclient_syshome_dir }}"
   file:
-    src: "{{ ipaserver_syshome_dir }}/{{ item.user }}"
-    dest: "{{ ipaclient_syshome_dir }}/{{ item.user }}"
+    src: "{{ ipaserver_syshome_dir }}/{{ item.name }}"
+    dest: "{{ ipaclient_syshome_dir }}/{{ item.name }}"
     state: link
   loop: "{{system_users}}"
 

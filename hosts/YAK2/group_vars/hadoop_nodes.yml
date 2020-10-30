@@ -24,16 +24,16 @@ queue_mappings:
 #Each level must sum capacity to 100
 yarn_queues:
   - name: root
-    admins: "{{yarn_user.user}}"
-    submitters: "{{yarn_user.user}}"
+    admins: "{{yarn_user.name}}"
+    submitters: "{{yarn_user.name}}"
     capacity: 100
     ordering: priority-utilization
     max_capacity: 100
 
     children:
       - name: default
-        admins: "{{yarn_user.user}} {{subadmins_group}}"
-        submitters: "{{yarn_user.user}} {{subadmins_group}}"
+        admins: "{{yarn_user.name}} {{subadmins_group}}"
+        submitters: "{{yarn_user.name}} {{subadmins_group}}"
         capacity: 20
         max_capacity: 100
         minimum_user_limit: 25

@@ -1,17 +1,26 @@
 ---
 
+
+- name: Create standard user groups
+  loop: "{{standard_user_groups}}"
+  ipagroup:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: "{{ item.name }}"
+    gid: "{{ item.gid }}"
+    description: "{{item.description}}"
+
 - name: system users
   loop: "{{system_users}}"
   ipauser:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{item.user}}"
-    first: "{{item.user}}"
+    name: "{{item.name}}"
+    first: "{{item.name}}"
     last: "System User"
     userclass: SystemUser
 
     uid: "{{item.uid | default(omit)}}"
     gid: "{{item.gid | default(omit)}}"
-    homedir: "{{ipaclient_syshome_dir}}/{{item.user}}"
+    homedir: "{{ipaclient_syshome_dir}}/{{item.name}}"
     shell: "{{item.shell | default('/bin/bash')}}"
     noprivate: "{{ not item.private_group | default('yes')}}"
 
@@ -22,5 +31,5 @@
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{ item.extra_groups }}"
     action: member
-    user: "{{item.user}}"
+    user: "{{item.name}}"
 

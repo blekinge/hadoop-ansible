@@ -15,7 +15,7 @@
 - name: "{{subadmins_group}} Sudo rules"
   ipasudorule:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{subadmins_group}}"
+    name: "{{subadmins_group.name}}"
     hostcategory: all
     cmdcategory: all
     runasusercategory: all
@@ -24,6 +24,6 @@
       - '!requiretty'
       - '!authenticate'
     group:
-      - "{{subadmins_group}}"
-      - "{{ipa_admin_group}}"
+      - "{{subadmins_group.name}}"
+      - "{{ipa_admin_user.group}}"
 

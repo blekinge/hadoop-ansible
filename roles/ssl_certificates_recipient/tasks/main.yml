@@ -12,7 +12,7 @@
     state: "directory"
     mode: 0755
     owner: root
-    group: "{{ hadoop_group }}"
+    group: "{{ hadoop_group.name }}"
   loop:
     - "{{ ssl_server_dir }}"
     - "{{ ssl_client_dir }}"
@@ -43,7 +43,7 @@
   file:
     path:  "{{item.file}}"
     mode:  "{{item.mode  | default('0440')}}" #Not public
-    group: "{{item.group | default(hadoop_group)}}"
+    group: "{{item.group | default(hadoop_group.name)}}"
     owner: "{{item.owner | default('root')}}"
   loop:
     - file: "{{ ssl_server_dir }}/{{ inventory_hostname }}-keystore.jks"
@@ -60,6 +60,6 @@
     dest: "{{ hadoop_config_path }}/"
     mode: 0644
     owner: "root"
-    group: "{{ hadoop_group }}"
+    group: "{{ hadoop_group.name }}"
   with_fileglob:
     - "templates/hadoop_conf/*"

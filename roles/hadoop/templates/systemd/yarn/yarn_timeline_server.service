@@ -3,15 +3,15 @@ Description=Hadoop YARN timeline server
 Requires=network-online.target
 
 [Service]
-User={{ yarn_user.user }}
+User={{ yarn_user.name }}
 Group={{ yarn_user.group }}
 Type=forking
 # Prefix with + to Run ExecStartPre with root-permissions, see https://www.freedesktop.org/software/systemd/man/systemd.service.html#ExecStart=
-ExecStartPre=+/usr/bin/mkdir -p {{ hadoop_pid_dir }}/{{ yarn_user.user }} {{ hadoop_log_dir }}/{{ yarn_user.user }}
-ExecStartPre=+/usr/bin/chown -R {{ yarn_user.user }}:{{ yarn_user.group }} {{ hadoop_pid_dir }}/{{ yarn_user.user }} {{ hadoop_log_dir }}/{{ yarn_user.user }}
-# Run ExecStart with User={{ yarn_user.user }} / Group={{ yarn_user.group }}
+ExecStartPre=+/usr/bin/mkdir -p {{ hadoop_pid_dir }}/{{ yarn_user.name }} {{ hadoop_log_dir }}/{{ yarn_user.name }}
+ExecStartPre=+/usr/bin/chown -R {{ yarn_user.name }}:{{ yarn_user.group }} {{ hadoop_pid_dir }}/{{ yarn_user.name }} {{ hadoop_log_dir }}/{{ yarn_user.name }}
+# Run ExecStart with User={{ yarn_user.name }} / Group={{ yarn_user.group }}
 ExecStart=/usr/local/bin/hadoop-invoker.sh yarn yarn-env.sh --daemon start timelineserver
-PIDFile={{ hadoop_pid_dir }}/{{ yarn_user.user }}/hadoop-yarn-timelineserver.pid
+PIDFile={{ hadoop_pid_dir }}/{{ yarn_user.name }}/hadoop-yarn-timelineserver.pid
 
 [Install]
 WantedBy=multi-user.target

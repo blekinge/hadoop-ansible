@@ -3,16 +3,16 @@ Description=Hadoop DFS namenode
 Requires=network-online.target
 
 [Service]
-User={{ hdfs_user.user }}
+User={{ hdfs_user.name }}
 Group={{ hdfs_user.group }}
 Type=forking
 # Run ExecStartPre with root-permissions
 # Prefix with + to Run ExecStartPre with root-permissions, see https://www.freedesktop.org/software/systemd/man/systemd.service.html#ExecStart=
-ExecStartPre=+/usr/bin/mkdir -p {{ hadoop_pid_dir }}/{{ hdfs_user.user }} {{ hadoop_log_dir }}/{{ hdfs_user.user }}
-ExecStartPre=+/usr/bin/chown -R {{ hdfs_user.user }}:{{ hdfs_user.group }} {{ hadoop_pid_dir }}/{{ hdfs_user.user }} {{ hadoop_log_dir }}/{{ hdfs_user.user }}
-# Run ExecStart with User={{ hdfs_user.user }} / Group={{ hdfs_user.group }}
+ExecStartPre=+/usr/bin/mkdir -p {{ hadoop_pid_dir }}/{{ hdfs_user.name }} {{ hadoop_log_dir }}/{{ hdfs_user.name }}
+ExecStartPre=+/usr/bin/chown -R {{ hdfs_user.name }}:{{ hdfs_user.group }} {{ hadoop_pid_dir }}/{{ hdfs_user.name }} {{ hadoop_log_dir }}/{{ hdfs_user.name }}
+# Run ExecStart with User={{ hdfs_user.name }} / Group={{ hdfs_user.group }}
 ExecStart=/usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh --daemon start namenode
-PIDFile={{ hadoop_pid_dir }}/{{ hdfs_user.user }}/hadoop-hdfs-namenode.pid
+PIDFile={{ hadoop_pid_dir }}/{{ hdfs_user.name }}/hadoop-hdfs-namenode.pid
 
 [Install]
 WantedBy=multi-user.target

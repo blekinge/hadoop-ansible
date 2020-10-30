@@ -93,14 +93,14 @@
     <name>hadoop.security.auth_to_local</name>
     <value>
       RULE:[1:$1@$0](.*@{{ipaserver_realm}})s/@.*//
-      RULE:[2:$1@$0]({{ hdfs_datanode_service_name }}@{{ipaserver_realm}})s/.*/{{ hdfs_user.user }}/
-      RULE:[2:$1@$0]({{ mapreduce_historyserver_service_name }}@{{ipaserver_realm}})s/.*/{{ mapreduce_user.user }}/
-      RULE:[2:$1@$0]({{ hdfs_journalnode_service_name }}@{{ipaserver_realm}})s/.*/{{ hdfs_user.user }}/
-      RULE:[2:$1@$0]({{ yarn_nodemanager_service_name }}@{{ipaserver_realm}})s/.*/{{ yarn_user.user }}/
-      RULE:[2:$1@$0]({{ hdfs_namenode_service_name }}@{{ipaserver_realm}})s/.*/{{ hdfs_user.user }}/
-      RULE:[2:$1@$0]({{ yarn_resourcemanager_service_name }}@{{ipaserver_realm}})s/.*/{{ yarn_user.user }}/
-      RULE:[2:$1@$0]({{ yarn_timelineserver_service_name }}@{{ipaserver_realm}})s/.*/{{ yarn_user.user }}/
-      RULE:[2:$1@$0]({{ spark_history_server_service_name }}@{{ipaserver_realm}})s/.*/{{ spark_user.user }}/
+      RULE:[2:$1@$0]({{ hdfs_datanode_service_name }}@{{ipaserver_realm}})s/.*/{{ hdfs_user.name }}/
+      RULE:[2:$1@$0]({{ mapreduce_historyserver_service_name }}@{{ipaserver_realm}})s/.*/{{ mapreduce_user.name }}/
+      RULE:[2:$1@$0]({{ hdfs_journalnode_service_name }}@{{ipaserver_realm}})s/.*/{{ hdfs_user.name }}/
+      RULE:[2:$1@$0]({{ yarn_nodemanager_service_name }}@{{ipaserver_realm}})s/.*/{{ yarn_user.name }}/
+      RULE:[2:$1@$0]({{ hdfs_namenode_service_name }}@{{ipaserver_realm}})s/.*/{{ hdfs_user.name }}/
+      RULE:[2:$1@$0]({{ yarn_resourcemanager_service_name }}@{{ipaserver_realm}})s/.*/{{ yarn_user.name }}/
+      RULE:[2:$1@$0]({{ yarn_timelineserver_service_name }}@{{ipaserver_realm}})s/.*/{{ yarn_user.name }}/
+      RULE:[2:$1@$0]({{ spark_history_server_service_name }}@{{ipaserver_realm}})s/.*/{{ spark_user.name }}/
       DEFAULT</value>
   </property>
   <property>

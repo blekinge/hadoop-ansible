@@ -1,16 +1,25 @@
 ---
 autohome_nfs_export_iprange: "172.16.215.0/24"
 
+#Ensure that the hadoop packages are not installed on the freeipa host
 install_hadoop: false
 
-#shell: /bin/bash
-
-#users_group: "yakusers"
-uid_usersGroup: 19900
 
 
-#subadmins_group: "subadmins"
-#uid_subadminsGroup: 12000
+users_group:
+  name: "yakusers"
+  gid: 20000
+  description: Standard user accounts, for unprivileged users.
+
+vpnu_group:
+  name: vpnu
+  gid: 10067
+  description: VPN access group
+
+# default_user_groups are the groups that all new (human) users will be made member of
+default_user_groups:
+  - "{{vpnu_group}}"
+  - "{{users_group}}"
 
 
 # Here you can set up which "project" groups to that should be created
@@ -19,7 +28,6 @@ projects:
   - "{{subadmin_project}}"
   - "{{p001_project}}"
   - "{{p002_project}}"
-
 
 
 subadmin_project:
@@ -62,11 +70,3 @@ p002_project:
       mobile: +450000000
       email: "userp002@{{ipa_domain}}"
       # If uid or gid is not specified, use group gid + position in this list.
-
-# User groups are the groups that all new (human) users will be made member of
-vpnu_user_groups__to_merge:
-  - name: vpnu
-    gid: 10067
-    description: VPN access group
-
-

@@ -1,17 +1,20 @@
 ---
+- name: format and setup disk
+  remote_user: root
+  become: no
+  block:
+    - parted:
+        device: "{{device}}"
+        number: 1
+        flags: [ lvm ]
+        state: present
 
-- parted:
-    device: "{{device}}"
-    number: 1
-    flags: [ lvm ]
-    state: present
+    - filesystem:
+        fstype: xfs
+        dev: "{{device}}-part1"
 
-- filesystem:
-    fstype: xfs
-    dev: "{{device}}-part1"
-
-- mount:
-    fstype: xfs
-    src: "{{device}}-part1"
-    path: "{{mount}}"
-    state: mounted
+    - mount:
+        fstype: xfs
+        src: "{{device}}-part1"
+        path: "{{mount}}"
+        state: mounted

@@ -138,8 +138,19 @@
         state: absent
         ovirt_auth: "{{ ovirt_auth }}"
 
+- name: "Wait 600 seconds for {{inventory_hostname}} to become reachable/usable"
+  remote_user: root # Ensure that we do not try to login as a user that does not exist yet
+  become: no
+  wait_for_connection:
+    delay: 0 # Number of seconds to wait before starting to poll.
+    timeout: 600 # Maximum number of seconds to wait for.
+    sleep: 2 # Number of seconds to sleep between checks.
+    connect_timeout: 5 # Maximum number of seconds to wait for a connection to happen before closing and retrying.
+
 
 - name: format+mount extra disks
+  remote_user: root #TODO unclear if this takes effect or needs to be in task_format_disk.yml
+  become: no
   include: task_format_disk.yml mount="{{item.mount}}" device="/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_{{(attached_disks.results[idx]['id'])[0:20]}}"
   when: host_disks is defined
   loop: "{{host_disks}}"
