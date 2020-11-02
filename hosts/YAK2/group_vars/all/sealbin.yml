@@ -1,0 +1,8 @@
+
+
+#ansible user, will have passwordless root access
+sealbin_user: "sealbin"
+sealbin_user_uid: 1111
+
+# If no, we disable root ssh logins so you will have to use {{sealbin_user}} to login
+permit_root_logins: yes

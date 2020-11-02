@@ -1,0 +1,10 @@
+---
+
+- name: include project definitions
+  include_vars:
+    file: "{{project.file | default(default_project_file_dir+'/'+project.name+'.yml')}}"
+    name: "{{project.name}}"
+  loop: "{{projects}}"
+  loop_control:
+    loop_var: project
+

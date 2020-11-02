@@ -1,3 +1,0 @@
-- hosts: ipaserver
-  roles:
-    - role: ipa_projects_and_groups

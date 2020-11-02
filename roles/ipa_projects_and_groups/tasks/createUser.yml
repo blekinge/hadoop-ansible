@@ -31,7 +31,7 @@
     var: ipauser_result
 
 
-- name: "Put {{user.username}} in {{users_group}}"
+- name: "Put {{user.username}} in {{users_group.name}}"
   loop: "{{initial_users_groups | default([]) | map(attribute='name') | list + [group.name]}}"
   loop_control:
     loop_var: common_group
@@ -55,7 +55,7 @@
 - name: HDFS user home
   become: yes
   become_user: "{{hdfs_user.name}}"
-  delegate_to: "{{ groups['hdfs'] | first }}"
+  delegate_to: "{{hdfs_delegation_host}}"
   shell: |
     set -e # Fail on anything
     source /etc/profile.d/hadoop.sh

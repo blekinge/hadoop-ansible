@@ -5,7 +5,3 @@
   loop: "{{yarn_queues }}"
   loop_control:
     loop_var: queue
-
-- debug:
-    var: capacity_queues
-

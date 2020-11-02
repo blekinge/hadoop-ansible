@@ -7,7 +7,7 @@
     dest: "{{ spark_config_path }}/"
     mode: 0640
     owner: "root"
-    group: "{{ spark_group }}"
+    group: "{{ spark_user.group }}"
   with_fileglob:
     - "templates/spark_conf/*"
 
@@ -19,7 +19,7 @@
     dest: "/usr/local/bin/"
     mode: "0755"
     owner: "root"
-    group: "{{ spark_group }}"
+    group: "{{ spark_user.group }}"
 
 
 - name: Upload Spark systemd services

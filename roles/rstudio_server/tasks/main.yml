@@ -95,7 +95,7 @@
 
 #https://community.rstudio.com/t/rserver-1692-error-system-error-13-permission-denied/46972/7
 - name: Put SELinux in permissive mode, logging actions that would be blocked.
-  ansible.posi-x.selinux: #TODO RStudio SELinux
+  ansible.posix.selinux: #TODO RStudio SELinux
     policy: targeted
     state: permissive
 
@@ -136,3 +136,13 @@
 
 - name: install Apache Arrow
   shell: Rscript -e 'install.packages("arrow", repos="http://cran.rstudio.com/")'
+
+
+
+#  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacsvc.md
+- name: "Projects HBAC service definitions"
+  delegate_to: "{{ipa_server}}"
+  ipahbacsvc:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: "rstudio" #Name should match name in /etc/pam.d/ (rstudio)
+    description: "login to the rstudio-server process"

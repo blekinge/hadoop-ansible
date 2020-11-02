@@ -1,0 +1,13 @@
+---
+
+default_project_file_dir: hosts/YAK2/group_vars/all/projects/
+# Append new project names here, to automatically load ./projects/<name>.yml
+projects:
+  - name: subadmins_project
+#    file: hosts/YAK2/group_vars/all/projects/subadmins_project.yml
+  - name: p001
+#    file: hosts/YAK2/group_vars/all/projects/p001.yml
+  - name: p002
+#    file: hosts/YAK2/group_vars/all/projects/p002.yml
+
+# Due to weaknesses in ansible, we cannot automatically derive the project file path, so you must specify it here

@@ -40,6 +40,7 @@
     </property>
 
     {% for queue in capacity_queues %}
+   <!-- {{ queue }} -->
     <property>
         <name>yarn.scheduler.capacity.{{queue.longname}}.acl_administer_queue</name>
         <value>{{queue.admins | default('')}}</value>
@@ -89,12 +90,11 @@
         <name>yarn.scheduler.capacity.{{queue.longname}}.ordering-policy.fair.enable-size-based-weight</name>
         <value>{{queue.size_based | default('false')}}</value>
     </property>
-
+    <!-- End queue {{queue.longname}} -->
 
 
 
     {% endfor %}
-
 
 
 

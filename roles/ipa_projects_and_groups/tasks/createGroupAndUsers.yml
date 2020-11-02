@@ -1,13 +1,11 @@
 ---
 
-- name: "Project Group {{group.name}}"
+- name: "Project Group '{{group.name}}'"
   ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{ group.name }}"
     gidnumber: "{{ group.gid }}"
 
-- debug:
-    var: hdfs_delegation_host
 
 - name: "HDFS project dir /projects/{{ group.name }}"
   become: yes
@@ -26,7 +24,7 @@
 #    kdestroy
 
 
-- name: "Project Users for {{group}}"
+- name: "Project Users for '{{group}}'"
   loop: "{{group.users | default([])}}"
   loop_control:
     loop_var: user

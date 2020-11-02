@@ -234,8 +234,16 @@
   loop: "{{jupyterhub_pip_extensions}}"
 
 
+- name: Install jupyterlabs extensions
+  shell:
+    cmd: "/usr/local/bin/jupyter-labextension install {{item | quote }} --no-build"
+  loop: "{{jupyterlabs_npm_extensions}}"
+
+
 - name: Enable jupyterlabs extensions
-  command: "jupyter labextension install {{jupyterlabs_npm_extensions | join(' ')}}"
+  shell:
+    cmd: "/usr/local/bin/jupyter lab build"
+    # Build extensions (must be done to activate extensions since --no-build is used above)
 
 # Start
 - name: Start Jupyterhub process
@@ -244,3 +252,15 @@
     name: jupyterhub
     enabled: true
     daemon_reload: yes
+
+
+
+#  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacsvc.md
+- name: "Projects HBAC service definitions"
+  delegate_to: "{{ipa_server}}"
+  throttle: 1
+  ipahbacsvc:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: "jupyterhub" #Name should match name in /etc/pam.d/ (jupyterhub)
+    description: "Login to the jupyterhub webservice"
+    state: present

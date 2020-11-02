@@ -1,0 +1,3 @@
+---
+dependencies:
+  - role: ipa_systemusers_config

@@ -12,7 +12,7 @@
       - '!env_reset'
       - 'env_delete-=PATH'
 
-- name: "{{subadmins_group}} Sudo rules"
+- name: "{{subadmins_group.name}} Sudo rules"
   ipasudorule:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{subadmins_group.name}}"

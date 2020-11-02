@@ -1,12 +1,11 @@
 capacity_queues: []
 
+#TODO ensure defaults is last queue here
+queue_mappings: "{{lookup('vars', *(projects | map(attribute='name'))) | map(attribute='queue_mapping')  | list }}"
+
+
 
 #Each level must sum capacity to 100
-queue_mappings:
-  - "g:{{users_group}}:default"
-
-
-
 yarn_queues:
   - name: root
     admins: "{{yarn_user.name}}"
@@ -14,16 +13,5 @@ yarn_queues:
     capacity: 100
     ordering: priority-utilization
     max_capacity: 100
+    children: "{{lookup('vars', *(projects | map(attribute='name'))) | map(attribute='yarn_queue') | list }}"
 
-    children:
-      - name: default
-        admins: "{{yarn_user.name}} {{subadmins_group}}"
-        submitters: "{{yarn_user.name}} {{subadmins_group}}"
-        capacity: 100
-        max_capacity: 100
-        minimum_user_limit: 25
-        user_limit: 100
-        ordering: fair
-        size_based: true
-        priority: 0
-        state: RUNNING

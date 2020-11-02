@@ -1,0 +1,52 @@
+
+project_ipa:
+  name: "p002"
+  gid: 20200
+  project_host: "proj002.yak2.net"
+  users:
+    - username: "userp002"
+      firstname: "p002"
+      lastname: "User"
+      mobile: "+450000000"
+      email: "userp002@{{ipa_domain}}"
+      # If uid or gid is not specified, use group gid + position in this list.
+
+
+queue_mapping: "g:p002:p002_interactive"
+
+
+yarn_queue:
+  name: "p002"
+  admins: " p002"
+  submitters: " p002"
+  capacity: 40
+  max_capacity: 100
+  minimum_user_limit: 25
+  user_limit: 100
+  ordering: priority-utilization
+  priority: 1
+  state: RUNNING
+
+  children:
+    - name: "p002_batch"
+      admins: " p002"
+      submitters: " p002"
+      capacity: 30
+      max_capacity: 100
+      minimum_user_limit: 25
+      user_limit: 100
+      ordering: fifo
+      priority: 1
+      state: RUNNING
+
+    - name: "p002_interactive"
+      admins: " p002"
+      submitters: " p002"
+      capacity: 70
+      max_capacity: 80
+      minimum_user_limit: 25
+      user_limit: 100
+      ordering: fair
+      priority: 2
+      size_based: true
+      state: RUNNING

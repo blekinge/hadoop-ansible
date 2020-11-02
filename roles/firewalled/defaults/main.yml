@@ -76,19 +76,35 @@ jupyterhub_port: 8000
 
 zabbix_agent_port: 10050
 
-#This reference the ports above so it must come after, due to the way that default_values work
 ports_per_role: { # This dict maps roles names to ports
-  "hdfs_namenode": [ "{{hdfs_namenode_rpc_port}}","{{hdfs_namenode_http_port}}","{{hdfs_namenode_https_port}}", "{{hdfs_zkfc_port}}" ],
-  "hdfs_journalnode": [ "{{hdfs_journalnode_rpc_port}}","{{hdfs_journalnode_https_port}}","{{hdfs_journalnode_https_port}}" ],
-  "hdfs_datanode": [ "{{hdfs_datanode_rpc_port}}", "{{hdfs_datanode_ipc_port}}", "{{hdfs_datanode_http_port}}", "{{hdfs_datanode_https_port}}" ],
 
-  "yarn_timeline_server": [ "{{yarn_timelineserver_http_port}}", "{{yarn_timelineserver_https_port}}", "{{yarn_timelineserver_port2}}" ],
+  #  HDFS
+  "hdfs_namenode": [ "{{hdfs_namenode_rpc_port}}",
+                     "{{hdfs_namenode_http_port}}",
+                     "{{hdfs_namenode_https_port}}",
+                     "{{hdfs_zkfc_port}}" ],
+
+  "hdfs_journalnode": [ "{{hdfs_journalnode_rpc_port}}",
+                        "{{hdfs_journalnode_https_port}}",
+                        "{{hdfs_journalnode_https_port}}" ],
+
+  "hdfs_datanode": [ "{{hdfs_datanode_rpc_port}}",
+                     "{{hdfs_datanode_ipc_port}}",
+                     "{{hdfs_datanode_http_port}}",
+                     "{{hdfs_datanode_https_port}}" ],
+
+  # YARN
+  "yarn_timeline_server": [ "{{yarn_timelineserver_http_port}}",
+                            "{{yarn_timelineserver_https_port}}",
+                            "{{yarn_timelineserver_port2}}" ],
+
   "yarn_node_manager": [ "{{yarn_nodemanager_port}}",
                          "{{mapreduce_shuffle_port}}",
                          "{{mapreduce_am_portrange}}",
                          "{{spark_ui_http_portrange}}",
                          "{{spark_driver_http_portrange}}",
                          "{{spark_blockmanager_http_portrange}}"],
+
   "yarn_resource_manager": [ "{{yarn_resourcemanager_rpc_port}}",
                              "{{yarn_resourcemanager_scheduler_port}}",
                              "{{yarn_resourcemanager_tracker_port}}",
@@ -96,11 +112,17 @@ ports_per_role: { # This dict maps roles names to ports
                              "{{yarn_resourcemanager_http_port}}",
                              "{{yarn_resourcemanager_https_port}}" ],
 
-  "mapreduce_history_server": [ "{{mapreduce_history_server_rpc_port}}","{{mapreduce_history_server_admin_port}}","{{mapreduce_history_server_http_port}}","{{mapreduce_history_server_https_port}}" ],
+  "mapreduce_history_server": [ "{{mapreduce_history_server_rpc_port}}",
+                                "{{mapreduce_history_server_admin_port}}",
+                                "{{mapreduce_history_server_http_port}}",
+                                "{{mapreduce_history_server_https_port}}" ],
 
-  "spark_history_server": [ "{{spark_history_server_http_port}}","{{spark_history_server_https_port}}" ],
+  "spark_history_server": [ "{{spark_history_server_http_port}}",
+                            "{{spark_history_server_https_port}}" ],
 
-  "zookeeper_server": [ "{{zookeeper_port}}", "{{zookeeper_leader_election_port}}", "{{zookeeper_follower_port}}" ],
+  "zookeeper_server": [ "{{zookeeper_port}}",
+                        "{{zookeeper_leader_election_port}}",
+                        "{{zookeeper_follower_port}}" ],
 
 
   "spark_client": [ "{{spark_ui_http_portrange}}",

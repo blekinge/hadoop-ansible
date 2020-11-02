@@ -1,0 +1,74 @@
+#  Et projekt består af disse "komponenter"
+
+
+
+#    En projekt maskine
+#
+- name: oVirt ansible collection
+  hosts: project_nodes
+  gather_facts: False
+  serial: 1 # Only create and run 1 at a time.
+  # This is nessesary to set the network up correctly, as otherwise the temp ips will clash
+  roles:
+    - ovirt_new_vm
+  collections: # This require the ovirt-ansible plugin installed. See ovirt_sdk_setup.sh
+    - ovirt.ovirt
+
+#
+- name: Enable the {{sealbin_user}} account and disable ssh logins to root
+  hosts: project_nodes
+  remote_user: root
+  ignore_unreachable: yes
+  roles:
+    - ansible_account
+  tasks:
+    - meta: clear_host_errors
+
+
+- name: Basic setup including ipa client
+  hosts: project_nodes
+  roles:
+    - role: updated
+    - role: java_1_8_installed
+    - role: zabbix_agent
+    - role: ipaclient_setup
+
+
+#      TODO med X2go
+#      med RStudio
+#      og måske Jupyter
+- name: Rstudio/Jupyterhub
+  hosts: project_nodes
+  roles:
+#    - spark_client
+    - rstudio_server
+    - jupyterhub
+
+#  En brugergruppe
+#  1+ Brugere
+#  en HBAC regel
+- name: Users and groups
+  hosts: ipaserver
+#  vars:
+#    projects: "{{ [ lookup('vars', specific_project) | default(') ] }}"
+  roles:
+    - role: ipa_projects_and_groups
+
+
+#    TODO Home Dir logging per project
+
+
+
+
+
+#    En YARN queue
+- hosts: yarn_timeline_servers
+  roles:
+    - yarn_timeline_server
+- hosts: yarn_node_managers
+  roles:
+    - yarn_node_manager
+- hosts: yarn_resource_managers
+  roles:
+    - yarn_resource_manager
+

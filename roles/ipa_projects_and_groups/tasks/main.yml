@@ -1,7 +1,7 @@
 ---
 
 
-- name: Create user groups
+- name: Create default user groups
   loop: "{{default_user_groups}}"
   ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
@@ -10,8 +10,49 @@
     description: "{{item.description}}"
 
 
-- name: "Project Group {{group}}"
-  loop: "{{projects}}"
+- name: "Projects setup"
+  loop: "{{projects_ipa}}"
   loop_control:
     loop_var: group
   include_tasks: createGroupAndUsers.yml
+
+
+- name: Create HBAC service group
+  throttle: 1
+  ipahbacsvcgroup:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: "user-session"
+    hbacsvc:
+      - crond
+      - gdm
+      - kdm
+      - login
+      - sshd
+      - rstudio
+      - jupyterhub
+#      - screen
+
+#  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacrule.md
+- name: "Projects HBAC rules"
+  throttle: 1
+  loop: "{{projects_ipa}}"
+  loop_control:
+    loop_var: group
+  when: group.project_host is defined
+  ipahbacrule:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: "{{group.name}} allowed on {{group.project_host}}"
+    host: "{{group.project_host}}"
+    group: "{{group.name}}"
+    hbacsvcgroup: "user-session"
+    state: present
+
+#  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacrule.md
+- name: "Projects HBAC rules"
+  ipahbacrule:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: "{{subadmins_project.project_ipa.name}} allowed on all"
+    group: "{{subadmins_project.project_ipa.name}}"
+    hostcategory: "all"
+    hbacsvcgroup: "user-session"
+    state: present

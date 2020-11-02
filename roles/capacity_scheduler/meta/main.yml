@@ -1,3 +1,5 @@
 ---
 dependencies:
   - role: ipa_systemusers_config
+  - role: load_projects
+

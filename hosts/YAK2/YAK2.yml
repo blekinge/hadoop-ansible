@@ -15,7 +15,7 @@
 # yarn_timeline_servers: = role yarn_timeline_server
 # mapreduce_history_servers: = role mapreduce_history_server
 # spark_history_servers: = role spark_history_server
-# projectnodes: = role spark_client, role rstudio_server
+# project_nodes: = role spark_client, role rstudio_server
 
 all:
  children:
@@ -83,7 +83,7 @@ all:
               hosts: # There can be only one here
                 hist001.yak2.net:
 
-        projectnodes:
+        project_nodes:
           hosts:
             proj000.yak2.net:
             proj001.yak2.net:

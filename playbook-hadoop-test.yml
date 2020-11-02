@@ -1,4 +1,10 @@
 
-- hosts: zabbix_nodes
+- hosts: hadoop_nodes
   roles:
-    - role: zabbix_agent
+    - role: capacity_scheduler
+  tasks:
+    - name: debug output
+      debug:
+        msg: "{{lookup('vars', *(projects | map(attribute='name'))) | map(attribute='project_ipa') | list }}"
+
+

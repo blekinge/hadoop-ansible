@@ -1,6 +1,7 @@
 ---
 # https://github.com/freeipa/ansible-freeipa/blob/master/roles/ipaclient/README.md#base-variables
 
+
 ipa_server: "{{ groups['ipaserver'] | first }}"
 
 ipa_admin_user:

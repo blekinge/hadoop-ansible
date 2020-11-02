@@ -2,3 +2,4 @@
 dependencies:
   - role: ipa_systemusers_config
   - role: kerberos_config
+  - role: load_projects

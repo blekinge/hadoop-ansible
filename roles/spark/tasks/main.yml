@@ -4,7 +4,7 @@
   file:
     path: "{{ item }}"
     owner: "root"
-    group: "{{ spark_group }}"
+    group: "{{ spark_user.group }}"
     state: directory
     mode: 0755
   with_items:
@@ -29,7 +29,7 @@
     dest: "{{ spark_path }}"
     remote_src: yes
     creates: "{{ spark_home }}"
-    group: "{{ spark_group }}"
+    group: "{{ spark_user.group }}"
     owner: "root"
 
 - name: Replace spark log4j library with hadoop log4j library to avoid warnings
@@ -74,7 +74,7 @@
     dest: "{{ spark_config_path }}/"
     mode: 0644
     owner: "root"
-    group: "{{ spark_group }}"
+    group: "{{ spark_user.group }}"
   with_fileglob:
     - "templates/spark_conf/*"
 
@@ -88,7 +88,7 @@
     src: "{{ spark_config_path }}"
     dest:  "{{ spark_home }}/conf"
     owner: root
-    group: "{{ spark_group }}"
+    group: "{{ spark_user.group }}"
     state: link
     force: true
 
@@ -99,7 +99,7 @@
     dest: "/etc/profile.d/"
     mode: 0644
     owner: "root"
-    group: "{{ spark_group }}"
+    group: "{{ spark_user.group }}"
   with_fileglob:
     - "templates/profile.d/*"
 

@@ -911,7 +911,7 @@ c.Spawner.default_url = '/lab'
 c.PAMAuthenticator.encoding = 'utf8'
 
 ## The name of the PAM service to use for authentication
-c.PAMAuthenticator.service = '{{jupyterhub_user.user}}'
+c.PAMAuthenticator.service = '{{jupyterhub_user.name}}'
 
 ## Commented out as we override it later in this file
 #c.JupyterHub.authenticator_class = PAMAuthenticator
@@ -980,7 +980,7 @@ c.JupyterHub.authenticator_class = KerberosPAMAuthenticator
 #  Defaults to an empty set, in which case no user has admin access.
 #c.Authenticator.admin_users = set()
 #TODO admin users
-c.Authenticator.admin_users = set('abrsadm')
+c.Authenticator.admin_users = set("{{subadmins_project.project_ipa.users | map(attribute='username') | join('","')}}")
 
 ## The max age (in seconds) of authentication info before forcing a refresh of
 #  user auth info.

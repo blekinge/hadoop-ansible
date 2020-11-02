@@ -1,0 +1,5 @@
+---
+
+
+hadoop_nodes_zabbix_host_groups__to_merge:
+  - "yak2-hadoop"

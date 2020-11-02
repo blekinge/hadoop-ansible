@@ -1,4 +1,6 @@
-projects: []
+---
+
+projects_ipa: "{{lookup('vars', *(projects | map(attribute='name'))) | map(attribute='project_ipa') | list }}"
 
 common_usergroups: []
 

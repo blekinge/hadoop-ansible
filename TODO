@@ -30,7 +30,10 @@
 
 [ ] SSL certs
 
-
+[ ] Playbook to create/update projects.
+	yarn queues
+	project nodes
+	users
 
 [ ] Ansible lærings-resourcer
 [ ] Ansible module docs

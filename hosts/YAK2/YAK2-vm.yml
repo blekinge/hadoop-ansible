@@ -1,14 +1,12 @@
 all:
+  hosts:
+    # Needed so I can use my local virtualenv python (nessesary for ovirt module) when creating new VMs
+    # see ovirt_sdk_setup.sh for how to set this up
+    localhost:
+      ansible_connection: local
+      ansible_python_interpreter: "python"
+
   children:
-    localhost: # Needed so I can use my local virtualenv python (nessesary for ovirt module) when creating new VMs
-      # see ovirt_sdk_setup.sh for how to set this up
-      hosts:
-        localhost:
-          ansible_connection: local
-          ansible_python_interpreter: "python"
-
-
-
     VMs: # This is the group of VMs created by playbook-create-virtual-host.yml
       hosts:
         # The "short name", ie. the first part of the name here will be used as the name of the VM

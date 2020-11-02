@@ -1,0 +1,42 @@
+---
+
+
+
+ipa_domain: yak2.net
+domain: "{{ipa_domain}}"
+ipa_realm: YAK2.NET
+ipaclient_domain: "{{ ipa_domain }}"
+ipaclient_realm: "{{ ipa_realm }}"
+ipaserver_domain: "{{ ipa_domain }}"
+ipaserver_realm: "{{ ipa_realm }}"
+
+ipaclient_force_join: true
+ipaclient_ntp_servers:
+  - kac-gway-001.kach.sblokalnet
+
+
+users_group:
+  name: "yakusers"
+  gid: 20000
+  description: Standard user accounts, for unprivileged users.
+
+vpnu_group:
+  name: vpnu
+  gid: 10067
+  description: VPN access group
+
+# default_user_groups are the groups that all new (human) users will be made member of
+default_user_groups:
+  - "{{vpnu_group}}"
+  - "{{users_group}}"
+
+
+ipaadmin_password: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  31623661623466366638626138363363646435623234636566343365343163323566343965356434
+  6539353439363731333762326433386666333433376433350a326161303764383266343161336564
+  64633739333162313262316663656534326336323065336231363563643937306431643735616431
+  6339616436353938340a626134323935646266333865633234616437353530316332643935303032
+  61633964623433666132333131316437363664363735316164386163363265393866356339653762
+  32613562366638633739353936306431653033336465623061323931613266616231653532373034
+  643539363132613634323739633930396563
