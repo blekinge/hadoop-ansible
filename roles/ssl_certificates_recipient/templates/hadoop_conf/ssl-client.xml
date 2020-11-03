@@ -2,7 +2,7 @@
     
     <property>
       <name>ssl.client.keystore.location</name>
-      <value>{{ ssl_client_dir }}/{{ inventory_hostname }}-keystore.jks</value>
+      <value>{{ ssl_client_dir }}/{{ inventory_hostname }}-keystore.p12</value>
     </property>
     
     <property>
@@ -12,7 +12,7 @@
     
     <property>
       <name>ssl.client.keystore.type</name>
-      <value>jks</value>
+      <value>PKCS12</value>
     </property>
     
     <property>
