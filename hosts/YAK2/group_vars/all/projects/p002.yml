@@ -19,7 +19,7 @@ yarn_queue:
   name: "p002"
   admins: " p002"
   submitters: " p002"
-  capacity: 40
+  capacity: 20
   max_capacity: 100
   minimum_user_limit: 25
   user_limit: 100

@@ -85,6 +85,4 @@ all:
 
         project_nodes:
           hosts:
-            proj000.yak2.net:
-            proj001.yak2.net:
-            proj002.yak2.net:
+            proj[000:003].yak2.net:

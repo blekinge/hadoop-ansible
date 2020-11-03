@@ -1,26 +1,24 @@
 
-#project_ipa controls project group and users.
 project_ipa:
-  name: "p001"
-  gid: 20100
-  # Project_host is used to set up HBAC rules
-  project_host: "proj001.yak2.net"
+  name: "p003"
+  gid: 20300
+  project_host: "proj003.yak2.net"
   users:
-    - username: "userp001"
-      firstname: "p001"
-      lastname: "User2"
+    - username: "userp003"
+      firstname: "p003"
+      lastname: "User"
       mobile: "+450000000"
-      email: "userp001@{{ipa_domain}}"
+      email: "userp003@{{ipa_domain}}"
       # If uid or gid is not specified, use group gid + position in this list.
 
 
-queue_mapping: "g:p001:p001_interactive"
+queue_mapping: "g:p003:p003_interactive"
 
 
 yarn_queue:
-  name: "p001"
-  admins: " p001"
-  submitters: " p001"
+  name: "p003"
+  admins: " p003"
+  submitters: " p003"
   capacity: 20
   max_capacity: 100
   minimum_user_limit: 25
@@ -30,9 +28,9 @@ yarn_queue:
   state: RUNNING
 
   children:
-    - name: "p001_batch"
-      admins: " p001"
-      submitters: " p001"
+    - name: "p003_batch"
+      admins: " p003"
+      submitters: " p003"
       capacity: 30
       max_capacity: 100
       minimum_user_limit: 25
@@ -41,9 +39,9 @@ yarn_queue:
       priority: 1
       state: RUNNING
 
-    - name: "p001_interactive"
-      admins: " p001"
-      submitters: " p001"
+    - name: "p003_interactive"
+      admins: " p003"
+      submitters: " p003"
       capacity: 70
       max_capacity: 80
       minimum_user_limit: 25
