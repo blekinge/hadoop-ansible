@@ -2,7 +2,8 @@
     
     <property>
       <name>ssl.client.keystore.location</name>
-      <value>{{ ssl_client_dir }}/{{ inventory_hostname }}-keystore.p12</value>
+        <value>{{ ssl_keystore_pass }}</value> <!-- when using pcks12 keystores, use the same password for the key and the keystore-->
+        <!--        <value>{{ ssl_key_pass }}</value> --> <!-- when using jks keystores, different password for the key and keystore-->
     </property>
     
     <property>
