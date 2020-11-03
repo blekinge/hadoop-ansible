@@ -30,7 +30,7 @@
 
 [ ] SSL certs
 
-[ ] Playbook to create/update projects.
+[X] Playbook to create/update projects.
 	yarn queues
 	project nodes
 	users

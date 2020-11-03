@@ -40,7 +40,7 @@
 - name: Rstudio/Jupyterhub
   hosts: project_nodes
   roles:
-#    - spark_client
+    - spark_client
     - rstudio_server
     - jupyterhub
 
