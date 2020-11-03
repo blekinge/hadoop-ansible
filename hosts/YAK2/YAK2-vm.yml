@@ -1,33 +1,35 @@
 all:
   hosts:
     # Needed so I can use my local virtualenv python (nessesary for ovirt module) when creating new VMs
-    # see ovirt_sdk_setup.sh for how to set this up
     localhost:
       ansible_connection: local
       ansible_python_interpreter: "python"
 
   children:
-    VMs: # This is the group of VMs created by playbook-create-virtual-host.yml
+    VMs: # This is the group of VMs created by 10.playbook-ovirt-vms.yml
       hosts:
         # The "short name", ie. the first part of the name here will be used as the name of the VM
         # IF you have to use a "wrong" hostname or an IP here, use the variables "hostname" and "shortname" to set
         #   the correct hostname for the host
-        hdfs[001:002].yak2.net:
+        hist001.yak2.net: #Example of how to set hostname
+          hostname: hist001.yak2.net
+          shortname: hist001
+
         zkpr[001:003].yak2.net:
-        roda[001:004].yak2.net:
-          memory: 8GiB
-          cpu_sockets: 4
+        hdfs[001:002].yak2.net:
+        yarn[001:002].yak2.net:
+
+        roda[001:004].yak2.net: #Virtual datanodes
+          memory: 8GiB # Set memory
+          cpu_sockets: 4 # Set cpus
 
           host_disks: # This is how to create additional disks
             - name: HDFS
               size: 1024GiB
               mount: /data/sdb1
-        yarn[001:002].yak2.net:
-        hist001.yak2.net: #Example of how to set hostname
-          hostname:  hist001.yak2.net
-          shortname:  hist001
+
         proj[000:003].yak2.net:
-          host_disks: # This is how to create additional disks
+          host_disks:
             - name: data
               size: 10GiB
               mount: /data/sdb1

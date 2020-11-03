@@ -13,7 +13,6 @@ These are my GoTo modules and roles for building this cluster. I have used few m
 If you understand the basics of what each of these do, you should be able to understand what my scripts do.
 
 
-
 * Ansible internals
     * ansible.builtin.**set_fact** – Set host facts from a task: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/set_fact_module.html>
 

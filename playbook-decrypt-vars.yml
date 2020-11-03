@@ -1,7 +1,8 @@
 ---
 
 - name: decrypt vars
-  hosts: proj000.yak2.net
+  hosts: all
+  run_one: true
   tasks:
     - debug:
         msg: "{{item.name}} '{{item.value}}'"

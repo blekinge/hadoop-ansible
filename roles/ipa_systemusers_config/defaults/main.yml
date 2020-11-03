@@ -1,6 +1,11 @@
 ---
 # https://github.com/freeipa/ansible-freeipa/blob/master/roles/ipaclient/README.md#base-variables
 
+ipaclient_domain: "{{ ipa_domain }}"
+ipaclient_realm: "{{ ipa_realm }}"
+ipaserver_domain: "{{ ipa_domain }}"
+ipaserver_realm: "{{ ipa_realm }}"
+
 
 ipa_server: "{{ groups['ipaserver'] | first }}"
 
@@ -47,7 +52,7 @@ standard_user_groups:
   - "{{ subadmins_group }}"
   - "{{ users_group }}"
 
-# These groups are also automaticall created, and all new users will be made members of them
+# These groups are also automatically created, and all new users will be made members of them
 default_user_groups:
   - "{{ users_group }}"
 
@@ -60,18 +65,18 @@ hdfs_user:
   private_group: yes
   extra_groups: [ "{{hadoop_group.name}}" ]
 
-yarn_user:
-  name: "yarn"
-  group: "{{hadoop_group.name}}"
-  uid: "{{hadoop_group.gid|int+2}}"
-  gid: "{{hadoop_group.gid}}"
-  private_group: no
-  extra_groups: ["{{hadoop_group.name}}"]
-
 mapreduce_user:
   name: "mapred"
   group: "{{hadoop_group.name}}"
   uid: "{{hadoop_group.gid|int+1}}"
+  gid: "{{hadoop_group.gid}}"
+  private_group: no
+  extra_groups: ["{{hadoop_group.name}}"]
+
+yarn_user:
+  name: "yarn"
+  group: "{{hadoop_group.name}}"
+  uid: "{{hadoop_group.gid|int+2}}"
   gid: "{{hadoop_group.gid}}"
   private_group: no
   extra_groups: ["{{hadoop_group.name}}"]

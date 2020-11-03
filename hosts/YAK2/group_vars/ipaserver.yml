@@ -1,9 +1,0 @@
----
-autohome_nfs_export_iprange: "172.16.215.0/24"
-
-#Ensure that the hadoop packages are not installed on the freeipa host
-install_hadoop: false
-
-
-
-

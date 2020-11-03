@@ -13,6 +13,8 @@
     - ovirt_new_vm
   collections: # This require the ovirt-ansible plugin installed. See ovirt_sdk_setup.sh
     - ovirt.ovirt
+    - community.general
+
 
 #
 - name: Enable the {{sealbin_user}} account and disable ssh logins to root
@@ -23,6 +25,9 @@
     - ansible_account
   tasks:
     - meta: clear_host_errors
+  collections:
+    - ansible.posix
+
 
 
 - name: Basic setup including ipa client
@@ -32,6 +37,10 @@
     - role: java_1_8_installed
     - role: zabbix_agent
     - role: ipaclient_setup
+  collections:
+    - community.zabbix
+    - freeipa.ansible_freeipa
+
 
 
 #      TODO med X2go
@@ -43,6 +52,9 @@
     - spark_client
     - rstudio_server
     - jupyterhub
+  collections:
+    - freeipa.ansible_freeipa
+
 
 #  En brugergruppe
 #  1+ Brugere
@@ -51,6 +63,9 @@
   hosts: ipaserver
   roles:
     - role: ipa_projects_and_groups
+  collections:
+    - freeipa.ansible_freeipa
+
 
 
 #    TODO Home Dir logging per project

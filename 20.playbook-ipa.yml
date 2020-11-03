@@ -7,6 +7,9 @@
     - ansible_account
   tasks:
     - meta: clear_host_errors
+  collections:
+    - ansible.posix
+
 
 
 
@@ -19,12 +22,16 @@
 - hosts: zabbix_nodes
   roles:
     - role: zabbix_agent
+  collections:
+    - community.zabbix
 
 
 - hosts: ipaclients
   throttle: 5 # It seems that if every node tries to register at the same time, some of them will fail
   roles:
     - role: ipaclient_setup # Set up the ipa clients
+  collections:
+    - freeipa.ansible_freeipa
 
 
 # Now that the hosts have been added as ipa clients, we can setup the kerberos services
@@ -37,6 +44,9 @@
     - role: ssl_certificates_creator
     - role: ipa_service_definitions
     - role: kerberos_system_user_keytabs_create
+  collections:
+    - freeipa.ansible_freeipa
+
 
 # And now that the ipa server is ready, we can setup services and ssl
 - hosts: hadoop_nodes
@@ -44,3 +54,5 @@
     - role: ssl_certificates_recipient #Upload ssl certificates to host
     - role: kerberos_service_keytabs #Create the service keytabs
     - role: kerberos_system_user_keytabs
+  collections:
+    - name: community.general

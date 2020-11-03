@@ -4,19 +4,14 @@
 ### ZABBIX CONFIG
 
 
-zabbix_agent_os_family: RedHat
 zabbix_agent_server: pc543.sb.statsbiblioteket.dk
-zabbix_agent_serveractive: "{{zabbix_agent_server}}"
-hostname: "{{inventory_hostname}}"
+
 
 #This ensures that the zabbix agent uses the 216 address, which the zabbix server can reach
 zabbix_agent_ip: "{{hostvars[inventory_hostname]['ansible_all_ipv4_addresses'] | select('match', '^'+nic2_subnet+'.*') | first}}"
 
 
-zabbix_agent_tlsconnect: psk
-zabbix_agent_tlsaccept: psk
 zabbix_agent_tlspskidentity: YAKPSK
-zabbix_agent_tlspskfile: /var/lib/zabbix/zabbix_agentd.psk
 zabbix_agent_tlspsk_secret: !vault |
   $ANSIBLE_VAULT;1.1;AES256
   39303639663765336638316536333835373838313263326339663435626537323761633738656163
@@ -29,9 +24,6 @@ zabbix_agent_tlspsk_secret: !vault |
   63383162613438396264
 
 
-zabbix_api_create_hosts: true
-zabbix_api_create_hostgroup: true
-
 zabbix_url: "https://{{zabbix_agent_server}}/zabbix/"
 zabbix_validate_certs: no
 
@@ -43,9 +35,6 @@ zabbix_api_pass: !vault |
   63653265383135333630633232323866333631646436306434316231336563393432346536383062
   3532353962396136380a353261633662666365376438393930356237336331343863373865396236
   6436
-
-zabbix_link_templates:
-  - "Template OS Linux"
 
 default_zabbix_host_groups__to_merge:
   - "yak2"
