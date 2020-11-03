@@ -11,7 +11,7 @@
   when: not epel_repofile_result.stat.exists
 
 - name: 3.Install EPEL repo.
-  yum:
+  package:
     name: "{{ epel_repo_url }}"
     state: present
   register: result

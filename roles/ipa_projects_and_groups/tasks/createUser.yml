@@ -56,6 +56,7 @@
   become: yes
   become_user: "{{hdfs_user.name}}"
   delegate_to: "{{hdfs_delegation_host}}"
+  run_once: true
   shell: |
     set -e # Fail on anything
     source /etc/profile.d/hadoop.sh

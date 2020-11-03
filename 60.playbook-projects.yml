@@ -49,8 +49,6 @@
 #  en HBAC regel
 - name: Users and groups
   hosts: ipaserver
-#  vars:
-#    projects: "{{ [ lookup('vars', specific_project) | default(') ] }}"
   roles:
     - role: ipa_projects_and_groups
 
@@ -63,12 +61,15 @@
 
 #    En YARN queue
 - hosts: yarn_timeline_servers
+  serial: 1
   roles:
     - yarn_timeline_server
 - hosts: yarn_node_managers
+  serial: 1
   roles:
     - yarn_node_manager
 - hosts: yarn_resource_managers
+  serial: 1
   roles:
     - yarn_resource_manager
 

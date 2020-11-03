@@ -74,6 +74,7 @@
 # Sudorules
 - name: "jupyterhub Sudo rules"
   delegate_to: "{{ipa_server}}"
+  run_once: true # Since the resulting sudo rule works on all hosts, just execute this once
   block:
     - include_tasks: kinit_admin.yml
 
@@ -258,7 +259,7 @@
 #  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacsvc.md
 - name: "Projects HBAC service definitions"
   delegate_to: "{{ipa_server}}"
-  throttle: 1
+  run_once: true
   ipahbacsvc:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "jupyterhub" #Name should match name in /etc/pam.d/ (jupyterhub)

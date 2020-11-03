@@ -1,3 +1,5 @@
+#These are the dnf packages that must be installed to install the pip dependencies
+
 # Ovirt
 libcurl-devel
 gcc

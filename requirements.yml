@@ -1,5 +1,13 @@
 ---
+
+#These are the ansible galaxy collections needed for this collection of playbooks and roles
+
 collections:
   - name: community.zabbix
     version: 1.1.0
+
   - name: ovirt.ovirt
+
+  - name: community.general
+
+  - name: ansible.posix

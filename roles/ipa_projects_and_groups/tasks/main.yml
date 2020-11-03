@@ -34,7 +34,7 @@
 
 #  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacrule.md
 - name: "Projects HBAC rules"
-  throttle: 1
+  run_once: true
   loop: "{{projects_ipa}}"
   loop_control:
     loop_var: group
