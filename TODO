@@ -30,13 +30,15 @@
 
 [ ] SSL certs
 
+[ ] Firewalld open ports should only be open to select subnets, not ALL
+
 [X] Playbook to create/update projects.
 	yarn queues
 	project nodes
 	users
 
-[ ] Ansible lærings-resourcer
-[ ] Ansible module docs
+[X] Ansible lærings-resourcer
+[X] Ansible module docs
 
 Dask is teh new multicore framework for python
 Dask works on HPC, kubernetes and YARN

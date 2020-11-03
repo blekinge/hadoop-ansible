@@ -3,3 +3,9 @@ ssl_key_size: 2048
 
 sealbin_user: "sealbin"
 temp_ssl_dir: "/home/{{sealbin_user}}/ssl"
+
+ssl_organizational_unit_name: demo
+ssl_organization_name: MyOrg
+ssl_locality_name: Pune
+ssl_state_or_province_name: MH
+ssl_country_name: IN

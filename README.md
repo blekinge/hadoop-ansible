@@ -229,7 +229,10 @@ The next step is setting up the zabbix agent on the hosts.
 
 ```yaml
 ---
-zabbix_agent_server: pc543.sb.statsbiblioteket.dk
+
+# This must be in IP form, otherwise the firewalld config will complain
+#   You cannot open a port to a specific hostname, only to a specific ip
+zabbix_agent_server: 172.18.0.24 # pc543.sb.statsbiblioteket.dk
 
 #This ensures that the zabbix agent uses the 216 address, which the zabbix server can reach
 zabbix_agent_ip: "{{hostvars[inventory_hostname]['ansible_all_ipv4_addresses'] | select('match', '^'+nic2_subnet+'.*') | first}}"
