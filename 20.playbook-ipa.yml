@@ -22,8 +22,8 @@
 - hosts: zabbix_nodes
   roles:
     - role: zabbix_agent
-  collections:
-    - community.zabbix
+#  collections:
+#    - community.zabbix
 
 
 - hosts: ipaclients

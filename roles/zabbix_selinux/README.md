@@ -1,0 +1,1 @@
+This role is currently unused as the zabbix agent can configure SELINUX already. Primarily left in as inspiration if we have to do custom selinux config later on

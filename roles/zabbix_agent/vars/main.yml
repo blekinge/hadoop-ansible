@@ -1,4 +1,19 @@
 ---
 
-zabbix_agent_listenport: "{{zabbix_agent_port | string}}"
 zabbix_useuip: "1"
+
+zabbix_agent_serveractive: "{{zabbix_agent_server}}"
+hostname: "{{inventory_hostname}}"
+
+zabbix_link_templates:
+  - "Template OS Linux"
+
+zabbix_api_create_hosts: true
+zabbix_api_create_hostgroup: true
+
+zabbix_selinux: true
+zabbix_agent_firewalld_enable: true
+
+zabbix_agent_tlsconnect: psk
+zabbix_agent_tlsaccept: psk
+zabbix_agent_tlspskfile: /var/lib/zabbix/zabbix_agentd.psk

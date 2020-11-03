@@ -1,4 +1,3 @@
 ---
 dependencies:
-  # TODO is this unnessesary? Does the zabbix agent do this automatigally?
   - role: firewalled

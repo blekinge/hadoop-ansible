@@ -16,8 +16,7 @@
     - community.general
 
 
-#
-- name: Enable the {{sealbin_user}} account and disable ssh logins to root
+- name: "Enable the {{sealbin_user}} account and disable ssh logins to root"
   hosts: project_nodes
   remote_user: root
   ignore_unreachable: yes
@@ -38,7 +37,7 @@
     - role: zabbix_agent
     - role: ipaclient_setup
   collections:
-    - community.zabbix
+#    - community.zabbix If this is uncommented, you will get errors about Springdale.yml
     - freeipa.ansible_freeipa
 
 

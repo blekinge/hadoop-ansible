@@ -74,7 +74,7 @@ rstudio_server_http_port: 8787
 
 jupyterhub_port: 8000
 
-zabbix_agent_port: 10050
+zabbix_agent_listenport: "10050"
 
 ports_per_role: { # This dict maps roles names to ports
 
@@ -133,7 +133,8 @@ ports_per_role: { # This dict maps roles names to ports
 
   "jupyterhub": [ "{{jupyterhub_port}}" ],
 
-  "zabbix_agent": [ "{{zabbix_agent_port}}" ],
+# The Zabbix Agent module can do this itself, so do not duplicate it's work
+#  "zabbix_agent": [ "{{zabbix_agent_listenport}}" ],
 
   "hadoop": [ ] # This ensures that the firewall is started for all hadoop nodes
 
