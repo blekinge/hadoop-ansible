@@ -40,6 +40,8 @@
 [X] Ansible lærings-resourcer
 [X] Ansible module docs
 
+[ ] Adm network in ansible connect, not in configs
+
 Dask is teh new multicore framework for python
 Dask works on HPC, kubernetes and YARN
 Dask on Yarn: https://yarn.dask.org/en/latest/index.html

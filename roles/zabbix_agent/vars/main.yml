@@ -3,7 +3,7 @@
 zabbix_useuip: "1"
 
 zabbix_agent_serveractive: "{{zabbix_agent_server}}"
-hostname: "{{inventory_hostname}}"
+hostname: "{{ansible_fqdn}}"
 
 zabbix_link_templates:
   - "Template OS Linux"

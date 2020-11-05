@@ -21,7 +21,7 @@ all:
  children:
     ipaserver: # Singular form as there can be only one here
       hosts:
-        fipa001.yak2.net:
+        fipa001.adm.yak2.net:
 
     ipaclients:
       children: #Mark all hadoop nodes as ipa-clients
@@ -38,51 +38,51 @@ all:
           children:
             hdfs_namenodes:
               hosts:
-                hdfs001.yak2.net:
+                hdfs001.adm.yak2.net:
                   primary: true # The primary node is the one whose hdfs gets propagated to the other namenodes
                   comment: "Primary"
-                hdfs002.yak2.net:
+                hdfs002.adm.yak2.net:
             hdfs_journalnodes:
               hosts:
-                zkpr[001:003].yak2.net:
+                zkpr[001:003].adm.yak2.net:
             hdfs_datanodes:
               hosts:
-                roda[001:004].yak2.net:
+                roda[001:004].adm.yak2.net:
                   hdfs_data_dirs:
                     - /data/sdb1/hdfs
 
         zookeeper_servers:
           hosts:
-            zkpr[001:003].yak2.net:
+            zkpr[001:003].adm.yak2.net:
 
         yarn:
           children:
             yarn_resource_managers:
               hosts:
-                yarn[001:002].yak2.net:
+                yarn[001:002].adm.yak2.net:
             yarn_node_managers:
               hosts:
-                roda[001:004].yak2.net:
+                roda[001:004].adm.yak2.net:
                   yarn_nodemanager_available_cpu_cores: 2
                   yarn_nodemanager_available_memory: 3072
                   yarn_data_dirs:
                     - /data/sdb1/yarn
             yarn_timeline_servers:
               hosts:
-                hist001.yak2.net:
+                hist001.adm.yak2.net:
 
         mapreduce:
           children:
             mapreduce_history_servers:
               hosts: # There can be only one here
-                hist001.yak2.net:
+                hist001.adm.yak2.net:
 
         spark:
           children:
             spark_history_servers:
               hosts: # There can be only one here
-                hist001.yak2.net:
+                hist001.adm.yak2.net:
 
         project_nodes:
           hosts:
-            proj[000:003].yak2.net:
+            proj[000:003].adm.yak2.net:

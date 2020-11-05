@@ -41,7 +41,7 @@
 
     - name: Create a certificate request (jupyterhub.csr) for our org and server from the RSA key (jupyterhub.key)
       command:
-        "openssl req -sha256 -passin pass:{{jupyterhub_ssl_password}} -subj '/C=DK/ST=Aarhus/L=Springfield/O=Royal\ Library/CN={{inventory_hostname}}' -new -key {{ssl_cert_dir}}/jupyterhub.key -out {{ssl_cert_dir}}/jupyterhub.csr"
+        "openssl req -sha256 -passin pass:{{jupyterhub_ssl_password}} -subj '/C=DK/ST=Aarhus/L=Springfield/O=Royal\ Library/CN={{ansible_fqdn}}' -new -key {{ssl_cert_dir}}/jupyterhub.key -out {{ssl_cert_dir}}/jupyterhub.csr"
       args:
         creates: "{{ssl_cert_dir}}/jupyterhub.csr"
 

@@ -19,7 +19,7 @@
   loop_control:
     loop_var: "dir"
 
-- name: "uploading ssl certs to {{inventory_hostname}}"
+- name: "uploading ssl certs to hosts"
   throttle: 2
   delegate_to: "{{ipa_server}}"
   become: no
@@ -33,9 +33,9 @@
     # Be root on the dest side, so we can create the files in /etc
     rsync_path: sudo rsync
   loop:
-    - file: "{{temp_ssl_dir}}/{{ inventory_hostname }}-keystore.jks"
-    - file: "{{temp_ssl_dir}}/{{ inventory_hostname }}-keystore.p12"
-    - file: "{{temp_ssl_dir}}/{{ inventory_hostname }}-truststore.jks"
+    - file: "{{temp_ssl_dir}}/{{ ansible_fqdn }}-keystore.jks"
+    - file: "{{temp_ssl_dir}}/{{ ansible_fqdn }}-keystore.p12"
+    - file: "{{temp_ssl_dir}}/{{ ansible_fqdn }}-truststore.jks"
     - file: "{{temp_ssl_dir}}/all.jks"
     - file: "{{temp_ssl_dir}}/http_secret"
       dest: "/etc/security/"
@@ -47,9 +47,9 @@
     group: "{{item.group | default(hadoop_group.name)}}"
     owner: "{{item.owner | default('root')}}"
   loop:
-    - file: "{{ ssl_server_dir }}/{{ inventory_hostname }}-keystore.jks"
-    - file: "{{ ssl_server_dir }}/{{ inventory_hostname }}-keystore.p12"
-    - file: "{{ ssl_server_dir }}/{{ inventory_hostname }}-truststore.jks"
+    - file: "{{ ssl_server_dir }}/{{ ansible_fqdn }}-keystore.jks"
+    - file: "{{ ssl_server_dir }}/{{ ansible_fqdn }}-keystore.p12"
+    - file: "{{ ssl_server_dir }}/{{ ansible_fqdn }}-truststore.jks"
     - file: "{{ ssl_server_dir }}/all.jks"
       mode: '0444'
     - file: /etc/security/http_secret

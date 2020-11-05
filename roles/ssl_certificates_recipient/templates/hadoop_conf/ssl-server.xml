@@ -9,7 +9,7 @@
     
     <property>
       <name>ssl.server.keystore.location</name>
-      <value>{{ ssl_server_dir }}/{{ inventory_hostname }}-keystore.p12</value>
+      <value>{{ ssl_server_dir }}/{{ ansible_fqdn }}-keystore.p12</value>
     </property>
     
     <property>

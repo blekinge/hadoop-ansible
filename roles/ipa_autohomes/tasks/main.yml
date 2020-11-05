@@ -6,7 +6,7 @@
 - name: FreeIPA automount setup service
   ipaservice:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: "nfs/{{ inventory_hostname }}"
+    name: "nfs/{{ ansible_fqdn }}"
     state: present
     force: yes
 
@@ -32,11 +32,11 @@
 
         ipa automountkey-show {{ipaautomount_location}}  \
                               --key "*" \
-                              --info "-fstype=nfs4,rw,sec=krb5,intr,hard {{ inventory_hostname }}:{{ ipaserver_autohome_dir }}/&" \
+                              --info "-fstype=nfs4,rw,sec=krb5,intr,hard {{ ansible_fqdn }}:{{ ipaserver_autohome_dir }}/&" \
                               auto.home || \
           ipa automountkey-add {{ipaautomount_location}} \
             --key "*" \
-            --info "-fstype=nfs4,rw,sec=krb5:krb5i,intr,hard {{ inventory_hostname }}:{{ ipaserver_autohome_dir }}/&" \
+            --info "-fstype=nfs4,rw,sec=krb5:krb5i,intr,hard {{ ansible_fqdn }}:{{ ipaserver_autohome_dir }}/&" \
             auto.home;
 
 
@@ -48,7 +48,7 @@
         line: 'SECURE_NFS="yes"'
 
     - name: setup autohome
-      shell: ipa-getkeytab --server {{ inventory_hostname }} -p "nfs/{{ inventory_hostname }}" -k /etc/krb5.keytab
+      shell: ipa-getkeytab --server {{ ansible_fqdn }} -p "nfs/{{ ansible_fqdn }}" -k /etc/krb5.keytab
 
 
     - name: Autohome dir

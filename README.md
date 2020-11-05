@@ -235,7 +235,7 @@ The next step is setting up the zabbix agent on the hosts.
 zabbix_agent_server: 172.18.0.24 # pc543.sb.statsbiblioteket.dk
 
 #This ensures that the zabbix agent uses the 216 address, which the zabbix server can reach
-zabbix_agent_ip: "{{hostvars[inventory_hostname]['ansible_all_ipv4_addresses'] | select('match', '^'+nic2_subnet+'.*') | first}}"
+zabbix_agent_ip: "{{ansible_all_ipv4_addresses | select('match', '^'+nic2_subnet+'.*') | first}}"
 
 zabbix_agent_tlspskidentity: YAKPSK
 zabbix_agent_tlspsk_secret: "..."
