@@ -15,7 +15,7 @@ rsyslog_templates:
   - name: "fromRemote"
     string: "{{remote_log_folder}}/%syslogfacility-text%/%fromhost%-%app-name%.log"
   - name: "rfc5424Format"
-    string: "<%PRI%>%PROTOCOL-VERSION% timestamp=%TIMESTAMP% hostname=%hostname% app-name=%app-name% procid=%procid% msgid=%msgid% structured_data=%STRUCTURED-DATA% msg=$bom%msg%\\n"
+    string: "<%PRI%>%PROTOCOL-VERSION% timestamp=%TIMESTAMP% hostname=%hostname% app-name=%app-name% procid=%procid% msgid=%msgid% structured_data=%STRUCTURED-DATA% msg=%msg%\\n"
 
 rsyslog_rulesets:
   - name: "remote"

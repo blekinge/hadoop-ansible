@@ -26,9 +26,15 @@
 
 [X] Zabbix agent setup
 
-[ ] HDFS Log aggregation
+[X] HDFS Log aggregation
 
-[ ] SSL certs
+[ ] RSyslog TLS
+
+[X] SSL certs generate locally
+
+[ ] SSL certs common parent
+
+[ ] Real SSL certs
 
 [ ] Firewalld open ports should only be open to select subnets, not ALL
 

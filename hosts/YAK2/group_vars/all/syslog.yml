@@ -1,0 +1,10 @@
+syslog_server: 172.16.215.84 #rlog001.yak2.net
+
+syslog_server_port: 6514
+
+
+#syslog_facilities:
+#  standard: local7
+#  secure: local5
+#  audit: local6
+
