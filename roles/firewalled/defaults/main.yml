@@ -152,8 +152,8 @@ ports_per_role: # This dict maps roles names to ports
       protocol: udp
 
     # The Zabbix Agent module can do this itself, so do not duplicate it's work
-    #  "zabbix_agent":
-    - port: "{{zabbix_agent_listenport}}"
+    #  zabbix_agent:
+    #     - port: "{{zabbix_agent_listenport}}"
 
   hadoop: [ ] # This ensures that the firewall is started for all hadoop nodes
 
