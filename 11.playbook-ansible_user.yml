@@ -1,0 +1,11 @@
+
+# Enable the {{sealbin_user}} account and disable ssh logins to root
+- hosts: all:!localhost
+  remote_user: root
+  ignore_unreachable: yes
+  roles:
+    - ansible_account
+  tasks:
+    - meta: clear_host_errors
+  collections:
+    - ansible.posix

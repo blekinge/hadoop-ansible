@@ -59,7 +59,6 @@
     state: restarted
 
 
-
 - name: "Mount {{ipaclient_syshome_dir}}"
   mount:
       path: "{{ipaclient_syshome_dir}}"

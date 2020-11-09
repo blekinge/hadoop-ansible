@@ -3,11 +3,31 @@
   import_playbook: 10.playbook-ovirt-vms.yml
 
 
+
+- name: Ansible user account
+  import_playbook: 11.playbook-ansible_user.yml
+
+
+
+- name: Update hosts
+  import_playbook: 12.playbook-updated.yml
+
+
+
+
+- name: Zabbix agents
+  import_playbook: 13.playbook-zabbix.yml
+
+
 - name: IPA server and clients setup
   import_playbook: 20.playbook-ipa.yml
 
 
-- name: Setup cluster
+- name: RSyslog setup
+  import_playbook: 28.playbook-rsyslog.yml
+
+
+- name: Setup Hadoop
   import_playbook: 30.playbook-hadoop-setup.yml
 
 

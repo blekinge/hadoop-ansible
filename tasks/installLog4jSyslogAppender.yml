@@ -1,0 +1,14 @@
+- name: install lxml so we can fetch from maven
+  package:
+    name: python3-lxml
+
+- community.general.maven_artifact:
+    group_id: "{{group_id | default('com.hlag')}}"
+    artifact_id: "{{artifact_id | default('log4jSyslogWriter64k-kb')}}"
+    repository_url: "{{nexus | default('https://sbforge.org/nexus/content/groups/public')}}"
+    dest: "{{ dest }}"
+    version: "{{version| default('1.1.1-SNAPSHOT')}}"
+    keep_name: "{{keep_name | default('no')}}"
+    owner: "{{ owner.name }}"
+    group: "{{ owner.group }}"
+    mode: "{{ mode | default('0644')}}"

@@ -35,6 +35,14 @@
   with_items:
     - "{{ zookeeper_create_path }}"
 
+- name: install log4jSyslogWriter64k in classpath
+  include_tasks: installLog4jSyslogAppender.yml
+  vars:
+    dest: "{{ current_zookeeper_home }}/lib/"
+    owner:
+      name: root
+      group: "{{ zookeeper_user.group }}"
+
 - name: Upload Zookeeper config files
   template:
     src: "{{ item }}"

@@ -11,12 +11,12 @@ ipaclient_force_join: true
 ipaclient_ntp_servers:
   - kac-gway-001.kach.sblokalnet
 
-autohome_nfs_export_iprange: "172.16.215.0/24"
 
 
 # This user group is referred to from a lot of roles, so it must be defined
 users_group:
   name: "yakusers"
+  # name: "clusterusers"
   gid: 20000
   description: Standard user accounts, for unprivileged users.
 

@@ -1,7 +1,7 @@
 ---
 - name: "Open Firewall ports for {{rolename}}"
   firewalld:
-    port: '{{port}}/tcp'
+    port: '{{port.port}}/{{port.protocol | default("tcp")}}'
     permanent: yes
     state: enabled
     zone: public

@@ -224,7 +224,7 @@ export HADOOP_ROOT_LOGGER=INFO,console
 # --daemon option of hadoop, hdfs, mapred and yarn command.
 # Java property: hadoop.root.logger
 # export HADOOP_DAEMON_ROOT_LOGGER=INFO,RFA
-export HADOOP_DAEMON_ROOT_LOGGER=${HADOOP_DAEMON_ROOT_LOGGER:-"INFO,DRFA"}
+export HADOOP_DAEMON_ROOT_LOGGER=${HADOOP_DAEMON_ROOT_LOGGER:-"INFO,DRFA,SYSLOG"}
 
 # Default log level and output location for security-related messages.
 # You will almost certainly want to change this on a per-daemon basis via
@@ -232,6 +232,8 @@ export HADOOP_DAEMON_ROOT_LOGGER=${HADOOP_DAEMON_ROOT_LOGGER:-"INFO,DRFA"}
 # defaults for the NN and 2NN override this by default.)
 # Java property: hadoop.security.logger
 # export HADOOP_SECURITY_LOGGER=INFO,NullAppender
+export HADOOP_SECURITY_LOGGER=INFO,DRFAS,SYSLOG_SECURITY
+
 
 # Default process priority level
 # Note that sub-processes will also run at this level!
@@ -348,6 +350,7 @@ export HADOOP_SECURE_LOG="{{ hadoop_log_dir }}/$USER"
 # the appropriate _OPTS if one wants something other than INFO,NullAppender
 # Java property: hdfs.audit.logger
 # export HDFS_AUDIT_LOGGER=INFO,NullAppender
+export HDFS_AUDIT_LOGGER=INFO,DRFAAUDIT,SYSLOG_AUDIT
 
 # Specify the JVM options to be used when starting the NameNode.
 # These options will be appended to the options specified as HADOOP_OPTS
@@ -372,8 +375,8 @@ SHARED_HDFS_NAMENODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
                              -Xms{{hdfs_namenode_memory}} \
                              -Xmx{{hdfs_namenode_memory}} \
                              $HADOOP_LOG_OPTS \
-                             -Dhadoop.security.logger=INFO,DRFAS \
-                             -Dhdfs.audit.logger=INFO,DRFAAUDIT"
+                             -Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER} \
+                             -Dhdfs.audit.logger=${HDFS_AUDIT_LOGGER}"
 
 
 #The Primary NameNode opts
@@ -421,7 +424,7 @@ export HDFS_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
                              -Xms{{hdfs_datanode_memory}} \
                              -Xmx{{hdfs_datanode_memory}} \
                              $HADOOP_LOG_OPTS \
-                             -Dhadoop.security.logger=INFO,DRFAS"
+                             -Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER}"
 
 
 # On secure datanodes, user to run the datanode as after dropping privileges.
@@ -450,14 +453,14 @@ export HDFS_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
 HADOOP_NFS3_OPTS="-Xmx$HADOOP_HEAPSIZE_MAX \
                   ${HADOOP_LOG_OPTS} \
                   ${HADOOP_NFS3_OPTS} \
-                  -Dhadoop.security.logger=INFO,DRFAS"
+                  -Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER}"
 
 # Specify the JVM options to be used when starting the Hadoop portmapper.
 # These options will be appended to the options specified as HADOOP_OPTS
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_PORTMAP_OPTS="-Xmx512m"
-export HDFS_PORTMAP_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
+export HDFS_PORTMAP_OPTS="-Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER}"
 
 # Supplemental options for priviliged gateways
 # By default, Hadoop uses jsvc which needs to know to launch a
@@ -476,7 +479,7 @@ export HDFS_PORTMAP_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_ZKFC_OPTS=""
-export HDFS_ZKFC_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username={{zookeeper_user.name}} -Djava.security.auth.login.config={{ hadoop_config_path}}/hdfs_nn_jaas.conf -Dzookeeper.sasl.clientconfig=Client -Dhadoop.security.logger=INFO,DRFAS"
+export HDFS_ZKFC_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username={{zookeeper_user.name}} -Djava.security.auth.login.config={{ hadoop_config_path}}/hdfs_nn_jaas.conf -Dzookeeper.sasl.clientconfig=Client -Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER}"
 
 
 ###
@@ -487,7 +490,7 @@ export HDFS_ZKFC_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.user
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_JOURNALNODE_OPTS=""
-export HDFS_JOURNALNODE_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
+export HDFS_JOURNALNODE_OPTS="-Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER}"
 
 ###
 # HDFS Balancer specific parameters
@@ -500,7 +503,7 @@ export HDFS_JOURNALNODE_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
 HADOOP_BALANCER_OPTS="-server \
                       -Xmx$HADOOP_HEAPSIZE_MAX \
                       ${HADOOP_BALANCER_OPTS} \
-                      -Dhadoop.security.logger=INFO,DRFAS"
+                      -Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER}"
 
 
 ###
@@ -511,7 +514,7 @@ HADOOP_BALANCER_OPTS="-server \
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_MOVER_OPTS=""
-export HDFS_MOVER_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
+export HDFS_MOVER_OPTS="-Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER}"
 
 ###
 # Router-based HDFS Federation specific parameters
@@ -520,7 +523,7 @@ export HDFS_MOVER_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_DFSROUTER_OPTS=""
-export HDFS_DFSROUTER_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
+export HDFS_DFSROUTER_OPTS="-Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER}"
 
 ###
 # Ozone Manager specific parameters
@@ -530,7 +533,7 @@ export HDFS_DFSROUTER_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_OM_OPTS=""
-export HDFS_OM_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
+export HDFS_OM_OPTS="-Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER}"
 
 
 ###
@@ -541,7 +544,7 @@ export HDFS_OM_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_STORAGECONTAINERMANAGER_OPTS=""
-export HDFS_STORAGECONTAINERMANAGER_OPTS="-Dhadoop.security.logger=INFO,DRFAS"
+export HDFS_STORAGECONTAINERMANAGER_OPTS="-Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER}"
 
 ###
 # Advanced Users Only!

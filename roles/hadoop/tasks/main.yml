@@ -84,11 +84,20 @@
 
     - name: Install fixed container-executor
       copy:
-        src: container-executor
+        src: files/container-executor
         dest: "{{ hadoop_home }}/bin/"
         owner: root
-        group: hadoop
+        group: "{{hadoop_group.name}}"
         mode: '6050'
+
+    - name: install log4jSyslogWriter64k in classpath
+      include_tasks: installLog4jSyslogAppender.yml
+      vars:
+        dest: "{{ hadoop_home }}/share/hadoop/common/lib/"
+        owner:
+          name: root
+          group: "{{hadoop_group.name}}"
+
     - name: Upload Hadoop invoker Script
       template:
         src: "hadoop-invoker.sh"

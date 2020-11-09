@@ -1,0 +1,33 @@
+---
+
+#
+#    rsyslog_tls:
+#      cacert: "/etc/ssl/ca.cert"
+#      cert: "/etc/ssl/loghost.cert"
+#      key: "/etc/ssl/private/loghost.pem"
+
+rsyslog_templates:
+  - name: "fromRemote"
+    string: "/var/log/remote/%fromhost%-%APP-NAME%.log"
+  - name: "rfc5424Format"
+    string: "raw=%rawmsg%\\n<%PRI%>%PROTOCOL-VERSION% timestamp=%TIMESTAMP:::date-rfc3339% hostname=%HOSTNAME% appname=%APP-NAME% procid=%PROCID% msgid=%MSGID% structured_data=%STRUCTURED-DATA% msg=%msg%\\n"
+
+rsyslog_rulesets:
+  - name: "remote"
+    parser: "rsyslog.rfc5424"
+    script: |-4
+            action(
+                type="omfile"
+                dynaFile="fromRemote"
+                template="rfc5424Format"
+            )
+            stop
+
+rsyslog_inputs:
+  - module: imudp
+    parameters: {}
+    listeners:
+      - port: "{{rsyslog_server_udp_port}}"
+        ruleset: "remote"
+
+rsyslog_outputs: [ ]

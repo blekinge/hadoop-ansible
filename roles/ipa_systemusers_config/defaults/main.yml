@@ -1,6 +1,9 @@
 ---
 # https://github.com/freeipa/ansible-freeipa/blob/master/roles/ipaclient/README.md#base-variables
 
+ipa_domain: "{{domain}}"
+ipa_realm: "{{domain | upper}}"
+
 ipaclient_domain: "{{ ipa_domain }}"
 ipaclient_realm: "{{ ipa_realm }}"
 ipaserver_domain: "{{ ipa_domain }}"
@@ -29,7 +32,7 @@ hadoop_group:
 
 
 users_group:
-  name: "yakusers"
+  name: "clusterusers"
   gid: 20000
   description: Standard user accounts, for unprivileged users.
 
