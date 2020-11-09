@@ -1,4 +1,6 @@
 ---
+#Flag if you just need to depend on this role to get variables
+install_hadoop: true
 
 wipe_hdfs: false
 

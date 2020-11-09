@@ -1,0 +1,5 @@
+syslog_facilities:
+  standard: local7
+  secure: local5
+  audit: local6
+

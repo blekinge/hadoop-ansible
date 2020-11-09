@@ -1,0 +1,22 @@
+
+- name: create log collection dirs
+  file:
+    path: "{{item}}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+  loop:
+    - "{{remote_log_folder}}"
+    - "{{structured_log_folder}}"
+
+
+- name: create log sorting dirs
+  file:
+    src: "{{remote_log_folder}}/{{item.value}}"
+    dest: "{{structured_log_folder}}/{{item.key}}"
+    state: link
+    owner: root
+    group: root
+    mode: 0700
+  loop: "{{syslog_facilities | dict2items}}"

@@ -2,6 +2,9 @@
 dependencies:
   - role: java_1_8_installed
   - role: firewalled
+    when: install_hadoop | bool # Not relevant when we only depend to get variables
   - role: ipa_systemusers_config
   - role: kerberos_config
   - role: capacity_scheduler
+    when: install_hadoop | bool # Not relevant when we only depend to get variables
+  - role: syslog_config # Now to map syslog facilities to hadoop logfiles

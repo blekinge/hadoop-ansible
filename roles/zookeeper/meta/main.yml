@@ -4,3 +4,4 @@ dependencies:
   - role: firewalled
   - role: ipa_systemusers_config
   - role: kerberos_config
+  - role: syslog_config

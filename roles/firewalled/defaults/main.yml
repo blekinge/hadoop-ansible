@@ -78,7 +78,7 @@ zabbix_agent_listenport: "10050"
 
 rsyslog_server_udp_port: 6514
 
-ports_per_role:  # This dict maps roles names to ports
+ports_per_role: # This dict maps roles names to ports
 
   #  HDFS
   hdfs_namenode:
@@ -87,61 +87,73 @@ ports_per_role:  # This dict maps roles names to ports
     - port: "{{hdfs_namenode_https_port}}"
     - port: "{{hdfs_zkfc_port}}"
 
-  hdfs_journalnode: [ port: "{{hdfs_journalnode_rpc_port}}",
-                        port: "{{hdfs_journalnode_https_port}}",
-                        port: "{{hdfs_journalnode_https_port}}" ]
+  hdfs_journalnode:
+    - port: "{{hdfs_journalnode_rpc_port}}"
+    - port: "{{hdfs_journalnode_https_port}}"
+    - port: "{{hdfs_journalnode_https_port}}"
 
-  hdfs_datanode: [ port: "{{hdfs_datanode_rpc_port}}",
-                     port: "{{hdfs_datanode_ipc_port}}",
-                     port: "{{hdfs_datanode_http_port}}",
-                     port: "{{hdfs_datanode_https_port}}" ]
+  hdfs_datanode:
+    - port: "{{hdfs_datanode_rpc_port}}"
+    - port: "{{hdfs_datanode_ipc_port}}"
+    - port: "{{hdfs_datanode_http_port}}"
+    - port: "{{hdfs_datanode_https_port}}"
 
   # YARN
-  yarn_timeline_server: [ port: "{{yarn_timelineserver_http_port}}",
-                            port: "{{yarn_timelineserver_https_port}}",
-                            port: "{{yarn_timelineserver_port2}}" ]
+  yarn_timeline_server:
+    - port: "{{yarn_timelineserver_http_port}}"
+    - port: "{{yarn_timelineserver_https_port}}"
+    - port: "{{yarn_timelineserver_port2}}"
 
-  yarn_node_manager: [ port: "{{yarn_nodemanager_port}}",
-                         port: "{{mapreduce_shuffle_port}}",
-                         port: "{{mapreduce_am_portrange}}",
-                         port: "{{spark_ui_http_portrange}}",
-                         port: "{{spark_driver_http_portrange}}",
-                         port: "{{spark_blockmanager_http_portrange}}"]
+  yarn_node_manager:
+    - port: "{{yarn_nodemanager_port}}"
+    - port: "{{mapreduce_shuffle_port}}"
+    - port: "{{mapreduce_am_portrange}}"
+    - port: "{{spark_ui_http_portrange}}"
+    - port: "{{spark_driver_http_portrange}}"
+    - port: "{{spark_blockmanager_http_portrange}}"
 
-  yarn_resource_manager: [ port: "{{yarn_resourcemanager_rpc_port}}",
-                             port: "{{yarn_resourcemanager_scheduler_port}}",
-                             port: "{{yarn_resourcemanager_tracker_port}}",
-                             port: "{{yarn_resourcemanager_admin_port}}",
-                             port: "{{yarn_resourcemanager_http_port}}",
-                             port: "{{yarn_resourcemanager_https_port}}" ]
+  yarn_resource_manager:
+    - port: "{{yarn_resourcemanager_rpc_port}}"
+    - port: "{{yarn_resourcemanager_scheduler_port}}"
+    - port: "{{yarn_resourcemanager_tracker_port}}"
+    - port: "{{yarn_resourcemanager_admin_port}}"
+    - port: "{{yarn_resourcemanager_http_port}}"
+    - port: "{{yarn_resourcemanager_https_port}}"
 
-  mapreduce_history_server: [ port: "{{mapreduce_history_server_rpc_port}}",
-                                port: "{{mapreduce_history_server_admin_port}}",
-                                port: "{{mapreduce_history_server_http_port}}",
-                                port: "{{mapreduce_history_server_https_port}}" ]
+  mapreduce_history_server:
+    - port: "{{mapreduce_history_server_rpc_port}}"
+    - port: "{{mapreduce_history_server_admin_port}}"
+    - port: "{{mapreduce_history_server_http_port}}"
+    - port: "{{mapreduce_history_server_https_port}}"
 
-  spark_history_server: [ port: "{{spark_history_server_http_port}}",
-                            port: "{{spark_history_server_https_port}}" ]
+  spark_history_server:
+    - port: "{{spark_history_server_http_port}}"
+    - port: "{{spark_history_server_https_port}}"
 
-  zookeeper_server: [ port: "{{zookeeper_port}}",
-                        port: "{{zookeeper_leader_election_port}}",
-                        port: "{{zookeeper_follower_port}}" ]
+  zookeeper_server:
+    - port: "{{zookeeper_port}}"
+    - port: "{{zookeeper_leader_election_port}}"
+    - port: "{{zookeeper_follower_port}}"
 
 
-  spark_client: [ port: "{{spark_ui_http_portrange}}",
-                    port: "{{spark_driver_http_portrange}}",
-                    port: "{{spark_blockmanager_http_portrange}}" ]
+  spark_client:
+    - port: "{{spark_ui_http_portrange}}"
+    - port: "{{spark_driver_http_portrange}}"
+    - port: "{{spark_blockmanager_http_portrange}}"
 
-  rstudio_server: [ port: "{{rstudio_server_http_port}}" ]
+  rstudio_server:
+    - port: "{{rstudio_server_http_port}}"
 
-  jupyterhub: [ port: "{{jupyterhub_port}}" ]
+  jupyterhub:
+    - port: "{{jupyterhub_port}}"
 
   rsyslog_server:
     - port: "{{rsyslog_server_udp_port}}"
       protocol: udp
 
-# The Zabbix Agent module can do this itself, so do not duplicate it's work
-#  "zabbix_agent": [ port: "{{zabbix_agent_listenport}}" ],
+    # The Zabbix Agent module can do this itself, so do not duplicate it's work
+    #  "zabbix_agent":
+    - port: "{{zabbix_agent_listenport}}"
 
   hadoop: [ ] # This ensures that the firewall is started for all hadoop nodes
 

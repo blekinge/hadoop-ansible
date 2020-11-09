@@ -1,16 +1,21 @@
 ---
 
+remote_log_folder: /var/log/remote
+
+structured_log_folder: /var/log/remote/hadoop
+
 #
 #    rsyslog_tls:
 #      cacert: "/etc/ssl/ca.cert"
 #      cert: "/etc/ssl/loghost.cert"
 #      key: "/etc/ssl/private/loghost.pem"
 
+# properties from https://rsyslog.readthedocs.io/en/latest/configuration/properties.html
 rsyslog_templates:
   - name: "fromRemote"
-    string: "/var/log/remote/%fromhost%-%APP-NAME%.log"
+    string: "{{remote_log_folder}}/%syslogfacility-text%/%fromhost%-%app-name%.log"
   - name: "rfc5424Format"
-    string: "raw=%rawmsg%\\n<%PRI%>%PROTOCOL-VERSION% timestamp=%TIMESTAMP:::date-rfc3339% hostname=%HOSTNAME% appname=%APP-NAME% procid=%PROCID% msgid=%MSGID% structured_data=%STRUCTURED-DATA% msg=%msg%\\n"
+    string: "<%PRI%>%PROTOCOL-VERSION% timestamp=%TIMESTAMP% hostname=%hostname% app-name=%app-name% procid=%procid% msgid=%msgid% structured_data=%STRUCTURED-DATA% msg=$bom%msg%\\n"
 
 rsyslog_rulesets:
   - name: "remote"

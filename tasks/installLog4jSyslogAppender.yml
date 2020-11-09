@@ -2,6 +2,9 @@
   package:
     name: python3-lxml
 
+- name: remove other versions of java library
+  shell: "find {{ dest | quote }} -name {{artifact_id | default('log4jSyslogWriter64k-kb') | quote }}* | xargs -r -i rm -f '{}'"
+
 - community.general.maven_artifact:
     group_id: "{{group_id | default('com.hlag')}}"
     artifact_id: "{{artifact_id | default('log4jSyslogWriter64k-kb')}}"
