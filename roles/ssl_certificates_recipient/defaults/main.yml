@@ -7,3 +7,5 @@ ssl_client_dir: /etc/ssl
 
 sealbin_user: "sealbin"
 temp_ssl_dir: "/home/{{sealbin_user}}/ssl"
+
+hadoop_config_path: "/etc/hadoop/conf"
