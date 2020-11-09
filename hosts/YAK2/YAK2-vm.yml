@@ -15,6 +15,11 @@ all:
           shortname: hist001
           hostname: "{{shortname}}.{{domain}}"
 
+        rlog001.yak2.net:
+          host_disks:
+            - name: Disk1
+              size: 100GiB
+              mount: /logstorage
 
         zkpr[001:003].yak2.net:
         hdfs[001:002].yak2.net:

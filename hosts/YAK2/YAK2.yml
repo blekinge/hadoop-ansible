@@ -28,7 +28,9 @@ all:
         hadoop_nodes:
 
     zabbix_nodes:
-      children: #Mark all nodes as zabbix_nodes
+      hosts:
+        rlog001.yak2.net:
+      children:
         ipaclients:
 
     rsyslog_server:

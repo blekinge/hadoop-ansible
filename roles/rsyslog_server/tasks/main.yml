@@ -10,13 +10,23 @@
     - "{{remote_log_folder}}"
     - "{{structured_log_folder}}"
 
+- name: "Allow rsyslog to write log files in {{remote_log_folder}}"
+  community.general.sefcontext:
+    target: "{{remote_log_folder}}(/.*)?"
+    setype: var_log_t
+    state: present
+
+- name: Fix selinux permissions
+  command: "restorecon -R -v {{remote_log_folder}}"
 
 - name: create log sorting dirs
   file:
     src: "{{remote_log_folder}}/{{item.value}}"
     dest: "{{structured_log_folder}}/{{item.key}}"
     state: link
+    force: yes
     owner: root
     group: root
     mode: 0700
+    follow: no
   loop: "{{syslog_facilities | dict2items}}"

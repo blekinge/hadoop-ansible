@@ -1,4 +1,4 @@
 
-#remote_log_folder: /var/log/remote
+remote_log_folder: /logstorage/remote
 
-#structured_log_folder: /var/log/remote/hadoop
+structured_log_folder: /logstorage/hadoop
