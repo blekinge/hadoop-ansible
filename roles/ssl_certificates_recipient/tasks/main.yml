@@ -35,7 +35,6 @@
   loop:
     - file: "{{temp_ssl_dir}}/{{ ansible_fqdn }}-keystore.jks"
     - file: "{{temp_ssl_dir}}/{{ ansible_fqdn }}-keystore.p12"
-    - file: "{{temp_ssl_dir}}/{{ ansible_fqdn }}-truststore.jks"
     - file: "{{temp_ssl_dir}}/all.jks"
     - file: "{{temp_ssl_dir}}/http_secret"
       dest: "/etc/security/"
@@ -49,7 +48,6 @@
   loop:
     - file: "{{ ssl_server_dir }}/{{ ansible_fqdn }}-keystore.jks"
     - file: "{{ ssl_server_dir }}/{{ ansible_fqdn }}-keystore.p12"
-    - file: "{{ ssl_server_dir }}/{{ ansible_fqdn }}-truststore.jks"
     - file: "{{ ssl_server_dir }}/all.jks"
       mode: '0444'
     - file: /etc/security/http_secret

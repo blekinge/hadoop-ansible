@@ -1,39 +1,49 @@
-  <configuration>
-    
+<configuration>
+
+    <!-- Keystore -->
     <property>
-      <name>ssl.client.keystore.location</name>
+        <name>ssl.server.keystore.keypassword</name>
         <value>{{ ssl_keystore_pass }}</value> <!-- when using pcks12 keystores, use the same password for the key and the keystore-->
         <!--        <value>{{ ssl_key_pass }}</value> --> <!-- when using jks keystores, different password for the key and keystore-->
     </property>
-    
+
+
     <property>
-      <name>ssl.client.keystore.password</name>
-      <value>{{ ssl_keystore_pass }}</value>
+        <name>ssl.client.keystore.location</name>
+        <value>{{ ssl_client_dir }}/{{ ansible_fqdn }}-keystore.p12</value>
+
     </property>
-    
+
     <property>
-      <name>ssl.client.keystore.type</name>
-      <value>PKCS12</value>
+        <name>ssl.client.keystore.password</name>
+        <value>{{ ssl_keystore_pass }}</value>
     </property>
-    
+
     <property>
-      <name>ssl.client.truststore.location</name>
-      <value>{{ ssl_client_dir }}/all.jks</value>
+        <name>ssl.client.keystore.type</name>
+        <value>PKCS12</value>
     </property>
-    
+
+   <!-- Truststore -->
+
     <property>
-      <name>ssl.client.truststore.password</name>
-      <value>{{ ssl_truststore_pass }}</value>
+        <name>ssl.client.truststore.location</name>
+        <value>{{ ssl_client_dir }}/all.jks</value>
     </property>
-    
+
     <property>
-      <name>ssl.client.truststore.reload.interval</name>
-      <value>10000</value>
+        <name>ssl.client.truststore.password</name>
+        <value>{{ ssl_truststore_pass }}</value>
     </property>
-    
+
     <property>
-      <name>ssl.client.truststore.type</name>
-      <value>jks</value>
+        <name>ssl.client.truststore.reload.interval</name>
+        <value>10000</value>
     </property>
-    
-  </configuration>
+
+    <property>
+        <name>ssl.client.truststore.type</name>
+        <value>jks</value>
+    </property>
+
+</configuration>
