@@ -11,21 +11,21 @@ all:
         # The "short name", ie. the first part of the name here will be used as the name of the VM
         # IF you have to use a "wrong" hostname or an IP here, use the variables "hostname" and "shortname" to set
         #   the correct hostname for the host
-        hist001.yak2.net: #Example of how to set hostname
+        hist001.adm.yak2.net: #Example of how to set hostname
           shortname: hist001
           hostname: "{{shortname}}.{{domain}}"
 
-        rlog001.yak2.net:
+        rlog001.adm.yak2.net:
           host_disks:
             - name: Disk1
               size: 100GiB
               mount: /logstorage
 
-        zkpr[001:003].yak2.net:
-        hdfs[001:002].yak2.net:
-        yarn[001:002].yak2.net:
+        zkpr[001:003].adm.yak2.net:
+        hdfs[001:002].adm.yak2.net:
+        yarn[001:002].adm.yak2.net:
 
-        roda[001:004].yak2.net: #Virtual datanodes
+        roda[001:004].adm.yak2.net: #Virtual datanodes
           memory: 8GiB # Set memory
           cpu_sockets: 4 # Set cpus
 
@@ -34,7 +34,7 @@ all:
               size: 1024GiB
               mount: /data/sdb1
 
-        proj[000:003].yak2.net:
+        proj[000:003].adm.yak2.net:
 #          host_disks:
 #            - name: data
 #              size: 10GiB
