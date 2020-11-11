@@ -1,3 +1,5 @@
+{{ ansible_managed | comment() }}
+
 # The java implementation to use.  Required.
 export JAVA_HOME="{{ jvm_home }}"
 

@@ -1,3 +1,5 @@
+{{ ansible_managed | comment() }}
+
 [Unit]
 Description=Hadoop DFS: run a utility to move block replicas across storage types
 Requires=network-online.target

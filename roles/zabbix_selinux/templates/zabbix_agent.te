@@ -1,3 +1,4 @@
+{{ ansible_managed | comment() }}
 
 module zabbix_agent 1.0;
 

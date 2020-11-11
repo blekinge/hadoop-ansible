@@ -1,4 +1,6 @@
-  <configuration>
+{{ ansible_managed | comment('xml') }}
+
+<configuration>
     
     <property>
       <name>ssl.server.keystore.keypassword</name>

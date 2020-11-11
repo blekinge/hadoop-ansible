@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+{{ ansible_managed | comment() }}
 
 executable=$1
 shift

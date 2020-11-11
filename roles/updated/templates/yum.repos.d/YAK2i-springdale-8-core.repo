@@ -1,3 +1,5 @@
+{{ ansible_managed | comment() }}
+
 [YAK2-sdl8-baseos]
 name=YAK2 Springdale core Base $releasever - $basearch
 #mirrorlist=http://springdale.princeton.edu/data/springdale/$releasever/$basearch/os/BaseOS/mirrorlist

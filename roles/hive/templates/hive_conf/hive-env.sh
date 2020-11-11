@@ -1,3 +1,5 @@
+{{ ansible_managed | comment() }}
+
 export HADOOP_USER_CLASSPATH_FIRST=true #this prevents old metrics libs from mapreduce lib from bringing in old jar deps overriding HIVE_LIB
 if [ "$SERVICE" = "cli" ]; then
   if [ -z "$DEBUG" ]; then

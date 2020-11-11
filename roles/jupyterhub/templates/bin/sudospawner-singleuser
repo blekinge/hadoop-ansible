@@ -1,4 +1,6 @@
 #!/bin/bash
+{{ ansible_managed | comment() }}
+
 set -e
 # This is executed as the logged in user
 

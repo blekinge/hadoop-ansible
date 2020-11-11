@@ -1,4 +1,5 @@
 # Configuration file for jupyter-notebook.
+{{ ansible_managed | comment() }}
 
 #------------------------------------------------------------------------------
 # Application(SingletonConfigurable) configuration

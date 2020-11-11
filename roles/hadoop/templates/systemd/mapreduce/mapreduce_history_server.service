@@ -1,3 +1,5 @@
+{{ ansible_managed | comment() }}
+
 [Unit]
 Description=Hadoop Mapreduce History Server
 Requires=network-online.target

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+{{ ansible_managed | comment() }}
 
 env_file=$1
 shift

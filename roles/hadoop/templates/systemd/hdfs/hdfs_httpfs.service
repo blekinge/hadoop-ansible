@@ -1,3 +1,5 @@
+{{ ansible_managed | comment() }}
+
 [Unit]
 Description=Hadoop DFS HttpFS server, the HDFS HTTP Gateway
 Requires=network-online.target

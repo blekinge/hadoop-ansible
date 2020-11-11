@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+{{ ansible_managed | comment() }}
+
 ##
 ## THIS FILE ACTS AS AN OVERRIDE FOR hadoop-env.sh FOR ALL
 ## WORK DONE BY THE yarn AND RELATED COMMANDS.

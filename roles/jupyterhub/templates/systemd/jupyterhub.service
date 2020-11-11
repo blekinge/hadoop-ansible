@@ -1,3 +1,5 @@
+{{ ansible_managed | comment() }}
+
 [Unit]
 Description=Jupyterhub
 #So this can start after the network service have started

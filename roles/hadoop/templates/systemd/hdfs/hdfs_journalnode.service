@@ -1,3 +1,5 @@
+{{ ansible_managed | comment() }}
+
 [Unit]
 Description=Hadoop DFS journalnode
 Requires=network-online.target

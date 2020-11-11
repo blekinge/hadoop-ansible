@@ -1,4 +1,5 @@
 # Configuration file for jupyterhub.
+{{ ansible_managed | comment() }}
 
 #------------------------------------------------------------------------------
 # Application(SingletonConfigurable) configuration

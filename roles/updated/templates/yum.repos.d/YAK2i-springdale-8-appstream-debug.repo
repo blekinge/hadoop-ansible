@@ -1,3 +1,5 @@
+{{ ansible_managed | comment() }}
+
 [YAK2-sdl8-appstream-debuginfo]
 name=YAK2 Springdale appstream Base $releasever Debuginfo - $basearch
 #mirrorlist=http://springdale.princeton.edu/data/springdale/$releasever/$basearch/debug/AppStream/mirrorlist

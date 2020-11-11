@@ -1,4 +1,4 @@
-
+{{ ansible_managed | comment() }}
 
 # Location of Hadoop.  By default, Hadoop will attempt to determine
 # this location based upon its execution path.
