@@ -62,7 +62,7 @@ hdfs_data_dirs_joined:  "{{ hdfs_data_dirs | join(',') }}"
 yarn_timeline_store: "/hadoop/yarn/timeline"
 
 
-yarn_timelineserver: "{{ groups['yarn_timeline_servers'] | first }}"
+yarn_timelineserver: "{{ groups['yarn_timeline_servers'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
 
 
 yarn_data_dirs: []
@@ -79,12 +79,12 @@ yarn_application_logs_dir: "{{ hadoop_log_dir }}/{{ yarn_user.name }}/applicatio
 #yarn_user.user_logs: "/hadoop/yarn/
 
 #TODO more than one?
-mapreduce_history_server_host: "{{ groups['mapreduce_history_servers'] | first }}"
+mapreduce_history_server_host: "{{ groups['mapreduce_history_servers'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
 
 mapreduce_create_path:
   - "/hadoop/mapreduce"
 
 mapreduce_jobhistory_recovery_store_leveldb_path: /hadoop/mapreduce/jhs
 
+zookeeper_quorum: "{{ groups['zookeeper_servers'] | map('extract',hostvars, 'ansible_fqdn') | zip_longest([], fillvalue=zookeeper_port) | map('join', ':') | join(',') }}"
 
-zookeeper_quorum: "{{ groups['zookeeper_servers'] | zip_longest([], fillvalue=zookeeper_port) | map('join', ':') | join(',') }}"

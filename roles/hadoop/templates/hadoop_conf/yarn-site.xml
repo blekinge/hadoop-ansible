@@ -545,42 +545,43 @@
 
     <property>
         <name>yarn.resourcemanager.ha.rm-ids</name>
-        <value>{{ groups['yarn_resource_managers'] | join(',') }}</value>
+        <value>{{ groups['yarn_resource_managers'] | map('extract',hostvars, 'ansible_fqdn') | join(',') }}</value>
     </property>
     {% for resource_manager in groups['yarn_resource_managers'] %}
+        {% resource_manager_fqdn=hostvars[resource_manager].ansible_fqdn %}
     <property>
-        <name>yarn.resourcemanager.hostname.{{resource_manager}}</name>
-        <value>{{ resource_manager }}</value>
+        <name>yarn.resourcemanager.hostname.{{resource_manager_fqdn}}</name>
+        <value>{{ resource_manager_fqdn }}</value>
     </property>
 
     <property>
-        <name>yarn.resourcemanager.address.{{resource_manager}}</name>
-        <value>{{resource_manager}}:{{yarn_resourcemanager_rpc_port}}</value>
+        <name>yarn.resourcemanager.address.{{resource_manager_fqdn}}</name>
+        <value>{{resource_manager_fqdn}}:{{yarn_resourcemanager_rpc_port}}</value>
     </property>
     <property>
-        <name>yarn.resourcemanager.scheduler.address.{{resource_manager}}</name>
-        <value>{{resource_manager}}:{{yarn_resourcemanager_scheduler_port}}</value>
-    </property>
-
-    <property>
-        <name>yarn.resourcemanager.resource-tracker.address.{{resource_manager}}</name>
-        <value>{{resource_manager}}:{{yarn_resourcemanager_tracker_port}}</value>
+        <name>yarn.resourcemanager.scheduler.address.{{resource_manager_fqdn}}</name>
+        <value>{{resource_manager_fqdn}}:{{yarn_resourcemanager_scheduler_port}}</value>
     </property>
 
     <property>
-        <name>yarn.resourcemanager.admin.address.{{resource_manager}}</name>
-        <value>{{ resource_manager }}:{{yarn_resourcemanager_admin_port}}</value>
+        <name>yarn.resourcemanager.resource-tracker.address.{{resource_manager_fqdn}}</name>
+        <value>{{resource_manager_fqdn}}:{{yarn_resourcemanager_tracker_port}}</value>
     </property>
 
     <property>
-        <name>yarn.resourcemanager.webapp.address.{{resource_manager}}</name>
-        <value>{{resource_manager}}:{{yarn_resourcemanager_http_port}}</value>
+        <name>yarn.resourcemanager.admin.address.{{resource_manager_fqdn}}</name>
+        <value>{{ resource_manager_fqdn }}:{{yarn_resourcemanager_admin_port}}</value>
+    </property>
+
+    <property>
+        <name>yarn.resourcemanager.webapp.address.{{resource_manager_fqdn}}</name>
+        <value>{{resource_manager_fqdn}}:{{yarn_resourcemanager_http_port}}</value>
     </property>
 
 
     <property>
-        <name>yarn.resourcemanager.webapp.https.address.{{resource_manager}}</name>
-        <value>{{resource_manager}}:{{yarn_resourcemanager_https_port}}</value>
+        <name>yarn.resourcemanager.webapp.https.address.{{resource_manager_fqdn}}</name>
+        <value>{{resource_manager_fqdn}}:{{yarn_resourcemanager_https_port}}</value>
     </property>
 
 

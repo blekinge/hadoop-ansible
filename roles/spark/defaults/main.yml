@@ -14,7 +14,7 @@ spark_tmp: "/tmp/spark"
 spark_log_dir: "/var/log/spark"
 spark_pid_dir: "/var/run/spark"
 
-spark_history_server: "{{ groups['spark_history_servers'] | first }}"
+spark_history_server: "{{ groups['spark_history_servers'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
 
 #Place spark own jars first, to prevent errors with older hadoop paranamer jar. See https://issues.apache.org/jira/browse/SPARK-26819
 spark_classpath_list:
