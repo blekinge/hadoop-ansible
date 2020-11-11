@@ -17,9 +17,6 @@
     - role: ipa_sudorules
     - role: ipa_syshomes
     - role: ipa_autohomes
-    - role: ssl_certificates_creator
-    - role: ipa_service_definitions
-    - role: kerberos_system_user_keytabs_create
   collections:
     - freeipa.ansible_freeipa
 

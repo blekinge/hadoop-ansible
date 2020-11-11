@@ -2,13 +2,15 @@
 
 - name: decrypt vars
   hosts: all
-  run_one: true
+  run_once: true
   tasks:
     - debug:
         msg: "{{item.name}} '{{item.value}}'"
       loop:
         - name: "ipaadmin_password"
           value: "{{ipaadmin_password}}"
+        - name: "ssl_ownca_pass"
+          value: "{{ssl_ownca_pass | default(omit)}}"
         - name: "ssl_key_pass"
           value: "{{ssl_key_pass}}"
         - name: "ssl_keystore_pass"

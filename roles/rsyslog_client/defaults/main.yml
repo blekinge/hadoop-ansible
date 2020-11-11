@@ -1,0 +1,40 @@
+---
+# Input binds to ruleset
+# Ruleset binds to templates
+
+rsyslog_inputs:
+  - module: imtcp
+    listeners:
+      - port: "{{syslog_forwarder_port}}"
+        address: localhost # Only bind on localhost, so only local processes can log
+        Ruleset: "rulesetFromHadoop"
+
+rsyslog_rulesets:
+  - name: "rulesetFromHadoop"
+    parser: "rsyslog.rfc5424" # Log statements from hadoop are already formattet as rfc5424, so parse them as this
+    script: |-4
+            action(
+                type="omfwd"
+                target="{{rsyslog_server}}"
+                Template="wireformat" #This ensures that log lines keep their format when send to the log server
+                port="{{rsyslog_server_tcp_port}}"
+                protocol="tcp"
+                action.resumeRetryCount="100"
+                queue.type="linkedList"
+                queue.size="10000"
+                StreamDriver="gtls"
+                StreamDriverMode="1"
+                StreamDriverAuthMode="x509/name"
+                StreamDriverPermittedPeers="{{rsyslog_server}}"
+            )
+            stop
+
+# properties from https://rsyslog.readthedocs.io/en/latest/configuration/properties.html
+rsyslog_templates:
+  - name: "wireformat" #This ensures that log lines keep their format when send to the log server
+    string: "%rawmsg%\\n"
+
+
+rsyslog_outputs:
+  - "{{rsyslog_omfile_default_outputs}}"
+

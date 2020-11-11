@@ -11,8 +11,8 @@
     path: "{{temp_ssl_dir}}/{{ ssl_host }}-private.pem"
 
     size: "{{ ssl_key_size }}"
-    passphrase: "{{ssl_key_pass}}"
-    cipher: "auto"
+#    passphrase: "{{ssl_key_pass}}"
+#    cipher: "auto"
     type: RSA
     state: present
 
@@ -22,7 +22,7 @@
     path: "{{temp_ssl_dir}}/{{ ssl_host }}.csr"
 
     privatekey_path: "{{temp_ssl_dir}}/{{ ssl_host }}-private.pem"
-    privatekey_passphrase: "{{ssl_key_pass}}"
+#    privatekey_passphrase: "{{ssl_key_pass}}"
 
     common_name: "{{ ssl_host }}"
     organizational_unit_name: "{{ssl_organizational_unit_name | default(omit)}}"
@@ -56,7 +56,7 @@
     passphrase: "{{ ssl_keystore_pass }}"
 
     privatekey_path: "{{temp_ssl_dir}}/{{ ssl_host }}-private.pem"
-    privatekey_passphrase: "{{ssl_key_pass}}"
+#    privatekey_passphrase: "{{ssl_key_pass}}"
 
     state: present
 

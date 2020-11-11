@@ -1,13 +1,6 @@
 # The order here is important
 
 
-# And now that the ipa server is ready, we can setup services and ssl
-- hosts: hadoop_nodes
-  roles:
-    - role: ssl_certificates_recipient #Upload ssl certificates to host
-    - role: kerberos_service_keytabs #Create the service keytabs
-    - role: kerberos_system_user_keytabs
-
 # HDFS HA requires zookeepers
 - hosts: zookeeper_servers
   roles:

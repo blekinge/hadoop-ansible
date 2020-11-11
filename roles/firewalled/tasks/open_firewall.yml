@@ -4,7 +4,8 @@
     port: '{{port.port}}/{{port.protocol | default("tcp")}}'
     permanent: yes
     state: enabled
-    zone: public
+    zone: "{{port.zone| default('public')}}"
+    source: "{{port.source | default(omit)}}"
     immediate: yes
     #TODO description
   loop: "{{ports_per_role[rolename]}}"

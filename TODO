@@ -28,15 +28,15 @@
 
 [X] HDFS Log aggregation
 
-[ ] RSyslog TLS
+[/] RSyslog TLS
 
 [X] SSL certs generate locally
 
-[ ] SSL certs common parent
+[X] SSL certs common parent
 
 [ ] Real SSL certs
 
-[ ] Firewalld open ports should only be open to select subnets, not ALL
+[-] Firewalld open ports should only be open to select subnets, not ALL
 
 [X] Playbook to create/update projects.
 	yarn queues
@@ -46,7 +46,7 @@
 [X] Ansible lærings-resourcer
 [X] Ansible module docs
 
-[ ] Adm network in ansible connect, not in configs
+[/] Adm network in ansible connect, not in configs
 
 Dask is teh new multicore framework for python
 Dask works on HPC, kubernetes and YARN

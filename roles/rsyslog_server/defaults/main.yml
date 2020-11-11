@@ -4,35 +4,42 @@ remote_log_folder: /var/log/remote
 
 structured_log_folder: /var/log/remote/hadoop
 
-#
-#    rsyslog_tls:
-#      cacert: "/etc/ssl/ca.cert"
-#      cert: "/etc/ssl/loghost.cert"
-#      key: "/etc/ssl/private/loghost.pem"
 
+
+# Last part of appname like this: %app-name:R:[^.]*$--end:secpath-replace%
 # properties from https://rsyslog.readthedocs.io/en/latest/configuration/properties.html
 rsyslog_templates:
-  - name: "fromRemote"
-    string: "{{remote_log_folder}}/%syslogfacility-text%/%fromhost%-%app-name%.log"
+  - name: "templateFromRemote"
+    string: "{{remote_log_folder}}/%syslogfacility-text%/%fromhost:::secpath-replace%/%fromhost:::secpath-replace%-%app-name:::secpath-replace%.log"
+
   - name: "rfc5424Format"
-    string: "<%PRI%>%PROTOCOL-VERSION% timestamp=%TIMESTAMP% hostname=%hostname% app-name=%app-name% procid=%procid% msgid=%msgid% structured_data=%STRUCTURED-DATA% msg=%msg%\\n"
+#    string: "<%PRI%>%PROTOCOL-VERSION% timestamp=%TIMESTAMP% hostname=%hostname% app-name=%app-name% procid=%procid% msgid=%msgid% structured_data=%STRUCTURED-DATA% msg=%msg%\\n"
+    string: "%TIMESTAMP:::date-rfc3339% %hostname% %msg%\\n"
 
 rsyslog_rulesets:
-  - name: "remote"
+  - name: "rulesetFromRemote"
     parser: "rsyslog.rfc5424"
     script: |-4
             action(
                 type="omfile"
-                dynaFile="fromRemote"
+                dynaFile="templateFromRemote"
                 template="rfc5424Format"
             )
             stop
 
-rsyslog_inputs:
-  - module: imudp
-    parameters: {}
-    listeners:
-      - port: "{{rsyslog_server_udp_port}}"
-        ruleset: "remote"
 
-rsyslog_outputs: [ ]
+rsyslog_inputs:
+  - module: imtcp
+    parameters:
+      # https://www.rsyslog.com/doc/v8-stable/tutorials/tls_cert_server.html
+      "StreamDriver.Mode": "1"
+      "StreamDriver.Authmode": "anon"
+    listeners:
+      - port: "{{rsyslog_server_tcp_port}}"
+        ruleset: "rulesetFromRemote"
+
+
+
+
+rsyslog_outputs:
+  - "{{rsyslog_omfile_default_outputs}}"

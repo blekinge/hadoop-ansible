@@ -3,7 +3,7 @@
 
 domain: yak2.net
 
-#ipa_server: "{{ groups['ipaserver'] | first }}"
+#ipa_server: "{{  groups['ipaserver'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
 # This is the freeipa host. Set this variable if you need to clients to contact it on another hostname
 # than defined in the inventory
 ipa_server: "fipa001.yak2.net"

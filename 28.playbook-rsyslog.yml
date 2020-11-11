@@ -1,4 +1,9 @@
 
 - hosts: rsyslog_server
   roles:
-    - rsyslog_server
+    - role: rsyslog_server
+
+
+- hosts: hadoop_nodes
+  roles:
+    - role: rsyslog_client

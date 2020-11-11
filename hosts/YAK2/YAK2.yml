@@ -4,6 +4,7 @@
 # VMs: Machines to auto-create in ovirt
 # ipaserver: the FreeIPA server to register all hosts to
 # ipaclients: The list of hosts to setup as ipa clients
+# rsyslog_server: The rsyslog server forward all log messages to
 # zabbix_nodes: The list of hosts to setup zabbix agent on
 # hadoop_nodes: = role hadoop, role zookeeper, role spark
 # hdfs_namenodes: = role hdfs_namenode

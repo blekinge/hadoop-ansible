@@ -1,3 +1,6 @@
+- name: gather facts from all
+  hosts: all
+  gather_facts: True
 
 # Enable the {{sealbin_user}} account and disable ssh logins to root
 - hosts: all:!localhost

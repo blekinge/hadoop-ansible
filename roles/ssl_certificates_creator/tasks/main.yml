@@ -44,6 +44,17 @@
         privatekey_path: "{{temp_ssl_dir}}/{{ CA_name }}-private.pem"
         privatekey_passphrase: "{{ssl_ownca_pass}}"
 
+        key_usage:
+          - "keyCertSign"
+          - "digitalSignature"
+          - "keyEncipherment"
+          - "dataEncipherment"
+          - "keyAgreement"
+        key_usage_critical: yes
+        basic_constraints:
+          - "CA:TRUE"
+        basic_constraints_critical: yes
+
         common_name: "{{ CA_name }}"
         organizational_unit_name: "{{ssl_organizational_unit_name | default(omit)}}"
         organization_name: "{{ssl_organization_name | default(omit)}}"
@@ -52,7 +63,7 @@
         country_name: "{{ssl_country_name | default(omit)}}"
 
 
-    - name: "{{ssl_host}}: Create the actual certificate"
+    - name: "CA: Create the actual certificate"
       community.crypto.x509_certificate:
         path: "{{temp_ssl_dir}}/{{ CA_name }}.crt"
 
@@ -62,7 +73,7 @@
         provider: selfsigned
 
     # Result all.jks
-    - name: "{{ssl_host}}: Create a single trust store file that contains parent certificate."
+    - name: "CA: Create a single trust store file that contains parent certificate."
       community.general.java_cert:
         cert_alias: "{{ CA_name }}"
         cert_path: "{{temp_ssl_dir}}/{{CA_name}}.crt"
@@ -72,7 +83,7 @@
 
     - name: "Create certificate for each host"
       include_tasks: createCertificate.yml
-      loop: '{{ groups["all"]  }}'
+      loop: "{{ groups['all'] | map('extract',hostvars, 'ansible_fqdn') | list }}"
       loop_control:
         loop_var: "ssl_host"
 
