@@ -13,6 +13,7 @@
 - name: "Allow rsyslog to write log files in {{remote_log_folder}}"
   community.general.sefcontext:
     target: "{{remote_log_folder}}(/.*)?"
+    seuser: system_u
     setype: var_log_t
     state: present
 
@@ -30,3 +31,9 @@
     mode: 0700
     follow: no
   loop: "{{syslog_facilities | dict2items}}"
+
+
+- name: Restart rsyslog service after SELinux changes
+  service:
+    name: rsyslog
+    state: restarted

@@ -11,8 +11,6 @@
   # This works because when we ssh into {{ipa_server}} as {{sealbin_user}} we use agent forwarding, and thus {{sealbin_user}}
   # will be allowed  to ssh on to any other host
   # But this will break when we become root
-  vars:
-    CA_name: CA
   block:
     - name: "ensure nessesary python openssl library"
       become: yes
@@ -27,22 +25,23 @@
         state: "directory"
         mode: 0755
 
+#TODO ensure we do not create when already present
     - name: "CA: Generate an OpenSSL private key in PEM format"
       community.crypto.openssl_privatekey:
-        path: "{{temp_ssl_dir}}/{{ CA_name }}-private.pem"
+        path: "{{certificate_authority.private_key_file}}"
 
         size: "{{ ssl_key_size }}"
-        passphrase: "{{ssl_ownca_pass}}"
+        passphrase: "{{certificate_authority.private_key_passphrase}}"
         cipher: "auto"
         type: RSA
         state: present
 
     - name: "CA: Generate an OpenSSL Certificate Signing Request"
       community.crypto.openssl_csr:
-        path: "{{temp_ssl_dir}}/{{ CA_name }}.csr"
+        path: "{{temp_ssl_dir}}/{{ certificate_authority.name }}.csr"
 
-        privatekey_path: "{{temp_ssl_dir}}/{{ CA_name }}-private.pem"
-        privatekey_passphrase: "{{ssl_ownca_pass}}"
+        privatekey_path: "{{certificate_authority.private_key_file}}"
+        privatekey_passphrase: "{{certificate_authority.private_key_passphrase}}"
 
         key_usage:
           - "keyCertSign"
@@ -55,35 +54,36 @@
           - "CA:TRUE"
         basic_constraints_critical: yes
 
-        common_name: "{{ CA_name }}"
+        common_name: "{{ certificate_authority.name }}"
         organizational_unit_name: "{{ssl_organizational_unit_name | default(omit)}}"
         organization_name: "{{ssl_organization_name | default(omit)}}"
         locality_name: "{{ssl_locality_name | default(omit)}}"
         state_or_province_name: "{{ssl_state_or_province_name | default(omit)}}"
         country_name: "{{ssl_country_name | default(omit)}}"
 
-
+    #TODO ensure we do not create when already present
     - name: "CA: Create the actual certificate"
       community.crypto.x509_certificate:
-        path: "{{temp_ssl_dir}}/{{ CA_name }}.crt"
+        path: "{{certificate_authority.certificate_file}}"
 
-        privatekey_path: "{{temp_ssl_dir}}/{{ CA_name }}-private.pem"
-        privatekey_passphrase: "{{ssl_ownca_pass}}"
-        csr_path: "{{temp_ssl_dir}}/{{ CA_name }}.csr"
+        privatekey_path: "{{certificate_authority.private_key_file}}"
+        privatekey_passphrase: "{{certificate_authority.private_key_passphrase}}"
+        csr_path: "{{temp_ssl_dir}}/{{ certificate_authority.name }}.csr"
         provider: selfsigned
 
     # Result all.jks
     - name: "CA: Create a single trust store file that contains parent certificate."
       community.general.java_cert:
-        cert_alias: "{{ CA_name }}"
-        cert_path: "{{temp_ssl_dir}}/{{CA_name}}.crt"
+        cert_alias: "{{certificate_authority.name}}"
+        cert_path: "{{certificate_authority.certificate_file}}"
         keystore_create: yes
         keystore_pass: "{{ ssl_truststore_pass  }}"
         keystore_path: "{{temp_ssl_dir}}/all.jks"
 
     - name: "Create certificate for each host"
       include_tasks: createCertificate.yml
-      loop: "{{ groups['all'] | map('extract',hostvars, 'ansible_fqdn') | list }}"
+      loop: "{{ groups['all'] | map('extract', hostvars, 'ansible_fqdn') | list }}"
+      when: ssl_host != hostvars['localhost'].ansible_fqdn
       loop_control:
         loop_var: "ssl_host"
 

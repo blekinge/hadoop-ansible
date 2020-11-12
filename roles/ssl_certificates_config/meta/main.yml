@@ -1,4 +1,3 @@
 ---
 dependencies:
   - role: java_1_8_installed
-  - role: ssl_certificates_config

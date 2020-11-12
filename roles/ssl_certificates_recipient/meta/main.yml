@@ -1,6 +1,4 @@
 ---
 dependencies:
   - role: ipa_systemusers_config
-#  - role: hadoop
-#    vars:
-#      install_hadoop: false
+  - role: ssl_certificates_config

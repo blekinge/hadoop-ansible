@@ -1,10 +1,7 @@
-- name: gather facts from all
-  hosts: all
-  gather_facts: True
-
 # Enable the {{sealbin_user}} account and disable ssh logins to root
 - hosts: all:!localhost
   remote_user: root
+  gather_facts: false
   ignore_unreachable: yes
   roles:
     - ansible_account
@@ -12,3 +9,7 @@
     - meta: clear_host_errors
   collections:
     - ansible.posix
+
+- name: gather facts from all
+  hosts: all
+  gather_facts: True

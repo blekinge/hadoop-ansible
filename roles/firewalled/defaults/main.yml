@@ -153,9 +153,9 @@ ports_per_role: # This dict maps roles names to ports
     - port: "{{rsyslog_server_tcp_port}}"
       protocol: tcp
 
-  rsyslog_client:
-    - port: "{{syslog_forwarder_port}}" #TODO only open for localhost...
-      protocol: tcp
+  rsyslog_client: []
+#    - port: "{{syslog_forwarder_port}}" #TODO only open for localhost...
+#      protocol: tcp
 #      source: localhost
 
     # The Zabbix Agent module can do this itself, so do not duplicate it's work

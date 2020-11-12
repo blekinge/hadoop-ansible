@@ -1,4 +1,4 @@
-- hosts: hadoop_nodes
+- hosts: all:!localhost
   roles:
     - role: updated
     - role: java_1_8_installed

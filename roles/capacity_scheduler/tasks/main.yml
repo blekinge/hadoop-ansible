@@ -1,5 +1,5 @@
 ---
-
+# TODO a better way to parse yarn queues to an ansible structure
 - name: Create and Add items to dictionary
   include: parseQueue1.yml queue1={{queue}} queueName1={{queue.name}}
   loop: "{{yarn_queues }}"

@@ -28,7 +28,7 @@
 
 [X] HDFS Log aggregation
 
-[/] RSyslog TLS
+[X] RSyslog TLS
 
 [X] SSL certs generate locally
 
@@ -46,7 +46,7 @@
 [X] Ansible lærings-resourcer
 [X] Ansible module docs
 
-[/] Adm network in ansible connect, not in configs
+[X] (currently testing) Adm network in ansible connect, not in configs
 
 Dask is teh new multicore framework for python
 Dask works on HPC, kubernetes and YARN

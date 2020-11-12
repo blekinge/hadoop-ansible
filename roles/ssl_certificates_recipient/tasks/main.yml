@@ -50,8 +50,8 @@
     - file: "{{temp_ssl_dir}}/{{ ansible_fqdn }}-private.pem"
       dest: "{{ssl_server_dir}}/private/"
 
-    - file: "{{temp_ssl_dir}}/CA.crt"
-      dest: "{{ssl_server_dir}}/certs/"
+    - file: "{{certificate_authority.certificate_file}}"
+      dest: "{{ssl_server_dir}}/certs/{{certificate_authority.certificate_file | basename}}"
 
 
 - name: "Setting permissions on ssl certificates"
@@ -70,7 +70,7 @@
       mode: '0400'
       group: root
 
-    - file: "{{ssl_server_dir}}/certs/CA.crt"
+    - file: "{{ssl_server_dir}}/certs/{{certificate_authority.certificate_file | basename}}"
 
     - file: "{{ ssl_server_dir }}/all.jks"
       mode: '0444'

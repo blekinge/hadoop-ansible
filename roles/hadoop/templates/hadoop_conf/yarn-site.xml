@@ -550,7 +550,7 @@
         <value>{{ groups['yarn_resource_managers'] | map('extract',hostvars, 'ansible_fqdn') | join(',') }}</value>
     </property>
     {% for resource_manager in groups['yarn_resource_managers'] %}
-        {% resource_manager_fqdn=hostvars[resource_manager].ansible_fqdn %}
+        {% set resource_manager_fqdn=hostvars[resource_manager].ansible_fqdn %}
     <property>
         <name>yarn.resourcemanager.hostname.{{resource_manager_fqdn}}</name>
         <value>{{ resource_manager_fqdn }}</value>
