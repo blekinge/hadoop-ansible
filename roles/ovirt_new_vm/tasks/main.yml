@@ -1,8 +1,6 @@
 ---
 
 - name:  Create VM
-  remote_user: root #TODO unclear if this takes effect or needs to be in included file
-  become: no
   include_tasks: create_vm.yml
 
 
@@ -11,8 +9,6 @@
 
 
 - name: format+mount extra disks
-  remote_user: root #TODO unclear if this takes effect or needs to be in task_format_disk.yml
-  become: no
   include: task_format_disk.yml
   vars:
     mount: "{{item.mount}}"
