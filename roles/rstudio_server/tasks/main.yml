@@ -64,7 +64,7 @@
 - name: Restrict users to humans
   lineinfile:
     path: /etc/rstudio/rstudio-server.conf
-    line: "auth-required-user-group={{users_group}}"
+    line: "auth-required-user-group={{users_group.name}}"
     regexp: "^auth-required-user-group=.*$"
     create: yes
 
