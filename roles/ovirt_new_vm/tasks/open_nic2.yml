@@ -4,7 +4,7 @@
 
 #There seems to be a problem with reaching the host on nic 2. It seems to work if you just ping FROM this interface
 
-- name: "Wait 600 seconds for host {{hostname}} to finish bootup and become reachable/usable and "
+- name: "Wait 600 seconds for host {{hostname}} to finish bootup and become reachable/usable"
   remote_user: root # Ensure that we do not try to login as a user that does not exist yet
   delegate_to: "{{hostname}}"
   become: no

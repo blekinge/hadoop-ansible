@@ -51,7 +51,7 @@
     - role: ipaclient_setup
     - role: ssl_certificates_recipient # Upload new ssl certificates, if needed
     - role: rsyslog_client
-#    - role: zabbix_agent
+    - role: zabbix_agent
   collections:
 #    - community.zabbix If this is uncommented, you will get errors about Springdale.yml
     - freeipa.ansible_freeipa
