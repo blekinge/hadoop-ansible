@@ -76,28 +76,28 @@
     create: yes
 
 
-
-- name: "RStudio ssl config"
-  lineinfile:
-    path: /etc/rstudio/rstudio-server.conf
-    line: "ssl-enabled=1"
-    regexp: "^ssl-enabled=.*$"
-    create: yes
-
-- name: "RStudio ssl config cert"
-  lineinfile:
-    path: /etc/rstudio/rstudio-server.conf
-    line: "ssl-certificate={{ssl_cert_dir}}/{{ ansible_fqdn }}.crt"
-    regexp: "^ssl-certificate=.*$"
-    create: yes
-
-
-- name: "RStudio ssl config key"
-  lineinfile:
-    path: /etc/rstudio/rstudio-server.conf
-    line: "ssl-certificate-key={{ssl_key_dir}}/{{ ansible_fqdn }}-private.pem"
-    regexp: "^ssl-certificate-key=.*$"
-    create: yes
+#
+#- name: "RStudio ssl config"
+#  lineinfile:
+#    path: /etc/rstudio/rstudio-server.conf
+#    line: "ssl-enabled=1"
+#    regexp: "^ssl-enabled=.*$"
+#    create: yes
+#
+#- name: "RStudio ssl config cert"
+#  lineinfile:
+#    path: /etc/rstudio/rstudio-server.conf
+#    line: "ssl-certificate={{ssl_cert_dir}}/{{ ansible_fqdn }}.crt"
+#    regexp: "^ssl-certificate=.*$"
+#    create: yes
+#
+#
+#- name: "RStudio ssl config key"
+#  lineinfile:
+#    path: /etc/rstudio/rstudio-server.conf
+#    line: "ssl-certificate-key={{ssl_key_dir}}/{{ ansible_fqdn }}-private.pem"
+#    regexp: "^ssl-certificate-key=.*$"
+#    create: yes
 
 
 - name: "RStudio port"

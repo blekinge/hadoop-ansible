@@ -48,6 +48,14 @@
 
 [X] (currently testing) Adm network in ansible connect, not in configs
 
+[ ] X2GO
+
+[ ] Better capacity queue parsing
+
+[ ] configurable HDFS dir structure
+
+[ ] RStudio SSL via apache proxy https://support.rstudio.com/hc/en-us/articles/200552326-Running-RStudio-Server-with-a-Proxy
+
 Dask is teh new multicore framework for python
 Dask works on HPC, kubernetes and YARN
 Dask on Yarn: https://yarn.dask.org/en/latest/index.html

@@ -1,6 +1,5 @@
 ---
 
-# TODO is this unnessesary? Does the zabbix agent do this automatigally?
 - name: Zetup Zelinux for Zabbix.
   block:
     - name: Upload Zabbix selinux modulue
