@@ -2,4 +2,5 @@
 dependencies:
   - role: firewalled
   - role: rsyslog
+  - role: ssl_certificates_recipient
 
