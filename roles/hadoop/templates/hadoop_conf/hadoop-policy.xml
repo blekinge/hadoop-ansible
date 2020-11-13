@@ -19,6 +19,7 @@
  limitations under the License.
 
 -->
+
 {{ ansible_managed | comment('xml') }}
 
 <!-- Put site-specific property overrides in this file. -->
