@@ -3,3 +3,4 @@ dependencies:
   - role: firewalled
   - role: ipa_systemusers_config
   - role: spark_client
+  - role: ssl_certificates_recipient

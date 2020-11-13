@@ -23,3 +23,6 @@ hadoop_config_path: "/etc/hadoop/conf"
 #Common SSL variables
 ssl_server_dir: /etc/ssl
 ssl_client_dir: /etc/ssl
+
+ssl_cert_dir: "{{ssl_server_dir}/certs"
+ssl_key_dir: "{{ssl_server_dir}}/private"

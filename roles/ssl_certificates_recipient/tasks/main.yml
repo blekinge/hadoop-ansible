@@ -35,23 +35,23 @@
   loop:
 #      For hadoop
     - file: "{{temp_ssl_dir}}/{{ ansible_fqdn }}-keystore.p12"
-      dest: "{{ssl_server_dir}}"
+      dest: "{{ssl_server_dir}}/"
 
     - file: "{{temp_ssl_dir}}/all.jks"
-      dest: "{{ssl_server_dir}}"
+      dest: "{{ssl_server_dir}}/"
 
     - file: "{{temp_ssl_dir}}/http_secret"
       dest: "/etc/security/"
 
 #      For rsyslog and others
     - file: "{{temp_ssl_dir}}/{{ ansible_fqdn }}.crt"
-      dest: "{{ssl_server_dir}}/certs/"
+      dest: "{{ssl_cert_dir}}/"
 
     - file: "{{temp_ssl_dir}}/{{ ansible_fqdn }}-private.pem"
-      dest: "{{ssl_server_dir}}/private/"
+      dest: "{{ssl_key_dir}}/"
 
     - file: "{{certificate_authority.certificate_file}}"
-      dest: "{{ssl_server_dir}}/certs/{{certificate_authority.certificate_file | basename}}"
+      dest: "{{ssl_cert_dir}}/{{certificate_authority.certificate_file | basename}}"
 
 
 - name: "Setting permissions on ssl certificates"
@@ -63,14 +63,14 @@
   loop:
     - file: "{{ ssl_server_dir }}/{{ ansible_fqdn }}-keystore.p12"
 
-    - file: "{{ssl_server_dir}}/certs/{{ ansible_fqdn }}.crt"
+    - file: "{{ssl_cert_dir}}/{{ ansible_fqdn }}.crt"
       mode: '0444'
 
-    - file: "{{ssl_server_dir}}/private/{{ ansible_fqdn }}-private.pem"
-      mode: '0400'
-      group: root
+    - file: "{{ssl_key_dir}}/{{ ansible_fqdn }}-private.pem" # Used by rsyslog_client (root) and jupyterhub
+      mode: '0440'
+      group: "{{jupyterhub_user.group}}"
 
-    - file: "{{ssl_server_dir}}/certs/{{certificate_authority.certificate_file | basename}}"
+    - file: "{{ssl_cert_dir}}/{{certificate_authority.certificate_file | basename}}"
 
     - file: "{{ ssl_server_dir }}/all.jks"
       mode: '0444'

@@ -1,7 +1,5 @@
 ---
 
-ssl_cert_dir: /etc/ssl/certs
-
 jupyterhub_log_dir: /var/log/jupyterhub
 
 jupyterlabs_extensions:

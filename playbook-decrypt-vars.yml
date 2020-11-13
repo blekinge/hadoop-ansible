@@ -11,8 +11,6 @@
           value: "{{ipaadmin_password}}"
         - name: "ssl_ownca_pass"
           value: "{{ssl_ownca_pass | default(omit)}}"
-        - name: "ssl_key_pass"
-          value: "{{ssl_key_pass}}"
         - name: "ssl_keystore_pass"
           value: "{{ssl_keystore_pass}}"
         - name: "ssl_truststore_pass"

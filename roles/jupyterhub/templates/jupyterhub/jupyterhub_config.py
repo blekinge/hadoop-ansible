@@ -516,12 +516,12 @@ c.SudoSpawner.sudospawner_path = '/usr/local/bin/sudospawner'
 ## Path to SSL certificate file for the public facing interface of the proxy
 #  
 #  When setting this, you should also set ssl_key
-c.JupyterHub.ssl_cert = '{{ssl_cert_dir}}/jupyterhub.cert'
+c.JupyterHub.ssl_cert = '{{ssl_cert_dir}}/{{ ansible_fqdn }}.crt'
 
 ## Path to SSL key file for the public facing interface of the proxy
 #  
 #  When setting this, you should also set ssl_cert
-c.JupyterHub.ssl_key = '{{ssl_cert_dir}}/jupyterhub.cert.key'
+c.JupyterHub.ssl_key = '{{ssl_key_dir}}/{{ ansible_fqdn }}-private.pem'
 
 ## Host to send statsd metrics to. An empty string (the default) disables sending
 #  metrics.
