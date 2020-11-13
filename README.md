@@ -31,7 +31,8 @@ sudo pip install -r requirements.pip
 Install dependent roles and collections from ansible galaxy
 
 ```bash
-ansible-galaxy install -r requirements.yml
+ansible-galaxy collection install -r requirements.yml
+ansible-galaxy role install -r requirements.yml
 ```
 
 ## Vault and security
