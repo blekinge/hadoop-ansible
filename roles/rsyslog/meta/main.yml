@@ -1,0 +1,4 @@
+---
+dependencies:
+  - role: syslog_config
+

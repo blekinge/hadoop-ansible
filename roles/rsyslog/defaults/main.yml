@@ -1,0 +1,63 @@
+---
+
+rsyslog_additional_packages:
+  # For TLS:
+  - "rsyslog-gnutls"
+  # For SELinux:
+  # CentOS:
+  - "policycoreutils-python3"
+
+rsyslog_working_dir: "/var/spool/rsyslog"
+
+
+
+rsyslog_tls:
+  cacert: "{{ssl_server_dir}}/certs/CA.crt"
+  cert: "{{ssl_server_dir}}/certs/{{ ansible_fqdn }}.crt"
+  key: "{{ssl_server_dir}}/private/{{ ansible_fqdn }}-private.pem"
+
+
+
+
+#Common SSL variables
+ssl_server_dir: /etc/ssl
+
+rsyslog_omfile_default_outputs:
+  name: local
+  module: "omfile"
+  actions:
+
+    - selector: "kern.*"
+      parameters:
+        file: "/dev/console"
+
+    - selector: "*.info;mail.none;authpriv.none;cron.none"
+      parameters:
+        file: "/var/log/messages"
+
+    - selector: "authpriv.*"
+      parameters:
+        file: "/var/log/secure"
+
+    - selector: "mail.*"
+      parameters:
+        file: "-/var/log/maillog"
+
+    - selector: "cron.*"
+      parameters:
+        file: "/var/log/cron"
+
+    - selector: "cron.*"
+      parameters:
+        file: "/var/log/cron"
+
+    - selector: "uucp,news.crit"
+      parameters:
+        file: "/var/log/spooler"
+
+    - selector: "local7.*"
+      parameters:
+        file: "/var/log/boot.log"
+#TODO *.emerg syslog
+## Everybody gets emergency messages
+#  *.emerg                                                 :omusrmsg:*
