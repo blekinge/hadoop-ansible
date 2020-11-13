@@ -77,6 +77,7 @@
                 -srcstorepass {{ ssl_keystore_pass | quote }}
                 -destkeystore {{temp_ssl_dir}}/{{ ssl_host }}-keystore.jks
                 -deststoretype JKS
-                -storepass {{ ssl_keystore_pass | quote}}"
+                -storepass {{ ssl_keystore_pass | quote}}
+                -noprompt"
 #  args:
 #    creates: "{{temp_ssl_dir}}/{{ ssl_host }}-keystore.jks"
