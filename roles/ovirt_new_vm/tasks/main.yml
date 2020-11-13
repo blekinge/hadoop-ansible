@@ -3,11 +3,11 @@
 - name:  Create VM
   remote_user: root #TODO unclear if this takes effect or needs to be in included file
   become: no
-  includetasks: create_vm.yml
+  include_tasks: create_vm.yml
 
 
 - name:  Open NIC 2
-  includetasks: open_nic2.yml
+  include_tasks: open_nic2.yml
 
 
 - name: format+mount extra disks
