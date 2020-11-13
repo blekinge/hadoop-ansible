@@ -26,7 +26,9 @@
     privatekey_path: "{{temp_ssl_dir}}/{{ ssl_host }}-private.pem"
 #    privatekey_passphrase: "{{ssl_key_pass}}"
 
-    common_name: "{{ ssl_host }}"
+    subject_alt_name:
+      - 'DNS:{{ ssl_host }}'
+      - 'DNS:{{ group_host }}'
     organizational_unit_name: "{{ssl_organizational_unit_name | default(omit)}}"
     organization_name: "{{ssl_organization_name | default(omit)}}"
     locality_name: "{{ssl_locality_name | default(omit)}}"

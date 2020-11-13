@@ -82,10 +82,12 @@
 
     - name: "Create certificate for each host"
       include_tasks: createCertificate.yml
-      loop: "{{ groups['all'] | map('extract', hostvars, 'ansible_fqdn') | list }}"
-      when: ssl_host != hostvars['localhost'].ansible_fqdn
+      loop: "{{ groups['all'] }}"
+      when: group_host != 'localhost'
+      vars:
+        ssl_host: "{{hostvars[group_host].ansible_fqdn}}"
       loop_control:
-        loop_var: "ssl_host"
+        loop_var: "group_host"
 
     - name: Create http secret.
       command: "dd if=/dev/urandom of={{temp_ssl_dir}}/http_secret bs=1024 count=1"
