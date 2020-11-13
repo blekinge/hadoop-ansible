@@ -68,7 +68,7 @@
 
     - file: "{{ssl_key_dir}}/{{ ansible_fqdn }}-private.pem" # Used by rsyslog_client (root) and jupyterhub
       mode: '0440'
-      group: "{{jupyterhub_user.group}}"
+      group: "{{systemservices_group.name}}"
 
     - file: "{{ssl_cert_dir}}/{{certificate_authority.certificate_file | basename}}"
 
