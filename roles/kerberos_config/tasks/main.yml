@@ -16,7 +16,6 @@
       {%- endfor %}
       {%- for user in keytab_users -%}
       {%- set temp_dic = {} -%}
-      {%- set _= temp_dic.update({'host': user.host }) -%}
       {%- set _= temp_dic.update({'type': 'USER' }) -%}
       {%- set _= temp_dic.update({'principal': user.name+'@'+ipaserver_realm }) -%}
       {%- set _= temp_dic.update({'keytab_file': keytab_dir+'/'+user.name+'.headless.keytab' }) -%}
