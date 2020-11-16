@@ -78,6 +78,9 @@ yarn_data_dirs_joined:  "{{ yarn_data_dirs | join(',') }}"
 yarn_application_logs_dir: "{{ hadoop_log_dir }}/{{ yarn_user.name }}/application-logs/"
 #yarn_user.user_logs: "/hadoop/yarn/
 
+yarn_timeline_server_dir: '/history/timeline-server'
+
+yarn_nodemanager_remote-app-log-dir: "/history/app-logs"
 #TODO more than one?
 mapreduce_history_server_host: "{{ groups['mapreduce_history_servers'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
 
@@ -85,6 +88,9 @@ mapreduce_create_path:
   - "/hadoop/mapreduce"
 
 mapreduce_jobhistory_recovery_store_leveldb_path: /hadoop/mapreduce/jhs
+
+mapreduce.jobhistory.dir: '/history/mr-history'
+
 
 zookeeper_quorum: "{{ groups['zookeeper_servers'] | map('extract',hostvars, 'ansible_fqdn') | zip_longest([], fillvalue=zookeeper_port) | map('join', ':') | join(',') }}"
 

@@ -33,6 +33,24 @@
     - "templates/systemd/*"
 
 
+
+- name: create basic directory structure
+  become: yes
+  become_user: "{{hdfs_user.name}}"
+  shell: |
+    set -e # Fail on anything
+    source /etc/profile.d/hadoop.sh
+    source /etc/profile.d/kerberos.sh
+
+    kinit -kt {{keytab_dir}}/{{hdfs_user.name}}.headless.keytab {{hdfs_user.name}}
+
+    hdfs dfs -mkdir -p {{spark_eventLog_dir}}
+
+    hdfs dfs -chown -R {{spark_user.name}}:{{hadoop_group.name}}  {{/history/spark-history}};
+
+    kdestroy
+
+
 - name: Start Spark History Server process
   systemd:
     state: restarted

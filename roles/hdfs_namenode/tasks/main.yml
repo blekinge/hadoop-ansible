@@ -47,9 +47,9 @@
 
     hdfs dfs -mkdir -p /tmp  \
         /system \
-    	/history /history/app-logs  /history/spark-history    \
-    	/history/mr-history /history/mr-history/done /history/mr-history/tmp \
-    	/history/timeline-server /history/timeline-server/active /history/timeline-server/done /history/timeline-server/generic-history \
+    	/history {{yarn_nodemanager_remote-app-log-dir}}  \
+    	{{mapreduce.jobhistory.dir}} {{mapreduce.jobhistory.dir}}/done {{mapreduce.jobhistory.dir}}/tmp \
+    	{{yarn_timeline_server_dir}} {{yarn_timeline_server_dir}}/active {{yarn_timeline_server_dir}}/done {{yarn_timeline_server_dir}}/generic-history \
     	/user;
 
     hdfs dfs -chmod a+rwx /tmp;
@@ -58,17 +58,15 @@
 
     hdfs dfs -chmod -R o+rx /history;
 
-    hdfs dfs -chmod -R a+rwx /history/mr-history/tmp;
+    hdfs dfs -chmod -R a+rwx {{mapreduce.jobhistory.dir}}/tmp;
 
     hdfs dfs -chown -R {{hdfs_user.name}}:{{hadoop_group.name}} /history;
 
     hdfs dfs -chown {{hdfs_user.name}}:{{hadoop_group.name}} /user;
 
-    hdfs dfs -chown -R {{yarn_user.name}}:{{hadoop_group.name}} /history/app-logs /history/timeline-server;
+    hdfs dfs -chown -R {{yarn_user.name}}:{{hadoop_group.name}} {{yarn_nodemanager_remote-app-log-dir}} {{yarn_timeline_server_dir}};
 
-    hdfs dfs -chown -R {{mapreduce_user.name}}:{{hadoop_group.name}}  /history/mr-history;
-
-    hdfs dfs -chown -R {{spark_user.name}}:{{hadoop_group.name}}  /history/spark-history;
+    hdfs dfs -chown -R {{mapreduce_user.name}}:{{hadoop_group.name}}  {{mapreduce.jobhistory.dir}};
 
     kdestroy
   when: primary|bool
