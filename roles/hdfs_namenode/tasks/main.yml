@@ -48,7 +48,7 @@
     hdfs dfs -mkdir -p /tmp  \
         /system \
     	{{yarn_nodemanager_remote_app_log_dir}}  \
-    	{{mapreduce.jobhistory.dir}} {{mapreduce.jobhistory.dir}}/done {{mapreduce.jobhistory.dir}}/tmp \
+    	{{mapreduce_jobhistory_dir}} {{mapreduce_jobhistory_dir}}/done {{mapreduce_jobhistory_dir}}/tmp \
     	{{yarn_timeline_server_dir}} {{yarn_timeline_server_dir}}/active {{yarn_timeline_server_dir}}/done {{yarn_timeline_server_dir}}/generic-history \
     	/user;
 
@@ -66,7 +66,7 @@
 
     hdfs dfs -chown -R {{yarn_user.name}}:{{hadoop_group.name}} {{yarn_nodemanager_remote_app_log_dir}} {{yarn_timeline_server_dir}};
 
-    hdfs dfs -chown -R {{mapreduce_user.name}}:{{hadoop_group.name}}  {{mapreduce.jobhistory.dir}};
+    hdfs dfs -chown -R {{mapreduce_user.name}}:{{hadoop_group.name}}  {{mapreduce_jobhistory_dir}};
 
     kdestroy
   when: primary|bool
