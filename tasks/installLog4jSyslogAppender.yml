@@ -1,9 +1,9 @@
 - name: install lxml so we can fetch from maven
   package:
     name: python3-lxml
-
-- name: remove other versions of java library
-  shell: "find {{ dest | quote }} -name {{artifact_id | default('log4jSyslogWriter64k-kb') | quote }}* | xargs -r -i rm -f '{}'"
+#
+#- name: remove other versions of java library
+#  shell: "find {{ dest | quote }} -name {{artifact_id | default('log4jSyslogWriter64k-kb') | quote }}* | xargs -r -i rm -f '{}'"
 
 - community.general.maven_artifact:
     group_id: "{{syslog_appender_jar.group_id | default('com.hlag')}}"

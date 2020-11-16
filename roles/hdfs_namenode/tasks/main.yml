@@ -52,13 +52,15 @@
     	{{yarn_timeline_server_dir}} {{yarn_timeline_server_dir}}/active {{yarn_timeline_server_dir}}/done {{yarn_timeline_server_dir}}/generic-history \
     	/user;
 
+
     hdfs dfs -chmod a+rwx /tmp;
 
     hdfs dfs -chmod o+rx /user;
 
     hdfs dfs -chmod -R o+rx /history;
 
-    hdfs dfs -chmod -R a+rwx {{mapreduce.jobhistory.dir}}/tmp;
+    hdfs dfs -chmod -R a+rwx {{mapreduce_jobhistory_dir}}/tmp;
+
 
     hdfs dfs -chown -R {{hdfs_user.name}}:{{hadoop_group.name}} /history;
 
