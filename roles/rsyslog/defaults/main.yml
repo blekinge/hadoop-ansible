@@ -23,7 +23,6 @@ rsyslog_tls:
 ssl_server_dir: /etc/ssl
 
 rsyslog_omfile_default_outputs:
-  name: local
   module: "omfile"
   actions:
 
@@ -58,6 +57,10 @@ rsyslog_omfile_default_outputs:
     - selector: "local7.*"
       parameters:
         file: "/var/log/boot.log"
-#TODO *.emerg syslog
-## Everybody gets emergency messages
-#  *.emerg                                                 :omusrmsg:*
+
+rsyslog_omusrmsg_default_outputs:
+  module: "omusrmsg"
+  actions:
+    - selector: "*.emerg"
+      parameters:
+        users: "*"

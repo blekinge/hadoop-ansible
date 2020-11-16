@@ -37,4 +37,5 @@ rsyslog_templates:
 
 rsyslog_outputs:
   - "{{rsyslog_omfile_default_outputs}}"
+  - "{{rsyslog_omusrmsg_default_outputs}}"
 
