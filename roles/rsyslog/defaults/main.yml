@@ -12,7 +12,7 @@ rsyslog_working_dir: "/var/spool/rsyslog"
 
 rsyslog_globals:
   maxMessageSize: "64K"
-  "parser.escapecontrolcharactertab": "off"
+  "parser.escapeControlCharacterTab": "off"
 
 
 
