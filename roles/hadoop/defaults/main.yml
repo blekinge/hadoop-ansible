@@ -89,7 +89,7 @@ mapreduce_create_path:
 
 mapreduce_jobhistory_recovery_store_leveldb_path: /hadoop/mapreduce/jhs
 
-mapreduce.jobhistory.dir: '/history/mr-history'
+mapreduce_jobhistory_dir: '/history/mr-history'
 
 
 zookeeper_quorum: "{{ groups['zookeeper_servers'] | map('extract',hostvars, 'ansible_fqdn') | zip_longest([], fillvalue=zookeeper_port) | map('join', ':') | join(',') }}"

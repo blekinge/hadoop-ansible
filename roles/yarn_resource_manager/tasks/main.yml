@@ -1,5 +1,5 @@
 ---
-- name: Start YARN Resource Manager process
+- name: (Re)Start YARN Resource Manager systemd service
   systemd:
     state: restarted
     daemon_reload: yes

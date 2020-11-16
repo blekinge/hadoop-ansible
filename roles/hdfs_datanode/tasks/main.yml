@@ -1,7 +1,7 @@
 ---
 
 
-- name: Stop datanode process
+- name: Stop datanode systemd service
   systemd:
     state: stopped
     daemon_reload: yes
@@ -27,7 +27,7 @@
   with_items: "{{hdfs_data_dirs}}"
 
 
-- name: Start datanode process
+- name: (Re)Start datanode systemd service
   throttle: 1
   systemd:
     state: restarted

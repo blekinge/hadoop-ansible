@@ -27,13 +27,10 @@
         username: "{{ovirt_username}}"
         password: "{{ ovirt_password }}"
 
-    - debug:
-        msg: "Creating new vm {{shortname}}"
-
     # Previous task generated I(ovirt_auth) fact, which you can later use
     # in different modules as follows:
 
-    - name: "create vm {{shortname}}"
+    - name: "Creating vm {{shortname}}"
       ovirt.ovirt.ovirt_vm:
         auth: "{{ ovirt_auth }}"
         state: present
@@ -49,10 +46,7 @@
         comment: "{{comment | default(omit)}}"
         description: "{{description | default(omit)}}"
 
-    - debug:
-        msg: "Creating new disks for {{shortname}}"
-
-    - name: "create extra disks"
+    - name: "create extra disks for {{shortname}}"
       when: host_disks is defined
       loop: "{{ host_disks }}"
       register: attached_disks
@@ -92,10 +86,7 @@
         network: "{{nic2}}"
       register: nic2_added
 
-    - debug:
-        msg: "Starting {{shortname}}"
-
-    - name: "Started vm {{shortname}}"
+    - name: "Starting vm {{shortname}}"
       ovirt.ovirt.ovirt_vm:
         auth: "{{ ovirt_auth }}"
         state: running

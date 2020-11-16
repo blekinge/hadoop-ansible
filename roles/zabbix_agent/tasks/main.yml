@@ -20,8 +20,8 @@
   include_role:
     name: community.zabbix.zabbix_agent
 
-- name: Start zabbix agent service
+- name: (Re)Start zabbix agent service
   systemd:
     service: zabbix-agent
-    state: started
+    state: restarted
     enabled: yes

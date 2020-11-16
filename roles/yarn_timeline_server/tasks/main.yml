@@ -1,13 +1,13 @@
 ---
 
-- name: Create  Timeline dir
+- name: Create Timeline dir
   file:
     path: "{{yarn_timeline_store}}"
     state: directory
     owner: "{{yarn_user.name}}"
     group: "{{yarn_user.group}}"
 
-- name: Start YARN Timeline Server process
+- name: (Re)Start YARN Timeline Server systemd service
   systemd:
     state: started
     daemon_reload: yes

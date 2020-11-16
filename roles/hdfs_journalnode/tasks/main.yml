@@ -1,7 +1,7 @@
 ---
 
 
-- name: Stop journalnode process
+- name: Stop journalnode systemd service
   systemd:
     state: stopped
     daemon_reload: yes
@@ -23,7 +23,7 @@
     group: "{{hdfs_user.group}}"
 
 
-- name: Start journalnode process
+- name: (Re)Start journalnode systemd service
   throttle: 1
   systemd:
     state: restarted

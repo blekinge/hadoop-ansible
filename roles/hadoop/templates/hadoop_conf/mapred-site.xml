@@ -101,7 +101,7 @@
 
     <property>
         <name>mapreduce.jobhistory.done-dir</name>
-        <value>{{mapreduce.jobhistory.dir}}/done</value>
+        <value>{{mapreduce_jobhistory_dir}}/done</value>
     </property>
 
     <property>
@@ -111,7 +111,7 @@
 
     <property>
         <name>mapreduce.jobhistory.intermediate-done-dir</name>
-        <value>{{mapreduce.jobhistory.dir}}/tmp</value>
+        <value>{{mapreduce_jobhistory_dir}}/tmp</value>
     </property>
 
     <property>

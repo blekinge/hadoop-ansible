@@ -3,7 +3,7 @@
 - name: zookeeper_id
   template: src=myid dest={{zookeeper_data_dir}}/myid mode=0644 owner="root" group="root"
 
-- name: Start zookeeper server
+- name: (Re)Start zookeeper server
   throttle: 1
   systemd:
     state: restarted

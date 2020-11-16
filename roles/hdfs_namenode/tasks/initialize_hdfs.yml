@@ -1,6 +1,6 @@
 ---
 
-- name: Stop namenode process
+- name: Stop namenode systemd service
   systemd:
     state: stopped
     daemon_reload: yes
@@ -50,7 +50,7 @@
   when: primary|bool
 
 # Then start the primary, so the secondary will have something to sync with
-- name: Start Primary Namenode process
+- name: (Re)Start Primary Namenode systemd service
   systemd:
     state: restarted
     daemon_reload: yes
@@ -59,7 +59,7 @@
   when: primary|bool
 
 
-- name: Stop Secondary Namenode process
+- name: Stop Secondary Namenode systemd service
   systemd:
     state: stopped
     daemon_reload: yes

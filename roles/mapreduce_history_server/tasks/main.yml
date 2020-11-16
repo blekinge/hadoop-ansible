@@ -24,9 +24,9 @@
 
     mapred frameworkuploader  -target /system/mapreduce/mapreduce.tar.gz#mr-framework
 
-- name: Start Mapreduce History Server process
+- name: (Re)Start Mapreduce History Server systemd service
   systemd:
-    state: started
+    state: restarted
     daemon_reload: yes
     enabled: yes
     name: mapreduce_history_server

@@ -1,6 +1,6 @@
 ---
 
-- name: Start node manager process
+- name: Stop node manager systemd service
   systemd:
     state: stopped
     daemon_reload: yes
@@ -30,9 +30,9 @@
     - /var/log/hadoop/yarn/userlogs
 
 
-- name: Start node manager process
+- name: (Re)Start node manager systemd service
   systemd:
-    state: started
+    state: restarted
     daemon_reload: yes
     name: yarn_node_manager
     enabled: true

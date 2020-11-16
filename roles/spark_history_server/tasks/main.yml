@@ -51,7 +51,7 @@
     kdestroy
 
 
-- name: Start Spark History Server process
+- name: (Re)Start Spark History Server systemd service
   systemd:
     state: restarted
     daemon_reload: yes

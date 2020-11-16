@@ -92,7 +92,7 @@
 - hosts: spark_history_servers
   serial: 1
   tasks:
-    - name: Start Spark History Server process
+    - name: (Re)Start Spark History Server systemd service
       systemd:
         state: restarted
         name: spark_history_server

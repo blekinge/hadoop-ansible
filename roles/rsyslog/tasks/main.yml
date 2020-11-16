@@ -68,13 +68,10 @@
                   | unique }}"
   when: ansible_selinux|bool
 
-- name: Start service
+- name: (Re)Start RSyslog service
   service:
     name: rsyslog
     state: restarted
-
-- name: Enable service
-  service:
-    name: rsyslog
     enabled: yes
+
 ...

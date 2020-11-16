@@ -247,7 +247,7 @@
     # Build extensions (must be done to activate extensions since --no-build is used above)
 
 # Start
-- name: Start Jupyterhub process
+- name: (Re)Start Jupyterhub systemd service
   systemd:
     state: restarted
     name: jupyterhub

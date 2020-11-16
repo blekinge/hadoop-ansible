@@ -123,7 +123,7 @@
     policy: targeted
     state: permissive
 
-- name: Start RStudio Server service
+- name: (Re)Start RStudio Server service
   systemd:
     service: rstudio-server
     state: restarted
