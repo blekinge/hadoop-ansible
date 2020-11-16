@@ -1,1 +1,32 @@
 capacity_queues: []
+
+
+# https://docs.ansible.com/ansible/latest/plugins/lookup.html
+# https://jinja.palletsprojects.com/en/master/templates/#rejectattr
+# https://jinja.palletsprojects.com/en/master/templates/#map
+# https://jinja.palletsprojects.com/en/master/templates/#undefined
+queue_mappings: "{{
+  ( lookup('vars', *(projects | map(attribute='name'))) |
+    rejectattr('queue_mapping', 'undefined') |
+    map(attribute='queue_mapping') |
+    sort |
+    list
+  )  +
+  [ default_queue_mapping ]
+  }}"
+
+
+
+#Each level must sum capacity to 100
+yarn_queues:
+  - name: root
+    admins: "{{yarn_user.name}}"
+    submitters: "{{yarn_user.name}}"
+    capacity: 100
+    ordering: priority-utilization
+    max_capacity: 100
+    children: "{{lookup('vars', *(projects | map(attribute='name'))) |
+                 rejectattr('yarn_queue', 'undefined') |
+                 map(attribute='yarn_queue') |
+                 list }}"
+

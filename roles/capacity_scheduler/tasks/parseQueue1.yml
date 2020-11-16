@@ -1,12 +1,26 @@
----
-# Input var = queue1
 
-- name: handle queue
-  include: leafNodes.yml leaf={{queue1}} leafName={{queueName1}} subqueues={{queue1.children | default([]) | map(attribute="name") | join(',')}}
+- name: "Block"
+  block:
+    - name: "Level 1: queue ({{queueName1}})"
+      set_fact:
+        capacity_queues: "{{capacity_queues | default([]) + [item]}}"
+      loop:
+        -  "{{ queue1 |
+              dict2items |
+              rejectattr('key', 'equalto', 'children') |
+              list |
+              items2dict |
+              combine(
+                { 'longname':queueName1,
+                  'subqueues': queue1.children | default([]) | map(attribute='name') | join(',')
+                })
+            }}"
 
-- name: subqueues
-  include: parseQueue2.yml queue2={{subqueue}} queueName2={{queueName1}}.{{subqueue.name}}
-  loop: "{{queue1.children }}"
-  when: queue1.children is defined
-  loop_control:
-    loop_var: subqueue
+    - name: "Level 1: subqueues for ({{queueName1}})"
+      include_tasks: "parseQueue2.yml"
+      vars:
+        queue2: "{{subqueue1}}"
+        queueName2: "{{queueName1}}.{{subqueue1.name}}"
+      loop: "{{queue1.children | default([]) | list}}"
+      loop_control:
+        loop_var: "subqueue1"

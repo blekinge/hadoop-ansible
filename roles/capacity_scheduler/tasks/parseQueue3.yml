@@ -1,4 +1,27 @@
 ---
-- name: handle queue
-  include: leafNodes.yml leaf={{queue3}} leafName={{queueName3}} subqueues={{queue3.children | default([]) | map(attribute="name") | join(',')}}
+# Input var = queue3, queueName3
 
+- name: "Level 3: queue ({{queueName3}})"
+  set_fact:
+    capacity_queues: "{{capacity_queues | default([]) + [item]}}"
+  loop:
+    -  "{{ queue3 |
+          dict2items |
+          rejectattr('key', 'equalto', 'children') |
+          list |
+          items2dict |
+          combine(
+            { 'longname':queueName3,
+              'subqueues': queue3.children | default([]) | map(attribute='name') | join(',')
+            })
+        }}"
+
+
+- name: "Level 3: subqueues for ({{queueName3}})"
+  include_tasks: parseQueue4.yml
+  vars:
+    queue4: "{{subqueue3}}"
+    queueName4: "{{queueName3}}.{{subqueue3.name}}"
+  loop: "{{queue3.children | default([]) | list}}"
+  loop_control:
+    loop_var: subqueue3

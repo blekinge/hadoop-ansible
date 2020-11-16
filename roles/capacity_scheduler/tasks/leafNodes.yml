@@ -1,6 +1,0 @@
----
-- name: set long name
-  set_fact:
-    capacity_queues: "{{capacity_queues | default([]) + [item]}}"
-  loop:
-    -  "{{leaf | dict2items|rejectattr('key', 'equalto', 'children')|list|items2dict| combine({'longname':leafName, 'subqueues':subqueues}) }}"

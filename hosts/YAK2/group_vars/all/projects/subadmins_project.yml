@@ -1,6 +1,4 @@
-
-queue_mapping: "g:{{users_group.name}}:default"
-
+---
 
 project_ipa:
   name: "{{subadmins_group.name}}"

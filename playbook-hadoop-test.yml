@@ -1,15 +1,10 @@
 
 
-# Now that the hosts have been added as ipa clients, we can setup the kerberos services
-- hosts: proj000.yak2.net
+- hosts: proj000.adm.yak2.net
   roles:
-    - syslog_config
+    - capacity_scheduler
   tasks:
-    - debug:
-        msg: "{{ groups['hdfs_datanodes'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
-    - debug:
-        msg: "{{ groups['all'] }}"
-    - debug:
-        msg: "{{ groups['all'] | map('extract',hostvars, 'ansible_fqdn') | list }}"
 #    - debug:
-#        msg: "{{ hostvars | selectattr('group_names', 'contains', 'rsyslog_server') | list}}"
+#        msg: "{{yarn_queues}}"
+    - debug:
+        msg: "{{capacity_queues | map(attribute='longname') | list}}"

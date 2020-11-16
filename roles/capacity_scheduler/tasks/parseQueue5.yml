@@ -1,0 +1,17 @@
+---
+# Input var = queue5, queueName5
+
+- name: "Level 5: queue ({{queueName5}})"
+  set_fact:
+    capacity_queues: "{{capacity_queues | default([]) + [item]}}"
+  loop:
+    -  "{{ queue5 | 
+          dict2items | 
+          rejectattr('key', 'equalto', 'children') |
+          list | 
+          items2dict |
+          combine( 
+            { 'longname':queueName5,
+              'subqueues': queue5.children | default([]) | map(attribute='name') | join(',')
+            })
+        }}"

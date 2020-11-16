@@ -46,11 +46,11 @@
 [X] Ansible lærings-resourcer
 [X] Ansible module docs
 
-[X] (currently testing) Adm network in ansible connect, not in configs
+[X] Adm network in ansible connect, not in configs
 
 [ ] X2GO
 
-[ ] Better capacity queue parsing
+[/] Better capacity queue parsing
 
 [ ] configurable HDFS dir structure
 
