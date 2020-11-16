@@ -46,7 +46,7 @@
 
     hdfs dfs -mkdir -p {{spark_eventLog_dir}}
 
-    hdfs dfs -chown -R {{spark_user.name}}:{{hadoop_group.name}}  {{/history/spark-history}};
+    hdfs dfs -chown -R {{spark_user.name}}:{{hadoop_group.name}}  {{spark_eventLog_dir}};
 
     kdestroy
 
