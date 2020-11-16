@@ -9,7 +9,12 @@ rsyslog_additional_packages:
 
 rsyslog_working_dir: "/var/spool/rsyslog"
 
-maxMessageSize: "64K"
+
+rsyslog_globals:
+  - maxMessageSize: "64K"
+  - "parser.escapecontrolcharactertab": "off"
+
+
 
 rsyslog_tls:
   cacert: "{{ssl_server_dir}}/certs/CA.crt"
@@ -30,7 +35,7 @@ rsyslog_omfile_default_outputs:
       parameters:
         file: "/dev/console"
 
-    - selector: "*.info;mail.none;authpriv.none;cron.none"
+     - selector: "*.info;mail.none;authpriv.none;cron.none"
       parameters:
         file: "/var/log/messages"
 
