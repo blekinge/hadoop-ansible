@@ -35,7 +35,7 @@ rsyslog_omfile_default_outputs:
       parameters:
         file: "/dev/console"
 
-     - selector: "*.info;mail.none;authpriv.none;cron.none"
+    - selector: "*.info;mail.none;authpriv.none;cron.none"
       parameters:
         file: "/var/log/messages"
 
