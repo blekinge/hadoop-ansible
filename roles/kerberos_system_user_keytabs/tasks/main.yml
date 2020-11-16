@@ -15,7 +15,7 @@
 
 - name: "uploading headless keytabs to hosts"
   throttle: 2
-  delegate_to: "{{ipa_server}}"
+  delegate_to: ipaserver
   remote_user: root
   synchronize:
     src: "{{ item }}"

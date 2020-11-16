@@ -44,7 +44,7 @@
 
 
 - name: user home
-  delegate_to: "{{ ipa_server }}"
+  delegate_to: ipaserver
   file:
     state: directory
     path: "{{ ipaserver_autohome_dir }}/{{ user.username }}"
