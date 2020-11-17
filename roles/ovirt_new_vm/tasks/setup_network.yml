@@ -67,12 +67,8 @@
         dns4_search: '{{[domain,domain_nfs,domain_adm,domain_dmz]}}'
         autoconnect: yes
         state: present
+      ignore_errors: yes
 
-    - name: "remove old networks ens3"
-      community.general.nmcli:
-        conn_name: 'ens3'
-        state: absent
-    #          shell: "nmcli con del ens4; nmcli con del ens3;"
 
 - name: "Reboot vm to activate new networks"
   ovirt.ovirt.ovirt_vm:
@@ -81,3 +77,14 @@
     name: "{{shortname}}"
     cluster: "{{ovirt_cluster}}"
     wait: yes
+
+
+- name: "remove old networks ens3"
+  delegate_to: "{{inventory_hostname}}"
+  become: yes
+  become_user: root
+  remote_user: root
+  connection: ssh
+  community.general.nmcli:
+    conn_name: 'ens3'
+    state: absent
