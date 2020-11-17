@@ -1,0 +1,14 @@
+---
+
+- name: Install X2Go
+  package:
+    state: present
+    name:
+      - x2goserver
+      - mate-desktop mate-terminal mate-settings-daemon mate-themes #Desktop environment
+      - caja # nautilus
+      - pluma #gedit
+      - atril #evince
+      - engrampa #archivemanager
+      - firefox #browser
+
