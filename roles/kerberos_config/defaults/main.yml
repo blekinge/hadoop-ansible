@@ -28,6 +28,7 @@ hive_server2_service_name: "hs2"
 
 keytab_users:
   - {
+    hostgroup: "ipaserver", #Create this keytab on ipaserver and distribute it to all host
     name: "{{ hdfs_user.name }}",
     owner: "{{ hdfs_user.name }}",
     group: "{{ hadoop_group.name }}"

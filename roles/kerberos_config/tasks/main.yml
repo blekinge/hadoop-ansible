@@ -14,8 +14,10 @@
       {%- set _= temp_list.append(temp_dic) -%}
       {%- endfor %}
       {%- endfor %}
-      {%- for user in keytab_users -%}
+      {%- for host in groups['all'] -%}
+      {%- for user in keytab_users if (user.hostgroup in hostvars[host]['group_names'] or user.hostgroup == 'all') -%}
       {%- set temp_dic = {} -%}
+      {%- set _= temp_dic.update({'host': hostvars[host]['ansible_fqdn'] }) -%}
       {%- set _= temp_dic.update({'type': 'USER' }) -%}
       {%- set _= temp_dic.update({'principal': user.name+'@'+ipaserver_realm }) -%}
       {%- set _= temp_dic.update({'keytab_file': keytab_dir+'/'+user.name+'.headless.keytab' }) -%}
@@ -23,5 +25,6 @@
       {%- set _= temp_dic.update({'group': user.group }) -%}
       {%- set _= temp_dic.update({'file_permissions': entry.permissions | default(keytab_permissions) }) -%}
       {%- set _= temp_list.append(temp_dic) -%}
+      {%- endfor %}
       {%- endfor %}
       {{- temp_list -}}
