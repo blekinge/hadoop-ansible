@@ -10,7 +10,7 @@ ipaserver_domain: "{{ ipa_domain }}"
 ipaserver_realm: "{{ ipa_realm }}"
 
 
-ipa_server: "{{ groups['ipaserver'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
+ipa_server: "{{ groups['hostgroup_ipaserver'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
 
 ipa_admin_user:
   name: admin

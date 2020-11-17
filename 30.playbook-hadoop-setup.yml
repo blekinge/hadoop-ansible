@@ -1,48 +1,48 @@
 
 #The stuff below expect us to have facts about the ansible_fqdn of each host, so ensure that we have gathered these facts
 - name: Gather facts from all to ensure we have their fqdn names
-  hosts: all
+  hosts: hostgroup_all
   gather_facts: yes
 
 # The order here is important
 
 
 # HDFS HA requires zookeepers
-- hosts: zookeeper_servers
+- hosts: hostgroup_zookeeper_servers
   roles:
     - zookeeper_server
 
 # HDFS
 
 # The journalnodes must exist before the namenodes can run
-- hosts: hdfs_journalnodes
+- hosts: hostgroup_hdfs_journalnodes
   roles:
     - hdfs_journalnode
 
 # The namenodes do not require datanodes, but the datanodes require namenodes
-- hosts: hdfs_namenodes
+- hosts: hostgroup_hdfs_namenodes
   roles:
     - hdfs_namenode
 
 # The datanodes become unhappy if they cannot connect to a namenode when starting up, so install them after the
 #   namenodes
-- hosts: hdfs_datanodes
+- hosts: hostgroup_hdfs_datanodes
   roles:
     - hdfs_datanode
 
 # YARN
 
-- hosts: yarn_timeline_servers
+- hosts: hostgroup_yarn_timeline_servers
   roles:
     - yarn_timeline_server
 
 
-- hosts: yarn_node_managers
+- hosts: hostgroup_yarn_node_managers
   roles:
     - yarn_node_manager
 
 
-- hosts: yarn_resource_managers
+- hosts: hostgroup_yarn_resource_managers
   roles:
     - yarn_resource_manager
 
@@ -50,12 +50,12 @@
 # MapReduce
 
 
-- hosts: mapreduce_history_servers
+- hosts: hostgroup_mapreduce_history_servers
   roles:
     - mapreduce_history_server
 
 # Spark
 
-- hosts: spark_history_servers
+- hosts: hostgroup_spark_history_servers
   roles:
     - role: spark_history_server

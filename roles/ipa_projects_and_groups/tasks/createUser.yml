@@ -44,7 +44,7 @@
 
 
 - name: user home
-  delegate_to: "{{groups['ipaserver'] | first}}"
+  delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
   file:
     state: directory
     path: "{{ ipaserver_autohome_dir }}/{{ user.username }}"

@@ -1,4 +1,4 @@
-all:
+hostgroup_all:
   hosts:
     # Needed so I can use my local virtualenv python (nessesary for ovirt module) when creating new VMs
     localhost:
@@ -6,7 +6,7 @@ all:
       ansible_python_interpreter: "python"
 
   children:
-    VMs: # This is the group of VMs created by 10.playbook-ovirt-vms.yml
+    hostgroup_VMs: # This is the group of VMs created by 10.playbook-ovirt-vms.yml
       hosts:
         # The "short name", ie. the first part of the name here will be used as the name of the VM
         # IF you have to use a "wrong" hostname or an IP here, use the variables "hostname" and "shortname" to set

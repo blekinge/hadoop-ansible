@@ -1,7 +1,7 @@
 ## This playbook creates the hosts as virtual VMs in Ovirt
 
 - name: oVirt ansible collection
-  hosts: VMs
+  hosts: hostgroup_VMs
   gather_facts: False
   serial: 1 # Only create and run 1 at a time.
   # This is nessesary to set the network up correctly, as otherwise the temp ips will clash

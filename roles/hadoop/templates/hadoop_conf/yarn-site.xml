@@ -548,9 +548,9 @@
 
     <property>
         <name>yarn.resourcemanager.ha.rm-ids</name>
-        <value>{{ groups['yarn_resource_managers'] | map('extract',hostvars, 'ansible_fqdn') | join(',') }}</value>
+        <value>{{ groups['hostgroup_yarn_resource_managers'] | map('extract',hostvars, 'ansible_fqdn') | join(',') }}</value>
     </property>
-    {% for resource_manager in groups['yarn_resource_managers'] %}
+    {% for resource_manager in groups['hostgroup_yarn_resource_managers'] %}
         {% set resource_manager_fqdn=hostvars[resource_manager].ansible_fqdn %}
     <property>
         <name>yarn.resourcemanager.hostname.{{resource_manager_fqdn}}</name>

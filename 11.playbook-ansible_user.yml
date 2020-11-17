@@ -1,5 +1,5 @@
 # Enable the {{sealbin_user}} account and disable ssh logins to root
-- hosts: all:!localhost
+- hosts: hostgroup_all:!localhost
   remote_user: root
   gather_facts: false
   ignore_unreachable: yes
@@ -11,5 +11,5 @@
     - ansible.posix
 
 - name: gather facts from all
-  hosts: all
+  hosts: hostgroup_all
   gather_facts: True

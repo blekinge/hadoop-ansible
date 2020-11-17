@@ -1,8 +1,8 @@
 - set_fact: # set_fact to register this variable
     kerberos_conf: >
       {%- set temp_list = [] -%}
-      {%- for host in groups['all'] -%}
-      {%- for service in keytab_services if (service.hostgroup in hostvars[host]['group_names'] or service.hostgroup == 'all') -%}
+      {%- for host in groups['hostgroup_all'] -%}
+      {%- for service in keytab_services if (service.hostgroup in hostvars[host]['group_names'] or service.hostgroup == 'hostgroup_all') -%}
       {%- set temp_dic = {} -%}
       {%- set _= temp_dic.update({'host': hostvars[host]['ansible_fqdn'] }) -%}
       {%- set _= temp_dic.update({'type': 'SERVICE' }) -%}
@@ -14,8 +14,8 @@
       {%- set _= temp_list.append(temp_dic) -%}
       {%- endfor %}
       {%- endfor %}
-      {%- for host in groups['all'] -%}
-      {%- for user in keytab_users if (user.hostgroup in hostvars[host]['group_names'] or user.hostgroup == 'all') -%}
+      {%- for host in groups['hostgroup_all'] -%}
+      {%- for user in keytab_users if (user.hostgroup in hostvars[host]['group_names'] or user.hostgroup == 'hostgroup_all') -%}
       {%- set temp_dic = {} -%}
       {%- set _= temp_dic.update({'host': hostvars[host]['ansible_fqdn'] }) -%}
       {%- set _= temp_dic.update({'type': 'USER' }) -%}

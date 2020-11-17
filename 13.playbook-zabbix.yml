@@ -1,4 +1,4 @@
-- hosts: zabbix_nodes
+- hosts: hostgroup_zabbix_nodes
   roles:
     - role: zabbix_agent
 #  collections:

@@ -1,6 +1,6 @@
 ---
 syslog_forwarder: 127.0.0.1
-rsyslog_server: "{{ groups['rsyslog_server'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
+rsyslog_server: "{{ groups['hostgroup_rsyslog_server'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
 
 
 syslog_facilities:

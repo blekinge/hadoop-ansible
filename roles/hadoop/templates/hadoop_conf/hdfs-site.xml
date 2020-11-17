@@ -109,10 +109,10 @@
     </property>
     <property>
         <name>dfs.ha.namenodes.{{ hdfs_name }}</name>
-        <value>{{ groups['hdfs_namenodes'] | map('extract',hostvars, 'ansible_fqdn') | join(',') }}</value>
+        <value>{{ groups['hostgroup_hdfs_namenodes'] | map('extract',hostvars, 'ansible_fqdn') | join(',') }}</value>
     </property>
 
-    {% for namenode in groups['hdfs_namenodes'] %}
+    {% for namenode in groups['hostgroup_hdfs_namenodes'] %}
         {% set namenode_fqdn = hostvars[namenode].ansible_fqdn %}
     <property>
         <name>dfs.namenode.rpc-address.{{ hdfs_name }}.{{ namenode_fqdn }}</name>
@@ -132,7 +132,7 @@
 
     <property>
         <name>dfs.namenode.shared.edits.dir</name>
-        <value>qjournal://{{  groups['zookeeper_servers'] | map('extract',hostvars, 'ansible_fqdn') | zip_longest([], fillvalue=hdfs_journalnode_rpc_port) | map('join', ':') | join(';') }}/{{ hdfs_name }}
+        <value>qjournal://{{  groups['hostgroup_zookeeper_servers'] | map('extract',hostvars, 'ansible_fqdn') | zip_longest([], fillvalue=hdfs_journalnode_rpc_port) | map('join', ':') | join(';') }}/{{ hdfs_name }}
         </value>
     </property>
     <property>

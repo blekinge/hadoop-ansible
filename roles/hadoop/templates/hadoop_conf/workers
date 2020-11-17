@@ -1,3 +1,3 @@
-{% for host in groups['yarn_node_managers'] %}
+{% for host in groups['hostgroup_yarn_node_managers'] %}
 {{ hostvars[host].ansible_fqdn }}
 {% endfor %}

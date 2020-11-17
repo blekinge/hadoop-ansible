@@ -54,36 +54,36 @@ Assign hosts these magic groups
 
 These are the magical hostgroups that are automagically bound to roles and behaviours by the playbooks
 
-* VMs: Machines to auto-create in ovirt
+* hostgroup_VMs: Machines to auto-create in ovirt
 
-* ipaserver: the FreeIPA server to register all hosts to
+* hostgroup_ipaserver: the FreeIPA server to register all hosts to
 
 * ipaclients: The list of hosts to setup as ipa clients
 
-* zabbix_nodes: The list of hosts to setup zabbix agent on
+* hostgroup_zabbix_nodes: The list of hosts to setup zabbix agent on
 
-* hadoop_nodes: = role hadoop, role zookeeper, role spark
+* hostgroup_hadoop_nodes: = role hadoop, role zookeeper, role spark
 
-* hdfs_namenodes: = role hdfs_namenode.
+* hostgroup_hdfs_namenodes: = role hdfs_namenode.
     * When creating a new cluster, one of these must have the fact `primary: true`. The primary node is the one whose hdfs gets propagated to the other namenodes
 
-* hdfs_journalnodes: = role hdfs_journalnode
+* hostgroup_hdfs_journalnodes: = role hdfs_journalnode
 
-* hdfs_datanodes: = role hdfs_datanode
+* hostgroup_hdfs_datanodes: = role hdfs_datanode
 
-* zookeeper_servers: = role zookeeper_server
+* hostgroup_zookeeper_servers: = role zookeeper_server
 
-* yarn_resource_managers: = role yarn_resource_manager
+* hostgroup_yarn_resource_managers: = role yarn_resource_manager
 
-* yarn_node_managers: = role yarn_node_manager
+* hostgroup_yarn_node_managers: = role yarn_node_manager
 
-* yarn_timeline_servers: = role yarn_timeline_server
+* hostgroup_yarn_timeline_servers: = role yarn_timeline_server
 
-* mapreduce_history_servers: = role mapreduce_history_server
+* hostgroup_mapreduce_history_servers: = role mapreduce_history_server
 
-* spark_history_servers: = role spark_history_server
+* hostgroup_spark_history_servers: = role spark_history_server
 
-* project_nodes: = role spark_client, role rstudio_server, role jupyterhub
+* hostgroup_project_nodes: = role spark_client, role rstudio_server, role jupyterhub
 
 
 ### Ovirt VMs
@@ -114,7 +114,7 @@ VMs: # This is the group of VMs created by 10.playbook-ovirt-vms.yml
   
 ```
 
-You  can create a folder/file named `VMs`/`VMs.yml` for the variables for all VM hosts.
+You  can create a folder/file named `hostgroup_VMs`/`hostgroup_VMs.yml` for the variables for all VM hosts.
 
 You need to set these blocks
 
@@ -255,19 +255,19 @@ The ansible will automagically merge all `*_zabbix_host_groups__to_merge` variab
 
 So, for other hostgroups, which you want to place into specific zabbix hostgroups, you must define something like this with a unique prefix:
 
-(for host group `hadoop_nodes`)
+(for host group `hostgroup_hadoop_nodes`)
 ```yaml
 hadoop_nodes_zabbix_host_groups__to_merge:
   - "yak2-hadoop"
 ```
 
-(for host group `VMs`)
+(for host group `hostgroup_VMs`)
 ```yaml
 VMs_zabbix_host_groups__to_merge:
   - "Ovirt VMs"
 ```
 
-(for host group `project_nodes`)
+(for host group `hostgroup_project_nodes`)
 ```yaml
 project_nodes_zabbix_host_groups__to_merge:
   - "yak2-proj"
@@ -330,7 +330,7 @@ You must also set up
 ```yaml
 jupyterhub_ssl_password: "..."
 ```
-for host group `project_nodes` as jupyterhub uses some different certificates
+for host group `hostgroup_project_nodes` as jupyterhub uses some different certificates
 
 ### Hadoop
 

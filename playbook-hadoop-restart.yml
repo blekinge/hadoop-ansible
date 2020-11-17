@@ -1,6 +1,6 @@
 # Everything runs with serial: 1 here to ensure that the services can fail-over while restarting
 
-- hosts: zookeeper_servers
+- hosts: hostgroup_zookeeper_servers
   serial: 1
   tasks:
     - name: restart zookeeper_server
@@ -10,7 +10,7 @@
         daemon_reload: yes
 
 
-- hosts: hdfs_journalnodes
+- hosts: hostgroup_hdfs_journalnodes
   serial: 1
   tasks:
     - name: restart journalnode
@@ -21,7 +21,7 @@
 
 
   # The namenodes do not require datanodes
-- hosts: hdfs_namenodes
+- hosts: hostgroup_hdfs_namenodes
   serial: 1
   tasks:
     - name: restart namenode
@@ -33,7 +33,7 @@
 
 
   # The datanodes become unhappy if they cannot connect to a namenode when starting up
-- hosts: hdfs_datanodes
+- hosts: hostgroup_hdfs_datanodes
   serial: 1
   tasks:
     - name: restart datanode
@@ -44,7 +44,7 @@
 
 ## YARN
 
-- hosts: yarn_timeline_servers
+- hosts: hostgroup_yarn_timeline_servers
   serial: 1
   tasks:
     - name: restart timeline_server
@@ -54,7 +54,7 @@
         daemon_reload: yes
 
 
-- hosts: yarn_node_managers
+- hosts: hostgroup_yarn_node_managers
   serial: 1
   tasks:
     - name: restart node manager
@@ -64,7 +64,7 @@
         daemon_reload: yes
 
 
-- hosts: yarn_resource_managers
+- hosts: hostgroup_yarn_resource_managers
   serial: 1
   tasks:
     - name: restart resource manager
@@ -76,7 +76,7 @@
 
 ## MapReduce
 
-- hosts: mapreduce_history_servers
+- hosts: hostgroup_mapreduce_history_servers
   serial: 1
   tasks:
     - name: restart mapreduce_historyserver
@@ -89,7 +89,7 @@
 ## Spark
 
 
-- hosts: spark_history_servers
+- hosts: hostgroup_spark_history_servers
   serial: 1
   tasks:
     - name: (Re)Start Spark History Server systemd service

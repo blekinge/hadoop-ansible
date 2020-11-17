@@ -1,7 +1,7 @@
 ## This playbook creates the hosts as virtual VMs in Ovirt
 
 - name: oVirt ansible collection
-  hosts: VMs
+  hosts: hostgroup_VMs
   gather_facts: False
   vars:
     shortname: "{{  inventory_hostname.split('.')[0] | lower }}"

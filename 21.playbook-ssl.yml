@@ -1,15 +1,15 @@
 
 #The stuff below expect us to have facts about the ansible_fqdn of each host, so ensure that we have gathered these facts
-- hosts: all
+- hosts: hostgroup_all
   gather_facts: yes
 
 
 # Now that the hosts have been added as ipa clients, we can setup the kerberos services
-- hosts: ipaserver
+- hosts: hostgroup_ipaserver
   roles:
     - role: ssl_certificates_creator
 
-- hosts: rsyslog_server
+- hosts: hostgroup_rsyslog_server
   vars:
     # rsyslog server is not a ipaclient, so does not have the hadoop group
     # So this is nessesary to ensure that what should have been owned by hadoop is now owned by root.
@@ -18,6 +18,6 @@
   roles:
     - role: ssl_certificates_recipient #Upload ssl certificates to host
 
-- hosts: hadoop_nodes
+- hosts: hostgroup_hadoop_nodes
   roles:
     - role: ssl_certificates_recipient #Upload ssl certificates to host

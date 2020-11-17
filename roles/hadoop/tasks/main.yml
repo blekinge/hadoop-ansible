@@ -6,17 +6,17 @@
 
     - name: Check for single yarn_timeline_server
       fail: msg="Single host check failed."
-      when: "groups['yarn_timeline_servers'] |length  != 1"
+      when: "groups['hostgroup_yarn_timeline_servers'] |length  != 1"
 
 
     - name: Check for single mapreduce_history_server
       fail: msg="Single host check failed."
-      when: "groups['mapreduce_history_servers'] |length  != 1"
+      when: "groups['hostgroup_mapreduce_history_servers'] |length  != 1"
 
 
     - name: Check for single spark_history_server
       fail: msg="Single host check failed."
-      when: "groups['spark_history_servers'] |length  != 1"
+      when: "groups['hostgroup_spark_history_servers'] |length  != 1"
 
     - name: Create common dirs
       file:

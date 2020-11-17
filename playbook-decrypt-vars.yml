@@ -1,7 +1,7 @@
 ---
 
 - name: decrypt vars
-  hosts: all
+  hosts: hostgroup_all
   run_once: true
   tasks:
     - debug:

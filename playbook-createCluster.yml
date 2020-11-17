@@ -1,5 +1,5 @@
 
-- name: VMs
+- name: hostgroup_VMs
   import_playbook: 10.playbook-ovirt-vms.yml
 
 

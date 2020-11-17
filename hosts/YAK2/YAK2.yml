@@ -1,95 +1,95 @@
 # You will make one inventory file per cluster. So all cluster-specific settings should go into this file
 
 # These are the magical hostgroups that are automagically bound to roles and behaviours
-# VMs: Machines to auto-create in ovirt
-# ipaserver: the FreeIPA server to register all hosts to
-# ipaclients: The list of hosts to setup as ipa clients
-# rsyslog_server: The rsyslog server forward all log messages to
-# zabbix_nodes: The list of hosts to setup zabbix agent on
-# hadoop_nodes: = role hadoop, role zookeeper, role spark
-# hdfs_namenodes: = role hdfs_namenode
-# hdfs_journalnodes: = role hdfs_journalnode
-# hdfs_datanodes: = role hdfs_datanode
-# zookeeper_servers: = role zookeeper_server
-# yarn_resource_managers: = role yarn_resource_manager
-# yarn_node_managers: = role yarn_node_manager
-# yarn_timeline_servers: = role yarn_timeline_server
-# mapreduce_history_servers: = role mapreduce_history_server
-# spark_history_servers: = role spark_history_server
-# project_nodes: = role spark_client, role rstudio_server
+# hostgroup_VMs: Machines to auto-create in ovirt
+# hostgroup_ipaserver: the FreeIPA server to register all hosts to
+# hostgroup_ipaclients: The list of hosts to setup as ipa clients
+# hostgroup_rsyslog_server: The rsyslog server forward all log messages to
+# hostgroup_zabbix_nodes: The list of hosts to setup zabbix agent on
+# hostgroup_hadoop_nodes: = role hadoop, role zookeeper, role spark
+# hostgroup_hdfs_namenodes: = role hdfs_namenode
+# hostgroup_hdfs_journalnodes: = role hdfs_journalnode
+# hostgroup_hdfs_datanodes: = role hdfs_datanode
+# hostgroup_zookeeper_servers: = role zookeeper_server
+# hostgroup_yarn_resource_managers: = role yarn_resource_manager
+# hostgroup_yarn_node_managers: = role yarn_node_manager
+# hostgroup_yarn_timeline_servers: = role yarn_timeline_server
+# hostgroup_mapreduce_history_servers: = role mapreduce_history_server
+# hostgroup_spark_history_servers: = role spark_history_server
+# hostgroup_project_nodes: = role spark_client, role rstudio_server
 
-all:
+hostgroup_all:
  children:
-    ipaserver: # Singular form as there can be only one here
+    hostgroup_ipaserver: # Singular form as there can be only one here
       hosts:
         fipa001.adm.yak2.net:
 
-    ipaclients:
+    hostgroup_ipaclients:
       children: #Mark all hadoop nodes as ipa-clients
-        hadoop_nodes:
+        hostgroup_hadoop_nodes:
 
-    zabbix_nodes:
+    hostgroup_zabbix_nodes:
       hosts:
         rlog001.adm.yak2.net:
       children:
-        ipaclients:
+        hostgroup_ipaclients:
 
-    rsyslog_server:
+    hostgroup_rsyslog_server:
       hosts:
         rlog001.adm.yak2.net:
 
-    hadoop_nodes:
+    hostgroup_hadoop_nodes:
       children:
 
-        hdfs:
+        hostgroup_hdfs:
           children:
-            hdfs_namenodes:
+            hostgroup_hdfs_namenodes:
               hosts:
                 hdfs001.adm.yak2.net:
                   primary: true # The primary node is the one whose hdfs gets propagated to the other namenodes
                   comment: "Primary"
                 hdfs002.adm.yak2.net:
-            hdfs_journalnodes:
+            hostgroup_hdfs_journalnodes:
               hosts:
                 zkpr[001:003].adm.yak2.net:
-            hdfs_datanodes:
+            hostgroup_hdfs_datanodes:
               hosts:
                 roda[001:004].adm.yak2.net:
                   hdfs_data_dirs:
                     - /data/sdb1/hdfs
 
-        zookeeper_servers:
+        hostgroup_zookeeper_servers:
           hosts:
             zkpr[001:003].adm.yak2.net:
 
-        yarn:
+        hostgroup_yarn:
           children:
-            yarn_resource_managers:
+            hostgroup_yarn_resource_managers:
               hosts:
                 yarn[001:002].adm.yak2.net:
-            yarn_node_managers:
+            hostgroup_yarn_node_managers:
               hosts:
                 roda[001:004].adm.yak2.net:
                   yarn_nodemanager_available_cpu_cores: 2
                   yarn_nodemanager_available_memory: 3072
                   yarn_data_dirs:
                     - /data/sdb1/yarn
-            yarn_timeline_servers:
+            hostgroup_yarn_timeline_servers:
               hosts:
                 hist001.adm.yak2.net:
 
-        mapreduce:
+        hostgroup_mapreduce:
           children:
-            mapreduce_history_servers:
+            hostgroup_mapreduce_history_servers:
               hosts: # There can be only one here
                 hist001.adm.yak2.net:
 
-        spark:
+        hostgroup_spark:
           children:
-            spark_history_servers:
+            hostgroup_spark_history_servers:
               hosts: # There can be only one here
                 hist001.adm.yak2.net:
 
-        project_nodes:
+        hostgroup_project_nodes:
           hosts:
             proj[000:003].adm.yak2.net:
