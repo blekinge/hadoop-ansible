@@ -1,7 +1,4 @@
 - connection: ssh
-  vars:
-    pipelining: no
-    ansible_ssh_pipelining: no
   become: yes
   become_user: root
   remote_user: root
@@ -32,42 +29,32 @@
         enabled: true
 
 
-    - name: "remove old networks ens4"
-      community.general.nmcli:
-        conn_name: 'ens4'
-        state: absent
+    - name: "setup network {{nic1}}"
+      shell: >
+        nmcli con add
+          type ethernet
+          con-name "{{nic1}}"
+          ifname ens3
+          ipv4.method manual
+          ipv4.addresses "{{nic1_subnet}}.{{hostnumber}}/24"
+          ipv4.dns "{{dns1}},{{dns2}}"
+          ipv4.dns-search "{{dns_search_domains}}"
+          ipv4.gateway "{{gateway}}"
 
     - name: "setup network {{nic2}}"
-      community.general.nmcli:
-        type: ethernet
-        conn_name: '{{nic2}}'
-        ifname: ens4
-        ip4: '{{nic2_subnet}}.{{hostnumber}}/24'
-        autoconnect: yes
-        state: present
+      shell: >
+        nmcli con add
+          type ethernet
+          con-name "{{nic2}}"
+          ifname ens4
+          ipv4.method manual
+          ipv4.addresses "{{nic2_subnet}}.{{hostnumber}}/24"
+          ipv4.routes "{{nic2_routes}}"
 
-    - name: "setup network {{nic2}} routes, which cannot be done in ansible yet"
-      shell: 'nmcli con mod {{nic2}} ipv4.routes "{{nic2_routes}}"'
-
-
-
-    - name: "setup network {{nic1}}"
-      vars:
-        timeout: 10
-      async: 10
-      community.general.nmcli:
-        type: ethernet
-        conn_name: '{{nic1}}'
-        ifname: ens3
-        ip4: '{{nic1_subnet}}.{{hostnumber}}/24'
-        gw4: '{{gateway}}'
-        dns4:
-          - '{{dns1}}'
-          - '{{dns2}}'
-        dns4_search: '{{[domain,domain_nfs,domain_adm,domain_dmz]}}'
-        autoconnect: yes
-        state: present
-      ignore_errors: yes
+    - name: "remove old networks"
+      shell: |
+        nmcli con del ens4
+        nmcli con del ens3
 
 
 - name: "Reboot vm to activate new networks"
@@ -77,14 +64,3 @@
     name: "{{shortname}}"
     cluster: "{{ovirt_cluster}}"
     wait: yes
-
-
-- name: "remove old networks ens3"
-  delegate_to: "{{inventory_hostname}}"
-  become: yes
-  become_user: root
-  remote_user: root
-  connection: ssh
-  community.general.nmcli:
-    conn_name: 'ens3'
-    state: absent
