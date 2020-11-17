@@ -50,12 +50,12 @@
     	{{yarn_nodemanager_remote_app_log_dir}}  \
     	{{mapreduce_jobhistory_dir}} {{mapreduce_jobhistory_dir}}/done {{mapreduce_jobhistory_dir}}/tmp \
     	{{yarn_timeline_server_dir}} {{yarn_timeline_server_dir}}/active {{yarn_timeline_server_dir}}/done {{yarn_timeline_server_dir}}/generic-history \
-    	/user;
+    	{{hdfs_home_dir}};
 
 
     hdfs dfs -chmod a+rwx /tmp;
 
-    hdfs dfs -chmod o+rx /user;
+    hdfs dfs -chmod o+rx {{hdfs_home_dir}};
 
     hdfs dfs -chmod -R o+rx /history;
 
@@ -64,7 +64,7 @@
 
     hdfs dfs -chown -R {{hdfs_user.name}}:{{hadoop_group.name}} /history;
 
-    hdfs dfs -chown {{hdfs_user.name}}:{{hadoop_group.name}} /user;
+    hdfs dfs -chown {{hdfs_user.name}}:{{hadoop_group.name}} {{hdfs_home_dir}};
 
     hdfs dfs -chown -R {{yarn_user.name}}:{{hadoop_group.name}} {{yarn_nodemanager_remote_app_log_dir}} {{yarn_timeline_server_dir}};
 

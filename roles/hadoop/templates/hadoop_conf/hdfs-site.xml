@@ -74,6 +74,15 @@
         <name>dfs.client.use.datanode.hostname</name>
         <value>true</value>
     </property>
+
+    <property>
+        <name>dfs.user.home.dir.prefix</name>
+        <value>{{hdfs_home_dir}}</value>
+        <description>The directory to prepend to user name to get the user's
+            home direcotry.
+        </description>
+    </property>
+
     <property>
         <name>dfs.datanode.use.datanode.hostname</name>
         <value>true</value>

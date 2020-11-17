@@ -81,6 +81,7 @@ yarn_application_logs_dir: "{{ hadoop_log_dir }}/{{ yarn_user.name }}/applicatio
 yarn_timeline_server_dir: '/history/timeline-server'
 
 yarn_nodemanager_remote_app_log_dir: "/history/app-logs"
+
 #TODO more than one?
 mapreduce_history_server_host: "{{ groups['mapreduce_history_servers'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
 

@@ -24,6 +24,8 @@ ipaclient_syshome_dir: /syshome
 #Nessesary to set up the automount
 ipaautomount_location: "default"
 
+hdfs_home_dir: /user
+
 #Users and groups
 hadoop_group:
   name: "hadoop"

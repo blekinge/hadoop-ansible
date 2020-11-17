@@ -62,6 +62,6 @@
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh
     kinit -kt {{keytab_dir}}/{{hdfs_user.name}}.headless.keytab {{hdfs_user.name}};
-    hdfs dfs -mkdir -p /user/{{ user.username }};
-    hdfs dfs -chown -R {{ user.username }}:{{ user.username }} /user/{{ user.username }};
+    hdfs dfs -mkdir -p {{hdfs_home_dir}}/{{ user.username }};
+    hdfs dfs -chown -R {{ user.username }}:{{ user.username }} {{hdfs_home_dir}}/{{ user.username }};
 #    kdestroy
