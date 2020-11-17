@@ -170,9 +170,10 @@
           become: yes
           become_user: root
           remote_user: root
-          timeout: 10
-          pipelining: no
-          ansible_ssh_pipelining: no
+          vars:
+            timeout: 10
+            pipelining: no
+            ansible_ssh_pipelining: no
           community.general.nmcli:
             type: ethernet
             conn_name: '{{nic1}}'
