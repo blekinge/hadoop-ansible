@@ -3,9 +3,9 @@
 - name:  Create VM
   include_tasks: create_vm.yml
 
-
-- name:  Open NIC 2
-  include_tasks: open_nic2.yml
+#
+#- name:  Open NIC 2
+#  include_tasks: open_nic2.yml
 
 
 - name: format+mount extra disks

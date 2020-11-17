@@ -24,7 +24,7 @@
         # Previous task generated I(ovirt_auth) fact, which you can later use
         # in different modules as follows:
 
-        - name: "Remove vm {{shortname}}"
+        - name: "Remove vm"
           ovirt.ovirt.ovirt_vm:
             auth: "{{ ovirt_auth }}"
             state: absent
