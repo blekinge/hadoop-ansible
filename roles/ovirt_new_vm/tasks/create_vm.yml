@@ -65,6 +65,7 @@
         storage_domain: "VMs"
         vm_name: "{{shortname}}"
         wait: yes
+      no_log: true
 
     - name: "create {{nic1}} nic"
       ovirt.ovirt.ovirt_nic:
@@ -100,7 +101,9 @@
         - name: "change hostname"
           delegate_to: "{{new_vm_ip}}"
           become: no
-          shell: "hostnamectl --no-ask-password set-hostname {{hostname}}"
+          hostname:
+            name: "{{hostname}}"
+            use: systemd
 
         - name: "setup network {{nic1}}"
           delegate_to: "{{new_vm_ip}}"
