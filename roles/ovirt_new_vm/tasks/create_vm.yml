@@ -109,18 +109,24 @@
 
         - name: "setup network {{nic1}}"
           delegate_to: "{{new_vm_ip}}"
-          become: no
+          become: yes
+          become_user: root
+          remote_user: root
           shell: "nmcli con add type ethernet con-name {{nic1}} ifname ens3 ipv4.method manual ipv4.addresses {{nic1_subnet}}.{{hostnumber}}/24 ipv4.dns {{dns1}},{{dns2}} ipv4.dns-search {{dns_search_domains}} ipv4.gateway {{gateway}} connection.autoconnect yes"
 
         - name: "setup network {{nic2}}"
           delegate_to: "{{new_vm_ip}}"
-          become: no
+          become: yes
+          become_user: root
+          remote_user: root
           shell: "nmcli con add type ethernet con-name {{nic2}} ifname ens4 ipv4.method manual ipv4.addresses {{nic2_subnet}}.{{hostnumber}}/24 ipv4.routes \"{{nic2_routes}}\" connection.autoconnect yes"
 
 
         - name: "Setup wonky ping systemd service"
           delegate_to: "{{new_vm_ip}}"
-          become: no
+          become: yes
+          become_user: root
+          remote_user: root
           template:
             src: "activate_network.service"
             dest: /etc/systemd/system/
@@ -130,7 +136,9 @@
 
         - name: "Enable wonky ping systemd service"
           delegate_to: "{{new_vm_ip}}"
-          become: no
+          become: yes
+          become_user: root
+          remote_user: root
           systemd:
             name: activate_network
             state: stopped
@@ -139,7 +147,9 @@
 
         - name: "remove old networks"
           delegate_to: "{{new_vm_ip}}"
-          become: no
+          become: yes
+          become_user: root
+          remote_user: root
           shell: "nmcli con del ens4; nmcli con del ens3;"
 
         - name: "Reboot vm to activate new networks"
