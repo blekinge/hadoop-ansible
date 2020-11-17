@@ -100,7 +100,9 @@
         # There is almost certainly a better way of doing this but this works
         - name: "change hostname"
           delegate_to: "{{new_vm_ip}}"
-          become: no
+          become: yes
+          become_user: root
+          remote_user: root
           hostname:
             name: "{{hostname}}"
             use: systemd
