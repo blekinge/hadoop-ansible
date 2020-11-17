@@ -108,33 +108,6 @@
             name: "{{hostname}}"
 #            use: systemd
 
-#
-#        - name: "setup network {{nic1}}"
-#          delegate_to: "{{new_vm_ip}}"
-#          become: yes
-#          become_user: root
-#          remote_user: root
-#          shell: "nmcli con add type ethernet con-name {{nic1}} ifname  ipv4.method manual ipv4.addresses {{nic1_subnet}}.{{hostnumber}}/24 ipv4.dns {{dns1}},{{dns2}} ipv4.dns-search {{dns_search_domains}} ipv4.gateway {{gateway}} connection.autoconnect yes"
-
-        - name: "setup network {{nic2}}"
-          delegate_to: "{{new_vm_ip}}"
-          become: yes
-          become_user: root
-          remote_user: root
-          community.general.nmcli:
-            type: ethernet
-            conn_name: '{{nic2}}'
-            ifname: ens4
-            ip4: '{{nic2_subnet}}.{{hostnumber}}/24'
-            autoconnect: yes
-            state: present
-
-        - name: "setup network {{nic2}} routes, which cannot be done in ansible yet"
-          delegate_to: "{{new_vm_ip}}"
-          become: yes
-          become_user: root
-          remote_user: root
-          shell: 'nmcli con mod {{nic2}} ipv4.routes "{{nic2_routes}}"'
 
 
         - name: "Setup wonky ping systemd service"
@@ -161,11 +134,45 @@
             enabled: true
 
 
+        - name: "remove old networks ens4"
+          delegate_to: "{{new_vm_ip}}"
+          become: yes
+          become_user: root
+          remote_user: root
+          community.general.nmcli:
+            conn_name: 'ens4'
+            state: absent
+
+        - name: "setup network {{nic2}}"
+          delegate_to: "{{new_vm_ip}}"
+          become: yes
+          become_user: root
+          remote_user: root
+          community.general.nmcli:
+            type: ethernet
+            conn_name: '{{nic2}}'
+            ifname: ens4
+            ip4: '{{nic2_subnet}}.{{hostnumber}}/24'
+            autoconnect: yes
+            state: present
+
+        - name: "setup network {{nic2}} routes, which cannot be done in ansible yet"
+          delegate_to: "{{new_vm_ip}}"
+          become: yes
+          become_user: root
+          remote_user: root
+          shell: 'nmcli con mod {{nic2}} ipv4.routes "{{nic2_routes}}"'
+
+
+
         - name: "setup network {{nic1}}"
           delegate_to: "{{new_vm_ip}}"
           become: yes
           become_user: root
           remote_user: root
+          timeout: 10
+          pipelining: no
+          ansible_ssh_pipelining: no
           community.general.nmcli:
             type: ethernet
             conn_name: '{{nic1}}'
@@ -178,15 +185,6 @@
             dns4_search: '{{[domain,domain_nfs,domain_adm,domain_dmz]}}'
             autoconnect: yes
             state: present
-
-        - name: "remove old networks ens4"
-          delegate_to: "{{new_vm_ip}}"
-          become: yes
-          become_user: root
-          remote_user: root
-          community.general.nmcli:
-            conn_name: 'ens4'
-            state: absent
 
         - name: "remove old networks ens3"
           delegate_to: "{{new_vm_ip}}"
