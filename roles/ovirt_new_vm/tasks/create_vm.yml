@@ -108,11 +108,25 @@
             use: systemd
 
         - name: "setup network {{nic1}}"
-          delegate_to: "{{new_vm_ip}}"
-          become: yes
-          become_user: root
-          remote_user: root
-          shell: "nmcli con add type ethernet con-name {{nic1}} ifname ens3 ipv4.method manual ipv4.addresses {{nic1_subnet}}.{{hostnumber}}/24 ipv4.dns {{dns1}},{{dns2}} ipv4.dns-search {{dns_search_domains}} ipv4.gateway {{gateway}} connection.autoconnect yes"
+          community.general.nmcli:
+            type: ethernet
+            conn_name: '{{nic1}}'
+            ifname: ens3
+            ip4: '{{nic1_subnet}}.{{hostnumber}}/24'
+            gw4: '{{gateway}}'
+            dns4:
+              - '{{dns1}}'
+              - '{{dns2}}'
+            dns4_search: '{{[domain,domain_nfs,domain_adm,domain_dmz]}}'
+            autoconnect: yes
+            state: present
+#
+#        - name: "setup network {{nic1}}"
+#          delegate_to: "{{new_vm_ip}}"
+#          become: yes
+#          become_user: root
+#          remote_user: root
+#          shell: "nmcli con add type ethernet con-name {{nic1}} ifname  ipv4.method manual ipv4.addresses {{nic1_subnet}}.{{hostnumber}}/24 ipv4.dns {{dns1}},{{dns2}} ipv4.dns-search {{dns_search_domains}} ipv4.gateway {{gateway}} connection.autoconnect yes"
 
         - name: "setup network {{nic2}}"
           delegate_to: "{{new_vm_ip}}"
