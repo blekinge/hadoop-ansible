@@ -95,7 +95,7 @@
         cluster: "{{ovirt_cluster}}"
 
     - name: setup network
-#      when: nic1_added.changed or nic2_added.changed
+      when: nic1_added.changed or nic2_added.changed
       block:
         # There is almost certainly a better way of doing this but this works
         - name: "change hostname"
