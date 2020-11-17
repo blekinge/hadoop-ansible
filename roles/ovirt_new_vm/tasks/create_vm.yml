@@ -95,7 +95,8 @@
         cluster: "{{ovirt_cluster}}"
 
     - name: setup network
-      when: nic1_added.changed or nic2_added.changed
+#      when: nic1_added.changed or nic2_added.changed
+      connection: ssh
       block:
         # There is almost certainly a better way of doing this but this works
         - name: "change hostname"
@@ -103,9 +104,9 @@
           become: yes
           become_user: root
           remote_user: root
-          hostname:
+          ansible.builtin.hostname:
             name: "{{hostname}}"
-            use: systemd
+#            use: systemd
 
         - name: "setup network {{nic1}}"
           delegate_to: "{{new_vm_ip}}"
@@ -196,6 +197,7 @@
 #          shell: "nmcli con del ens4; nmcli con del ens3;"
 
         - name: "Reboot vm to activate new networks"
+          connection: local
           ovirt.ovirt.ovirt_vm:
             auth: "{{ ovirt_auth }}"
             state: reboot
