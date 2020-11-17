@@ -100,7 +100,7 @@
         - name: "change hostname"
           delegate_to: "{{new_vm_ip}}"
           become: no
-          shell: "hostnamectl set-hostname {{hostname}}"
+          shell: "hostnamectl --no-ask-password set-hostname {{hostname}}"
 
         - name: "setup network {{nic1}}"
           delegate_to: "{{new_vm_ip}}"
