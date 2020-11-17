@@ -11,8 +11,6 @@
         name: "{{hostname}}"
 #        use: systemd
 
-
-
     - name: "Setup wonky ping systemd service"
       template:
         src: "activate_network.service"

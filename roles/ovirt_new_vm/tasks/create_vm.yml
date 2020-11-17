@@ -46,6 +46,20 @@
         comment: "{{comment | default(omit)}}"
         description: "{{description | default(omit)}}"
 
+        cloud_init:
+          host_name: "{{hostname}}"
+
+        cloud_init_nics:
+          - nic_name: ens3
+            nic_boot_protocol: static
+            nic_ip_address: "{{nic1_subnet}}.{{hostnumber}}"
+            nic_netmask: 255.255.255.0
+            nic_gateway: "{{gateway}}"
+          - nic_name: ens4
+            nic_boot_protocol: static
+            nic_ip_address: "{{nic2_subnet}}.{{hostnumber}}"
+            nic_netmask: 255.255.255.0
+
     - name: "create extra disks for {{shortname}}"
       when: host_disks is defined
       loop: "{{ host_disks }}"
