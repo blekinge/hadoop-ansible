@@ -171,7 +171,7 @@ dns1: "{{nic1_subnet}}.52" #bind001
 dns2: "{{nic1_subnet}}.53" #bind002
 
 # New VMs are always created with this ip, so we can ssh to this and set up the machine
-new_vm_ip: "{{nic1_subnet}}.254"
+new_vm_ip: "{{nic2_subnet}}.254"
 
 # The gateway to use
 gateway: "{{nic1_subnet}}.51"
