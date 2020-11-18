@@ -133,7 +133,7 @@
 
       #TODO test if the host is available on the right IP before doing this
     - name: setup network
-      when: nic1_added.changed or nic2_added.changed
+#      when: nic1_added.changed or nic2_added.changed
       include_tasks: setup_network.yml
 
     - name: "Ensure vm is started"

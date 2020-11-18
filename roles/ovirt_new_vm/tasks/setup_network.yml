@@ -1,8 +1,22 @@
+
+- name: "Wait 10 seconds for host {{inventory_hostname}} to become reachable/usable"
+  remote_user: root # Ensure that we do not try to login as a user that does not exist yet
+  become: no
+  wait_for_connection:
+    delay: 0 # Number of seconds to wait before starting to poll.
+    timeout: 10 # Maximum number of seconds to wait for.
+    sleep: 2 # Number of seconds to sleep between checks.
+    connect_timeout: 5 # Maximum number of seconds to wait for a connection to happen before closing and retrying.
+  register: available_on_inventory_hostname
+  ignore_errors: yes
+  ignore_unreachable: yes
+
+
 - connection: ssh
   become: yes
   become_user: root
   remote_user: root
-  delegate_to: "{{new_vm_ip}}"
+  delegate_to: "{{ inventory_hostname if available_on_inventory_hostname is succeeded else new_vm_ip}}"
 
   block:
     # There is almost certainly a better way of doing this but this works
