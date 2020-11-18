@@ -76,10 +76,14 @@
           ipv4.routes "{{nic2_routes}}"
 
     - name: "remove old networks ens4"
-      command: nmcli con del ens4
+      community.general.nmcli:
+        conn_name: 'ens4'
+        state: absent
 
     - name: "remove old networks ens3"
-      command: nmcli con del ens3
+      community.general.nmcli:
+        conn_name: 'ens3'
+        state: absent
       ignore_unreachable: yes
 
 
