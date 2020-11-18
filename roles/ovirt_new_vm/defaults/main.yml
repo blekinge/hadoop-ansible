@@ -11,3 +11,6 @@ cpu_sockets: 2
 cpu_cores: 1
 description: "{{group_names | sort | join(' ')}}"
 
+nic1_routes_list: []
+
+nic2_routes_list: []

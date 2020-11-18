@@ -5,7 +5,7 @@ domain_nfs: "nfs.{{domain}}"
 domain_adm: "adm.{{domain}}" # 172.16.216
 domain_dmz: "dmz.{{domain}}"
 
-dns_search_domains: "{{ [domain,domain_nfs,domain_adm,domain_dmz] | join(',') }}"
+dns_search_domains: "{{ [domain,domain_nfs,domain_adm,domain_dmz] | join(' ') }}"
 
 # DNS server used to look up the ip of the new host
 # The host should be added to DNS prior to creation

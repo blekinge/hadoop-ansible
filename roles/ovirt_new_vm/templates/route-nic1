@@ -1,0 +1,6 @@
+{% for route in nic1_routes_list %}
+ADDRESS{{ loop.index|int -1}}={{ route.network | ansible.netcommon.ipaddr('network' )}}
+NETMASK{{ loop.index|int -1}}={{ route.network | ansible.netcommon.ipaddr('netmask') }}
+GATEWAY{{ loop.index|int -1}}={{ route.gw }}
+METRIC{{ loop.index |int -1}}={{ route.metric | default('102') }}
+{% endfor %}

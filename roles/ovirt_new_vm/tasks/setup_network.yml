@@ -67,6 +67,8 @@
       loop:
         - file: ifcfg-nic1
           name: "ifcfg-{{nic1}}"
+        - file: route-nic1
+          name: "route-{{nic1}}"
         - file: ifcfg-nic2
           name: "ifcfg-{{nic2}}"
         - file: route-nic2
