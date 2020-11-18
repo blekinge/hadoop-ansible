@@ -15,6 +15,9 @@
 - name: oVirt ansible collection
   hosts: hostgroup_VMs
   gather_facts: False
+  become: yes
+  become_user: root
+  remote_user: root
   tasks:
     - name: "Wait 600 seconds for host to become reachable/usable"
       wait_for_connection:
