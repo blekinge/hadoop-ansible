@@ -49,6 +49,11 @@
         daemon_reload: yes
         enabled: true
 
+    - name: delete previous network config
+      file:
+        state: absent
+        path: "/etc/sysconfig/network-scripts/"
+
     - name: "Update networks"
       template:
         src: "{{item.file}}"
