@@ -11,3 +11,14 @@
     - ovirt.ovirt
     - community.general
 
+
+- name: oVirt ansible collection
+  hosts: hostgroup_VMs
+  gather_facts: False
+  tasks:
+    - name: "Wait 600 seconds for host to become reachable/usable"
+      wait_for_connection:
+        delay: 0 # Number of seconds to wait before starting to poll.
+        timeout: 600 # Maximum number of seconds to wait for.
+        sleep: 2 # Number of seconds to sleep between checks.
+        connect_timeout: 5 # Maximum number of seconds to wait for a connection to happen before closing and retrying.

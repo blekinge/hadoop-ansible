@@ -9,8 +9,7 @@
   register: available_on_inventory_hostname
   ignore_errors: yes
 
-- debug:
-    var: available_on_inventory_hostname
+
 - set_fact:
     delegation: "{{ inventory_hostname if available_on_inventory_hostname is not failed else new_vm_ip}}"
 
