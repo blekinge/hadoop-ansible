@@ -1,5 +1,5 @@
 
-- name: "Wait 10 seconds for host {{inventory_hostname}} to become reachable/usable"
+- name: "Test if host {{inventory_hostname}} is reachable/usable"
   remote_user: root # Ensure that we do not try to login as a user that does not exist yet
   become: no
   wait_for_connection:
@@ -20,6 +20,7 @@
 
   block:
     - name: "Wait 600 seconds for host {{inventory_hostname}} to become reachable/usable"
+      delegate_to: "{{ inventory_hostname if available_on_inventory_hostname is succeeded else new_vm_ip}}"
       wait_for_connection:
         delay: 0 # Number of seconds to wait before starting to poll.
         timeout: 600 # Maximum number of seconds to wait for.
