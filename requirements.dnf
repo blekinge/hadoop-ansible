@@ -1,7 +1,3 @@
-# Ansible itself
-
-ansible.noarch
-
 #These are the dnf packages that must be installed to install the pip dependencies
 
 # Ovirt

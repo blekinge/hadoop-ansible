@@ -1,26 +1,30 @@
 
 - name: "Test if host {{inventory_hostname}} is reachable/usable"
-  remote_user: root # Ensure that we do not try to login as a user that does not exist yet
-  become: no
-  wait_for_connection:
-    delay: 0 # Number of seconds to wait before starting to poll.
-    timeout: 10 # Maximum number of seconds to wait for.
-    sleep: 2 # Number of seconds to sleep between checks.
-    connect_timeout: 5 # Maximum number of seconds to wait for a connection to happen before closing and retrying.
+  delegate_to: "{{inventory_hostname}}"
+  remote_user: root
+  become: yes
+  become_user: root
+  vars:
+    ansible_command_timeout: 5
+  shell: hostname
   register: available_on_inventory_hostname
   ignore_errors: yes
   ignore_unreachable: yes
 
+- debug:
+    var: available_on_inventory_hostname
+- set_fact:
+    delegation: "{{ inventory_hostname if available_on_inventory_hostname is not unreachable else new_vm_ip}}"
 
-- connection: ssh
+- name: Setup networks
   become: yes
   become_user: root
   remote_user: root
-  delegate_to: "{{ inventory_hostname if available_on_inventory_hostname is succeeded else new_vm_ip}}"
+  delegate_to: "{{ delegation }}"
 
   block:
-    - name: "Wait 600 seconds for host {{inventory_hostname}} to become reachable/usable"
-      delegate_to: "{{ inventory_hostname if available_on_inventory_hostname is succeeded else new_vm_ip}}"
+    - name: "Wait 600 seconds for host {{ delegation }} to become reachable/usable"
+      delegate_to: "{{ delegation }}"
       wait_for_connection:
         delay: 0 # Number of seconds to wait before starting to poll.
         timeout: 600 # Maximum number of seconds to wait for.
@@ -28,7 +32,7 @@
         connect_timeout: 5 # Maximum number of seconds to wait for a connection to happen before closing and retrying.
 
     # There is almost certainly a better way of doing this but this works
-    - name: "change hostname"
+    - name: "Set hostname to {{hostname}}"
       ansible.builtin.hostname:
         name: "{{hostname}}"
 #        use: systemd
@@ -43,14 +47,14 @@
 
     - name: "Enable wonky ping systemd service"
       systemd:
-        name: activate_network
+        name: activate_network.service
         state: stopped
         daemon_reload: yes
         enabled: true
 
 
     - name: "setup network {{nic1}}"
-      shell: >
+      command: >
         nmcli con add
           type ethernet
           con-name "{{nic1}}"
@@ -62,25 +66,20 @@
           ipv4.gateway "{{gateway}}"
 
     - name: "setup network {{nic2}}"
-      shell: >
+      command: >
         nmcli con add
           type ethernet
-          con-nam4 "{{nic2}}"
+          con-name "{{nic2}}"
           ifname ens4
           ipv4.method manual
           ipv4.addresses "{{nic2_subnet}}.{{hostnumber}}/24"
           ipv4.routes "{{nic2_routes}}"
 
-    - name: "remove old networks"
-      shell: |
-        nmcli con del ens4
-        nmcli con del ens3
+    - name: "remove old networks ens4"
+      command: nmcli con del ens4
+
+    - name: "remove old networks ens3"
+      command: nmcli con del ens3
+      ignore_unreachable: yes
 
 
-- name: "Reboot vm to activate new networks"
-  ovirt.ovirt.ovirt_vm:
-    auth: "{{ ovirt_auth }}"
-    state: reboot
-    name: "{{shortname}}"
-    cluster: "{{ovirt_cluster}}"
-    wait: yes

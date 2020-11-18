@@ -1,3 +1,7 @@
+# Ansible itself
+
+ansible
+
 # These are the pip packages that should be available to the python used to execute ansible
 
 zabbix-api

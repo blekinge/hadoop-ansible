@@ -1,0 +1,36 @@
+
+- name: Restart VM if nessesary
+  delegate_to: localhost
+  connection: local
+  become: no
+  throttle: 1
+  block:
+    # The use of ovirt.ovirt before ovirt_auth is to check if the collection is correctly loaded
+    - name: Obtain SSO token with using username/password credentials
+      ovirt.ovirt.ovirt_auth:
+        url: "https://{{ovirt_api_host}}/ovirt-engine/api"
+        username: "{{ovirt_username}}"
+        password: "{{ ovirt_password }}"
+
+    - name: "Reboot vm to activate new networks"
+      ovirt.ovirt.ovirt_vm:
+        auth: "{{ ovirt_auth }}"
+        state: reboot
+        name: "{{shortname}}"
+        cluster: "{{ovirt_cluster}}"
+        wait: no
+      when: available_on_inventory_hostname is unreachable
+
+    - name: "Ensure vm is started"
+      ovirt.ovirt.ovirt_vm:
+        auth: "{{ ovirt_auth }}"
+        state: running
+        name: "{{shortname}}"
+        cluster: "{{ovirt_cluster}}"
+        wait: "{{host_disks is defined}}"
+  always:
+    - name: Always revoke the SSO token
+      ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"
+
