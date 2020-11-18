@@ -51,8 +51,11 @@
 
     - name: delete previous network config
       file:
-        state: absent
+        state: "{{item}}"
         path: "/etc/sysconfig/network-scripts/"
+      loop:
+        - absent
+        - directory
 
     - name: "Update networks"
       template:
