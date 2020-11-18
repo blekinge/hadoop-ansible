@@ -43,7 +43,7 @@
       shell: >
         nmcli con add
           type ethernet
-          con-name "{{nic2}}"
+          con-nam4 "{{nic2}}"
           ifname ens4
           ipv4.method manual
           ipv4.addresses "{{nic2_subnet}}.{{hostnumber}}/24"
