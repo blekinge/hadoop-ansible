@@ -74,3 +74,5 @@
 
     - name: "setup network {{nic2}}"
       command: nmcli con reload
+      ignore_unreachable: yes
+
