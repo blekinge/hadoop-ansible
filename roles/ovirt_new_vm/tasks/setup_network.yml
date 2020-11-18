@@ -57,7 +57,7 @@
         - absent
         - directory
 
-    - name: "Update networks"
+    - name: "Update network config scripts"
       template:
         src: "{{item.file}}"
         dest: "/etc/sysconfig/network-scripts/{{item.name}}"
@@ -74,7 +74,7 @@
         - file: route-nic2
           name: "route-{{nic2}}"
 
-    - name: "setup network {{nic2}}"
+    - name: "Reload NetworkManager to activate new networks"
       command: nmcli con reload
       ignore_unreachable: yes
 
