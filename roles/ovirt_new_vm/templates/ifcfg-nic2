@@ -1,0 +1,17 @@
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=none
+IPADDR={{nic2_subnet}}.{{hostnumber}}
+PREFIX=24
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME={{nic2}}
+UUID={{nic2 | to_uuid}}
+DEVICE=ens4
+ONBOOT=yes

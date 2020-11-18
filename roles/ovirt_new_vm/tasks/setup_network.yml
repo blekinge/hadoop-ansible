@@ -49,38 +49,20 @@
         daemon_reload: yes
         enabled: true
 
-
-    - name: "setup network {{nic1}}"
-      command: >
-        nmcli con add
-          type ethernet
-          con-name "{{nic1}}"
-          ifname ens3
-          ipv4.method manual
-          ipv4.addresses "{{nic1_subnet}}.{{hostnumber}}/24"
-          ipv4.dns "{{dns1}},{{dns2}}"
-          ipv4.dns-search "{{dns_search_domains}}"
-          ipv4.gateway "{{gateway}}"
+    - name: "Update networks"
+      template:
+        src: "{{item.file}}"
+        dest: "/etc/sysconfig/network-scripts/{{item.name}}"
+        mode: 0644
+        owner: "root"
+        group: "root"
+      loop:
+        - file: ifcfg-nic1
+          name: "ifcfg-{{nic1}}"
+        - file: ifcfg-nic2
+          name: "ifcfg-{{nic2}}"
+        - file: route-nic2
+          name: "route-{{nic2}}"
 
     - name: "setup network {{nic2}}"
-      command: >
-        nmcli con add
-          type ethernet
-          con-name "{{nic2}}"
-          ifname ens4
-          ipv4.method manual
-          ipv4.addresses "{{nic2_subnet}}.{{hostnumber}}/24"
-          ipv4.routes "{{nic2_routes}}"
-
-    - name: "remove old networks ens4"
-      community.general.nmcli:
-        conn_name: 'ens4'
-        state: absent
-
-    - name: "remove old networks ens3"
-      community.general.nmcli:
-        conn_name: 'ens3'
-        state: absent
-      ignore_unreachable: yes
-
-
+      command: nmcli con reload
