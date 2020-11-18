@@ -18,9 +18,6 @@
             username: "{{ovirt_username}}"
             password: "{{ ovirt_password }}"
 
-        - debug:
-            msg: "Removing vm {{shortname}}"
-
         # Previous task generated I(ovirt_auth) fact, which you can later use
         # in different modules as follows:
 
