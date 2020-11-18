@@ -1,10 +1,31 @@
 
 
-- hosts: proj000.adm.yak2.net
-  roles:
-    - capacity_scheduler
+- hosts: localhost
+  vars:
+
+    nic2_routes_list:
+      - network: "130.225.24.0/23"
+        gw: "172.16.216.1"
+        metric: "100"
+      - network: "130.226.220.0/24"
+        gw: "172.16.216.1"
+        metric: "100"
+      - network: "172.16.7.0/24"
+        gw: "172.16.216.1"
+      - network: "172.18.0.0/16"
+        gw: "172.16.216.1"
+      - network: "172.28.1.0/24"
+        gw: "172.16.216.1"
+
+
   tasks:
 #    - debug:
 #        msg: "{{yarn_queues}}"
     - debug:
-        msg: "{{capacity_queues | map(attribute='longname') | list}}"
+        msg: "{% for route in nic2_routes_list %}
+              ADDRESS{{ loop.index|int -1}}={{ route.network | ansible.netcommon.ipaddr('network')}}
+              NETMASK{{ loop.index|int -1}}={{ route.network | ansible.netcommon.ipaddr('netmask')}}
+              GATEWAY{{ loop.index|int -1}}={{route.gw}}
+              METRIC{{ loop.index |int -1}}={{route.metric| default('102')}}
+              {% endfor %}
+"
