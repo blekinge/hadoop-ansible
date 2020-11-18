@@ -12,6 +12,7 @@ hostgroup_all:
         # IF you have to use a "wrong" hostname or an IP here, use the variables "hostname" and "shortname" to set
         #   the correct hostname for the host
         hist001.adm.yak2.net: #Example of how to set hostname
+          comment: History server
           shortname: hist001
           hostname: "{{shortname}}.{{domain}}"
 
