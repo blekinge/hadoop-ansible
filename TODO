@@ -48,7 +48,8 @@
 
 [X] Adm network in ansible connect, not in configs
 
-[ ] X2GO
+[/] X2GO
+Xpra X2go afløser. Mere avanceret. Modulopbygget.
 
 [X] Tabs preserved in Rsyslog messages
 
@@ -57,6 +58,13 @@
 [/] configurable HDFS dir structure
 
 [ ] RStudio SSL via apache proxy https://support.rstudio.com/hc/en-us/articles/200552326-Running-RStudio-Server-with-a-Proxy
+
+[ ] Bareos
+
+[ ] Freeipa
+
+[ ] Gway
+
 
 Dask is teh new multicore framework for python
 Dask works on HPC, kubernetes and YARN

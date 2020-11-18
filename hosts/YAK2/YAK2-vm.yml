@@ -22,10 +22,16 @@ hostgroup_all:
               mount: /logstorage
 
         zkpr[001:003].adm.yak2.net:
+          comment: Zookeeper/Journalnode server
+
         hdfs[001:002].adm.yak2.net:
+          comment: HDFS Namenode
+
         yarn[001:002].adm.yak2.net:
+          comment: Yarn Resouce Manager
 
         roda[001:004].adm.yak2.net: #Virtual datanodes
+          comment: Datanode
           memory: 8GiB # Set memory
           cpu_sockets: 4 # Set cpus
 
@@ -35,6 +41,7 @@ hostgroup_all:
               mount: /data/sdb1
 
         proj[000:003].adm.yak2.net:
+          comment: Project node
 #          host_disks:
 #            - name: data
 #              size: 10GiB
