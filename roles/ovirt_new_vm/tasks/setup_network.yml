@@ -49,13 +49,26 @@
         daemon_reload: yes
         enabled: true
 
-    - name: delete previous network config
-      file:
-        state: "{{item}}"
-        path: "/etc/sysconfig/network-scripts/"
-      loop:
-        - absent
-        - directory
+
+    # tidy_expected: [‘conf1.cfg’, conf2.cfg’]
+    - find:
+        paths: "/etc/sysconfig/network-scripts/"
+      register: existing_network_scripts
+
+    - file:
+        path: "{{item.path}}"
+        state: absent
+      when: item.path|basename not in ["ifcfg-{{nic1}}", "route-{{nic1}}", "ifcfg-{{nic2}}", "route-{{nic2}}" ]
+      loop: "{{existing_network_scripts.files|default([ ])}}"
+#      register: removed
+#
+#    - name: delete previous network config
+#      file:
+#        state: "{{item}}"
+#        path: "/etc/sysconfig/network-scripts/"
+#      loop:
+#        - absent
+#        - directory
 
     - name: "Update network config scripts"
       template:
@@ -67,10 +80,13 @@
       loop:
         - file: ifcfg-nic1
           name: "ifcfg-{{nic1}}"
+
         - file: route-nic1
           name: "route-{{nic1}}"
+
         - file: ifcfg-nic2
           name: "ifcfg-{{nic2}}"
+
         - file: route-nic2
           name: "route-{{nic2}}"
 
