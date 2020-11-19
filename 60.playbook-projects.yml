@@ -62,10 +62,10 @@
 - name: Rstudio/Jupyterhub
   hosts: hostgroup_project_nodes
   roles:
-    - spark_client
-    - rstudio_server
-    - jupyterhub
-    - x2go
+    - role: spark_client
+    - role: rstudio_server
+    - role: jupyterhub
+    - role: x2go
   collections:
     - freeipa.ansible_freeipa
 
@@ -99,13 +99,13 @@
 - hosts: hostgroup_yarn_timeline_servers
   serial: 1
   roles:
-    - yarn_timeline_server
+    - role: hadoop_yarn_timeline_server
 - hosts: hostgroup_yarn_node_managers
   serial: 1
   roles:
-    - yarn_node_manager
+    - role: hadoop_yarn_node_manager
 - hosts: hostgroup_yarn_resource_managers
   serial: 1
   roles:
-    - yarn_resource_manager
+    - role: hadoop_yarn_resource_manager
 

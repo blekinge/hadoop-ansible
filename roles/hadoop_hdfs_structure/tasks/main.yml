@@ -4,6 +4,7 @@
   become_user: "{{hdfs_user.name}}"
   shell: | #TODO make this more configurable
     set -e # Fail on anything
+    set -x # Output what happens
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh
 
