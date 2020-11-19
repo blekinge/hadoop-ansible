@@ -64,22 +64,22 @@ These are the magical hostgroups that are automagically bound to roles and behav
 
 * hostgroup_hadoop_nodes: = role hadoop, role zookeeper, role spark
 
-* hostgroup_hdfs_namenodes: = role hdfs_namenode.
+* hostgroup_hdfs_namenodes: = role hadoop_hdfs_namenode.
     * When creating a new cluster, one of these must have the fact `primary: true`. The primary node is the one whose hdfs gets propagated to the other namenodes
 
-* hostgroup_hdfs_journalnodes: = role hdfs_journalnode
+* hostgroup_hdfs_journalnodes: = role hadoop_hdfs_journalnode
 
-* hostgroup_hdfs_datanodes: = role hdfs_datanode
+* hostgroup_hdfs_datanodes: = role hadoop_hdfs_datanode
 
 * hostgroup_zookeeper_servers: = role zookeeper_server
 
-* hostgroup_yarn_resource_managers: = role yarn_resource_manager
+* hostgroup_yarn_resource_managers: = role hadoop_yarn_resource_manager
 
-* hostgroup_yarn_node_managers: = role yarn_node_manager
+* hostgroup_yarn_node_managers: = role hadoop_yarn_node_manager
 
-* hostgroup_yarn_timeline_servers: = role yarn_timeline_server
+* hostgroup_yarn_timeline_servers: = role hadoop_yarn_timeline_server
 
-* hostgroup_mapreduce_history_servers: = role mapreduce_history_server
+* hostgroup_mapreduce_history_servers: = role hadoop_mapreduce_history_server
 
 * hostgroup_spark_history_servers: = role spark_history_server
 

@@ -4,7 +4,7 @@
   gather_facts: false
   ignore_unreachable: yes
   roles:
-    - ansible_account
+    - role: ansible_account
   tasks:
     - meta: clear_host_errors
   collections:
