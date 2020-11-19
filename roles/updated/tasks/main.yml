@@ -26,6 +26,7 @@
 - name: Check if we need to restart
   shell:
     cmd: /usr/bin/needs-restarting -r
+  check_mode: yes
   register: needs_restarting
   failed_when: needs_restarting.rc >= 2
 
