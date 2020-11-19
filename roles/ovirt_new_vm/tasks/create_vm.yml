@@ -9,7 +9,8 @@
     # This DNS looks up the vm to determine it's configured IP address
     # Fun note: The VM does not have to exist yet, as long as it is in DNS
     - name: "Simple A record (IPV4 address) lookup for {{hostname}}"
-      ansible.builtin.shell: "host {{hostname}} {{dns_server}} | grep '{{hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
+      ansible.builtin.shell:
+        cmd: "host {{hostname}} {{dns_server}} | grep '{{hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
       register: hostnumberblob
 
 

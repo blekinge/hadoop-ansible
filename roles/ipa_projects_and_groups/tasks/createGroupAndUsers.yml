@@ -13,7 +13,8 @@
   delegate_to: "{{hdfs_delegation_host}}"
   delegate_facts: false
   run_once: true
-  ansible.builtin.shell: |
+  ansible.builtin.shell:
+    cmd: |
     set -e # Fail on anything
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh

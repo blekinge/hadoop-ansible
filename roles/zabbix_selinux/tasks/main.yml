@@ -32,7 +32,8 @@
       #
       #This generated policy package can now be loaded with the semodule command:
     - name: load selinux module package
-      ansible.builtin.shell: semodule --install zabbix_agent.pp
+      ansible.builtin.shell:
+        cmd: semodule --install zabbix_agent.pp
 
 - name: Fix selinux permissions
   ansible.builtin.command: restorecon -R -v /var/lib/zabbix

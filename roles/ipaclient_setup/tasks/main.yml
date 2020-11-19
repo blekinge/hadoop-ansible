@@ -6,7 +6,8 @@
       mode: '0755'
 
 - name: check for autofs in /etc/sssd/sssd.conf
-  ansible.builtin.shell: grep '^services *=' /etc/sssd/sssd.conf | grep -q autofs
+  ansible.builtin.shell:
+    cmd: grep '^services *=' /etc/sssd/sssd.conf | grep -q autofs
   register: autofsEnabled
   failed_when: autofsEnabled.rc >= 2
   changed_when: autofsEnabled.rc == 1
@@ -21,7 +22,8 @@
 
 
 - name: check for homedir in /etc/sssd/sssd.conf
-  ansible.builtin.shell: grep '^homedir_substring *=' /etc/sssd/sssd.conf | grep -v -q '= */home *$'
+  ansible.builtin.shell:
+    cmd: grep '^homedir_substring *=' /etc/sssd/sssd.conf | grep -v -q '= */home *$'
   register: homedirCorrect
   failed_when: homedirCorrect.rc >= 2
   changed_when: homedirCorrect.rc == 1
@@ -69,7 +71,8 @@
 
 
 - name: ensure ipa is reloaded
-  ansible.builtin.shell: sss_cache -E
+  ansible.builtin.shell:
+    cmd: sss_cache -E
 
 - name: set correct ccache
   ansible.builtin.replace:

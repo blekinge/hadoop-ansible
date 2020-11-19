@@ -4,7 +4,8 @@
 # Read the user password from a password file. If it is not found, generate a new one, store it and return in
 - name: "Computing / Reading passsword for {{ user.username }}"
   delegate_to: localhost
-  ansible.builtin.shell: "cat 'passwords/{{ user.username }}.password' || (./passPhraseGen.sh -j '' -c -l 1 -m 25 | tee  'passwords/{{ user.username }}.password')"
+  ansible.builtin.shell:
+    cmd: "cat 'passwords/{{ user.username }}.password' || (./passPhraseGen.sh -j '' -c -l 1 -m 25 | tee  'passwords/{{ user.username }}.password')"
   register: newPassword
 
 
@@ -22,7 +23,7 @@
     gid: "{{user.gid | default(group.gid | int + user_num + 1)}}"
 
     homedir: "{{ ipaclient_autohome_dir }}/{{ user.username }}"
-    ansible.builtin.shell: "{{shell}}"
+    shell: "{{shell}}"
     password: "{{newPassword.stdout}}"
     update_password: on_create
   register: ipauser_result
@@ -57,7 +58,8 @@
   become_user: "{{hdfs_user.name}}"
   delegate_to: "{{hdfs_delegation_host}}"
   run_once: true
-  ansible.builtin.shell: |
+  ansible.builtin.shell:
+    cmd: |
     set -e # Fail on anything
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh

@@ -2,7 +2,8 @@
   run_once: yes
   become: yes
   become_user: "{{hdfs_user.name}}"
-  ansible.builtin.shell: | #TODO make this more configurable
+  ansible.builtin.shell:
+    cmd: | #TODO make this more configurable
     set -e # Fail on anything
     set -x # Output what happens
     source /etc/profile.d/hadoop.sh

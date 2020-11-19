@@ -5,7 +5,8 @@
   become: yes
   become_user: root
   timeout: 5
-  ansible.builtin.shell: hostname
+  ansible.builtin.shell:
+    cmd: hostname
   register: available_on_inventory_hostname
   ignore_errors: yes
 
