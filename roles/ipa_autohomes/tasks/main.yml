@@ -4,7 +4,7 @@
 
 #Add the NFS service principal for the server and client to Kerberos.
 - name: FreeIPA automount setup service
-  ipaservice:
+  freeipa.ansible_freeipa.ipaservice:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "nfs/{{ ansible_fqdn }}"
     state: present
@@ -19,26 +19,26 @@
     - name: setup autohome
       shell:
         cmd: |
-        LC_ALL="C.UTF-8"
+          LC_ALL="C.UTF-8"
 
-        #Add the auto.home map
-        ipa automountmap-show {{ipaautomount_location}} --map=auto.home || \
-          ipa automountmap-add {{ipaautomount_location}} auto.home;
+          #Add the auto.home map
+          ipa automountmap-show {{ipaautomount_location}} --map=auto.home || \
+            ipa automountmap-add {{ipaautomount_location}} auto.home;
 
-        #And add the auto.home map to auto.master
-        ipa automountkey-show {{ipaautomount_location}} auto.master --key "{{ ipaclient_autohome_dir }}" || \
-          ipa automountkey-add {{ipaautomount_location}} --key "{{ ipaclient_autohome_dir }}" --info auto.home auto.master;
+          #And add the auto.home map to auto.master
+          ipa automountkey-show {{ipaautomount_location}} auto.master --key "{{ ipaclient_autohome_dir }}" || \
+            ipa automountkey-add {{ipaautomount_location}} --key "{{ ipaclient_autohome_dir }}" --info auto.home auto.master;
 
-        #Finally add the key to the auto.home map
+          #Finally add the key to the auto.home map
 
-        ipa automountkey-show {{ipaautomount_location}}  \
-                              --key "*" \
-                              --info "-fstype=nfs4,rw,sec=krb5,intr,hard {{ ansible_fqdn }}:{{ ipaserver_autohome_dir }}/&" \
-                              auto.home || \
-          ipa automountkey-add {{ipaautomount_location}} \
-            --key "*" \
-            --info "-fstype=nfs4,rw,sec=krb5:krb5i,intr,hard {{ ansible_fqdn }}:{{ ipaserver_autohome_dir }}/&" \
-            auto.home;
+          ipa automountkey-show {{ipaautomount_location}}  \
+                                --key "*" \
+                                --info "-fstype=nfs4,rw,sec=krb5,intr,hard {{ ansible_fqdn }}:{{ ipaserver_autohome_dir }}/&" \
+                                auto.home || \
+            ipa automountkey-add {{ipaautomount_location}} \
+              --key "*" \
+              --info "-fstype=nfs4,rw,sec=krb5:krb5i,intr,hard {{ ansible_fqdn }}:{{ ipaserver_autohome_dir }}/&" \
+              auto.home;
 
 
     - name: Tell your NFS service to use NFSv4

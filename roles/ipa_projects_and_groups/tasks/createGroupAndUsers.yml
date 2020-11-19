@@ -15,15 +15,15 @@
   run_once: true
   shell:
     cmd: |
-    set -e # Fail on anything
-    source /etc/profile.d/hadoop.sh
-    source /etc/profile.d/kerberos.sh
-    kinit -kt {{keytab_dir}}/{{hdfs_user.name}}.headless.keytab {{hdfs_user.name}};
-    hdfs dfs -mkdir -p /projects/{{ group.name }};
-    hdfs dfs -chown {{ hdfs_user.name }}:{{ group.name }} /projects/{{ group.name }};
-    hdfs dfs -chmod 0770 /projects/{{ group.name }};
-    hdfs dfs -chmod 0755 /projects;
-#    kdestroy
+      set -e # Fail on anything
+      source /etc/profile.d/hadoop.sh
+      source /etc/profile.d/kerberos.sh
+      kinit -kt {{keytab_dir}}/{{hdfs_user.name}}.headless.keytab {{hdfs_user.name}};
+      hdfs dfs -mkdir -p /projects/{{ group.name }};
+      hdfs dfs -chown {{ hdfs_user.name }}:{{ group.name }} /projects/{{ group.name }};
+      hdfs dfs -chmod 0770 /projects/{{ group.name }};
+      hdfs dfs -chmod 0755 /projects;
+  #    kdestroy
 
 
 - name: "Project Users for '{{group}}'"

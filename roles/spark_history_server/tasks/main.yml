@@ -39,17 +39,17 @@
   become_user: "{{hdfs_user.name}}"
   shell:
     cmd: |
-    set -e # Fail on anything
-    source /etc/profile.d/hadoop.sh
-    source /etc/profile.d/kerberos.sh
+      set -e # Fail on anything
+      source /etc/profile.d/hadoop.sh
+      source /etc/profile.d/kerberos.sh
 
-    kinit -kt {{keytab_dir}}/{{hdfs_user.name}}.headless.keytab {{hdfs_user.name}}
+      kinit -kt {{keytab_dir}}/{{hdfs_user.name}}.headless.keytab {{hdfs_user.name}}
 
-    hdfs dfs -mkdir -p {{spark_eventLog_dir}}
+      hdfs dfs -mkdir -p {{spark_eventLog_dir}}
 
-    hdfs dfs -chown -R {{spark_user.name}}:{{hadoop_group.name}}  {{spark_eventLog_dir}};
+      hdfs dfs -chown -R {{spark_user.name}}:{{hadoop_group.name}}  {{spark_eventLog_dir}};
 
-    kdestroy
+      kdestroy
 
 
 - name: (Re)Start Spark History Server systemd service

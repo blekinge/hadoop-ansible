@@ -15,15 +15,15 @@
   become_user: "{{hdfs_user.name}}"
   shell:
     cmd: |
-    source /etc/profile.d/hadoop.sh
-    source /etc/profile.d/kerberos.sh
+      source /etc/profile.d/hadoop.sh
+      source /etc/profile.d/kerberos.sh
 
-    kinit -kt {{keytab_dir}}/{{hdfs_user.name}}.headless.keytab {{hdfs_user.name}}
+      kinit -kt {{keytab_dir}}/{{hdfs_user.name}}.headless.keytab {{hdfs_user.name}}
 
-    hdfs dfs -mkdir /system /system/mapreduce;
-    hdfs dfs -chmod -R a+rx /system;
+      hdfs dfs -mkdir /system /system/mapreduce;
+      hdfs dfs -chmod -R a+rx /system;
 
-    mapred frameworkuploader  -target /system/mapreduce/mapreduce.tar.gz#mr-framework
+      mapred frameworkuploader  -target /system/mapreduce/mapreduce.tar.gz#mr-framework
 
 - name: (Re)Start Mapreduce History Server systemd service
   ansible.builtin.systemd:
