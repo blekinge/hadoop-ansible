@@ -1,3 +1,4 @@
+{{ ansible_managed | comment() }}
 TYPE=Ethernet
 PROXY_METHOD=none
 BROWSER_ONLY=no

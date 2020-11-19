@@ -1,3 +1,4 @@
+{{ ansible_managed | comment() }}
 {% for route in nic2_routes_list %}
 ADDRESS{{ loop.index|int -1}}={{ route.network | ansible.netcommon.ipaddr('network' )}}
 NETMASK{{ loop.index|int -1}}={{ route.network | ansible.netcommon.ipaddr('netmask') }}
