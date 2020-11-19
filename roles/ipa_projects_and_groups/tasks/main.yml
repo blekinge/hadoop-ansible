@@ -3,7 +3,7 @@
 
 - name: Create default user groups
   loop: "{{default_user_groups}}"
-  ipagroup:
+  freeipa.ansible_freeipa.ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{ item.name }}"
     gid: "{{ item.gid }}"
@@ -19,7 +19,7 @@
 
 - name: Create HBAC service group
   throttle: 1
-  ipahbacsvcgroup:
+  freeipa.ansible_freeipa.ipahbacsvcgroup:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "user-session"
     hbacsvc:
@@ -39,7 +39,7 @@
   loop_control:
     loop_var: group
   when: group.project_host is defined
-  ipahbacrule:
+  freeipa.ansible_freeipa.ipahbacrule:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{group.name}} allowed on {{group.project_host}}"
     host: "{{group.project_host}}"
@@ -49,7 +49,7 @@
 
 #  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacrule.md
 - name: "Projects HBAC rules"
-  ipahbacrule:
+  freeipa.ansible_freeipa.ipahbacrule:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{subadmins_project.project_ipa.name}} allowed on all"
     group: "{{subadmins_project.project_ipa.name}}"

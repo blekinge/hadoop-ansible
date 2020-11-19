@@ -1,7 +1,7 @@
 ---
 
 - name: Install X2Go
-  package:
+  ansible.builtin.package:
     state: present
     name:
       - x2goserver

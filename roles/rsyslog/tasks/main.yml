@@ -1,5 +1,5 @@
 ---
-- package:
+- ansible.builtin.package:
     name: "{{ item }}"
     state: present
     update_cache: yes
@@ -8,12 +8,12 @@
     - "{{ rsyslog_additional_packages }}"
 
 - name: Remove useless configuration file
-  file:
+  ansible.builtin.file:
     path: "/etc/rsyslog.d/listen.conf"
     state: absent
 
 - name: create working dir
-  file:
+  ansible.builtin.file:
     path: "{{rsyslog_working_dir}}"
     state: directory
     owner: root
@@ -21,7 +21,7 @@
     mode: 0700
 
 - name: Set up configuration file
-  template:
+  ansible.builtin.template:
     src: templates/rsyslog.conf
     dest: "/etc/rsyslog.conf"
     owner: root
@@ -30,7 +30,7 @@
     validate: "rsyslogd -f %s -N 1"
 
 - name: SELinux (UDP)
-  seport:
+  ansible.builtin.seport:
     proto: udp
     ports: "{{ item }}"
     setype: syslogd_port_t
@@ -49,7 +49,7 @@
   when: ansible_selinux|bool
 
 - name: SELinux (TCP)
-  seport:
+  ansible.builtin.seport:
     proto: tcp
     ports: "{{ item }}"
     setype: syslogd_port_t
@@ -69,7 +69,7 @@
   when: ansible_selinux|bool
 
 - name: (Re)Start RSyslog service
-  service:
+  ansible.builtin.service:
     name: rsyslog
     state: restarted
     enabled: yes

@@ -20,7 +20,7 @@
   remote_user: root
   tasks:
     - name: "Wait 600 seconds for hosts to become reachable/usable"
-      wait_for_connection:
+      ansible.builtin.wait_for_connection:
         delay: 0 # Number of seconds to wait before starting to poll.
         timeout: 600 # Maximum number of seconds to wait for.
         sleep: 2 # Number of seconds to sleep between checks.

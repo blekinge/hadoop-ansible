@@ -1,20 +1,20 @@
 ---
 
 - name: Stop namenode systemd service
-  systemd:
+  ansible.builtin.systemd:
     state: stopped
     daemon_reload: yes
     name: hdfs_namenode
 
 
 - name: Wipe Namenode
-  file:
+  ansible.builtin.file:
     path: "{{hadoop_dfs_name}}"
     state: absent
 
 
 - name: Create Hadoop Namenode directories
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     owner: "{{ hdfs_user.name }}"
     group: "{{ hdfs_user.group }}"
@@ -29,7 +29,7 @@
 - name: Format Namenode
   become: yes
   become_user: "{{hdfs_user.name}}"
-  shell:
+  ansible.builtin.shell:
     cmd:
       echo -e "Y\nN" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -format > "{{ hadoop_dfs_name }}/formatted"
     executable: /bin/bash
@@ -41,7 +41,7 @@
 - name: Initialize shared edit
   become: yes
   become_user: "{{hdfs_user.name}}"
-  shell:
+  ansible.builtin.shell:
     cmd:
       echo -e "Y\nN" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -initializeSharedEdits > "{{ hadoop_dfs_name }}/shared_edits_initialized"
     executable: /bin/bash
@@ -51,7 +51,7 @@
 
 # Then start the primary, so the secondary will have something to sync with
 - name: (Re)Start Primary Namenode systemd service
-  systemd:
+  ansible.builtin.systemd:
     state: restarted
     daemon_reload: yes
     name: hdfs_namenode
@@ -60,7 +60,7 @@
 
 
 - name: Stop Secondary Namenode systemd service
-  systemd:
+  ansible.builtin.systemd:
     state: stopped
     daemon_reload: yes
     name: hdfs_namenode
@@ -72,7 +72,7 @@
 - name: Bootstrap HA
   become: yes
   become_user: "{{hdfs_user.name}}"
-  shell:
+  ansible.builtin.shell:
     cmd:
       echo -e "Y\n" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -bootstrapStandby > "{{ hadoop_dfs_name }}/bootstrapped"
     executable: /bin/bash
@@ -81,7 +81,7 @@
 
 
 - name: Stop ZKFC
-  systemd:
+  ansible.builtin.systemd:
     state: stopped
     daemon_reload: yes
     name: hdfs_zkfc
@@ -92,7 +92,7 @@
 - name: Format zkfc
   become: yes
   become_user: "{{hdfs_user.name}}"
-  shell:
+  ansible.builtin.shell:
     cmd:
       echo -e "Y\nN" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh zkfc -formatZK > "{{ hadoop_dfs_name }}/zkFormatted"
     executable: /bin/bash

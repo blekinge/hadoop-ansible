@@ -11,7 +11,7 @@
         remote_src: yes
 
     - name: Install systemd login permissions for jupyter
-      template:
+      ansible.builtin.template:
         src: "templates/dbus/jupyterhub.conf"
         dest: /etc/dbus-1/system.d/
         mode: 0644
@@ -21,7 +21,7 @@
 
     - name: Restart systemd
       when: dbus.changed
-      systemd:
+      ansible.builtin.systemd:
         state: restarted
         name: "{{item}}"
       loop:
@@ -59,7 +59,7 @@
 #        creates: "{{ssl_cert_dir}}/jupyterhub.cert"
 #
 #    - name: permissions for jupyterhub certificates
-#      file:
+#      ansible.builtin.file:
 #        state: file
 #        path: "{{item}}"
 #        owner: "{{ jupyterhub_user.name }}"
@@ -80,27 +80,27 @@
 
     # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudocmd.md
     - name: "sudo command /usr/bin/sudospawner"
-      ipasudocmd:
+      freeipa.ansible_freeipa.ipasudocmd:
         ipaadmin_password: "{{ipaadmin_password}}"
         name: /usr/bin/sudospawner
         state: present
 
     - name: "sudo command /usr/local/bin/sudospawner"
-      ipasudocmd:
+      freeipa.ansible_freeipa.ipasudocmd:
         ipaadmin_password: "{{ipaadmin_password}}"
         name: /usr/local/bin/sudospawner # #Sometimes it gets installed in /usr/local
         state: present
 
     # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudocmdgroup.md
     - name: "Create sudo command group {{jupyterhub_user.name}}_cmdgroup"
-      ipasudocmdgroup:
+      freeipa.ansible_freeipa.ipasudocmdgroup:
         ipaadmin_password: "{{ipaadmin_password}}"
         name: "{{jupyterhub_user.name}}_cmdgroup"
         action: sudocmdgroup
 
     # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudocmdgroup.md
     - name: "Add commands to {{jupyterhub_user.name}}_cmdgroup"
-      ipasudocmdgroup:
+      freeipa.ansible_freeipa.ipasudocmdgroup:
         ipaadmin_password: "{{ipaadmin_password}}"
         name: "{{jupyterhub_user.name}}_cmdgroup"
         sudocmd:
@@ -111,7 +111,7 @@
 
     # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudorule.md
     - name: "jupyterhub Sudo rule"
-      ipasudorule:
+      freeipa.ansible_freeipa.ipasudorule:
         ipaadmin_password: "{{ipaadmin_password}}"
         name: "{{jupyterhub_user.name}}_sudorule"
         hostcategory: all
@@ -132,7 +132,7 @@
 - name: Install jupyterhub
   block:
     - name: Install NodeJS and Python
-      package:
+      ansible.builtin.package:
         state: present
         name:
           - npm
@@ -142,20 +142,20 @@
 
     #https://docs.ansible.com/ansible/2.3/npm_module.html
     - name: Install npm dependencies
-      npm:
+      ansible.builtin.npm:
         name: "{{item}}"
         global: yes
       loop: "{{npm_dependencies}}"
 
     #https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
     - name: Update python pip package
-      pip:
+      ansible.builtin.pip:
         name: pip
         executable: pip3
         state: latest
 
     - name: Install jupyterhub by pip
-      pip:
+      ansible.builtin.pip:
         name: "{{item}}"
         executable: pip3
         state: latest
@@ -164,7 +164,7 @@
 
 
     - name: Install sudospawner for jupyter
-      template:
+      ansible.builtin.template:
         src: "templates/bin/sudospawner-singleuser"
         dest: /usr/local/bin/
         mode: 0755
@@ -175,7 +175,7 @@
 - name: Install jupyterhub config
   block:
     - name: Upload Jupyter systemd services
-      template:
+      ansible.builtin.template:
         src: "templates/systemd/jupyterhub.service"
         dest: /etc/systemd/system/
         mode: 0644
@@ -183,7 +183,7 @@
         group: "root"
 
     - name: Create jupyterhub config directory
-      file:
+      ansible.builtin.file:
         path: /etc/jupyterhub/
         mode: 0755
         state: directory
@@ -191,7 +191,7 @@
         group: "root"
 
     - name: Upload Jupyterhub config
-      template:
+      ansible.builtin.template:
         src: templates/jupyterhub/jupyterhub_config.py
         dest: /etc/jupyterhub/jupyterhub_config.py
         mode: 0644
@@ -199,7 +199,7 @@
         group: "root"
 
     - name: profile.d
-      template:
+      ansible.builtin.template:
         src: "{{item}}"
         dest: /etc/profile.d/
         mode: 0644
@@ -211,7 +211,7 @@
 - name: install pyspark kernel
   block:
     - name: Create jupyter kernel directory
-      file:
+      ansible.builtin.file:
         path: /usr/local/share/jupyter/kernels/pyspark/
         mode: 0755
         state: directory
@@ -219,7 +219,7 @@
         group: "root"
 
     - name: Install jupyter kernel config
-      template:
+      ansible.builtin.template:
         src: templates/kernels/pyspark.json
         dest: /usr/local/share/jupyter/kernels/pyspark/kernel.json
         mode: 0644
@@ -228,7 +228,7 @@
 
 
 - name: Install extra jupyter extensions
-  pip:
+  ansible.builtin.pip:
     name: "{{item}}"
     executable: pip3
     state: latest
@@ -236,19 +236,19 @@
 
 
 - name: Install jupyterlabs extensions
-  shell:
+  ansible.builtin.shell:
     cmd: "/usr/local/bin/jupyter-labextension install {{item | quote }} --no-build"
   loop: "{{jupyterlabs_npm_extensions}}"
 
 
 - name: Enable jupyterlabs extensions
-  shell:
+  ansible.builtin.shell:
     cmd: "/usr/local/bin/jupyter lab build"
     # Build extensions (must be done to activate extensions since --no-build is used above)
 
 # Start
 - name: (Re)Start Jupyterhub systemd service
-  systemd:
+  ansible.builtin.systemd:
     state: restarted
     name: jupyterhub
     enabled: true
@@ -260,7 +260,7 @@
 - name: "Projects HBAC service definitions"
   delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
   run_once: true
-  ipahbacsvc:
+  freeipa.ansible_freeipa.ipahbacsvc:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "jupyterhub" #Name should match name in /etc/pam.d/ (jupyterhub)
     description: "Login to the jupyterhub webservice"

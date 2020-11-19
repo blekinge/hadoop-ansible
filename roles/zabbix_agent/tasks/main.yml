@@ -2,7 +2,7 @@
 
 - name: Force OS Redhat when on Springdale
   when: ansible_os_family == 'Springdale'
-  set_fact:
+  ansible.builtin.set_fact:
     zabbix_agent_os_family: RedHat
 
 
@@ -13,7 +13,7 @@
     merged_var_name: zabbix_host_groups
     expected_type: 'list'
 
-- debug: var=zabbix_host_groups
+- ansible.builtin.debug: var=zabbix_host_groups
 
 # https://github.com/ansible-collections/community.zabbix/blob/main/docs/ZABBIX_AGENT_ROLE.md
 - name: zetup zabbix agentz
@@ -23,11 +23,11 @@
 
 - name: Fix selinux permissions
   when: ansible_selinux.mode == 'enforcing'
-  command: "restorecon -R -v /var/lib/zabbix"
+  ansible.builtin.command: "restorecon -R -v /var/lib/zabbix"
 
 
 - name: (Re)Start zabbix agent service
-  systemd:
+  ansible.builtin.systemd:
     service: zabbix-agent
     state: restarted
     enabled: yes

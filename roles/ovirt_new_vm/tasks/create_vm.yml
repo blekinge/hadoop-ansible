@@ -9,15 +9,15 @@
     # This DNS looks up the vm to determine it's configured IP address
     # Fun note: The VM does not have to exist yet, as long as it is in DNS
     - name: "Simple A record (IPV4 address) lookup for {{hostname}}"
-      shell: "host {{hostname}} {{dns_server}} | grep '{{hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
+      ansible.builtin.shell: "host {{hostname}} {{dns_server}} | grep '{{hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
       register: hostnumberblob
 
 
     # Save the hostnumber as variable; Hostnumber is the last block of the IP, as this is alike in all the networks
-    - set_fact:
+    - ansible.builtin.set_fact:
         hostnumber: "{{ hostnumberblob.stdout }}"
 
-    - debug:
+    - ansible.builtin.debug:
         var: hostnumber
 
     # The use of ovirt.ovirt before ovirt_auth is to check if the collection is correctly loaded
@@ -142,6 +142,6 @@
 
   always:
     - name: Always revoke the SSO token
-      ovirt_auth:
+      ovirt.ovirt.ovirt_auth:
         state: absent
         ovirt_auth: "{{ ovirt_auth }}"

@@ -1,7 +1,7 @@
 
 
 - name: ensure  directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ hive_path }}"
     state: directory
 
@@ -21,14 +21,14 @@
 
 
 - name: "Link {{hive_home}} to {{current_hive_home}}"
-  file:
+  ansible.builtin.file:
     src: "{{hive_home}}"
     dest: "{{current_hive_home}}"
     state: link
 
 
 - name: Upload hive config files
-  template:
+  ansible.builtin.template:
     src: "{{ item }}"
     dest: "{{ hive_config_path }}/"
     mode: 0644
@@ -39,11 +39,11 @@
 
 
 - name: remove {{ hive_home }}/conf
-  file:
+  ansible.builtin.file:
     path: "{{ hive_home }}/conf"
     state: absent
 - name: symlink {{ hive_home }}/conf to {{ hive_config_path }}
-  file:
+  ansible.builtin.file:
     src: "{{ hive_config_path }}"
     dest:  "{{ hive_home }}/conf"
     owner: root
@@ -53,7 +53,7 @@
 
 
 - name: Upload Hive profile files
-  template:
+  ansible.builtin.template:
     src: "{{ item }}"
     dest: "/etc/profile.d/"
     mode: 0644

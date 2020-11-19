@@ -1,6 +1,6 @@
 
 - name: create log collection dirs
-  file:
+  ansible.builtin.file:
     path: "{{item}}"
     state: directory
     owner: root
@@ -19,10 +19,10 @@
 
 - name: Fix selinux permissions
   when: ansible_selinux.mode == 'enforcing'
-  command: "restorecon -R -v {{remote_log_folder}}"
+  ansible.builtin.command: "restorecon -R -v {{remote_log_folder}}"
 
 - name: create log sorting dirs
-  file:
+  ansible.builtin.file:
     src: "{{remote_log_folder}}/{{item.value}}"
     dest: "{{structured_log_folder}}/{{item.key}}"
     state: link
@@ -35,6 +35,6 @@
 
 
 - name: Restart rsyslog service after SELinux changes
-  service:
+  ansible.builtin.service:
     name: rsyslog
     state: restarted

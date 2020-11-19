@@ -1,7 +1,7 @@
 ---
 
 - name: Stop node manager systemd service
-  systemd:
+  ansible.builtin.systemd:
     state: stopped
     daemon_reload: yes
     name: yarn_node_manager
@@ -10,7 +10,7 @@
 
 
 - name: Create data dirs
-  file:
+  ansible.builtin.file:
     path: "{{item}}"
     state: directory
     owner: "{{yarn_user.name}}"
@@ -19,7 +19,7 @@
   with_items: "{{yarn_data_dirs}}"
 
 - name: Create other dirs
-  file:
+  ansible.builtin.file:
     path: "{{item}}"
     state: directory
     owner: "{{yarn_user.name}}"
@@ -31,7 +31,7 @@
 
 
 - name: (Re)Start node manager systemd service
-  systemd:
+  ansible.builtin.systemd:
     state: restarted
     daemon_reload: yes
     name: yarn_node_manager

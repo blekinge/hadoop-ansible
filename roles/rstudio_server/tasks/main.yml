@@ -1,5 +1,5 @@
 - name: Install dependencies
-  package:
+  ansible.builtin.package:
     name:
       - R-devel
       - texlive-framed
@@ -7,7 +7,7 @@
     state: present
 
 - name: convert gpg
-  shell: "{{ item }}"
+  ansible.builtin.shell: "{{ item }}"
   args:
     creates: rstudio-signing.key
   with_items:
@@ -15,7 +15,7 @@
     - gpg --armor --export 3F32EE77E331692F > rstudio-signing.key
 
 - name: Import Rstudio GPG key.
-  rpm_key:
+  ansible.builtin.rpm_key:
     key: rstudio-signing.key
     state: present
 
@@ -23,31 +23,33 @@
   when: rstudio_version_fixed is not defined
   block:
     - name: Check the newest version of RStudio
-      uri: url=http://download2.rstudio.org/current.ver return_content=yes
+      ansible.builtin.uri:
+        url: http://download2.rstudio.org/current.ver
+        return_content: yes
       register: rstudio_version
 
     - name: Get the archive of RStudio Server
-      get_url:
+      ansible.builtin.get_url:
         url: "{{rstudio_download_url}}/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','')}}-x86_64.rpm"
         dest: /tmp/rstudio.rpm
 
 - name: "Get version {{ rstudio_version_fixed }}  of RStudio Server"
-  get_url:
+  ansible.builtin.get_url:
     url: "{{rstudio_download_url}}/rstudio-server-rhel-{{ rstudio_version_fixed }}-x86_64.rpm"
     dest: /tmp/rstudio.rpm
   when: rstudio_version_fixed is defined
 
 
 - name: rstudio install
-  package:
+  ansible.builtin.package:
     name: /tmp/rstudio.rpm
     state: present
 
 - name: Stop rstudio server if running
-  shell: rstudio-server stop
+  ansible.builtin.shell: rstudio-server stop
 
 - name: remove local rstudio-server user
-  user:
+  ansible.builtin.user:
     name: rstudio-server
     state: absent
     remove: yes
@@ -55,21 +57,21 @@
 
 
 - name: setup PAM
-  copy:
+  ansible.builtin.copy:
     backup: yes
     src: /etc/pam.d/login
     dest: /etc/pam.d/rstudio
     remote_src: yes
 
 - name: Restrict users to humans
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/rstudio/rstudio-server.conf
     line: "auth-required-user-group={{users_group.name}}"
     regexp: "^auth-required-user-group=.*$"
     create: yes
 
 - name: "RStudio should run as {{rstudio_user.name}}"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/rstudio/rstudio-server.conf
     line: "server-user={{rstudio_user.name}}"
     regexp: "^server-user=.*$"
@@ -78,14 +80,14 @@
 
 #
 #- name: "RStudio ssl config"
-#  lineinfile:
+#  ansible.builtin.lineinfile:
 #    path: /etc/rstudio/rstudio-server.conf
 #    line: "ssl-enabled=1"
 #    regexp: "^ssl-enabled=.*$"
 #    create: yes
 #
 #- name: "RStudio ssl config cert"
-#  lineinfile:
+#  ansible.builtin.lineinfile:
 #    path: /etc/rstudio/rstudio-server.conf
 #    line: "ssl-certificate={{ssl_cert_dir}}/{{ ansible_fqdn }}.crt"
 #    regexp: "^ssl-certificate=.*$"
@@ -93,7 +95,7 @@
 #
 #
 #- name: "RStudio ssl config key"
-#  lineinfile:
+#  ansible.builtin.lineinfile:
 #    path: /etc/rstudio/rstudio-server.conf
 #    line: "ssl-certificate-key={{ssl_key_dir}}/{{ ansible_fqdn }}-private.pem"
 #    regexp: "^ssl-certificate-key=.*$"
@@ -101,14 +103,14 @@
 
 
 - name: "RStudio port"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/rstudio/rstudio-server.conf
     line: "www-port={{rstudio_server_http_port}}"
     regexp: "^www-port==.*$"
     create: yes
 
 - name: Create rstudio logging folder if it did not exist already
-  file:
+  ansible.builtin.file:
     state: directory
     path:
       - /var/log/rstudio-server
@@ -124,21 +126,21 @@
     state: permissive
 
 - name: (Re)Start RStudio Server service
-  systemd:
+  ansible.builtin.systemd:
     service: rstudio-server
     state: restarted
     enabled: yes
     daemon_reload: yes
 
 - name: Configure Spark home
-  lineinfile:
+  ansible.builtin.lineinfile:
     path:  /usr/lib64/R/etc/Renviron
     line: "SPARK_HOME={{current_spark_home}}"
     regexp: "^SPARK_HOME=.*$"
     create: yes
 
 - name: install Sparklyr dependencies
-  package:
+  ansible.builtin.package:
     name:
       - libxml2-devel
       - libcurl-devel
@@ -156,10 +158,10 @@
 # https://github.com/allx/remote_logging
 # https://stackoverflow.com/questions/41194021/how-can-i-show-progress-for-a-long-running-ansible-task
 - name: install R Sparklyr
-  shell: Rscript -e 'install.packages("sparklyr", repos="http://cran.rstudio.com/")'
+  ansible.builtin.shell: Rscript -e 'install.packages("sparklyr", repos="http://cran.rstudio.com/")'
 
 - name: install Apache Arrow
-  shell: Rscript -e 'install.packages("arrow", repos="http://cran.rstudio.com/")'
+  ansible.builtin.shell: Rscript -e 'install.packages("arrow", repos="http://cran.rstudio.com/")'
 
 
 
@@ -167,7 +169,7 @@
 - name: "Projects HBAC service definitions"
   delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
   run_once: true
-  ipahbacsvc:
+  freeipa.ansible_freeipa.ipahbacsvc:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "rstudio" #Name should match name in /etc/pam.d/ (rstudio)
     description: "login to the rstudio-server process"

@@ -2,12 +2,12 @@
 # General ask used by several roles
 
 - name: "check if keytab file {{ entry.keytab_file }} exists"
-  stat:
+  ansible.builtin.stat:
     path: "{{ entry.keytab_file }}"
   register: keytab_file
 
 - name: "test existing keytab for  {{ entry.principal }}"
-  shell: kinit -kt {{ entry.keytab_file }} {{ entry.principal}} -c test.ticket && rm test.ticket
+  ansible.builtin.shell: kinit -kt {{ entry.keytab_file }} {{ entry.principal}} -c test.ticket && rm test.ticket
   when: keytab_file.stat.exists == True
   register: keytab_valid
   failed_when: keytab_valid.rc >= 2
@@ -16,17 +16,17 @@
   when: keytab_valid is skipped or keytab_valid.rc != 0
   block:
     - name: remove invalid keytab file
-      file:
+      ansible.builtin.file:
         path: "{{ entry.keytab_file }}"
         state: absent
 
     - name: "getKeytab for {{ entry.principal }}"
-      shell: ipa-getkeytab --server={{ipa_server}} --principal={{ entry.principal}} --keytab={{ entry.keytab_file }}
+      ansible.builtin.shell: ipa-getkeytab --server={{ipa_server}} --principal={{ entry.principal}} --keytab={{ entry.keytab_file }}
       args:
         creates: "{{ entry.keytab_file }}"
 
 - name: "set permissions for {{ entry.keytab_file }}"
-  file:
+  ansible.builtin.file:
     owner: "{{ entry.owner}}"
     group: "{{ entry.group }}"
     mode: "{{ entry.file_permissions }}"

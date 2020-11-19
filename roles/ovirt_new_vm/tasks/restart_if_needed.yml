@@ -30,7 +30,7 @@
         wait: "{{host_disks is defined}}"
   always:
     - name: Always revoke the SSO token
-      ovirt_auth:
+      ovirt.ovirt.ovirt_auth:
         state: absent
         ovirt_auth: "{{ ovirt_auth }}"
 
@@ -39,7 +39,7 @@
   become: yes
   become_user: root
   remote_user: root
-  wait_for_connection:
+  ansible.builtin.wait_for_connection:
     delay: 0 # Number of seconds to wait before starting to poll.
     timeout: 600 # Maximum number of seconds to wait for.
     sleep: 5 # Number of seconds to sleep between checks.

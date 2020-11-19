@@ -3,7 +3,7 @@
 
 - name: Create standard user groups
   loop: "{{standard_user_groups}}"
-  ipagroup:
+  freeipa.ansible_freeipa.ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{ item.name }}"
     gid: "{{ item.gid }}"
@@ -11,7 +11,7 @@
 
 - name: system users
   loop: "{{system_users}}"
-  ipauser:
+  freeipa.ansible_freeipa.ipauser:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{item.name}}"
     first: "{{item.name}}"
@@ -27,7 +27,7 @@
 
 - name: "Add system users to system groups "
   loop: "{{system_users}}"
-  ipagroup:
+  freeipa.ansible_freeipa.ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{ item.extra_groups }}"
     action: member

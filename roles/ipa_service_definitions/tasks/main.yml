@@ -3,7 +3,7 @@
   include_tasks: kinit_admin.yml
 
 - name: Create service definitions in FreeIPA
-  ipaservice:
+  freeipa.ansible_freeipa.ipaservice:
     ipaadmin_password: "{{ ipaadmin_password }}"
     service: "{{ item.principal }}"
     host: "{{ item.host }}"

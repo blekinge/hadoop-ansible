@@ -1,7 +1,7 @@
 ---
 
 - name: Create system user keytabs dir
-  file:
+  ansible.builtin.file:
     owner: root
     group: "{{ hadoop_group.name }}"
     mode: 0750

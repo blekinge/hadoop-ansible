@@ -5,12 +5,12 @@
   become: yes
   become_user: root
   timeout: 5
-  shell: hostname
+  ansible.builtin.shell: hostname
   register: available_on_inventory_hostname
   ignore_errors: yes
 
 
-- set_fact:
+- ansible.builtin.set_fact:
     delegation: "{{ inventory_hostname if available_on_inventory_hostname is not failed else new_vm_ip}}"
 
 - name: Setup networks
@@ -22,7 +22,7 @@
   block:
     - name: "Wait 600 seconds for host {{ delegation }} to become reachable/usable"
       delegate_to: "{{ delegation }}"
-      wait_for_connection:
+      ansible.builtin.wait_for_connection:
         delay: 0 # Number of seconds to wait before starting to poll.
         timeout: 600 # Maximum number of seconds to wait for.
         sleep: 2 # Number of seconds to sleep between checks.
@@ -35,7 +35,7 @@
 #        use: systemd
 
     - name: "Setup wonky ping systemd service"
-      template:
+      ansible.builtin.template:
         src: "activate_network.service"
         dest: /etc/systemd/system/
         mode: 0644
@@ -43,7 +43,7 @@
         group: "root"
 
     - name: "Enable wonky ping systemd service"
-      systemd:
+      ansible.builtin.systemd:
         name: activate_network.service
         state: stopped
         daemon_reload: yes
@@ -51,19 +51,19 @@
 
 
     - name: "Find existing network scripts"
-      find:
+      ansible.builtin.find:
         paths: "/etc/sysconfig/network-scripts/"
       register: existing_network_scripts
 
     - name: "delete network scripts not on list {{network_scripts | map(attribute='name') | list | join(',')}}"
-      file:
+      ansible.builtin.file:
         path: "{{item.path}}"
         state: absent
       when: item.path|basename not in (network_scripts | map(attribute='name') | list )
       loop: "{{existing_network_scripts.files|default([ ])}}"
 
     - name: "Update network config scripts"
-      template:
+      ansible.builtin.template:
         src: "{{item.file}}"
         dest: "/etc/sysconfig/network-scripts/{{item.name}}"
         mode: 0644
@@ -74,15 +74,15 @@
 
     - name: Fix selinux permissions
       when: ansible_selinux.mode == 'enforcing'
-      command: "restorecon -R -v /etc/sysconfig/network-scripts/"
+      ansible.builtin.command: "restorecon -R -v /etc/sysconfig/network-scripts/"
 
     - name: "Start and enable NetworkManager"
-      systemd:
+      ansible.builtin.systemd:
         name: NetworkManager
         state: started
         enabled: yes
 
     - name: "Reload NetworkManager to activate new networks"
-      command: nmcli con reload
+      ansible.builtin.command: nmcli con reload
       ignore_unreachable: yes
 

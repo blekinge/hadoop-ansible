@@ -2,7 +2,7 @@
 
 
 - name: Upload spark config files
-  template:
+  ansible.builtin.template:
     src: "{{ item }}"
     dest: "{{ spark_config_path }}/"
     mode: 0640
@@ -14,7 +14,7 @@
 
 
 - name: Upload Spark invoker Script
-  template:
+  ansible.builtin.template:
     src: "spark-invoker.sh"
     dest: "/usr/local/bin/"
     mode: "0755"
@@ -23,7 +23,7 @@
 
 
 - name: Upload Spark systemd services
-  template:
+  ansible.builtin.template:
     src: "{{ item }}"
     dest: /etc/systemd/system/
     mode: 0644
@@ -37,7 +37,7 @@
 - name: create basic directory structure
   become: yes
   become_user: "{{hdfs_user.name}}"
-  shell: |
+  ansible.builtin.shell: |
     set -e # Fail on anything
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh
@@ -52,7 +52,7 @@
 
 
 - name: (Re)Start Spark History Server systemd service
-  systemd:
+  ansible.builtin.systemd:
     state: restarted
     daemon_reload: yes
     enabled: true

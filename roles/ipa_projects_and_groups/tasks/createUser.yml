@@ -4,7 +4,7 @@
 # Read the user password from a password file. If it is not found, generate a new one, store it and return in
 - name: "Computing / Reading passsword for {{ user.username }}"
   delegate_to: localhost
-  shell: "cat 'passwords/{{ user.username }}.password' || (./passPhraseGen.sh -j '' -c -l 1 -m 25 | tee  'passwords/{{ user.username }}.password')"
+  ansible.builtin.shell: "cat 'passwords/{{ user.username }}.password' || (./passPhraseGen.sh -j '' -c -l 1 -m 25 | tee  'passwords/{{ user.username }}.password')"
   register: newPassword
 
 
@@ -22,7 +22,7 @@
     gid: "{{user.gid | default(group.gid | int + user_num + 1)}}"
 
     homedir: "{{ ipaclient_autohome_dir }}/{{ user.username }}"
-    shell: "{{shell}}"
+    ansible.builtin.shell: "{{shell}}"
     password: "{{newPassword.stdout}}"
     update_password: on_create
   register: ipauser_result
@@ -35,7 +35,7 @@
   loop: "{{initial_users_groups | default([]) | map(attribute='name') | list + [group.name]}}"
   loop_control:
     loop_var: common_group
-  ipagroup:
+  freeipa.ansible_freeipa.ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{ common_group }}"
     action: member
@@ -45,7 +45,7 @@
 
 - name: user home
   delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
-  file:
+  ansible.builtin.file:
     state: directory
     path: "{{ ipaserver_autohome_dir }}/{{ user.username }}"
     owner: "{{ user.username }}"
@@ -57,7 +57,7 @@
   become_user: "{{hdfs_user.name}}"
   delegate_to: "{{hdfs_delegation_host}}"
   run_once: true
-  shell: |
+  ansible.builtin.shell: |
     set -e # Fail on anything
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh

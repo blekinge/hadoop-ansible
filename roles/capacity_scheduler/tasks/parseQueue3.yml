@@ -2,7 +2,7 @@
 # Input var = queue3, queueName3
 
 - name: "Level 3: queue ({{queueName3}})"
-  set_fact:
+  ansible.builtin.set_fact:
     capacity_queues: "{{capacity_queues | default([]) + [item]}}"
   loop:
     -  "{{ queue3 |

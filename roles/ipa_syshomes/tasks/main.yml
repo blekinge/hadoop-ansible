@@ -2,7 +2,7 @@
 
 
 - name: "Create {{ ipaserver_syshome_dir }}"
-  file:
+  ansible.builtin.file:
     path: "{{ ipaserver_syshome_dir }}"
     owner: root
     group: root
@@ -10,7 +10,7 @@
     state: directory
 
 - name: Create syshomes for syshome users
-  file:
+  ansible.builtin.file:
     path: "{{ ipaserver_syshome_dir }}/{{ item.name }}"
     owner: "{{ item.uid }}"
     group: "{{ item.gid }}"
@@ -19,7 +19,7 @@
   loop: "{{system_users}}"
 
 - name: "Create {{ ipaclient_syshome_dir }}"
-  file:
+  ansible.builtin.file:
     path: "{{ ipaclient_syshome_dir }}"
     owner: root
     group: root
@@ -27,7 +27,7 @@
     state: directory
 
 - name: "link syshomes from {{ ipaserver_syshome_dir }} to {{ ipaclient_syshome_dir }}"
-  file:
+  ansible.builtin.file:
     src: "{{ ipaserver_syshome_dir }}/{{ item.name }}"
     dest: "{{ ipaclient_syshome_dir }}/{{ item.name }}"
     state: link
@@ -35,13 +35,13 @@
 
 #NFS exports this folder
 - name: setup nfs exports
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/exports
     state: present
     line: "{{ ipaserver_syshome_dir }} {{ autohome_nfs_export_iprange }}(rw,sec=sys,fsid=1339)"
 
 - name: NFS syshome server
-  systemd:
+  ansible.builtin.systemd:
     name: nfs-server
     state: restarted
     enabled: yes

@@ -2,13 +2,13 @@
 - name: "Setup {{sealbin_user}}"
   block:
     - name: "Add {{sealbin_user}} group"
-      group:
+      ansible.builtin.group:
         name: "{{sealbin_user}}"
         gid: "{{sealbin_user_gid}}"
         state: present
 
     - name: "Add the user '{{sealbin_user}}' appending the groups 'adm' and 'wheel' to the user's groups"
-      user:
+      ansible.builtin.user:
         name: "{{sealbin_user}}"
         uid: "{{sealbin_user_uid}}"
         shell: /bin/bash
@@ -20,7 +20,7 @@
         state: present
 
     - name: "Upload sudoers config file to give {{sealbin_user}} sudo rights"
-      template:
+      ansible.builtin.template:
         src: sudoers
         dest: /etc/sudoers.d/ansible
         owner: root
@@ -38,7 +38,7 @@
   block:
 
     - name: disable root logins directly
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: '^PermitRootLogin'
         line: PermitRootLogin no
@@ -47,14 +47,14 @@
 
     - name: enable root logins directly
       remote_user: "{{sealbin_user}}"
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: '^PermitRootLogin'
         line: PermitRootLogin yes
       register: root_logins_permitted
       when: permit_root_logins  | bool
 
-    - systemd:
+    - ansible.builtin.systemd:
         service: sshd
         state: reloaded
         enabled: yes

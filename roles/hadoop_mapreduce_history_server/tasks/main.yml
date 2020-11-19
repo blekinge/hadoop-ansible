@@ -1,7 +1,7 @@
 ---
 
 - name: Create Mapreduce Paths
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     owner: "{{ mapreduce_user.name }}"
     group: "{{ mapreduce_user.group }}"
@@ -13,7 +13,7 @@
 - name: install mapreduce framework in HDFS
   become: yes
   become_user: "{{hdfs_user.name}}"
-  shell: |
+  ansible.builtin.shell: |
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh
 
@@ -25,7 +25,7 @@
     mapred frameworkuploader  -target /system/mapreduce/mapreduce.tar.gz#mr-framework
 
 - name: (Re)Start Mapreduce History Server systemd service
-  systemd:
+  ansible.builtin.systemd:
     state: restarted
     daemon_reload: yes
     enabled: yes

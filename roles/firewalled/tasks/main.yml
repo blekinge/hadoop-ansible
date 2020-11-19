@@ -1,13 +1,13 @@
 ---
 - name: install firewalld
-  package:
+  ansible.builtin.package:
     state: present
     name:
       - firewalld
       - python3-firewall
 
 - name: firewalld is running
-  systemd:
+  ansible.builtin.systemd:
     state: started
     service: firewalld
 

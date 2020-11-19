@@ -1,7 +1,7 @@
 ---
 
 - name: "Project Group '{{group.name}}'"
-  ipagroup:
+  freeipa.ansible_freeipa.ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{ group.name }}"
     gidnumber: "{{ group.gid }}"
@@ -13,7 +13,7 @@
   delegate_to: "{{hdfs_delegation_host}}"
   delegate_facts: false
   run_once: true
-  shell: |
+  ansible.builtin.shell: |
     set -e # Fail on anything
     source /etc/profile.d/hadoop.sh
     source /etc/profile.d/kerberos.sh

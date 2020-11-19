@@ -1,17 +1,17 @@
 ---
 - name: 1.Check if EPEL repo is already configured.
-  stat: path={{ epel_repofile_path }}
+  ansible.builtin.stat: path={{ epel_repofile_path }}
   register: epel_repofile_result
 
 
 - name: 2.Import EPEL GPG key.
-  rpm_key:
+  ansible.builtin.rpm_key:
     key: "{{ epel_repo_gpg_key_url }}"
     state: present
   when: not epel_repofile_result.stat.exists
 
 - name: 3.Install EPEL repo.
-  package:
+  ansible.builtin.package:
     name: "{{ epel_repo_url }}"
     state: present
   register: result
