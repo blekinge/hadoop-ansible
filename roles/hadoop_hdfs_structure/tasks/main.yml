@@ -2,7 +2,7 @@
   run_once: yes
   become: yes
   become_user: "{{hdfs_user.name}}"
-  ansible.builtin.shell:
+  shell:
     cmd: | #TODO make this more configurable
     set -e # Fail on anything
     set -x # Output what happens

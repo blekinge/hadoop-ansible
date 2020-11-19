@@ -29,7 +29,7 @@
 - name: Format Namenode
   become: yes
   become_user: "{{hdfs_user.name}}"
-  ansible.builtin.shell:
+  shell:
     cmd:
       echo -e "Y\nN" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -format > "{{ hadoop_dfs_name }}/formatted"
     executable: /bin/bash
@@ -41,7 +41,7 @@
 - name: Initialize shared edit
   become: yes
   become_user: "{{hdfs_user.name}}"
-  ansible.builtin.shell:
+  shell:
     cmd:
       echo -e "Y\nN" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -initializeSharedEdits > "{{ hadoop_dfs_name }}/shared_edits_initialized"
     executable: /bin/bash
@@ -72,7 +72,7 @@
 - name: Bootstrap HA
   become: yes
   become_user: "{{hdfs_user.name}}"
-  ansible.builtin.shell:
+  shell:
     cmd:
       echo -e "Y\n" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -bootstrapStandby > "{{ hadoop_dfs_name }}/bootstrapped"
     executable: /bin/bash
@@ -92,7 +92,7 @@
 - name: Format zkfc
   become: yes
   become_user: "{{hdfs_user.name}}"
-  ansible.builtin.shell:
+  shell:
     cmd:
       echo -e "Y\nN" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh zkfc -formatZK > "{{ hadoop_dfs_name }}/zkFormatted"
     executable: /bin/bash

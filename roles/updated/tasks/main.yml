@@ -24,7 +24,7 @@
     state: latest
 
 - name: Check if we need to restart
-  ansible.builtin.shell:
+  shell:
     cmd: /usr/bin/needs-restarting -r
   register: needs_restarting
   failed_when: needs_restarting.rc >= 2

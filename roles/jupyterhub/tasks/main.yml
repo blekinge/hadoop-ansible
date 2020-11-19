@@ -236,13 +236,13 @@
 
 
 - name: Install jupyterlabs extensions
-  ansible.builtin.shell:
+  shell:
     cmd: "/usr/local/bin/jupyter-labextension install {{item | quote }} --no-build"
   loop: "{{jupyterlabs_npm_extensions}}"
 
 
 - name: Enable jupyterlabs extensions
-  ansible.builtin.shell:
+  shell:
     cmd: "/usr/local/bin/jupyter lab build"
     # Build extensions (must be done to activate extensions since --no-build is used above)
 

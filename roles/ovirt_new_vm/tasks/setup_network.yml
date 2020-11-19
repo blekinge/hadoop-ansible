@@ -5,7 +5,7 @@
   become: yes
   become_user: root
   timeout: 5
-  ansible.builtin.shell:
+  shell:
     cmd: hostname
   register: available_on_inventory_hostname
   ignore_errors: yes
@@ -75,7 +75,7 @@
 
     - name: Fix selinux permissions
       when: ansible_selinux.mode == 'enforcing'
-      ansible.builtin.command: "restorecon -R -v /etc/sysconfig/network-scripts/"
+      command: "restorecon -R -v /etc/sysconfig/network-scripts/"
 
     - name: "Start and enable NetworkManager"
       ansible.builtin.systemd:
@@ -84,6 +84,6 @@
         enabled: yes
 
     - name: "Reload NetworkManager to activate new networks"
-      ansible.builtin.command: nmcli con reload
+      command: nmcli con reload
       ignore_unreachable: yes
 

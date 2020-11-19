@@ -6,4 +6,4 @@
   ansible.builtin.template: src=java_home.sh dest=/etc/profile.d
 #
 #- name: Set Java Home Script
-#  ansible.builtin.shell: source /etc/profile.d/java_home.sh
+#  shell: source /etc/profile.d/java_home.sh

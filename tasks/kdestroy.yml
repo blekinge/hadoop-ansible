@@ -1,9 +1,9 @@
 ---
 - name: kinit | destroying tokens
-  ansible.builtin.command: "/usr/bin/kdestroy"
+  command: "/usr/bin/kdestroy"
 
 - name: Kinit| check token is not there anymore
-  ansible.builtin.command: /usr/bin/klist
+  command: /usr/bin/klist
   register: result
   failed_when: "'krbtgt' in result.stdout"
   changed_when: result.rc != 1

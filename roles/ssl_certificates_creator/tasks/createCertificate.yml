@@ -71,7 +71,7 @@
 # Depends on -keystore.p12
 - name: "{{ssl_host}}: Generate a JKS keystore ({{ ssl_host }}-keystore.jks) from the PKCS#12 keystore ({{ ssl_host }}-keystore.p12)"
   when: p12Keystore.changed
-  ansible.builtin.command: "keytool -importkeystore
+  command: "keytool -importkeystore
                 -srckeystore {{temp_ssl_dir}}/{{ ssl_host }}-keystore.p12
                 -srcstoretype PKCS12
                 -srcstorepass {{ ssl_keystore_pass | quote }}

@@ -17,7 +17,7 @@
         state: present
 
     - name: Create selinux policy module
-      ansible.builtin.shell:
+      shell:
         cmd: checkmodule --mls -m --output zabbix_agent.mod zabbix_agent.te
         creates: zabbix_agent.mod
       # In order to build a policy package from a type enforcement file, we first have to convert it into a policy module. This is done with the checkmodule command.
@@ -25,15 +25,15 @@
 
     #We can now take this policy module and compile it:
     - name: Compile selinux policy module
-      ansible.builtin.shell:
+      shell:
         cmd: semodule_package --outfile zabbix_agent.pp --module zabbix_agent.mod
         creates:  zabbix_agent.pp
       #This command will result in a policy package called zabbix_agent.pp in our working directory.
       #
       #This generated policy package can now be loaded with the semodule command:
     - name: load selinux module package
-      ansible.builtin.shell:
+      shell:
         cmd: semodule --install zabbix_agent.pp
 
 - name: Fix selinux permissions
-  ansible.builtin.command: restorecon -R -v /var/lib/zabbix
+  command: restorecon -R -v /var/lib/zabbix

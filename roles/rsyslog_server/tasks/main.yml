@@ -19,7 +19,7 @@
 
 - name: Fix selinux permissions
   when: ansible_selinux.mode == 'enforcing'
-  ansible.builtin.command: "restorecon -R -v {{remote_log_folder}}"
+  command: "restorecon -R -v {{remote_log_folder}}"
 
 - name: create log sorting dirs
   ansible.builtin.file:

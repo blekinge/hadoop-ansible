@@ -1,4 +1,20 @@
 ---
+# This DNS looks up the vm to determine it's configured IP address
+# Fun note: The VM does not have to exist yet, as long as it is in DNS
+- name: "Simple A record (IPV4 address) lookup for {{hostname}}"
+  delegate_to: localhost
+  connection: local
+  become: no
+  register: hostnumberblob
+  shell:
+    cmd: "host {{hostname}} {{dns_server}} | grep '{{hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
+
+# Save the hostnumber as variable; Hostnumber is the last block of the IP, as this is alike in all the networks
+- ansible.builtin.set_fact:
+    hostnumber: "{{ hostnumberblob.stdout }}"
+
+- ansible.builtin.debug:
+    var: hostnumber
 
 - name: setup vm
   delegate_to: localhost
@@ -6,20 +22,6 @@
   become: no
   throttle: 1
   block:
-    # This DNS looks up the vm to determine it's configured IP address
-    # Fun note: The VM does not have to exist yet, as long as it is in DNS
-    - name: "Simple A record (IPV4 address) lookup for {{hostname}}"
-      ansible.builtin.shell:
-        cmd: "host {{hostname}} {{dns_server}} | grep '{{hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
-      register: hostnumberblob
-
-
-    # Save the hostnumber as variable; Hostnumber is the last block of the IP, as this is alike in all the networks
-    - ansible.builtin.set_fact:
-        hostnumber: "{{ hostnumberblob.stdout }}"
-
-    - ansible.builtin.debug:
-        var: hostnumber
 
     # The use of ovirt.ovirt before ovirt_auth is to check if the collection is correctly loaded
     - name: Obtain SSO token with using username/password credentials
