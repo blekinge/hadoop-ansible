@@ -14,3 +14,16 @@ description: "{{group_names | sort | join(' ')}}"
 nic1_routes_list: []
 
 nic2_routes_list: []
+
+network_scripts:
+  - file: ifcfg-nic1
+    name: "ifcfg-{{nic1}}"
+
+  - file: route-nic1
+    name: "route-{{nic1}}"
+
+  - file: ifcfg-nic2
+    name: "ifcfg-{{nic2}}"
+
+  - file: route-nic2
+    name: "route-{{nic2}}"

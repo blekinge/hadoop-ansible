@@ -58,7 +58,7 @@
     - file:
         path: "{{item.path}}"
         state: absent
-      when: item.path|basename not in ["ifcfg-{{nic1}}", "route-{{nic1}}", "ifcfg-{{nic2}}", "route-{{nic2}}" ]
+      when: item.path|basename not in (network_scripts | map(attribute='name') | list )
       loop: "{{existing_network_scripts.files|default([ ])}}"
 #      register: removed
 #
@@ -77,18 +77,7 @@
         mode: 0644
         owner: "root"
         group: "root"
-      loop:
-        - file: ifcfg-nic1
-          name: "ifcfg-{{nic1}}"
-
-        - file: route-nic1
-          name: "route-{{nic1}}"
-
-        - file: ifcfg-nic2
-          name: "ifcfg-{{nic2}}"
-
-        - file: route-nic2
-          name: "route-{{nic2}}"
+      loop: "{{network_scripts | default([])}}"
 
     - name: "Reload NetworkManager to activate new networks"
       command: nmcli con reload
