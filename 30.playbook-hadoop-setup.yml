@@ -30,6 +30,12 @@
   roles:
     - hdfs_datanode
 
+# And now that we have a working HDFS, create the basic directory structure
+- hosts: hostgroup_hdfs
+  run_once: yes
+  roles:
+    - hdfs_structure
+
 # YARN
 
 - hosts: hostgroup_yarn_timeline_servers
