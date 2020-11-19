@@ -1,4 +1,8 @@
 
-remote_log_folder: /logstorage/remote
+log_folder: /var/log/rsyslog
 
-structured_log_folder: /logstorage/hadoop
+remote_log_folder: "{{log_folder}}/remote"
+
+structured_log_folder: "{{log_folder}}/hadoop"
+
+rsyslog_selinux_enable: no

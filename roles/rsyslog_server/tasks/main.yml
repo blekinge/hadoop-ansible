@@ -11,6 +11,7 @@
     - "{{structured_log_folder}}"
 
 - name: "Allow rsyslog to write log files in {{remote_log_folder}}"
+  when: rsyslog_selinux_enable
   community.general.sefcontext:
     target: "{{remote_log_folder}}(/.*)?"
     seuser: system_u
@@ -18,6 +19,7 @@
     state: present
 
 - name: Fix selinux permissions
+  when: rsyslog_selinux_enable
   command: "restorecon -R -v {{remote_log_folder}}"
 
 - name: create log sorting dirs

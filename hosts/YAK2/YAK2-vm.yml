@@ -20,7 +20,7 @@ hostgroup_all:
           host_disks:
             - name: Disk1
               size: 100GiB
-              mount: /logstorage
+              mount: "{{log_folder}}"
 
         zkpr[001:003].adm.yak2.net:
           comment: Zookeeper/Journalnode server
