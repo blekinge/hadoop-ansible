@@ -71,6 +71,11 @@
         group: "root"
       loop: "{{network_scripts | default([])}}"
 
+
+    - name: Fix selinux permissions
+      when: ansible_selinux.mode == 'enforcing'
+      command: "restorecon -R -v /etc/sysconfig/network-scripts/"
+
     - name: "Start and enable NetworkManager"
       systemd:
         name: NetworkManager

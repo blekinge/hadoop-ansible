@@ -20,6 +20,12 @@
   include_role:
     name: community.zabbix.zabbix_agent
 
+
+- name: Fix selinux permissions
+  when: ansible_selinux.mode == 'enforcing'
+  command: "restorecon -R -v /var/lib/zabbix"
+
+
 - name: (Re)Start zabbix agent service
   systemd:
     service: zabbix-agent
