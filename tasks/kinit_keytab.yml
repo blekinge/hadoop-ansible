@@ -2,9 +2,11 @@
 #TODO use this instead of the direct kinit command
 - name: kinit | getting a token
   command:  /usr/bin/kinit -kt {{keytab_dir}}/{{kinit_principal}}.headless.keytab {{kinit_principal}}"
+  changed_when: no
 
 - name: kinit | check token is created
   command: /usr/bin/klist
   register: result
   failed_when: "'krbtgt' not in result.stdout"
+  changed_when: no
 

@@ -3,9 +3,11 @@
   command:  /usr/bin/kinit "{{ kinit_principal | default('admin') }}"
   args:
     stdin: "{{ ipaadmin_password }}"
+  changed_when: no
 
 - name: kinit | check token is created
   command: /usr/bin/klist
   register: result
   failed_when: "'krbtgt' not in result.stdout"
+  changed_when: no
 
