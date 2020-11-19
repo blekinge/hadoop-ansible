@@ -71,6 +71,12 @@
         group: "root"
       loop: "{{network_scripts | default([])}}"
 
+    - name: "Start and enable NetworkManager"
+      systemd:
+        name: NetworkManager
+        state: started
+        enabled: yes
+
     - name: "Reload NetworkManager to activate new networks"
       command: nmcli con reload
       ignore_unreachable: yes
