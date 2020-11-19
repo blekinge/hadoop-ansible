@@ -1,6 +1,6 @@
 ---
 - name: "Open Firewall ports for {{rolename}}"
-  firewalld:
+  ansible.posix.firewalld:
     port: '{{port.port}}/{{port.protocol | default("tcp")}}'
     permanent: yes
     state: enabled
