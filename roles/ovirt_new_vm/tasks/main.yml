@@ -4,7 +4,7 @@
   include_tasks: create_vm.yml
 
 
-- name: "Wait 600 seconds for host {{inventory_hostname}} to become reachable/usable"
+- name: "Wait 600 seconds for hosts to become reachable/usable"
   become: yes
   become_user: root
   remote_user: root

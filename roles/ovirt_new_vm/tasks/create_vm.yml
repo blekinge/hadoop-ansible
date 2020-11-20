@@ -36,7 +36,6 @@
   delegate_to: localhost
   connection: local
   become: no
-#  throttle: 1
   block:
 
     # The use of ovirt.ovirt before ovirt_auth is to check if the collection is correctly loaded
@@ -50,7 +49,7 @@
     # in different modules as follows:
 
     #https://docs.ansible.com/ansible/latest/collections/ovirt/ovirt/ovirt_vm_module.html
-    - name: "Creating vm {{shortname}}"
+    - name: "Creating VM"
       ovirt.ovirt.ovirt_vm:
         auth: "{{ ovirt_auth }}"
         state: present
@@ -105,7 +104,7 @@
               - "ping 'wonky.statsbiblioteket.dk' -c 2"
 
 
-    - name: "create extra disks for {{shortname}}"
+    - name: "create extra disks for VMs"
       when: host_disks is defined
       loop: "{{ host_disks }}"
       register: attached_disks
@@ -134,7 +133,6 @@
         name: nic1
         profile: "{{nic1}}"
         network: "{{nic1}}"
-      register: nic1_added
 
     - name: "create {{nic2}} nic"
       ovirt.ovirt.ovirt_nic:
@@ -144,9 +142,8 @@
         name: nic2
         profile: "{{nic2}}"
         network: "{{nic2}}"
-      register: nic2_added
 
-    - name: "Starting vm {{shortname}}"
+    - name: "Starting VMs"
       ovirt.ovirt.ovirt_vm:
         auth: "{{ ovirt_auth }}"
         state: running
@@ -154,7 +151,7 @@
         cluster: "{{ovirt_cluster}}"
         wait: yes
 
-    - name: "Reboot vm to activate new networks"
+    - name: "Reboot VMs to activate new networks"
       ovirt.ovirt.ovirt_vm:
         auth: "{{ ovirt_auth }}"
         state: reboot

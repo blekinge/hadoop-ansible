@@ -1,43 +1,7 @@
-
+---
 
 
 #  Et projekt består af disse "komponenter"
-
-
-- name: oVirt ansible collection
-  hosts: hostgroup_project_nodes
-  gather_facts: False
-  vars:
-    shortname: "{{  inventory_hostname.split('.')[0] | lower }}"
-  tasks:
-    - name: do from localhost
-      delegate_to: localhost
-      connection: local
-      become: no
-      block:
-        # The use of ovirt.ovirt before ovirt_auth is to check if the collection is correctly loaded
-        - name: Obtain SSO token with using username/password credentials
-          ovirt.ovirt.ovirt_auth:
-            url: "https://{{ovirt_api_host}}/ovirt-engine/api"
-            username: "{{ovirt_username}}"
-            password: "{{ ovirt_password }}"
-
-        # Previous task generated I(ovirt_auth) fact, which you can later use
-        # in different modules as follows:
-
-        - name: "Remove vm"
-          ovirt.ovirt.ovirt_vm:
-            auth: "{{ ovirt_auth }}"
-            state: absent
-            name: "{{shortname}}"
-            cluster: "{{ovirt_cluster}}"
-
-
-  collections: # This require the ovirt-ansible plugin installed. See ovirt_sdk_setup.sh
-    - ovirt.ovirt
-    - community.general
-
-
 
 #    En projekt maskine
 #
