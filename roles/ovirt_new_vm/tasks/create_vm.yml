@@ -11,7 +11,7 @@
     - name: "Simple A record (IPV4 address) lookup for {{hostname}}"
       register: hostnumberblob
       shell:
-        cmd: "host {{hostname}} | grep '{{hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
+        cmd: "host {{inventory_hostname}} | grep '{{inventory_hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
 
 
     - ansible.builtin.debug:
