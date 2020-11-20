@@ -8,14 +8,10 @@
   block:
     # This DNS looks up the vm to determine it's configured IP address
     # Fun note: The VM does not have to exist yet, as long as it is in DNS
-    - name: "Simple A record (IPV4 address) lookup for {{hostname}}"
+    - name: "Simple A record (IPV4 address) lookup for {{inventory_hostname}}"
       register: hostnumberblob
       shell:
-        cmd: "host {{inventory_hostname}} | grep '{{inventory_hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
-
-
-    - ansible.builtin.debug:
-        var: hostnumberblob
+        cmd: "( set -o pipefail && host {{inventory_hostname}} | grep '{{inventory_hostname}}' | cut -d' ' -f4 | cut -d'.' -f4 )"
 
     # Save the hostnumber as variable; Hostnumber is the last block of the IP, as this is alike in all the networks
     - ansible.builtin.set_fact:
@@ -24,8 +20,6 @@
     - ansible.builtin.debug:
         var: hostnumber
 
-    - ansible.builtin.fail:
-      when: hostnumber == ''
 
 - name: setup vm
   delegate_to: localhost
