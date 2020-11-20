@@ -1,5 +1,8 @@
 ---
 
+- ansible.builtin.set_fact:
+    capacity_queues: []
+
 - name: Yarn queues root
   include: parseQueue1.yml
   vars:
