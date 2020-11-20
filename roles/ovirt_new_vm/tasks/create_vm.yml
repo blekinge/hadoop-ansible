@@ -5,6 +5,7 @@
   delegate_to: localhost
   connection: local
   become: no
+  when: ip1 is undefined or ip2 is undefined
   block:
     # This DNS looks up the vm to determine it's configured IP address
     # Fun note: The VM does not have to exist yet, as long as it is in DNS
@@ -19,6 +20,16 @@
 
     - ansible.builtin.debug:
         var: hostnumber
+
+    - name: "set ip1 if not set"
+      when: ip1 is undefined
+      ansible.builtin.set_fact:
+        ip1: "{{nic1_subnet}}.{{hostnumber}}"
+
+    - name: "set ip2 if not set"
+      when: ip2 is undefined
+      ansible.builtin.set_fact:
+        ip2: "{{nic2_subnet}}.{{hostnumber}}"
 
 
 - name: setup vm
@@ -92,21 +103,6 @@
               - "nmcli con up '{{nic1}}'"
               - "nmcli con up '{{nic2}}'"
               - "ping 'wonky.statsbiblioteket.dk' -c 2"
-
-
-#        cloud_init_nics:
-#          - nic_name: "{{nic1}}"
-#            nic_boot_protocol: static
-#            nic_ip_address: "{{nic1_subnet}}.{{hostnumber}}"
-#            nic_netmask: 255.255.255.0
-#            nic_gateway: "{{gateway1}}"
-#            nic_on_boot: True
-#          - nic_name: "{{nic2}}"
-#            nic_boot_protocol: static
-#            nic_ip_address: "{{nic2_subnet}}.{{hostnumber}}"
-#            nic_netmask: 255.255.255.0
-#            nic_gateway: "{{gateway2}}"
-#            nic_on_boot: True
 
 
     - name: "create extra disks for {{shortname}}"
