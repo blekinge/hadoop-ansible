@@ -33,6 +33,7 @@
     # Previous task generated I(ovirt_auth) fact, which you can later use
     # in different modules as follows:
 
+    #https://docs.ansible.com/ansible/latest/collections/ovirt/ovirt/ovirt_vm_module.html
     - name: "Creating vm {{shortname}}"
       ovirt.ovirt.ovirt_vm:
         auth: "{{ ovirt_auth }}"
@@ -56,9 +57,9 @@
           #TODO also set root password with this
 #          user_name: root
 #          root_password: super_password
-#          dns_search: "{{dns_search_domains}}"
-#          dns_servers: "{{dns1}} {{dns2}}"
           #          Base64 encode so we do not have to fight with linebreaks and indentions here
+          # https://cloudinit.readthedocs.io/en/latest/topics/modules.html#write-files
+          # https://cloudinit.readthedocs.io/en/latest/topics/modules.html#runcmd
           custom_script: |
             write_files:
               - path: /etc/sysconfig/network-scripts/ifcfg-{{nic2}}
@@ -150,11 +151,12 @@
         state: running
         name: "{{shortname}}"
         cluster: "{{ovirt_cluster}}"
+        wait: yes
 
-    - name: "Ensure vm is started"
+    - name: "Reboot vm to activate new networks"
       ovirt.ovirt.ovirt_vm:
         auth: "{{ ovirt_auth }}"
-        state: running
+        state: reboot
         name: "{{shortname}}"
         cluster: "{{ovirt_cluster}}"
         wait: no
