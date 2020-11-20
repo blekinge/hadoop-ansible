@@ -111,7 +111,7 @@ export HADOOP_OPTS="-Djava.net.preferIPv4Stack=true ${HADOOP_OPTS}"
 # Some parts of the shell code may do special things dependent upon
 # the operating system.  We have to set this here. See the next
 # section as to why....
-export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
+export HADOOP_OS_TYPE="${HADOOP_OS_TYPE:-$(uname -s)}"
 
 # Extra Java runtime options for some Hadoop commands
 # and clients (i.e., hdfs dfs -blah).  These get appended to HADOOP_OPTS for
@@ -210,24 +210,24 @@ export HADOOP_LOG_DIR="{{ hadoop_log_dir }}/$USER"
 # This is used in writing log and pid files, so keep that in mind!
 # Java property: hadoop.id.str
 # export HADOOP_IDENT_STRING=$USER
-export HADOOP_IDENT_STRING=$USER
+export HADOOP_IDENT_STRING="$USER"
 
 # How many seconds to pause after stopping a daemon
 # export HADOOP_STOP_TIMEOUT=5
 
 # Where pid files are stored.  /tmp by default.
 # export HADOOP_PID_DIR=/tmp
-export HADOOP_PID_DIR={{ hadoop_pid_dir }}/$USER
+export HADOOP_PID_DIR="{{ hadoop_pid_dir }}/$USER"
 
 # Default log4j setting for interactive commands
 # Java property: hadoop.root.logger
-export HADOOP_ROOT_LOGGER=INFO,console
+export HADOOP_ROOT_LOGGER="INFO,console"
 
 # Default log4j setting for daemons spawned explicitly by
 # --daemon option of hadoop, hdfs, mapred and yarn command.
 # Java property: hadoop.root.logger
 # export HADOOP_DAEMON_ROOT_LOGGER=INFO,RFA
-export HADOOP_DAEMON_ROOT_LOGGER=${HADOOP_DAEMON_ROOT_LOGGER:-{{hadoop_daemon_logger | quote}}}
+export HADOOP_DAEMON_ROOT_LOGGER="${HADOOP_DAEMON_ROOT_LOGGER:-{{hadoop_daemon_logger | quote}}}"
 
 # Default log level and output location for security-related messages.
 # You will almost certainly want to change this on a per-daemon basis via
@@ -299,18 +299,18 @@ HADOOP_NAMENODE_GC_OPTS="-XX:ParallelGCThreads=8 \
 JAVA_JDBC_LIBS=""
 if [ -d "/usr/share/java" ]; then
   for jarFile in $(ls /usr/share/java | grep -E "(mysql|ojdbc|postgresql|sqljdbc)" 2>/dev/null); do
-    JAVA_JDBC_LIBS=${JAVA_JDBC_LIBS}:$jarFile
+    JAVA_JDBC_LIBS="${JAVA_JDBC_LIBS}:$jarFile"
   done
 fi
 
 # Add libraries to the hadoop classpath - some may not need a colon as they already include it
-export HADOOP_CLASSPATH=${HADOOP_CLASSPATH}${JAVA_JDBC_LIBS}
+export HADOOP_CLASSPATH="${HADOOP_CLASSPATH}${JAVA_JDBC_LIBS}"
 
 # Setting path to hdfs command line
-export HADOOP_LIBEXEC_DIR=$HADOOP_HOME/libexec
+export HADOOP_LIBEXEC_DIR="$HADOOP_HOME/libexec"
 
 # Mostly required for hadoop 2.0
-export JAVA_LIBRARY_PATH=${JAVA_LIBRARY_PATH}:${HADOOP_HOME}/lib/native/
+export JAVA_LIBRARY_PATH="${JAVA_LIBRARY_PATH}:${HADOOP_HOME}/lib/native/"
 
 ###
 # Secure/privileged execution
