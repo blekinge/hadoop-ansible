@@ -13,6 +13,10 @@
       shell:
         cmd: "host {{hostname}} | grep '{{hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
 
+
+    - ansible.builtin.debug:
+        var: hostnumberblob
+
     # Save the hostnumber as variable; Hostnumber is the last block of the IP, as this is alike in all the networks
     - ansible.builtin.set_fact:
        hostnumber: "{{ hostnumberblob.stdout }}"
