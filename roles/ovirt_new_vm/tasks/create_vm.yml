@@ -52,6 +52,7 @@
     - name: "Creating VM"
       ovirt.ovirt.ovirt_vm:
         auth: "{{ ovirt_auth }}"
+        timeout: 600
         state: present
         name: "{{shortname}}"
         template: "{{template}}"
@@ -64,8 +65,13 @@
         cpu_cores: "{{cpu_cores}}"
         comment: "{{comment | default(omit)}}"
         description: "{{description | default(omit)}}"
-        cloud_init_persist: True
 
+        type: server
+        usb_support: no
+        wait: yes
+        operating_system: other_linux
+
+        cloud_init_persist: True
         cloud_init:
           host_name: "{{hostname}}"
           timezone: "GMT+01:00"
