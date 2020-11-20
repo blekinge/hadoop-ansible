@@ -1,7 +1,7 @@
 
 
 
-template: SDL8-4R-30D-MIN-TMPL
+template: SDL8-4R-30D-MIN-TPL
 memory: 4GiB
 cpu_sockets: 2
 cpu_cores: 1
