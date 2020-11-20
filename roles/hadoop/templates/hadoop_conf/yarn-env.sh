@@ -35,7 +35,7 @@ export HADOOP_YARN_HOME="{{ current_hadoop_home }}"
 HADOOP_OPTS="$HADOOP_OPTS -Dyarn.home.dir=$HADOOP_YARN_HOME"
 
 export HADOOP_LOG_DIR="{{ hadoop_log_dir }}/{{ yarn_user.name }}"
-export HADOOP_DAEMON_ROOT_LOGGER="INFO,EWMA,DRFA"
+export HADOOP_DAEMON_ROOT_LOGGER="INFO,EWMA,DRFA,SYSLOG"
 
 export HADOOP_PID_DIR="{{ hadoop_pid_dir }}/{{ yarn_user.name }}"
 export HADOOP_LIBEXEC_DIR="$HADOOP_YARN_HOME/libexec"
@@ -127,7 +127,7 @@ export YARN_RESOURCEMANAGER_HEAPSIZE=2048
 # export YARN_RESOURCEMANAGER_OPTS=
 YARN_RESOURCEMANAGER_OPTS="-Dyarn.server.resourcemanager.appsummary.logger=INFO,RMSUMMARY"
 YARN_RESOURCEMANAGER_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username=zookeeper -Djava.security.auth.login.config={{ hadoop_config_path}}/yarn_jaas.conf -Dzookeeper.sasl.clientconfig=Client $YARN_RESOURCEMANAGER_OPTS"
-export YARN_RESOURCEMANAGER_OPTS="$YARN_RESOURCEMANAGER_OPTS -Drm.audit.logger=INFO,RMAUDIT"
+export YARN_RESOURCEMANAGER_OPTS="$YARN_RESOURCEMANAGER_OPTS -Drm.audit.logger=INFO,RMAUDIT,SYSLOG_AUDIT"
 
 
 
@@ -155,7 +155,7 @@ export YARN_NODEMANAGER_HEAPSIZE=1024
 #export YARN_NODEMANAGER_OPTS=
 
 # Node Manager specific parameters
-export YARN_NODEMANAGER_OPTS="$YARN_NODEMANAGER_OPTS -Dnm.audit.logger=INFO,NMAUDIT"
+export YARN_NODEMANAGER_OPTS="$YARN_NODEMANAGER_OPTS -Dnm.audit.logger=INFO,NMAUDIT,SYSLOG_AUDIT"
 
 ###
 # TimeLineServer specific parameters
