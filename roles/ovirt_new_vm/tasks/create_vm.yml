@@ -160,7 +160,7 @@
         state: reboot
         name: "{{shortname}}"
         cluster: "{{ovirt_cluster}}"
-        wait: no
+        wait: yes
 
   always:
     - name: Always revoke the SSO token
