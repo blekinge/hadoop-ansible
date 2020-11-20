@@ -1,8 +1,10 @@
 ## This playbook creates the hosts as virtual VMs in Ovirt
-
+# TODO do not fail if the VM already exists
 - name: oVirt ansible collection
   hosts: hostgroup_VMs
   gather_facts: False
+  pre_tasks:
+    meta: clear_facts
   roles:
     - role: ovirt_new_vm
   collections: # This require the ovirt-ansible plugin installed. See ovirt_sdk_setup.sh
