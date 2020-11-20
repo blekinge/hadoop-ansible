@@ -18,6 +18,23 @@ hadoop_tmp: "/tmp/hadoop"
 hadoop_log_dir: "/var/log/hadoop"
 hadoop_pid_dir: "/var/run/hadoop"
 
+#Loggers
+hadoop_daemon_logger: "INFO,DRFA,SYSLOG"
+hdfs_daemon_logger: "{{hadoop_daemon_logger}}"
+yarn_daemon_logger: "{{hadoop_daemon_logger}},EWMA"
+mapreduce_daemon_logger: "{{hadoop_daemon_logger}}"
+
+mapreduce_jobsummary_logger: "INFO,JSA"
+yarn_resourcemanager_appsummary_logger: "INFO,RMSUMMARY"
+
+hadoop_security_logger: "INFO,DRFAS,SYSLOG_SECURITY"
+hdfs_security_logger: "{{hadoop_security_logger}}"
+mapreduce_security_logger: "{{hadoop_security_logger}}"
+
+hadoop_audit_logger: "INFO,SYSLOG_AUDIT"
+hdfs_audit_logger: "{{hadoop_audit_logger}},DRFAAUDIT"
+yarn_nodemanager_audit_logger: "{{hadoop_audit_logger}},NMAUDIT"
+yarn_resourcemanager_audit_logger: "{{hadoop_audit_logger}},RMAUDIT"
 
 
 hdfs_namenode_memory: "4096m"
@@ -47,12 +64,6 @@ hadoop_dfs_journal: "/hdfs/dfs/journal"
 hdfs_name: "KAC"
 
 hdfs_data_dirs: []
-#  - /data/sdb1/hdfs
-#  - /data/sdc1/hdfs
-#  - /data/sdd1/hdfs
-#  - /data/sde1/hdfs
-#  - /data/sdf1/hdfs
-#  - /data/sdg1/hdfs
 
 hdfs_data_dirs_joined:  "{{ hdfs_data_dirs | join(',') }}"
 

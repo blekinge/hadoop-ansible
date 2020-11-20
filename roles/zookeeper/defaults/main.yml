@@ -9,6 +9,8 @@ zookeeper_home: "{{zookeeper_path}}/apache-zookeeper-{{zookeeper_version}}-bin"
 
 current_zookeeper_home: "{{ zookeeper_path }}/current"
 
+zookeeper_daemon_logger: "DEBUG, CONSOLE, DAILYROLLINGFILE, SYSLOG"
+
 
 zookeeper_log_path: "/var/log/zookeeper/"
 zookeeper_pid_dir: "/var/run/zookeeper/"

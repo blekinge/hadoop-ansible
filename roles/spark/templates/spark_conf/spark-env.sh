@@ -73,7 +73,7 @@ export JAVA_HOME="{{jvm_home}}"
 export SPARK_DAEMON_MEMORY=1024m
 
 #Special properties for the Master, Worker and History Servers
-export SPARK_DAEMON_JAVA_OPTS="-Dspark.root.logger=INFO,DRFA,SYSLOG -Dspark.log.file=$SPARK_LOG_DIR/spark-$SPARK_IDENT_STRING-$(basename ${BASH_SOURCE[-1]} .sh)-$HOSTNAME.log -Dspark.syslog.file=spark-$SPARK_IDENT_STRING-$(basename ${BASH_SOURCE[-1]} .sh)-$HOSTNAME.log"
+export SPARK_DAEMON_JAVA_OPTS="-Dspark.root.logger={{spark_daemon_logger}} -Dspark.log.file=$SPARK_LOG_DIR/spark-$SPARK_IDENT_STRING-$(basename ${BASH_SOURCE[-1]} .sh)-$HOSTNAME.log -Dspark.syslog.file=spark-$SPARK_IDENT_STRING-$(basename ${BASH_SOURCE[-1]} .sh)-$HOSTNAME.log"
 
 export SPARK_DAEMON_CLASSPATH="{{spark_classpath}}"
 

@@ -52,18 +52,18 @@ export HADOOP_JOB_HISTORYSERVER_HEAPSIZE=3072
 # Specify the log4j settings for the JobHistoryServer
 # Java property: hadoop.root.logger
 #export HADOOP_JHS_LOGGER=INFO,RFA
-export HADOOP_JHS_LOGGER=${HADOOP_JHS_LOGGER:-"INFO,DRFA"}
+export HADOOP_JHS_LOGGER=${HADOOP_JHS_LOGGER:-"{{mapreduce_daemon_logger}}"}
 
 
-#DRFAS is defined in hdfs-log4j.properties
-export HADOOP_SECURITY_LOGGER=${HADOOP_SECURITY_LOGGER:-"INFO,DRFAS"}
+#DRFAS is defined in log4j.properties
+export HADOOP_SECURITY_LOGGER=${HADOOP_SECURITY_LOGGER:-"{{mapreduce_security_logger}}"}
 
 
-#DRFA is defined in hdfs-log4j.properties
-export HADOOP_ROOT_LOGGER=${HADOOP_ROOT_LOGGER:-"INFO,DRFA"}
+#DRFA is defined in log4j.properties
+export HADOOP_ROOT_LOGGER=${HADOOP_ROOT_LOGGER:-"{{hadoop_daemon_logger}}"}
 
 #JSA is defined in yarn-log4j.properties
-export HADOOP_MAPRED_JOBSUMMARY_LOGGER=${HADOOP_MAPRED_JOBSUMMARY_LOGGER:-"INFO,JSA"}
+export HADOOP_MAPRED_JOBSUMMARY_LOGGER=${HADOOP_MAPRED_JOBSUMMARY_LOGGER:-"{{mapreduce_jobsummary_logger}}"}
 
 export HADOOP_OPTS="-Dhadoop.mapreduce.jobsummary.logger=$HADOOP_MAPRED_JOBSUMMARY_LOGGER $HADOOP_OPTS"
 
