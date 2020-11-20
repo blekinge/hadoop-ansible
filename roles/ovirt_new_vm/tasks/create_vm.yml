@@ -15,7 +15,7 @@
 
     # Save the hostnumber as variable; Hostnumber is the last block of the IP, as this is alike in all the networks
     - ansible.builtin.set_fact:
-      hostnumber: "{{ hostnumberblob.stdout }}"
+       hostnumber: "{{ hostnumberblob.stdout }}"
 
     - ansible.builtin.debug:
         var: hostnumber
