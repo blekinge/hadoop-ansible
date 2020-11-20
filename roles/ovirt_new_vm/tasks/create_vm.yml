@@ -1,29 +1,33 @@
 ---
-# This DNS looks up the vm to determine it's configured IP address
-# Fun note: The VM does not have to exist yet, as long as it is in DNS
-- name: "Simple A record (IPV4 address) lookup for {{hostname}}"
+
+
+- name: Determine host number
   delegate_to: localhost
   connection: local
   become: no
-  register: hostnumberblob
-  shell:
-    cmd: "host {{hostname}} | grep '{{hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
+  block:
+    # This DNS looks up the vm to determine it's configured IP address
+    # Fun note: The VM does not have to exist yet, as long as it is in DNS
+    - name: "Simple A record (IPV4 address) lookup for {{hostname}}"
+      register: hostnumberblob
+      shell:
+        cmd: "host {{hostname}} | grep '{{hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
 
-# Save the hostnumber as variable; Hostnumber is the last block of the IP, as this is alike in all the networks
-- ansible.builtin.set_fact:
-    hostnumber: "{{ hostnumberblob.stdout }}"
+    # Save the hostnumber as variable; Hostnumber is the last block of the IP, as this is alike in all the networks
+    - ansible.builtin.set_fact:
+      hostnumber: "{{ hostnumberblob.stdout }}"
 
-- ansible.builtin.debug:
-    var: hostnumber
+    - ansible.builtin.debug:
+        var: hostnumber
 
-- ansible.builtin.fail:
-  when: hostnumber == ''
+    - ansible.builtin.fail:
+      when: hostnumber == ''
 
 - name: setup vm
   delegate_to: localhost
   connection: local
   become: no
-  throttle: 1
+#  throttle: 1
   block:
 
     # The use of ovirt.ovirt before ovirt_auth is to check if the collection is correctly loaded
