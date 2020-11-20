@@ -69,9 +69,8 @@
         cloud_init:
           host_name: "{{hostname}}"
           timezone: "GMT+01:00"
-          #TODO also set root password with this
-#          user_name: root
-#          root_password: super_password
+          user_name: root
+          root_password: "{{root_password}}"
           #          Base64 encode so we do not have to fight with linebreaks and indentions here
           # https://cloudinit.readthedocs.io/en/latest/topics/modules.html#write-files
           # https://cloudinit.readthedocs.io/en/latest/topics/modules.html#runcmd
