@@ -3,8 +3,6 @@
 - name: oVirt ansible collection
   hosts: hostgroup_VMs
   gather_facts: False
-  serial: 1 # Only create and run 1 at a time.
-  # This is nessesary to set the network up correctly, as otherwise the temp ips will clash
   roles:
     - role: ovirt_new_vm
   collections: # This require the ovirt-ansible plugin installed. See ovirt_sdk_setup.sh
