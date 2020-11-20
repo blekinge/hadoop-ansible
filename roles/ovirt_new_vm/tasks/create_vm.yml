@@ -7,7 +7,7 @@
   become: no
   register: hostnumberblob
   shell:
-    cmd: "host {{hostname}} {{dns_server}} | grep '{{hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
+    cmd: "host {{hostname}} | grep '{{hostname}}' | cut -d' ' -f4 | cut -d'.' -f4"
 
 # Save the hostnumber as variable; Hostnumber is the last block of the IP, as this is alike in all the networks
 - ansible.builtin.set_fact:
@@ -15,6 +15,9 @@
 
 - ansible.builtin.debug:
     var: hostnumber
+
+- ansible.builtin.fail:
+  when: hostnumber == ''
 
 - name: setup vm
   delegate_to: localhost
