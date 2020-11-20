@@ -52,7 +52,7 @@
     - name: "Creating VM"
       ovirt.ovirt.ovirt_vm:
         auth: "{{ ovirt_auth }}"
-        timeout: 600
+        timeout: 1200
         state: present
         name: "{{shortname}}"
         template: "{{template}}"
