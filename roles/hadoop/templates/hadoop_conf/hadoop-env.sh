@@ -58,11 +58,11 @@
 
 # The java implementation to use. By default, this environment
 # variable is REQUIRED on ALL platforms except OS X!
-export JAVA_HOME={{ jvm_home }}
+export JAVA_HOME={{ jvm_home | quote }}
 
 # Location of Hadoop.  By default, Hadoop will attempt to determine
 # this location based upon its execution path.
-export HADOOP_HOME={{current_hadoop_home}}
+export HADOOP_HOME={{current_hadoop_home | quote}}
 
 # Location of Hadoop's configuration information.  i.e., where this
 # file is living. If this is not defined, Hadoop will attempt to
@@ -71,7 +71,7 @@ export HADOOP_HOME={{current_hadoop_home}}
 # NOTE: It is recommend that this variable not be set here but in
 # /etc/profile.d or equivalent.  Some options (such as
 # --config) may react strangely otherwise.
-export HADOOP_CONF_DIR={{ hadoop_config_path }}
+export HADOOP_CONF_DIR={{ hadoop_config_path | quote }}
 
 
 # The minimum amount of heap to use (Java -Xms).  If no unit
@@ -227,7 +227,7 @@ export HADOOP_ROOT_LOGGER=INFO,console
 # --daemon option of hadoop, hdfs, mapred and yarn command.
 # Java property: hadoop.root.logger
 # export HADOOP_DAEMON_ROOT_LOGGER=INFO,RFA
-export HADOOP_DAEMON_ROOT_LOGGER=${HADOOP_DAEMON_ROOT_LOGGER:-"{{hadoop_daemon_logger}}"}
+export HADOOP_DAEMON_ROOT_LOGGER=${HADOOP_DAEMON_ROOT_LOGGER:-{{hadoop_daemon_logger | quote}}}
 
 # Default log level and output location for security-related messages.
 # You will almost certainly want to change this on a per-daemon basis via
@@ -235,7 +235,7 @@ export HADOOP_DAEMON_ROOT_LOGGER=${HADOOP_DAEMON_ROOT_LOGGER:-"{{hadoop_daemon_l
 # defaults for the NN and 2NN override this by default.)
 # Java property: hadoop.security.logger
 # export HADOOP_SECURITY_LOGGER=INFO,NullAppender
-export HADOOP_SECURITY_LOGGER="{{hadoop_security_logger}}"
+export HADOOP_SECURITY_LOGGER={{hadoop_security_logger | quote}}
 
 
 # Default process priority level
@@ -256,7 +256,7 @@ export HADOOP_POLICYFILE="hadoop-policy.xml"
 #
 # .. and then use it as per the b option under the namenode.
 
-#export HADOOP_SECURE_USER=${HADOOP_SECURE_USER:-"{{ hdfs_user.name }}"}
+#export HADOOP_SECURE_USER=${HADOOP_SECURE_USER:-"{{ hdfs_user.name | quote }}"}
 
 # ???
 export HADOOP_HOME_WARN_SUPPRESS=1
@@ -265,7 +265,7 @@ export HADOOP_HOME_WARN_SUPPRESS=1
 
 #Options commons for all the HDFS daemons
 HADOOP_COMMON_DAEMON_OPTS="-server \
-                           -XX:ErrorFile={{ hadoop_log_dir }}/$USER/hs_err_pid%p.log"
+                           -XX:ErrorFile=\"{{ hadoop_log_dir }}/$USER/hs_err_pid%p.log\""
 
 #The Garbage collector config for the NameNode
 HADOOP_NAMENODE_GC_OPTS="-XX:ParallelGCThreads=8 \
@@ -353,7 +353,7 @@ export HADOOP_SECURE_LOG="{{ hadoop_log_dir }}/$USER"
 # the appropriate _OPTS if one wants something other than INFO,NullAppender
 # Java property: hdfs.audit.logger
 # export HDFS_AUDIT_LOGGER=INFO,NullAppender
-export HDFS_AUDIT_LOGGER="{{hdfs_audit_logger}}"
+export HDFS_AUDIT_LOGGER="{{hdfs_audit_logger | quote}}"
 
 # Specify the JVM options to be used when starting the NameNode.
 # These options will be appended to the options specified as HADOOP_OPTS
@@ -378,8 +378,8 @@ SHARED_HDFS_NAMENODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
                              -Xms{{hdfs_namenode_memory}} \
                              -Xmx{{hdfs_namenode_memory}} \
                              $HADOOP_LOG_OPTS \
-                             -Dhadoop.security.logger={{hdfs_security_logger}} \
-                             -Dhdfs.audit.logger={{hdfs_audit_logger}}"
+                             -Dhadoop.security.logger={{hdfs_security_logger | quote}} \
+                             -Dhdfs.audit.logger={{hdfs_audit_logger | quote}}"
 
 
 #The Primary NameNode opts
@@ -427,7 +427,7 @@ export HDFS_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
                              -Xms{{hdfs_datanode_memory}} \
                              -Xmx{{hdfs_datanode_memory}} \
                              $HADOOP_LOG_OPTS \
-                             -Dhadoop.security.logger={{hdfs_security_logger}}"
+                             -Dhadoop.security.logger={{hdfs_security_logger | quote}}"
 
 
 # On secure datanodes, user to run the datanode as after dropping privileges.
@@ -456,14 +456,14 @@ export HDFS_DATANODE_OPTS="$HADOOP_COMMON_DAEMON_OPTS \
 HADOOP_NFS3_OPTS="-Xmx$HADOOP_HEAPSIZE_MAX \
                   ${HADOOP_LOG_OPTS} \
                   ${HADOOP_NFS3_OPTS} \
-                  -Dhadoop.security.logger={{hdfs_security_logger}}"
+                  -Dhadoop.security.logger={{hdfs_security_logger | quote }}"
 
 # Specify the JVM options to be used when starting the Hadoop portmapper.
 # These options will be appended to the options specified as HADOOP_OPTS
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_PORTMAP_OPTS="-Xmx512m"
-export HDFS_PORTMAP_OPTS="-Dhadoop.security.logger={{hdfs_security_logger}}"
+export HDFS_PORTMAP_OPTS="-Dhadoop.security.logger={{hdfs_security_logger | quote}}"
 
 # Supplemental options for priviliged gateways
 # By default, Hadoop uses jsvc which needs to know to launch a
@@ -482,7 +482,7 @@ export HDFS_PORTMAP_OPTS="-Dhadoop.security.logger={{hdfs_security_logger}}"
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_ZKFC_OPTS=""
-export HDFS_ZKFC_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username={{zookeeper_user.name}} -Djava.security.auth.login.config={{ hadoop_config_path}}/hdfs_nn_jaas.conf -Dzookeeper.sasl.clientconfig=Client -Dhadoop.security.logger={{hdfs_security_logger}}"
+export HDFS_ZKFC_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username={{zookeeper_user.name|quote}} -Djava.security.auth.login.config={{ hadoop_config_path}}/hdfs_nn_jaas.conf -Dzookeeper.sasl.clientconfig=Client -Dhadoop.security.logger={{hdfs_security_logger | quote}}"
 
 
 ###
@@ -493,7 +493,7 @@ export HDFS_ZKFC_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.user
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_JOURNALNODE_OPTS=""
-export HDFS_JOURNALNODE_OPTS="-Dhadoop.security.logger={{hdfs_security_logger}}"
+export HDFS_JOURNALNODE_OPTS="-Dhadoop.security.logger={{hdfs_security_logger | quote}}"
 
 ###
 # HDFS Balancer specific parameters
@@ -506,7 +506,7 @@ export HDFS_JOURNALNODE_OPTS="-Dhadoop.security.logger={{hdfs_security_logger}}"
 HADOOP_BALANCER_OPTS="-server \
                       -Xmx$HADOOP_HEAPSIZE_MAX \
                       ${HADOOP_BALANCER_OPTS} \
-                      -Dhadoop.security.logger={{hdfs_security_logger}}"
+                      -Dhadoop.security.logger={{hdfs_security_logger | quote}}"
 
 
 ###
@@ -517,7 +517,7 @@ HADOOP_BALANCER_OPTS="-server \
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_MOVER_OPTS=""
-export HDFS_MOVER_OPTS="-Dhadoop.security.logger={{hdfs_security_logger}}"
+export HDFS_MOVER_OPTS="-Dhadoop.security.logger={{hdfs_security_logger | quote}}"
 
 ###
 # Router-based HDFS Federation specific parameters
@@ -526,7 +526,7 @@ export HDFS_MOVER_OPTS="-Dhadoop.security.logger={{hdfs_security_logger}}"
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_DFSROUTER_OPTS=""
-export HDFS_DFSROUTER_OPTS="-Dhadoop.security.logger={{hdfs_security_logger}}"
+export HDFS_DFSROUTER_OPTS="-Dhadoop.security.logger={{hdfs_security_logger | quote}}"
 
 ###
 # Ozone Manager specific parameters
@@ -536,7 +536,7 @@ export HDFS_DFSROUTER_OPTS="-Dhadoop.security.logger={{hdfs_security_logger}}"
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_OM_OPTS=""
-export HDFS_OM_OPTS="-Dhadoop.security.logger={{hdfs_security_logger}}"
+export HDFS_OM_OPTS="-Dhadoop.security.logger={{hdfs_security_logger | quote}}"
 
 
 ###
@@ -547,7 +547,7 @@ export HDFS_OM_OPTS="-Dhadoop.security.logger={{hdfs_security_logger}}"
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_STORAGECONTAINERMANAGER_OPTS=""
-export HDFS_STORAGECONTAINERMANAGER_OPTS="-Dhadoop.security.logger={{hdfs_security_logger}}"
+export HDFS_STORAGECONTAINERMANAGER_OPTS="-Dhadoop.security.logger={{hdfs_security_logger | quote}}"
 
 ###
 # Advanced Users Only!
@@ -565,4 +565,4 @@ export HDFS_STORAGECONTAINERMANAGER_OPTS="-Dhadoop.security.logger={{hdfs_securi
 #
 # For example, to limit who can execute the namenode command,
 # export HDFS_NAMENODE_USER=hdfs
-export HDFS_NAMENODE_USER={{ hdfs_user.name }}
+export HDFS_NAMENODE_USER={{ hdfs_user.name | quote}}
