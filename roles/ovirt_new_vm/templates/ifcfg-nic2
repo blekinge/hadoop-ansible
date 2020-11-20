@@ -6,6 +6,7 @@ BOOTPROTO=none
 IPADDR={{nic2_subnet}}.{{hostnumber}}
 PREFIX=24
 DEFROUTE=yes
+#GATEWAY={{gateway2}}
 IPV4_FAILURE_FATAL=no
 IPV6INIT=yes
 IPV6_AUTOCONF=yes

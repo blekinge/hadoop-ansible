@@ -24,26 +24,26 @@ dns2: "{{nic1_subnet}}.53" #bind002
 new_vm_ip: "{{nic1_subnet}}.254"
 
 # The gateway to use
-gateway: "{{nic1_subnet}}.51"
-
+gateway1: "{{nic1_subnet}}.51"
 
 nic2: "ovirtmgmt"
 nic2_subnet: 172.16.216
 nic2_domain: "{{domain_adm}}"
+gateway2: "{{nic2_subnet}}.1"
 
 nic2_routes_list:
   - network: "130.225.24.0/23"
-    gw: "172.16.216.1"
+    gw: "{{gateway2}}"
     metric: "100"
   - network: "130.226.220.0/24"
-    gw: "172.16.216.1"
+    gw: "{{gateway2}}"
     metric: "100"
   - network: "172.16.7.0/24"
-    gw: "172.16.216.1"
+    gw: "{{gateway2}}"
   - network: "172.18.0.0/16"
-    gw: "172.16.216.1"
+    gw: "{{gateway2}}"
   - network: "172.28.1.0/24"
-    gw: "172.16.216.1"
+    gw: "{{gateway2}}"
 
 
 nic2_routes: "{{ nic2_routes_list | join(',') }}"

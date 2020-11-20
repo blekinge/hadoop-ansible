@@ -19,7 +19,6 @@
         name: "{{shortname}}"
         cluster: "{{ovirt_cluster}}"
         wait: no
-      when: available_on_inventory_hostname is failed
 
     - name: "Ensure vm is started"
       ovirt.ovirt.ovirt_vm:

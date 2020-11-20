@@ -48,23 +48,58 @@
         cpu_cores: "{{cpu_cores}}"
         comment: "{{comment | default(omit)}}"
         description: "{{description | default(omit)}}"
-#        cloud_init_persist: True
-#
-#        cloud_init:
-#          host_name: "{{hostname}}"
-#          timezone: "GMT+01:00"
-#
+        cloud_init_persist: True
+
+        cloud_init:
+          host_name: "{{hostname}}"
+          timezone: "GMT+01:00"
+          #TODO also set root password with this
+#          user_name: root
+#          root_password: super_password
+#          dns_search: "{{dns_search_domains}}"
+#          dns_servers: "{{dns1}} {{dns2}}"
+          #          Base64 encode so we do not have to fight with linebreaks and indentions here
+          custom_script: |
+            write_files:
+              - path: /etc/sysconfig/network-scripts/ifcfg-{{nic2}}
+                permissions: '0644'
+                encoding: base64
+                content: {{ lookup('template', 'ifcfg-nic2') | b64encode }}
+
+              - path: /etc/sysconfig/network-scripts/route-{{nic2}}
+                permissions: '0644'
+                encoding: base64
+                content:  {{ lookup('template', 'route-nic2') | b64encode }}
+
+              - path: /etc/sysconfig/network-scripts/ifcfg-{{nic1}}
+                permissions: '0644'
+                encoding: base64
+                content: {{ lookup('template', 'ifcfg-nic1') | b64encode }}
+
+              - path: /etc/sysconfig/network-scripts/route-{{nic1}}
+                permissions: '0644'
+                encoding: base64
+                content:  {{ lookup('template', 'route-nic1') | b64encode }}
+
+            runcmd:
+              - "nmcli con reload"
+              - "nmcli con up '{{nic1}}'"
+              - "nmcli con up '{{nic2}}'"
+              - "ping 'wonky.statsbiblioteket.dk' -c 2"
+
+
 #        cloud_init_nics:
-#          - nic_name: ens3
+#          - nic_name: "{{nic1}}"
 #            nic_boot_protocol: static
 #            nic_ip_address: "{{nic1_subnet}}.{{hostnumber}}"
 #            nic_netmask: 255.255.255.0
-#            nic_gateway: "{{gateway}}"
+#            nic_gateway: "{{gateway1}}"
 #            nic_on_boot: True
-#          - nic_name: ens4
+#          - nic_name: "{{nic2}}"
 #            nic_boot_protocol: static
 #            nic_ip_address: "{{nic2_subnet}}.{{hostnumber}}"
 #            nic_netmask: 255.255.255.0
+#            nic_gateway: "{{gateway2}}"
 #            nic_on_boot: True
 
 
@@ -115,25 +150,6 @@
         state: running
         name: "{{shortname}}"
         cluster: "{{ovirt_cluster}}"
-#        cloud_init_persist: True
-#
-#        cloud_init:
-#          host_name: "{{hostname}}"
-#          timezone: "GMT+01:00"
-#
-#        cloud_init_nics:
-#          - nic_name: ens3
-#            nic_boot_protocol: static
-#            nic_ip_address: "{{nic1_subnet}}.{{hostnumber}}"
-#            nic_netmask: 255.255.255.0
-#            nic_gateway: "{{gateway}}"
-#            nic_on_boot: True
-#          - nic_name: ens4
-#            nic_boot_protocol: static
-#            nic_ip_address: "{{nic2_subnet}}.{{hostnumber}}"
-#            nic_netmask: 255.255.255.0
-#            nic_on_boot: True
-
 
     - name: "Ensure vm is started"
       ovirt.ovirt.ovirt_vm:

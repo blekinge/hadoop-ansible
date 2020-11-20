@@ -4,11 +4,19 @@
   include_tasks: create_vm.yml
 
 
-- name: setup network
-  include_tasks: setup_network.yml
-
+- name: "Wait 600 seconds for host {{inventory_hostname}} to become reachable/usable"
+  become: yes
+  become_user: root
+  remote_user: root
+  register: available_on_inventory_hostname
+  ansible.builtin.wait_for_connection:
+    delay: 0 # Number of seconds to wait before starting to poll.
+    timeout: 600 # Maximum number of seconds to wait for.
+    sleep: 5 # Number of seconds to sleep between checks.
+    connect_timeout: 5 # Maximum number of seconds to wait for a connection to happen before closing and retrying.
 
 - name: Reboot if needed
+  when: available_on_inventory_hostname is failed
   include_tasks: restart_if_needed.yml
 
 
