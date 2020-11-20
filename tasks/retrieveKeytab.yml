@@ -12,6 +12,7 @@
   when: keytab_file.stat.exists == True
   register: keytab_valid
   failed_when: keytab_valid.rc >= 2
+  changed_when: no
 
 - name: "Create keytab for {{ entry.principal }}"
   when: keytab_valid is skipped or keytab_valid.rc != 0
