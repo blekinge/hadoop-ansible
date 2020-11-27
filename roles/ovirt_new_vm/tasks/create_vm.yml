@@ -48,8 +48,17 @@
     # Previous task generated I(ovirt_auth) fact, which you can later use
     # in different modules as follows:
 
+    # Gather info about next run configuration of virtual machine named myvm
+    - ovirt.ovirt.ovirt_vm_info:
+        auth: "{{ ovirt_auth }}"
+        pattern: "name={{shortname}}"
+      register: ovirt_vm_existing_state
+
+
     #https://docs.ansible.com/ansible/latest/collections/ovirt/ovirt/ovirt_vm_module.html
-    - name: "Creating VM"
+    - name: "Creating VM if not already existing"
+      when: ovirt_vm_existing_state.ovirt_vms == []
+      register: new_vm
       ovirt.ovirt.ovirt_vm:
         auth: "{{ ovirt_auth }}"
         timeout: 1200
@@ -71,7 +80,7 @@
         wait: yes
         operating_system: other_linux
 
-        cloud_init_persist: True
+        cloud_init_persist: True # This seems to be nessesary for cloud init to work...
         cloud_init:
           host_name: "{{hostname}}"
           timezone: "GMT+01:00"
@@ -108,9 +117,11 @@
               - "nmcli con up '{{nic2}}'"
               - "ping 'wonky.statsbiblioteket.dk' -c 2"
 
+    - debug:
+        var: new_vm
 
     - name: "create extra disks for VMs"
-      when: host_disks is defined
+      when: host_disks is defined and new_vm.changed
       loop: "{{ host_disks }}"
       register: attached_disks
       ovirt.ovirt.ovirt_disk:
@@ -130,7 +141,8 @@
         wait: yes
       no_log: true
 
-    - name: "create {{nic1}} nic"
+    - name: "Attaching network {{nic1}} to nic1"
+      when: new_vm.changed
       ovirt.ovirt.ovirt_nic:
         auth: "{{ ovirt_auth }}"
         state: present
@@ -139,7 +151,8 @@
         profile: "{{nic1}}"
         network: "{{nic1}}"
 
-    - name: "create {{nic2}} nic"
+    - name: "Attaching network {{nic2}} to nic2"
+      when: new_vm.changed
       ovirt.ovirt.ovirt_nic:
         auth: "{{ ovirt_auth }}"
         state: present
@@ -148,7 +161,15 @@
         profile: "{{nic2}}"
         network: "{{nic2}}"
 
+    # Gather info about next run configuration of virtual machine named myvm
+    - ovirt.ovirt.ovirt_vm_info:
+        auth: "{{ ovirt_auth }}"
+        pattern: "name={{shortname}}"
+      register: ovirt_vm_new_state
+
+
     - name: "Starting VMs"
+      when: ovirt_vm_new_state.ovirt_vms[0].status != 'up'
       ovirt.ovirt.ovirt_vm:
         auth: "{{ ovirt_auth }}"
         state: running
@@ -157,6 +178,7 @@
         wait: yes
 
     - name: "Reboot VMs to activate new networks"
+      when: new_vm.changed
       ovirt.ovirt.ovirt_vm:
         auth: "{{ ovirt_auth }}"
         state: reboot
