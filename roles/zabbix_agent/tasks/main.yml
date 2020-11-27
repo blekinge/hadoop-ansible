@@ -20,6 +20,13 @@
   include_role:
     name: community.zabbix.zabbix_agent
 
+- name: Restart firewalld to pick up changes
+  when: zabbix_agent_firewalld_enable | default(False) | bool
+  systemd:
+    service: firewalld
+    state: restarted
+
+
 
 - name: Fix selinux permissions
   when: ansible_selinux.mode == 'enforcing'
