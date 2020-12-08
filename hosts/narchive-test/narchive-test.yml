@@ -1,0 +1,181 @@
+# You will make one inventory file per cluster. So all cluster-specific settings should go into this file
+
+# These are the magical hostgroups that are automagically bound to roles and behaviours
+# hostgroup_VMs: Machines to auto-create in ovirt
+# hostgroup_ipaserver: the FreeIPA server to register all hosts to
+# hostgroup_ipaclients: The list of hosts to setup as ipa clients
+# hostgroup_rsyslog_server: The rsyslog server forward all log messages to
+# hostgroup_zabbix_nodes: The list of hosts to setup zabbix agent on
+# hostgroup_hadoop_nodes: = role hadoop, role zookeeper, role spark
+# hostgroup_hdfs_namenodes: = role hadoop_hdfs_namenode
+# hostgroup_hdfs_journalnodes: = role hadoop_hdfs_journalnode
+# hostgroup_hdfs_datanodes: = role hadoop_hdfs_datanode
+# hostgroup_zookeeper_servers: = role zookeeper_server
+# hostgroup_yarn_resource_managers: = role hadoop_yarn_resource_manager
+# hostgroup_yarn_node_managers: = role hadoop_yarn_node_manager
+# hostgroup_yarn_timeline_servers: = role hadoop_yarn_timeline_server
+# hostgroup_mapreduce_history_servers: = role hadoop_mapreduce_history_server
+# hostgroup_spark_history_servers: = role spark_history_server
+# hostgroup_project_nodes: = role spark_client, role rstudio_server
+
+hostgroup_all:
+ children:
+    hostgroup_ipaserver: # Singular form as there can be only one here
+      hosts:
+        narchive-t-admn01.kb.dk:
+
+    hostgroup_ipaclients:
+      children: #Mark all hadoop nodes as ipa-clients
+        hostgroup_hadoop_nodes:
+
+    hostgroup_zabbix_nodes:
+      children:
+        hostgroup_ipaclients:
+
+    hostgroup_rsyslog_server:
+      hosts:
+        narchive-t-admn01.kb.dk:
+
+    hostgroup_hadoop_nodes:
+      children:
+
+        hostgroup_hdfs:
+          children:
+            hostgroup_hdfs_namenodes:
+              hosts:
+                narchive-t-hdfs01.kb.dk:
+                  primary: true # The primary node is the one whose hdfs gets propagated to the other namenodes
+                  comment: "Primary"
+                narchive-t-hdfs02.kb.dk:
+            hostgroup_hdfs_journalnodes:
+              hosts:
+                narchive-t-zook[01:01].kb.dk:
+            hostgroup_hdfs_datanodes:
+              hosts:
+                narchive-t-data[01:03].kb.dk:
+                  mounts:
+                    - mount: /data/sdc1
+                      device: /dev/sdc
+                    - mount: /data/sdd1
+                      device: /dev/sdd
+                    - mount: /data/sde1
+                      device: /dev/sde
+                    - mount: /data/sdf1
+                      device: /dev/sdf
+                    - mount: /data/sdg1
+                      device: /dev/sdg
+                    - mount: /data/sdh1
+                      device: /dev/sdh
+                    - mount: /data/sdi1
+                      device: /dev/sdi
+                    - mount: /data/sdj1
+                      device: /dev/sdj
+                    - mount: /data/sdk1
+                      device: /dev/sdk
+                    - mount: /data/sdl1
+                      device: /dev/sdl
+                    - mount: /data/sdm1
+                      device: /dev/sdm
+                    - mount: /data/sdn1
+                      device: /dev/sdn
+                    - mount: /data/sdo1
+                      device: /dev/sdo
+                    - mount: /data/sdp1
+                      device: /dev/sdp
+                    - mount: /data/sdq1
+                      device: /dev/sdq
+                    - mount: /data/sdr1
+                      device: /dev/sdr
+                    - mount: /data/sds1
+                      device: /dev/sds
+                    - mount: /data/sdt1
+                      device: /dev/sdt
+                    - mount: /data/sdu1
+                      device: /dev/sdu
+                    - mount: /data/sdv1
+                      device: /dev/sdv
+                    - mount: /data/sdw1
+                      device: /dev/sdw
+                    - mount: /data/sdx1
+                      device: /dev/sdx
+                    - mount: /data/sdy1
+                      device: /dev/sdy
+                  hdfs_data_dirs:
+                    - /data/sdc1/hdfs
+                    - /data/sdd1/hdfs
+                    - /data/sde1/hdfs
+                    - /data/sdf1/hdfs
+                    - /data/sdg1/hdfs
+                    - /data/sdh1/hdfs
+                    - /data/sdi1/hdfs
+                    - /data/sdj1/hdfs
+                    - /data/sdk1/hdfs
+                    - /data/sdl1/hdfs
+                    - /data/sdm1/hdfs
+                    - /data/sdn1/hdfs
+                    - /data/sdo1/hdfs
+                    - /data/sdp1/hdfs
+                    - /data/sdq1/hdfs
+                    - /data/sdr1/hdfs
+                    - /data/sds1/hdfs
+                    - /data/sdt1/hdfs
+                    - /data/sdu1/hdfs
+                    - /data/sdv1/hdfs
+                    - /data/sdw1/hdfs
+                    - /data/sdx1/hdfs
+                    - /data/sdy1/hdfs
+        hostgroup_zookeeper_servers:
+          hosts:
+            narchive-t-zook01.kb.dk:
+
+        hostgroup_yarn:
+          children:
+            hostgroup_yarn_resource_managers:
+              hosts:
+                narchive-t-yarn[01:01].kb.dk:
+            hostgroup_yarn_node_managers:
+              hosts:
+                narchive-t-data[01:03].kb.dk:
+                  yarn_nodemanager_available_cpu_cores: 22
+                  yarn_nodemanager_available_memory: 38912
+                  yarn_data_dirs:
+                    - /data/sdc1/yarn
+                    - /data/sdd1/yarn
+                    - /data/sde1/yarn
+                    - /data/sdf1/yarn
+                    - /data/sdg1/yarn
+                    - /data/sdh1/yarn
+                    - /data/sdi1/yarn
+                    - /data/sdj1/yarn
+                    - /data/sdk1/yarn
+                    - /data/sdl1/yarn
+                    - /data/sdm1/yarn
+                    - /data/sdn1/yarn
+                    - /data/sdo1/yarn
+                    - /data/sdp1/yarn
+                    - /data/sdq1/yarn
+                    - /data/sdr1/yarn
+                    - /data/sds1/yarn
+                    - /data/sdt1/yarn
+                    - /data/sdu1/yarn
+                    - /data/sdv1/yarn
+                    - /data/sdw1/yarn
+                    - /data/sdx1/yarn
+                    - /data/sdy1/yarn
+            hostgroup_yarn_timeline_servers:
+                hosts:
+                  narchive-t-admn02.kb.dk:
+
+        hostgroup_mapreduce:
+          children:
+            hostgroup_mapreduce_history_servers:
+              hosts: # There can be only one here
+                narchive-t-admn02.kb.dk:
+
+        hostgroup_spark:
+          children:
+            hostgroup_spark_history_servers:
+              hosts: # There can be only one here
+                narchive-t-admn02.kb.dk:
+
+        hostgroup_project_nodes:
