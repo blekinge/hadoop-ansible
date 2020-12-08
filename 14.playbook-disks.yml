@@ -1,0 +1,6 @@
+# Enable the {{sealbin_user}} account and disable ssh logins to root
+- hosts: hostgroup_all:!localhost
+  roles:
+    - role: disks_ready
+  collections:
+    - ansible.posix
