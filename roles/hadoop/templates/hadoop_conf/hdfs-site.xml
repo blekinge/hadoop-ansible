@@ -52,11 +52,11 @@
     </property>
     <property>
         <name>dfs.namenode.checkpoint.dir</name>
-        <value>/hadoop/hdfs/namesecondary</value>
+        <value>{{hdfs_checkpoints_dir}}</value>
     </property>
     <property>
         <name>dfs.namenode.checkpoint.edits.dir</name>
-        <value>/hadoop/hdfs/namesecondary</value>
+        <value>{{hdfs_checkpoints_dir}}</value>
     </property>
     <property>
         <name>dfs.namenode.rpc-bind-host</name>
@@ -107,6 +107,8 @@
         <name>dfs.nameservices</name>
         <value>{{ hdfs_name }}</value>
     </property>
+
+{% if hdfs_high_availability %}
     <property>
         <name>dfs.ha.namenodes.{{ hdfs_name }}</name>
         <value>{{ groups['hostgroup_hdfs_namenodes'] | map('extract',hostvars, 'ansible_fqdn') | join(',') }}</value>
@@ -175,6 +177,75 @@
         <value>0.0.0.0:{{hdfs_journalnode_https_port}}</value>
     </property>
     <property>
+        <name>dfs.journalnode.kerberos.internal.spnego.principal</name>
+        <value>HTTP/_HOST@{{ipaserver_realm}}</value>
+    </property>
+    <property>
+        <name>dfs.journalnode.kerberos.principal</name>
+        <value>{{ hdfs_journalnode_service_name }}/_HOST@{{ipaserver_realm}}</value>
+    </property>
+    <property>
+        <name>dfs.journalnode.keytab.file</name>
+        <value>{{keytab_dir}}/{{ hdfs_journalnode_service_name }}.service.keytab</value>
+    </property>
+
+{%  else %}
+
+    {% for namenode in groups['hostgroup_hdfs_namenodes'] %}
+    {% set namenode_fqdn = hostvars[namenode].ansible_fqdn %}
+    <property>
+        <name>dfs.namenode.rpc-address</name>
+        <value>{{ namenode_fqdn }}:{{hdfs_namenode_rpc_port}}</value>
+    </property>
+    <property>
+        <name>dfs.namenode.http-address</name>
+        <value>{{ namenode_fqdn }}:{{hdfs_namenode_http_port}}</value>
+    </property>
+    <property>
+        <name>dfs.namenode.https-address</name>
+        <value>{{ namenode_fqdn }}:{{hdfs_namenode_https_port}}</value>
+    </property>
+    {% endfor %}
+
+{% for namenode in groups['hostgroup_secondary_hdfs_namenodes'] %}
+    {% set namenode_fqdn = hostvars[namenode].ansible_fqdn %}
+    <property>
+        <name>dfs.namenode.secondary.http-address</name>
+        <value>{{ namenode_fqdn }}:{{hdfs_secondary_namenode_http_port}}</value>
+        <description>
+            The secondary namenode http server address and port.
+        </description>
+    </property>
+
+    <property>
+        <name>dfs.namenode.secondary.https-address</name>
+        <value>{{ namenode_fqdn }}:{{hdfs_secondary_namenode_https_port}}</value>
+        <description>
+            The secondary namenode HTTPS server address and port.
+        </description>
+    </property>
+
+    <property>
+        <name>dfs.secondary.namenode.kerberos.principal</name>
+        <value>{{ hdfs_secondary_namenode_service_name }}/_HOST@{{ipaserver_realm}}</value>
+        <description>
+            Kerberos principal name for the Secondary NameNode.
+        </description>
+    </property>
+
+    <property>
+        <name>dfs.secondary.namenode.keytab.file</name>
+        <value>{{keytab_dir}}/{{ hdfs_secondary_namenode_service_name }}.service.keytab</value>
+        <description>
+            Kerberos keytab file for the Secondary NameNode.
+        </description>
+    </property>
+{% endfor %}
+
+{% endif %} {#End of HA setup#}
+
+
+    <property>
         <name>dfs.block.access.token.enable</name>
         <value>true</value>
     </property>
@@ -190,18 +261,7 @@
         <name>dfs.encrypt.data.transfer.cipher.suites</name>
         <value>AES/CTR/NoPadding</value>
     </property>
-    <property>
-        <name>dfs.journalnode.kerberos.internal.spnego.principal</name>
-        <value>HTTP/_HOST@{{ipaserver_realm}}</value>
-    </property>
-    <property>
-        <name>dfs.journalnode.kerberos.principal</name>
-        <value>{{ hdfs_journalnode_service_name }}/_HOST@{{ipaserver_realm}}</value>
-    </property>
-    <property>
-        <name>dfs.journalnode.keytab.file</name>
-        <value>{{keytab_dir}}/{{ hdfs_journalnode_service_name }}.service.keytab</value>
-    </property>
+
     <property>
         <name>dfs.namenode.kerberos.internal.spnego.principal</name>
         <value>HTTP/_HOST@{{ipaserver_realm}}</value>

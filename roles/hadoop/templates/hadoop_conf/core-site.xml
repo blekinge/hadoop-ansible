@@ -51,7 +51,9 @@
     <name>io.serializations</name>
     <value>org.apache.hadoop.io.serializer.WritableSerialization</value>
   </property>
-  <property>
+{% if hdfs_high_availability %}
+
+    <property>
     <name>ha.failover-controller.active-standby-elector.zk.op.retries</name>
     <value>120</value>
   </property>
@@ -63,6 +65,8 @@
     <name>ha.zookeeper.quorum</name>
     <value>{{ zookeeper_quorum }}</value>
   </property>
+{% endif %}
+
   <property>
     <name>hadoop.http.authentication.cookie.domain</name>
     <value>{{ ipaserver_domain}}</value>

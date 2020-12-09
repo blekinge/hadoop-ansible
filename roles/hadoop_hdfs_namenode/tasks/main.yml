@@ -12,8 +12,12 @@
   ansible.builtin.set_fact:
     fresh_HDFS: '{{hadoop_dfs_name_dir_status.changed == true and hadoop_dfs_name_dir_status.diff.before.state == "absent"}}'
 
-- include: initialize_hdfs.yml
-  when: fresh_HDFS | bool or wipe_hdfs | bool
+- include: initialize_ha_hdfs.yml
+  when: hdfs_high_availability | bool and (fresh_HDFS | bool or wipe_hdfs | bool)
+
+
+- include: initialize_normal_hdfs.yml
+  when: not hdfs_high_availability | bool and (fresh_HDFS | bool or wipe_hdfs | bool)
 
 
 # Start both
@@ -27,6 +31,7 @@
 
 # Start the failover controllers
 - name: (Re)Start namenode zkfc systemd service
+  when: hdfs_high_availability
   throttle: 1
   ansible.builtin.systemd:
     state: restarted

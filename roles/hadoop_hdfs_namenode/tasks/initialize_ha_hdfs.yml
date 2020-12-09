@@ -1,0 +1,38 @@
+---
+
+- name: Stop namenode systemd service
+  ansible.builtin.systemd:
+    state: stopped
+    daemon_reload: yes
+    name: hdfs_namenode
+
+
+- name: Wipe Namenode
+  ansible.builtin.file:
+    path: "{{hadoop_dfs_name}}"
+    state: absent
+
+
+- name: Create Hadoop Namenode directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: "{{ hdfs_user.name }}"
+    group: "{{ hdfs_user.group }}"
+    state: directory
+  loop:
+    - "{{ hadoop_pid_dir }}/{{ hdfs_user.name }}"
+    - "{{ hadoop_log_dir }}/{{ hdfs_user.name }}"
+    - "{{ hadoop_dfs_name }}"
+
+
+#On the primary, format the filesystem
+- name: Format Namenode
+  become: yes
+  become_user: "{{hdfs_user.name}}"
+  shell:
+    cmd:
+      echo -e "Y\nN" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -format > "{{ hadoop_dfs_name }}/formatted"
+    executable: /bin/bash
+    creates: "{{ hadoop_dfs_name }}/formatted"
+  ignore_errors: yes
+  when: primary|bool

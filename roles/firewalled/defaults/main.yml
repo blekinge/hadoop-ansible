@@ -15,8 +15,8 @@ hdfs_namenode_https_port: 9871
 
 hdfs_zkfc_port: 8019
 
-hdfs_secondarynamenode_http_port: 9868
-hdfs_secondarynamenode_https_port: 9869
+hdfs_secondary_namenode_http_port: 9868
+hdfs_secondary_namenode_https_port: 9869
 
 hdfs_namenode_backup_rpc_port: 50100
 hdfs_namenode_backup_http_port: 50105

@@ -17,7 +17,7 @@
         fstype: xfs
         dev: "{{device}}1"
 
-    - name: discover UUID of new filesystem
+    - name: "Discover UUID of new filesystem"
       shell:
         cmd: "blkid {{device}}1 -o udev | grep ID_FS_UUID= | cut -d'=' -f2"
       register: blkid

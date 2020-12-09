@@ -12,6 +12,7 @@ yarn_resourcemanager_service_name: "rm"
 yarn_timelineserver_service_name: "tl"
 
 hdfs_namenode_service_name: "nn"
+hdfs_secondary_namenode_service_name: "snn"
 hdfs_datanode_service_name: "dn"
 hdfs_journalnode_service_name: "jn"
 
@@ -48,6 +49,12 @@ keytab_services:
   - {
     hostgroup: "hostgroup_hdfs_namenodes",
     name: "{{ hdfs_namenode_service_name }}",
+    owner: "{{ hdfs_user.name }}",
+    group: "{{ hdfs_user.group }}"
+  }
+  - {
+    hostgroup: "hostgroup_hdfs_secondary_namenodes",
+    name: "{{ hdfs_secondary_namenode_service_name }}",
     owner: "{{ hdfs_user.name }}",
     group: "{{ hdfs_user.group }}"
   }

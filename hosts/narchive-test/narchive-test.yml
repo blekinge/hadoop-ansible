@@ -19,7 +19,7 @@
 # hostgroup_project_nodes: = role spark_client, role rstudio_server
 
 hostgroup_all:
- children:
+  children:
     hostgroup_ipaserver: # Singular form as there can be only one here
       hosts:
         narchive-t-admn01.kb.dk:
@@ -41,15 +41,22 @@ hostgroup_all:
 
         hostgroup_hdfs:
           children:
+
             hostgroup_hdfs_namenodes:
               hosts:
                 narchive-t-hdfs01.kb.dk:
                   primary: true # The primary node is the one whose hdfs gets propagated to the other namenodes
                   comment: "Primary"
                 narchive-t-hdfs02.kb.dk:
+
+            hostgroup_hdfs_secondary_namenodes:
+              hosts:
+                narchive-t-hdfs02.kb.dk:
+
             hostgroup_hdfs_journalnodes:
               hosts:
                 narchive-t-zook[01:01].kb.dk:
+
             hostgroup_hdfs_datanodes:
               hosts:
                 narchive-t-data[01:03].kb.dk:
@@ -124,15 +131,18 @@ hostgroup_all:
                     - /data/sdw1/hdfs
                     - /data/sdx1/hdfs
                     - /data/sdy1/hdfs
+
         hostgroup_zookeeper_servers:
           hosts:
             narchive-t-zook01.kb.dk:
 
         hostgroup_yarn:
           children:
+
             hostgroup_yarn_resource_managers:
               hosts:
                 narchive-t-yarn[01:01].kb.dk:
+
             hostgroup_yarn_node_managers:
               hosts:
                 narchive-t-data[01:03].kb.dk:
@@ -162,9 +172,10 @@ hostgroup_all:
                     - /data/sdw1/yarn
                     - /data/sdx1/yarn
                     - /data/sdy1/yarn
+
             hostgroup_yarn_timeline_servers:
-                hosts:
-                  narchive-t-admn02.kb.dk:
+              hosts:
+                narchive-t-admn02.kb.dk:
 
         hostgroup_mapreduce:
           children:

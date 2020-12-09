@@ -2,6 +2,8 @@
 #Flag if you just need to depend on this role to get variables
 install_hadoop: true
 
+hdfs_high_availability: true
+
 wipe_hdfs: false
 
 # hadoop basic vars
@@ -17,6 +19,8 @@ hadoop_config_path: "/etc/hadoop/conf"
 hadoop_tmp: "/tmp/hadoop"
 hadoop_log_dir: "/var/log/hadoop"
 hadoop_pid_dir: "/var/run/hadoop"
+
+hdfs_checkpoints_dir: "/hadoop/hdfs/namesecondary"
 
 #Loggers
 hadoop_daemon_logger: "INFO,DRFA,SYSLOG"
