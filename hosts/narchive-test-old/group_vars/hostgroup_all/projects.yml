@@ -1,0 +1,10 @@
+---
+
+default_project_file_dir: hosts/narchive/group_vars/hostgroup_all/projects/
+# Append new project names here, to automatically load ./projects/<name>.yml
+
+projects:
+  - name: subadmins_project
+
+
+default_queue_mapping: "g:{{users_group.name}}:default"

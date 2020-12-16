@@ -19,7 +19,7 @@
 # hostgroup_project_nodes: = role spark_client, role rstudio_server
 
 hostgroup_all:
- children:
+  children:
     hostgroup_ipaserver: # Singular form as there can be only one here
       hosts:
         fipa001.adm.yak2.net:

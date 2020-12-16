@@ -1,0 +1,34 @@
+---
+
+
+- name: Stop secondary namenode systemd service
+  ansible.builtin.systemd:
+    state: stopped
+    daemon_reload: yes
+    name: hdfs_secondary_namenode
+    enabled: true
+  when: wipe_hdfs | bool
+
+- name: Wipe data
+  ansible.builtin.file:
+    path: "{{hdfs_checkpoints_dir}}"
+    state: absent
+  when: wipe_hdfs | bool
+
+
+- name: Create data dir
+  ansible.builtin.file:
+    path: "{{hdfs_checkpoints_dir}}"
+    state: directory
+    owner: "{{hdfs_user.name}}"
+    group: "{{hdfs_user.group}}"
+    mode: 0750
+
+
+- name: (Re)Start secondary namenode systemd service
+  throttle: 1
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: yes
+    name: hdfs_secondary_namenode
+    enabled: true

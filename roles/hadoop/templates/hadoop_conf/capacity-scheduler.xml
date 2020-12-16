@@ -32,6 +32,15 @@
     </property>
 
 
+    <property>
+        <name>yarn.scheduler.capacity.per-node-heartbeat.multiple-assignments-enabled</name>
+        <value>true</value>
+    </property>
+
+    <property>
+        <name>yarn.scheduler.capacity.per-node-heartbeat.maximum-container-assignments</name>
+        <value>10</value>
+    </property>
 
 
 

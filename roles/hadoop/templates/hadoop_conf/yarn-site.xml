@@ -239,6 +239,11 @@
         <value>2.1</value>
     </property>
 
+    <property>
+        <description>The heart-beat interval in milliseconds for every NodeManager in the cluster.</description>
+        <name>yarn.resourcemanager.nodemanagers.heartbeat-interval-ms</name>
+        <value>5000</value>
+    </property>
 
     <property>
         <name>yarn.resourcemanager.am.max-attempts</name>
@@ -319,7 +324,7 @@
     </property>
     <property>
         <name>yarn.resourcemanager.scheduler.monitor.enable</name>
-        <value>true</value>
+        <value>false</value>
     </property>
     <property>
         <name>yarn.resourcemanager.scheduler.monitor.policies</name>
@@ -544,6 +549,11 @@
         <value>YAK-YARN</value>
     </property>
 
+    <property>
+        <name>yarn.resourcemanager.ha.automatic-failover.enable</name>
+        <value>false</value>
+    </property>
+
 
 
     <property>
@@ -593,10 +603,6 @@
 
     <property>
         <name>hadoop.zk.address</name>
-        <value>{{zookeeper_quorum}}</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.zk-address</name>
         <value>{{zookeeper_quorum}}</value>
     </property>
 
@@ -693,5 +699,71 @@
         <name>yarn.resourcemanager.zk-acl</name>
         <value>sasl:{{ yarn_resourcemanager_service_name }}:rwcda</value>
     </property>
+
+
+    <property>
+        <description>
+            RM DelegationTokenRenewer thread count
+        </description>
+        <name>yarn.resourcemanager.delegation-token-renewer.thread-count</name>
+        <value>50</value>
+    </property>
+
+    <property>
+        <description>
+            RM secret key update interval in ms
+        </description>
+        <name>yarn.resourcemanager.delegation.key.update-interval</name>
+        <value>86400000</value>
+    </property>
+
+    <property>
+        <description>
+            RM delegation token maximum lifetime in ms
+        </description>
+        <name>yarn.resourcemanager.delegation.token.max-lifetime</name>
+        <value>604800000</value>
+    </property>
+
+    <property>
+        <description>
+            RM delegation token update interval in ms
+        </description>
+        <name>yarn.resourcemanager.delegation.token.renew-interval</name>
+        <value>86400000</value>
+    </property>
+
+    <property>
+        <description>
+            RM DelegationTokenRenewer thread timeout
+        </description>
+        <name>yarn.resourcemanager.delegation-token-renewer.thread-timeout</name>
+        <value>600m</value>
+    </property>
+
+    <property>
+        <description>
+            Default maximum number of retries for each RM DelegationTokenRenewer thread
+        </description>
+        <name>yarn.resourcemanager.delegation-token-renewer.thread-retry-max-attempts</name>
+        <value>2</value>
+    </property>
+
+    <property>
+        <description>
+            Time interval between each RM DelegationTokenRenewer thread retry attempt
+        </description>
+        <name>yarn.resourcemanager.delegation-token-renewer.thread-retry-interval</name>
+        <value>300s</value>
+    </property>
+
+    <property>
+        <description>
+            Thread pool size for RMApplicationHistoryWriter.
+        </description>
+        <name>yarn.resourcemanager.history-writer.multi-threaded-dispatcher.pool-size</name>
+        <value>10</value>
+    </property>
+
 
 </configuration>

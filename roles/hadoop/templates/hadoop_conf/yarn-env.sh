@@ -127,7 +127,7 @@ export YARN_RESOURCEMANAGER_HEAPSIZE=2048
 # export YARN_RESOURCEMANAGER_OPTS=
 YARN_RESOURCEMANAGER_OPTS="-Dyarn.server.resourcemanager.appsummary.logger={{yarn_resourcemanager_appsummary_logger | quote}}"
 YARN_RESOURCEMANAGER_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username=zookeeper -Djava.security.auth.login.config={{ hadoop_config_path}}/yarn_jaas.conf -Dzookeeper.sasl.clientconfig=Client $YARN_RESOURCEMANAGER_OPTS"
-export YARN_RESOURCEMANAGER_OPTS="$YARN_RESOURCEMANAGER_OPTS -Drm.audit.logger={{yarn_resourcemanager_audit_logger | quote}}"
+export YARN_RESOURCEMANAGER_OPTS="$YARN_RESOURCEMANAGER_OPTS -Drm.audit.logger={{yarn_resourcemanager_audit_logger | quote}} -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
 
 
 

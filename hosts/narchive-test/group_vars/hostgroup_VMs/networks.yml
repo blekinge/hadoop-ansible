@@ -1,0 +1,42 @@
+---
+
+# The network settings used when creating new virtual hosts for the cluster
+domain_nfs: "nfs.{{domain}}"
+domain_adm: "adm.{{domain}}" # 172.16.216
+domain_dmz: "dmz.{{domain}}"
+
+dns_search_domains: "{{ [domain,domain_nfs,domain_adm,domain_dmz] | join(' ') }}"
+
+# Nic1 profile
+nic1: "yak2net"
+nic1_subnet: 172.16.215
+nic1_domain: "{{domain}}"
+
+#The dns servers to configure for the new host
+dns1: "{{nic1_subnet}}.52" #bind001
+dns2: "{{nic1_subnet}}.53" #bind002
+
+# The gateway to use
+gateway1: "{{nic1_subnet}}.51"
+
+nic2: "ovirtmgmt"
+nic2_subnet: 172.16.216
+nic2_domain: "{{domain_adm}}"
+gateway2: "{{nic2_subnet}}.1"
+
+nic2_routes_list:
+  - network: "130.225.24.0/23"
+    gw: "{{gateway2}}"
+    metric: "100"
+  - network: "130.226.220.0/24"
+    gw: "{{gateway2}}"
+    metric: "100"
+  - network: "172.16.7.0/24"
+    gw: "{{gateway2}}"
+  - network: "172.18.0.0/16"
+    gw: "{{gateway2}}"
+  - network: "172.28.1.0/24"
+    gw: "{{gateway2}}"
+
+
+nic2_routes: "{{ nic2_routes_list | join(',') }}"
