@@ -41,7 +41,7 @@
 
     <property>
         <name>mapreduce.cluster.administrators</name>
-        <value>{{mapreduce_user.name}} {{ hadoop_group.name }},{{subadmins_group.name}}</value>
+        <value>{{ mapreduce_user.name }} {{ hadoop_group.name }},{{ subadmins_group.name }}</value>
     </property>
 
     <property>
@@ -76,17 +76,17 @@
 
     <property>
         <name>mapreduce.jobhistory.address</name>
-        <value>{{ mapreduce_history_server_host }}:{{mapreduce_history_server_rpc_port}}</value>
+        <value>{{ mapreduce_history_server_host }}:{{ mapreduce_history_server_rpc_port }}</value>
     </property>
 
     <property>
         <name>mapreduce.jobhistory.admin.acl</name>
-        <value>{{yarn_user.name}} {{subadmins_group.name}}</value>
+        <value>{{ yarn_user.name }} {{ subadmins_group.name }}</value>
     </property>
 
     <property>
         <name>mapreduce.jobhistory.admin.address</name>
-        <value>{{ mapreduce_history_server_host }}:{{mapreduce_history_server_admin_port}}</value>
+        <value>{{ mapreduce_history_server_host }}:{{ mapreduce_history_server_admin_port }}</value>
     </property>
 
     <property>
@@ -101,7 +101,7 @@
 
     <property>
         <name>mapreduce.jobhistory.done-dir</name>
-        <value>{{mapreduce_jobhistory_dir}}/done</value>
+        <value>{{ mapreduce_jobhistory_dir }}/done</value>
     </property>
 
     <property>
@@ -111,7 +111,7 @@
 
     <property>
         <name>mapreduce.jobhistory.intermediate-done-dir</name>
-        <value>{{mapreduce_jobhistory_dir}}/tmp</value>
+        <value>{{ mapreduce_jobhistory_dir }}/tmp</value>
     </property>
 
     <property>
@@ -119,19 +119,22 @@
         <value>100000</value>
     </property>
 
-    <property>
-        <name>mapreduce.jobhistory.keytab</name>
-        <value>{{ keytab_dir }}/{{ mapreduce_historyserver_service_name }}.service.keytab</value>
-    </property>
+    {% if kerberos_authentication %}
 
+        <property>
+            <name>mapreduce.jobhistory.keytab</name>
+            <value>{{ keytab_dir }}/{{ mapreduce_historyserver_service_name }}.service.keytab</value>
+        </property>
+
+        <property>
+            <name>mapreduce.jobhistory.principal</name>
+            <value>{{ mapreduce_historyserver_service_name }}/_HOST@{{ ipaserver_realm }}</value>
+        </property>
+
+    {% endif %}
     <property>
         <name>mapreduce.jobhistory.max-age-ms</name>
         <value>2592000000</value>
-    </property>
-
-    <property>
-        <name>mapreduce.jobhistory.principal</name>
-        <value>{{ mapreduce_historyserver_service_name }}/_HOST@{{ ipaserver_realm }}</value>
     </property>
 
     <property>
@@ -146,31 +149,35 @@
 
     <property>
         <name>mapreduce.jobhistory.recovery.store.leveldb.path</name>
-        <value>{{mapreduce_jobhistory_recovery_store_leveldb_path}}</value>
+        <value>{{ mapreduce_jobhistory_recovery_store_leveldb_path }}</value>
     </property>
 
     <property>
         <name>mapreduce.jobhistory.webapp.address</name>
-        <value>{{ mapreduce_history_server_host }}:{{mapreduce_history_server_http_port}}</value>
+        <value>{{ mapreduce_history_server_host }}:{{ mapreduce_history_server_http_port }}</value>
     </property>
 
     <property>
         <name>mapreduce.jobhistory.webapp.https.address</name>
-        <value>{{ mapreduce_history_server_host }}:{{mapreduce_history_server_https_port}}</value>
+        <value>{{ mapreduce_history_server_host }}:{{ mapreduce_history_server_https_port }}</value>
         <description>
             The https address the MapReduce JobHistory Server WebApp is on.
         </description>
     </property>
 
+    {% if kerberos_authentication %}
+
     <property>
         <name>mapreduce.jobhistory.webapp.spnego-keytab-file</name>
-        <value>{{keytab_dir}}/spnego.service.keytab</value>
+        <value>{{ keytab_dir }}/spnego.service.keytab</value>
     </property>
 
     <property>
         <name>mapreduce.jobhistory.webapp.spnego-principal</name>
         <value>HTTP/_HOST@{{ ipaserver_realm }}</value>
     </property>
+
+{%  endif %}
 
     <property>
         <name>mapreduce.map.java.opts</name>
@@ -219,7 +226,7 @@
 
     <property>
         <name>mapreduce.reduce.java.opts</name>
-        <value>-Xmx{{mapreduce_reduce_java_memory}}</value>
+        <value>-Xmx{{ mapreduce_reduce_java_memory }}</value>
     </property>
 
     <property>
@@ -229,7 +236,7 @@
 
     <property>
         <name>mapreduce.reduce.memory.mb</name>
-        <value>{{mapreduce_reduce_yarn_memory}}</value>
+        <value>{{ mapreduce_reduce_yarn_memory }}</value>
     </property>
 
     <property>
@@ -269,7 +276,7 @@
 
     <property>
         <name>mapreduce.shuffle.port</name>
-        <value>{{mapreduce_shuffle_port}}</value>
+        <value>{{ mapreduce_shuffle_port }}</value>
     </property>
 
     <property>
@@ -279,7 +286,7 @@
 
     <property>
         <name>mapreduce.task.io.sort.mb</name>
-        <value>{{mapreduce_task_sort_memory}}</value>
+        <value>{{ mapreduce_task_sort_memory }}</value>
     </property>
 
     <property>
@@ -289,7 +296,7 @@
 
     <property>
         <name>yarn.app.mapreduce.am.command-opts</name>
-        <value>-Xmx{{mapreduce_am_java_memory}}</value>
+        <value>-Xmx{{ mapreduce_am_java_memory }}</value>
     </property>
 
     <property>
@@ -299,12 +306,12 @@
 
     <property>
         <name>yarn.app.mapreduce.am.resource.mb</name>
-        <value>{{mapreduce_am_yarn_memory}}</value>
+        <value>{{ mapreduce_am_yarn_memory }}</value>
     </property>
 
     <property>
         <name>yarn.app.mapreduce.am.staging-dir</name>
-        <value>{{hdfs_home_dir}}</value>
+        <value>{{ hdfs_home_dir }}</value>
     </property>
 
     <property>
@@ -314,7 +321,7 @@
 
     <property>
         <name>yarn.app.mapreduce.am.job.client.port-range</name>
-        <value>{{mapreduce_am_portrange}}</value>
+        <value>{{ mapreduce_am_portrange }}</value>
         <description>Range of ports that the MapReduce AM can use when binding.
             Leave blank if you want all possible ports.
             For example 50000-50050,50100-50200
@@ -323,7 +330,7 @@
 
     <property>
         <name>yarn.app.mapreduce.am.webapp.port-range</name>
-        <value>{{mapreduce_am_portrange}}</value>
+        <value>{{ mapreduce_am_portrange }}</value>
         <description>Range of ports that the MapReduce AM can use for its webapp when binding.
             Leave blank if you want all possible ports.
             For example 50000-50050,50100-50200
@@ -333,15 +340,15 @@
 
     <property>
         <name>yarn.app.mapreduce.am.env</name>
-        <value>HADOOP_MAPRED_HOME={{current_hadoop_home}}</value>
+        <value>HADOOP_MAPRED_HOME={{ current_hadoop_home }}</value>
     </property>
     <property>
         <name>mapreduce.map.env</name>
-        <value>HADOOP_MAPRED_HOME={{current_hadoop_home}}</value>
+        <value>HADOOP_MAPRED_HOME={{ current_hadoop_home }}</value>
     </property>
     <property>
         <name>mapreduce.reduce.env</name>
-        <value>HADOOP_MAPRED_HOME={{current_hadoop_home}}</value>
+        <value>HADOOP_MAPRED_HOME={{ current_hadoop_home }}</value>
     </property>
 
 

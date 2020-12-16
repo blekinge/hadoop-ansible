@@ -19,122 +19,213 @@
 <!-- Put site-specific property overrides in this file. -->
 
 <configuration>
-  <property>
-    <name>fs.defaultFS</name>
-    <value>hdfs://{{ hdfs_name }}</value>
-  </property>
-  <property>
-    <name>hadoop.tmp.dir</name>
-    <value>{{ hadoop_tmp }}</value>
-  </property>
-  <property>
-    <name>io.file.buffer.size</name>
-    <value>131072</value>
-  </property>
-  <property>
-    <name>dfs.access.time.precision</name>
-    <value>3600000</value>
-  </property>
-  <property>
-    <name>dfs.namenode.accesstime.precision</name>
-    <value>3600000</value>
-  </property>
-  <property>
-    <name>fs.trash.checkpoint.interval</name>
-    <value>360</value>
-  </property>
-  <property>
-    <name>io.compression.codecs</name>
-    <value>org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.SnappyCodec</value>
-  </property>
-  <property>
-    <name>io.serializations</name>
-    <value>org.apache.hadoop.io.serializer.WritableSerialization</value>
-  </property>
-{% if hdfs_high_availability %}
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://{{ hdfs_name }}</value>
+        <description>The name of the default file system. A URI whose
+            scheme and authority determine the FileSystem implementation. The
+            uri's scheme determines the config property (fs.SCHEME.impl) naming
+            the FileSystem implementation class. The uri's authority is used to
+            determine the host, port, etc. for a filesystem.
+        </description>
+    </property>
+    <property>
+        <name>hadoop.tmp.dir</name>
+        <value>{{ hadoop_tmp }}</value>
+        <description>A base for other temporary directories.</description>
+    </property>
+    <property>
+        <name>io.file.buffer.size</name>
+        <value>131072</value>
+        <description>The size of buffer for use in sequence files.
+            The size of this buffer should probably be a multiple of hardware
+            page size (4096 on Intel x86), and it determines how much data is
+            buffered during read and write operations.
+        </description>
+    </property>
+
 
     <property>
-    <name>ha.failover-controller.active-standby-elector.zk.op.retries</name>
-    <value>120</value>
-  </property>
-  <property>
-    <name>ha.zookeeper.acl</name>
-    <value>sasl:{{ hdfs_namenode_service_name }}:rwcda</value>
-  </property>
-  <property>
-    <name>ha.zookeeper.quorum</name>
-    <value>{{ zookeeper_quorum }}</value>
-  </property>
-{% endif %}
+        <name>fs.trash.checkpoint.interval</name>
+        <value>360</value>
+        <description>Number of minutes between trash checkpoints.
+            Should be smaller or equal to fs.trash.interval. If zero,
+            the value is set to the value of fs.trash.interval.
+            Every time the checkpointer runs it creates a new checkpoint
+            out of current and removes checkpoints created more than
+            fs.trash.interval minutes ago.
+        </description>
+    </property>
+    <property>
+        <name>io.compression.codecs</name>
+        <value>
+            org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.SnappyCodec
+        </value>
+        <description>A comma-separated list of the compression codec classes that can
+            be used for compression/decompression. In addition to any classes specified
+            with this property (which take precedence), codec classes on the classpath
+            are discovered using a Java ServiceLoader.
+        </description>
+    </property>
 
-  <property>
-    <name>hadoop.http.authentication.cookie.domain</name>
-    <value>{{ ipaserver_domain}}</value>
-  </property>
-  <property>
-    <name>hadoop.http.authentication.kerberos.keytab</name>
-    <value>{{ keytab_dir }}/spnego.service.keytab</value>
-  </property>
-  <property>
-    <name>hadoop.http.authentication.kerberos.principal</name>
-    <value>HTTP/_HOST@{{ipaserver_realm}}</value>
-  </property>
-  <property>
-    <name>hadoop.http.authentication.signature.secret.file</name>
-    <value>/etc/security/http_secret</value>
-  </property>
-  <property>
-    <name>hadoop.http.authentication.simple.anonymous.allowed</name>
-    <value>false</value>
-  </property>
-  <property>
-    <name>hadoop.http.authentication.type</name>
-    <value>kerberos</value>
-  </property>
-  <property>
-    <name>hadoop.http.filter.initializers</name>
-    <value>org.apache.hadoop.security.AuthenticationFilterInitializer</value>
-  </property>
-  <property>
-    <name>hadoop.security.auth_to_local</name>
-    <value>
-      RULE:[1:$1@$0](.*@{{ipaserver_realm}})s/@.*//
-      RULE:[2:$1@$0]({{ hdfs_datanode_service_name }}@{{ipaserver_realm}})s/.*/{{ hdfs_user.name }}/
-      RULE:[2:$1@$0]({{ mapreduce_historyserver_service_name }}@{{ipaserver_realm}})s/.*/{{ mapreduce_user.name }}/
-      RULE:[2:$1@$0]({{ hdfs_journalnode_service_name }}@{{ipaserver_realm}})s/.*/{{ hdfs_user.name }}/
-      RULE:[2:$1@$0]({{ yarn_nodemanager_service_name }}@{{ipaserver_realm}})s/.*/{{ yarn_user.name }}/
-      RULE:[2:$1@$0]({{ hdfs_namenode_service_name }}@{{ipaserver_realm}})s/.*/{{ hdfs_user.name }}/
-      RULE:[2:$1@$0]({{ yarn_resourcemanager_service_name }}@{{ipaserver_realm}})s/.*/{{ yarn_user.name }}/
-      RULE:[2:$1@$0]({{ yarn_timelineserver_service_name }}@{{ipaserver_realm}})s/.*/{{ yarn_user.name }}/
-      RULE:[2:$1@$0]({{ spark_history_server_service_name }}@{{ipaserver_realm}})s/.*/{{ spark_user.name }}/
-      DEFAULT</value>
-  </property>
-  <property>
-    <name>hadoop.security.authentication</name>
-    <value>kerberos</value>
-  </property>
-  <property>
-    <name>hadoop.security.authorization</name>
-    <value>true</value>
-  </property>
-  <property>
-    <name>hadoop.ssl.client.conf</name>
-    <value>ssl-client.xml</value>
-  </property>
-  <property>
-    <name>hadoop.ssl.server.conf</name>
-    <value>ssl-server.xml</value>
-  </property>
-  <property>
-    <name>hadoop.proxyuser.HTTP.groups</name>
-    <value>{{ users_group }}</value>
-  </property>
+    {% if hdfs_high_availability %}
 
-  <property>
-    <name>spark.authenticate</name>
-    <value>true</value>
-    <description>Prevents spark from breaking with "java.lang.IllegalArgumentException: requirement failed: A secret key must be specified via the spark.authenticate.secret config."</description>
-  </property>
+        <property>
+            <name>ha.failover-controller.active-standby-elector.zk.op.retries</name>
+            <value>120</value>
+            <description>
+                The number of zookeeper operation retry times in ActiveStandbyElector
+            </description>
+        </property>
+        <property>
+            <name>ha.zookeeper.acl</name>
+            <value>sasl:{{ hdfs_namenode_service_name }}:rwcda</value>
+            <description>
+                A comma-separated list of ZooKeeper ACLs to apply to the znodes
+                used by automatic failover. These ACLs are specified in the same
+                format as used by the ZooKeeper CLI.
+
+                If the ACL itself contains secrets, you may instead specify a
+                path to a file, prefixed with the '@' symbol, and the value of
+                this configuration will be loaded from within.
+            </description>
+        </property>
+        <property>
+            <name>ha.zookeeper.quorum</name>
+            <value>{{ zookeeper_quorum }}</value>
+            <description>
+                A list of ZooKeeper server addresses, separated by commas, that are
+                to be used by the ZKFailoverController in automatic failover.
+            </description>
+        </property>
+    {% endif %}
+
+    {% if kerberos_authentication %}
+        <property>
+            <name>hadoop.http.authentication.cookie.domain</name>
+            <value>{{ ipaserver_domain }}</value>
+            <description>
+                The domain to use for the HTTP cookie that stores the authentication token.
+                In order to authentiation to work correctly across all Hadoop nodes web-consoles
+                the domain must be correctly set.
+                IMPORTANT: when using IP addresses, browsers ignore cookies with domain settings.
+                For this setting to work properly all nodes in the cluster must be configured
+                to generate URLs with hostname.domain names on it.
+            </description>
+        </property>
+        <property>
+            <name>hadoop.http.authentication.kerberos.keytab</name>
+            <value>{{ keytab_dir }}/spnego.service.keytab</value>
+            <description>
+                Location of the keytab file with the credentials for the principal.
+                Referring to the same keytab file Oozie uses for its Kerberos credentials for Hadoop.
+            </description>
+        </property>
+        <property>
+            <name>hadoop.http.authentication.kerberos.principal</name>
+            <value>HTTP/_HOST@{{ ipaserver_realm }}</value>
+            <description>
+                Indicates the Kerberos principal to be used for HTTP endpoint.
+                The principal MUST start with 'HTTP/' as per Kerberos HTTP SPNEGO specification.
+            </description>
+        </property>
+        <property>
+            <name>hadoop.http.authentication.signature.secret.file</name>
+            <value>/etc/security/http_secret</value>
+            <description>
+                The signature secret for signing the authentication tokens.
+                The same secret should be used for RM/NM/NN/DN configurations.
+            </description>
+        </property>
+        <property>
+            <name>hadoop.http.authentication.simple.anonymous.allowed</name>
+            <value>false</value>
+            <description>
+                Indicates if anonymous requests are allowed when using 'simple' authentication.
+            </description>
+        </property>
+        <property>
+            <name>hadoop.http.authentication.type</name>
+            <value>kerberos</value>
+            <description>
+                Defines authentication used for Oozie HTTP endpoint.
+                Supported values are: simple | kerberos | #AUTHENTICATION_HANDLER_CLASSNAME#
+            </description>
+        </property>
+        <property>
+            <name>hadoop.http.filter.initializers</name>
+            <value>org.apache.hadoop.security.AuthenticationFilterInitializer</value>
+            <description>A comma separated list of class names. Each class in the list
+                must extend org.apache.hadoop.http.FilterInitializer. The corresponding
+                Filter will be initialized. Then, the Filter will be applied to all user
+                facing jsp and servlet web pages. The ordering of the list defines the
+                ordering of the filters.
+            </description>
+        </property>
+        <property>
+            <name>hadoop.security.auth_to_local</name>
+            <value>
+                RULE:[1:$1@$0](.*@{{ ipaserver_realm }})s/@.*//
+                RULE:[2:$1@$0]({{ hdfs_datanode_service_name }}@{{ ipaserver_realm }})s/.*/{{ hdfs_user.name }}/
+                RULE:[2:$1@$0]({{ mapreduce_historyserver_service_name }}@{{ ipaserver_realm }})s/.*/{{ mapreduce_user.name }}/
+                RULE:[2:$1@$0]({{ hdfs_journalnode_service_name }}@{{ ipaserver_realm }})s/.*/{{ hdfs_user.name }}/
+                RULE:[2:$1@$0]({{ yarn_nodemanager_service_name }}@{{ ipaserver_realm }})s/.*/{{ yarn_user.name }}/
+                RULE:[2:$1@$0]({{ hdfs_namenode_service_name }}@{{ ipaserver_realm }})s/.*/{{ hdfs_user.name }}/
+                RULE:[2:$1@$0]({{ yarn_resourcemanager_service_name }}@{{ ipaserver_realm }})s/.*/{{ yarn_user.name }}/
+                RULE:[2:$1@$0]({{ yarn_timelineserver_service_name }}@{{ ipaserver_realm }})s/.*/{{ yarn_user.name }}/
+                RULE:[2:$1@$0]({{ spark_history_server_service_name }}@{{ ipaserver_realm }})s/.*/{{ spark_user.name }}/
+                DEFAULT
+            </value>
+            <description>Maps kerberos principals to local user names</description>
+
+        </property>
+        <property>
+            <name>hadoop.security.authentication</name>
+            <value>kerberos</value>
+            <description>Possible values are simple (no authentication), and kerberos
+            </description>
+        </property>
+        <property>
+            <name>hadoop.security.authorization</name>
+            <value>true</value>
+            <description>Is service-level authorization enabled?</description>
+
+        </property>
+
+    {% endif %}
+
+
+    <property>
+        <name>hadoop.ssl.client.conf</name>
+        <value>ssl-client.xml</value>
+        <description>
+            Resource file from which ssl client keystore information will be extracted
+            This file is looked up in the classpath, typically it should be in Hadoop
+            conf/ directory.
+        </description>
+    </property>
+    <property>
+        <name>hadoop.ssl.server.conf</name>
+        <value>ssl-server.xml</value>
+        <description>
+            Resource file from which ssl server keystore information will be extracted.
+            This file is looked up in the classpath, typically it should be in Hadoop
+            conf/ directory.
+        </description>
+    </property>
+
+    <property>
+        <name>hadoop.proxyuser.HTTP.groups</name>
+        <value>{{ users_group }}</value>
+    </property>
+
+    <property>
+        <name>spark.authenticate</name>
+        <value>true</value>
+        <description>Prevents spark from breaking with "java.lang.IllegalArgumentException: requirement failed: A secret
+            key must be specified via the spark.authenticate.secret config."
+        </description>
+    </property>
 
 
 </configuration>

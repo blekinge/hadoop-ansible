@@ -52,11 +52,11 @@
     </property>
     <property>
         <name>dfs.namenode.checkpoint.dir</name>
-        <value>{{hdfs_checkpoints_dir}}</value>
+        <value>{{ hdfs_checkpoints_dir }}</value>
     </property>
     <property>
         <name>dfs.namenode.checkpoint.edits.dir</name>
-        <value>{{hdfs_checkpoints_dir}}</value>
+        <value>{{ hdfs_checkpoints_dir }}</value>
     </property>
     <property>
         <name>dfs.namenode.rpc-bind-host</name>
@@ -77,7 +77,7 @@
 
     <property>
         <name>dfs.user.home.dir.prefix</name>
-        <value>{{hdfs_home_dir}}</value>
+        <value>{{ hdfs_home_dir }}</value>
         <description>The directory to prepend to user name to get the user's
             home direcotry.
         </description>
@@ -108,141 +108,212 @@
         <value>{{ hdfs_name }}</value>
     </property>
 
-{% if hdfs_high_availability %}
-    <property>
-        <name>dfs.ha.namenodes.{{ hdfs_name }}</name>
-        <value>{{ groups['hostgroup_hdfs_namenodes'] | map('extract',hostvars, 'ansible_fqdn') | join(',') }}</value>
-    </property>
+    {% if hdfs_high_availability %}
+        <property>
+            <name>dfs.ha.namenodes.{{ hdfs_name }}</name>
+            <value>{{ groups['hostgroup_hdfs_namenodes'] | map('extract',hostvars, 'ansible_fqdn') | join(',') }}</value>
+        </property>
 
-    {% for namenode in groups['hostgroup_hdfs_namenodes'] %}
-        {% set namenode_fqdn = hostvars[namenode].ansible_fqdn %}
-    <property>
-        <name>dfs.namenode.rpc-address.{{ hdfs_name }}.{{ namenode_fqdn }}</name>
-        <value>{{ namenode_fqdn }}:{{hdfs_namenode_rpc_port}}</value>
-    </property>
-    <property>
-        <name>dfs.namenode.http-address.{{ hdfs_name }}.{{ namenode_fqdn }}</name>
-        <value>{{ namenode_fqdn }}:{{hdfs_namenode_http_port}}</value>
-    </property>
-    <property>
-        <name>dfs.namenode.https-address.{{ hdfs_name }}.{{ namenode_fqdn }}</name>
-        <value>{{ namenode_fqdn }}:{{hdfs_namenode_https_port}}</value>
-    </property>
-    {% endfor %}
-
-
-
-    <property>
-        <name>dfs.namenode.shared.edits.dir</name>
-        <value>qjournal://{{  groups['hostgroup_zookeeper_servers'] | map('extract',hostvars, 'ansible_fqdn') | zip_longest([], fillvalue=hdfs_journalnode_rpc_port) | map('join', ':') | join(';') }}/{{ hdfs_name }}
-        </value>
-    </property>
-    <property>
-        <name>dfs.client.failover.proxy.provider.{{ hdfs_name }}</name>
-        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
-    </property>
-    <property>
-        <name>dfs.ha.fencing.methods</name>
-        <value>shell(/bin/true)</value>
-    </property>
-    <property>
-        <name>dfs.journalnode.edits.dir</name>
-        <value>{{ hadoop_dfs_journal }}</value>
-    </property>
-    <property>
-        <name>dfs.ha.automatic-failover.enabled</name>
-        <value>true</value>
-    </property>
+        {% for namenode in groups['hostgroup_hdfs_namenodes'] %}
+            {% set namenode_fqdn = hostvars[namenode].ansible_fqdn %}
+            <property>
+                <name>dfs.namenode.rpc-address.{{ hdfs_name }}.{{ namenode_fqdn }}</name>
+                <value>{{ namenode_fqdn }}:{{ hdfs_namenode_rpc_port }}</value>
+            </property>
+            <property>
+                <name>dfs.namenode.http-address.{{ hdfs_name }}.{{ namenode_fqdn }}</name>
+                <value>{{ namenode_fqdn }}:{{ hdfs_namenode_http_port }}</value>
+            </property>
+            <property>
+                <name>dfs.namenode.https-address.{{ hdfs_name }}.{{ namenode_fqdn }}</name>
+                <value>{{ namenode_fqdn }}:{{ hdfs_namenode_https_port }}</value>
+            </property>
+        {% endfor %}
 
 
-    <property>
-        <name>dfs.ha.zkfc.port</name>
-        <value>{{hdfs_zkfc_port}}</value>
-        <description>
-            The port number that the zookeeper failover controller RPC
-            server binds to.
-        </description>
-    </property>
 
-    <property>
-        <name>dfs.journalnode.rpc-address</name>
-        <value>0.0.0.0:{{hdfs_journalnode_rpc_port}}</value>
-    </property>
-    <property>
-        <name>dfs.journalnode.http-address</name>
-        <value>0.0.0.0:{{hdfs_journalnode_http_port}}</value>
-    </property>
-    <property>
-        <name>dfs.journalnode.https-address</name>
-        <value>0.0.0.0:{{hdfs_journalnode_https_port}}</value>
-    </property>
-    <property>
-        <name>dfs.journalnode.kerberos.internal.spnego.principal</name>
-        <value>HTTP/_HOST@{{ipaserver_realm}}</value>
-    </property>
-    <property>
-        <name>dfs.journalnode.kerberos.principal</name>
-        <value>{{ hdfs_journalnode_service_name }}/_HOST@{{ipaserver_realm}}</value>
-    </property>
-    <property>
-        <name>dfs.journalnode.keytab.file</name>
-        <value>{{keytab_dir}}/{{ hdfs_journalnode_service_name }}.service.keytab</value>
-    </property>
+        <property>
+            <name>dfs.namenode.shared.edits.dir</name>
+            <value>
+                qjournal://{{ groups['hostgroup_zookeeper_servers'] | map('extract',hostvars, 'ansible_fqdn') | zip_longest([], fillvalue=hdfs_journalnode_rpc_port) | map('join', ':') | join(';') }}/{{ hdfs_name }}
+            </value>
+            <description>A directory on shared storage between the multiple namenodes
+                in an HA cluster. This directory will be written by the active and read
+                by the standby in order to keep the namespaces synchronized. This directory
+                does not need to be listed in dfs.namenode.edits.dir above. It should be
+                left empty in a non-HA cluster.
+            </description>
+        </property>
+        <property>
+            <name>dfs.client.failover.proxy.provider.{{ hdfs_name }}</name>
+            <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+        </property>
+        <property>
+            <name>dfs.ha.fencing.methods</name>
+            <value>shell(/bin/true)</value>
+            <description>
+                A list of scripts or Java classes which will be used to fence
+                the Active NameNode during a failover. See the HDFS High
+                Availability documentation for details on automatic HA
+                configuration.
+            </description>
+        </property>
+        <property>
+            <name>dfs.journalnode.edits.dir</name>
+            <value>{{ hadoop_dfs_journal }}</value>
+            <description>
+                The directory where the journal edit files are stored.
+            </description>
+        </property>
+        <property>
+            <name>dfs.ha.automatic-failover.enabled</name>
+            <value>true</value>
+            <description>
+                Whether automatic failover is enabled. See the HDFS High
+                Availability documentation for details on automatic HA
+                configuration.
+            </description>
+        </property>
 
-{%  else %}
 
-    {% for namenode in groups['hostgroup_hdfs_namenodes'] %}
-    {% set namenode_fqdn = hostvars[namenode].ansible_fqdn %}
-    <property>
-        <name>dfs.namenode.rpc-address</name>
-        <value>{{ namenode_fqdn }}:{{hdfs_namenode_rpc_port}}</value>
-    </property>
-    <property>
-        <name>dfs.namenode.http-address</name>
-        <value>{{ namenode_fqdn }}:{{hdfs_namenode_http_port}}</value>
-    </property>
-    <property>
-        <name>dfs.namenode.https-address</name>
-        <value>{{ namenode_fqdn }}:{{hdfs_namenode_https_port}}</value>
-    </property>
-    {% endfor %}
+        <property>
+            <name>dfs.ha.zkfc.port</name>
+            <value>{{ hdfs_zkfc_port }}</value>
+            <description>
+                The port number that the zookeeper failover controller RPC
+                server binds to.
+            </description>
+        </property>
 
-{% for namenode in groups['hostgroup_secondary_hdfs_namenodes'] %}
-    {% set namenode_fqdn = hostvars[namenode].ansible_fqdn %}
-    <property>
-        <name>dfs.namenode.secondary.http-address</name>
-        <value>{{ namenode_fqdn }}:{{hdfs_secondary_namenode_http_port}}</value>
-        <description>
-            The secondary namenode http server address and port.
-        </description>
-    </property>
+        <property>
+            <name>dfs.journalnode.rpc-address</name>
+            <value>0.0.0.0:{{ hdfs_journalnode_rpc_port }}</value>
+        </property>
+        <property>
+            <name>dfs.journalnode.http-address</name>
+            <value>0.0.0.0:{{ hdfs_journalnode_http_port }}</value>
+        </property>
+        <property>
+            <name>dfs.journalnode.https-address</name>
+            <value>0.0.0.0:{{ hdfs_journalnode_https_port }}</value>
+        </property>
 
-    <property>
-        <name>dfs.namenode.secondary.https-address</name>
-        <value>{{ namenode_fqdn }}:{{hdfs_secondary_namenode_https_port}}</value>
-        <description>
-            The secondary namenode HTTPS server address and port.
-        </description>
-    </property>
+        {% if kerberos_authentication %}
+            <property>
+                <name>dfs.journalnode.kerberos.internal.spnego.principal</name>
+                <value>HTTP/_HOST@{{ ipaserver_realm }}</value>
+            </property>
+            <property>
+                <name>dfs.journalnode.kerberos.principal</name>
+                <value>{{ hdfs_journalnode_service_name }}/_HOST@{{ ipaserver_realm }}</value>
+            </property>
+            <property>
+                <name>dfs.journalnode.keytab.file</name>
+                <value>{{ keytab_dir }}/{{ hdfs_journalnode_service_name }}.service.keytab</value>
+            </property>
+        {% endif %}
 
-    <property>
-        <name>dfs.secondary.namenode.kerberos.principal</name>
-        <value>{{ hdfs_secondary_namenode_service_name }}/_HOST@{{ipaserver_realm}}</value>
-        <description>
-            Kerberos principal name for the Secondary NameNode.
-        </description>
-    </property>
+    {% else %}
 
-    <property>
-        <name>dfs.secondary.namenode.keytab.file</name>
-        <value>{{keytab_dir}}/{{ hdfs_secondary_namenode_service_name }}.service.keytab</value>
-        <description>
-            Kerberos keytab file for the Secondary NameNode.
-        </description>
-    </property>
-{% endfor %}
+        {% for namenode in groups['hostgroup_hdfs_namenodes'] %}
+            {% set namenode_fqdn = hostvars[namenode].ansible_fqdn %}
+            <property>
+                <name>dfs.namenode.rpc-address</name>
+                <value>{{ namenode_fqdn }}:{{ hdfs_namenode_rpc_port }}</value>
+            </property>
+            <property>
+                <name>dfs.namenode.http-address</name>
+                <value>{{ namenode_fqdn }}:{{ hdfs_namenode_http_port }}</value>
+            </property>
+            <property>
+                <name>dfs.namenode.https-address</name>
+                <value>{{ namenode_fqdn }}:{{ hdfs_namenode_https_port }}</value>
+            </property>
+        {% endfor %}
 
-{% endif %} {#End of HA setup#}
+        {% for namenode in groups['hostgroup_secondary_hdfs_namenodes'] %}
+            {% set secondary_namenode_fqdn = hostvars[namenode].ansible_fqdn %}
+            <property>
+                <name>dfs.namenode.secondary.http-address</name>
+                <value>{{ secondary_namenode_fqdn }}:{{ hdfs_secondary_namenode_http_port }}</value>
+                <description>
+                    The secondary namenode http server address and port.
+                </description>
+            </property>
+
+            <property>
+                <name>dfs.namenode.secondary.https-address</name>
+                <value>{{ secondary_namenode_fqdn }}:{{ hdfs_secondary_namenode_https_port }}</value>
+                <description>
+                    The secondary namenode HTTPS server address and port.
+                </description>
+            </property>
+        {% endfor %}
+
+
+        {% if kerberos_authentication %}
+
+            <property>
+                <name>dfs.secondary.namenode.kerberos.principal</name>
+                <value>{{ hdfs_secondary_namenode_service_name }}/_HOST@{{ ipaserver_realm }}</value>
+                <description>
+                    Kerberos principal name for the Secondary NameNode.
+                </description>
+            </property>
+
+            <property>
+                <name>dfs.secondary.namenode.keytab.file</name>
+                <value>{{ keytab_dir }}/{{ hdfs_secondary_namenode_service_name }}.service.keytab</value>
+                <description>
+                    Kerberos keytab file for the Secondary NameNode.
+                </description>
+            </property>
+
+        {% endif %}
+
+    {% endif %} {#End of HA setup#}
+
+
+
+    {% if kerberos_authentication %}
+
+        <property>
+            <name>dfs.datanode.kerberos.principal</name>
+            <value>{{ hdfs_datanode_service_name }}/_HOST@{{ ipaserver_realm }}</value>
+        </property>
+        <property>
+            <name>dfs.datanode.keytab.file</name>
+            <value>{{ keytab_dir }}/{{ hdfs_datanode_service_name }}.service.keytab</value>
+        </property>
+
+        <property>
+            <name>dfs.namenode.kerberos.internal.spnego.principal</name>
+            <value>HTTP/_HOST@{{ ipaserver_realm }}</value>
+        </property>
+        <property>
+            <name>dfs.namenode.kerberos.principal</name>
+            <value>{{ hdfs_namenode_service_name }}/_HOST@{{ ipaserver_realm }}</value>
+        </property>
+        <property>
+            <name>dfs.namenode.keytab.file</name>
+            <value>{{ keytab_dir }}/{{ hdfs_namenode_service_name }}.service.keytab</value>
+        </property>
+        <property>
+            <name>dfs.web.authentication.kerberos.keytab</name>
+            <value>{{ keytab_dir }}/spnego.service.keytab</value>
+        </property>
+        <property>
+            <name>dfs.web.authentication.kerberos.principal</name>
+            <value>HTTP/_HOST@{{ ipaserver_realm }}</value>
+        </property>
+
+        <property>
+            <name>dfs.data.transfer.protection</name>
+            <value>authentication</value>
+        </property>
+
+    {% endif %}
+
 
 
     <property>
@@ -250,37 +321,8 @@
         <value>true</value>
     </property>
     <property>
-        <name>dfs.datanode.kerberos.principal</name>
-        <value>{{ hdfs_datanode_service_name }}/_HOST@{{ipaserver_realm}}</value>
-    </property>
-    <property>
-        <name>dfs.datanode.keytab.file</name>
-        <value>{{keytab_dir}}/{{ hdfs_datanode_service_name }}.service.keytab</value>
-    </property>
-    <property>
         <name>dfs.encrypt.data.transfer.cipher.suites</name>
         <value>AES/CTR/NoPadding</value>
-    </property>
-
-    <property>
-        <name>dfs.namenode.kerberos.internal.spnego.principal</name>
-        <value>HTTP/_HOST@{{ipaserver_realm}}</value>
-    </property>
-    <property>
-        <name>dfs.namenode.kerberos.principal</name>
-        <value>{{ hdfs_namenode_service_name }}/_HOST@{{ipaserver_realm}}</value>
-    </property>
-    <property>
-        <name>dfs.namenode.keytab.file</name>
-        <value>{{keytab_dir}}/{{ hdfs_namenode_service_name }}.service.keytab</value>
-    </property>
-    <property>
-        <name>dfs.web.authentication.kerberos.keytab</name>
-        <value>{{keytab_dir}}/spnego.service.keytab</value>
-    </property>
-    <property>
-        <name>dfs.web.authentication.kerberos.principal</name>
-        <value>HTTP/_HOST@{{ipaserver_realm}}</value>
     </property>
     <property>
         <name>dfs.http.policy</name>
@@ -288,10 +330,7 @@
     </property>
     <property>
         <name>dfs.https.port</name>
-        <value>{{hdfs_namenode_https_port}}</value>
+        <value>{{ hdfs_namenode_https_port }}</value>
     </property>
-    <property>
-        <name>dfs.data.transfer.protection</name>
-        <value>authentication</value>
-    </property>
+
 </configuration>
