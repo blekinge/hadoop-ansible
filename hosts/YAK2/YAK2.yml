@@ -46,12 +46,13 @@ hostgroup_all:
             hostgroup_hdfs_namenodes:
               hosts:
                 hdfs001.adm.yak2.net:
-                  primary: true # The primary node is the one whose hdfs gets propagated to the other namenodes
-                  comment: "Primary"
-                hdfs002.adm.yak2.net:
-            hostgroup_hdfs_journalnodes:
+            hostgroup_hdfs_secondary_namenodes:
               hosts:
-                zkpr[001:003].adm.yak2.net:
+                hdfs002.adm.yak2.net:
+
+#            hostgroup_hdfs_journalnodes:
+#              hosts:
+#                zkpr[001:003].adm.yak2.net:
             hostgroup_hdfs_datanodes:
               hosts:
                 roda[001:004].adm.yak2.net:
