@@ -35,4 +35,3 @@
     executable: /bin/bash
     creates: "{{ hadoop_dfs_name }}/formatted"
   ignore_errors: yes
-  when: primary|bool
