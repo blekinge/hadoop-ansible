@@ -231,8 +231,8 @@
             </property>
         {% endfor %}
 
-        {% for namenode in groups['hostgroup_secondary_hdfs_namenodes'] %}
-            {% set secondary_namenode_fqdn = hostvars[namenode].ansible_fqdn %}
+        {% for secondary_namenode in groups['hostgroup_hdfs_secondary_namenodes'] %}
+            {% set secondary_namenode_fqdn = hostvars[secondary_namenode].ansible_fqdn %}
             <property>
                 <name>dfs.namenode.secondary.http-address</name>
                 <value>{{ secondary_namenode_fqdn }}:{{ hdfs_secondary_namenode_http_port }}</value>
