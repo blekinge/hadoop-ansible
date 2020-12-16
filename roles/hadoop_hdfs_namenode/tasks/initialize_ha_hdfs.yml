@@ -31,7 +31,7 @@
   become_user: "{{hdfs_user.name}}"
   shell:
     cmd:
-      echo -e "Y\nN" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -format > "{{ hadoop_dfs_name }}/formatted"
+      echo -e "Y\nN" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -format -nonInteractive > "{{ hadoop_dfs_name }}/formatted"
     executable: /bin/bash
     creates: "{{ hadoop_dfs_name }}/formatted"
   ignore_errors: yes
@@ -74,7 +74,7 @@
   become_user: "{{hdfs_user.name}}"
   shell:
     cmd:
-      echo -e "Y\n" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -bootstrapStandby > "{{ hadoop_dfs_name }}/bootstrapped"
+      echo -e "Y\n" | /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh namenode -bootstrapStandby -nonInteractive > "{{ hadoop_dfs_name }}/bootstrapped"
     executable: /bin/bash
     creates: "{{ hadoop_dfs_name }}/bootstrapped"
   when: not (primary | bool)
