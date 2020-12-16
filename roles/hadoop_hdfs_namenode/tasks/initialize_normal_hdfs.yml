@@ -25,7 +25,6 @@
     - "{{ hadoop_dfs_name }}"
 
 
-#On the primary, format the filesystem
 - name: Format Namenode
   become: yes
   become_user: "{{hdfs_user.name}}"

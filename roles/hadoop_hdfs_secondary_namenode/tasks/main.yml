@@ -24,6 +24,16 @@
     group: "{{hdfs_user.group}}"
     mode: 0750
 
+- name: Format Secondary Namenode
+  become: yes
+  become_user: "{{hdfs_user.name}}"
+  shell:
+    cmd:
+      /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh secondarynamenode -format -nonInteractive -force > "{{ hadoop_dfs_name }}/formatted"
+    executable: /bin/bash
+    creates: "{{ hadoop_dfs_name }}/formatted"
+  ignore_errors: yes
+
 
 - name: (Re)Start secondary namenode systemd service
   throttle: 1
