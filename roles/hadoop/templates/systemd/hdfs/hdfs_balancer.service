@@ -1,7 +1,7 @@
 {{ ansible_managed | comment() }}
 
 [Unit]
-Description=Hadoop DFS namenode
+Description=Hadoop DFS balancer
 Requires=network-online.target
 
 [Service]
@@ -12,8 +12,8 @@ Type=forking
 ExecStartPre=+/usr/bin/mkdir -p {{ hadoop_pid_dir }}/{{ hdfs_user.name }}
 ExecStartPre=+/usr/bin/chown -R {{ hdfs_user.name }}:{{ hdfs_user.group }} {{ hadoop_pid_dir }}/{{ hdfs_user.name }}
 # Run ExecStart with User={{ hdfs_user.name }} / Group={{ hdfs_user.group }}
-ExecStart=/usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh --daemon start namenode
-PIDFile={{ hadoop_pid_dir }}/{{ hdfs_user.name }}/hadoop-hdfs-namenode.pid
+ExecStart=/usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh --daemon start balancer -asService
+PIDFile={{ hadoop_pid_dir }}/{{ hdfs_user.name }}/hadoop-hdfs-balancer.pid
 
 [Install]
 WantedBy=multi-user.target

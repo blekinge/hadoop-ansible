@@ -24,6 +24,13 @@
   roles:
     - role: hadoop_hdfs_namenode
 
+
+# The namenodes do not require datanodes, but the datanodes require namenodes
+- hosts: hostgroup_hdfs_secondary_namenodes
+  roles:
+    - role: hadoop_hdfs_secondary_namenode
+
+
 # The datanodes become unhappy if they cannot connect to a namenode when starting up, so install them after the
 #   namenodes
 - hosts: hostgroup_hdfs_datanodes

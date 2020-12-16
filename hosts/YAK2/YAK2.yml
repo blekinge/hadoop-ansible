@@ -46,13 +46,15 @@ hostgroup_all:
             hostgroup_hdfs_namenodes:
               hosts:
                 hdfs001.adm.yak2.net:
+
             hostgroup_hdfs_secondary_namenodes:
               hosts:
                 hdfs002.adm.yak2.net:
 
-#            hostgroup_hdfs_journalnodes:
-#              hosts:
+            hostgroup_hdfs_journalnodes:
+              hosts:
 #                zkpr[001:003].adm.yak2.net:
+
             hostgroup_hdfs_datanodes:
               hosts:
                 roda[001:004].adm.yak2.net:

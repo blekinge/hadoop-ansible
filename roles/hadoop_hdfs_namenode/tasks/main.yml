@@ -13,11 +13,11 @@
     fresh_HDFS: '{{hadoop_dfs_name_dir_status.changed == true and hadoop_dfs_name_dir_status.diff.before.state == "absent"}}'
 
 - include: initialize_ha_hdfs.yml
-  when: hdfs_high_availability | bool and (fresh_HDFS | bool or wipe_hdfs | bool)
+  when: hdfs_high_availability | default(false) | bool and (fresh_HDFS | bool or wipe_hdfs | bool)
 
 
 - include: initialize_normal_hdfs.yml
-  when: not hdfs_high_availability | bool and (fresh_HDFS | bool or wipe_hdfs | bool)
+  when: (not (hdfs_high_availability | default(false) ) ) | bool and (fresh_HDFS | bool or wipe_hdfs | bool)
 
 
 # Start both
