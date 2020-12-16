@@ -19,6 +19,8 @@
 <!-- Put site-specific property overrides in this file. -->
 
 <configuration>
+
+{% if hdfs_high_availability  %}
     <property>
         <name>fs.defaultFS</name>
         <value>hdfs://{{ hdfs_name }}</value>
@@ -29,6 +31,19 @@
             determine the host, port, etc. for a filesystem.
         </description>
     </property>
+{%  else %}
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://{{ hdfs_nonha_primary_namenode }}</value>
+        <description>The name of the default file system. A URI whose
+            scheme and authority determine the FileSystem implementation. The
+            uri's scheme determines the config property (fs.SCHEME.impl) naming
+            the FileSystem implementation class. The uri's authority is used to
+            determine the host, port, etc. for a filesystem.
+        </description>
+    </property>
+
+{% endif %}
     <property>
         <name>hadoop.tmp.dir</name>
         <value>{{ hadoop_tmp }}</value>

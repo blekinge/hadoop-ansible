@@ -103,12 +103,14 @@
         <name>dfs.datanode.https.address</name>
         <value>0.0.0.0:{{ hdfs_datanode_https_port }}</value>
     </property>
-    <property>
-        <name>dfs.nameservices</name>
-        <value>{{ hdfs_name }}</value>
-    </property>
+
 
     {% if hdfs_high_availability %}
+        <property>
+            <name>dfs.nameservices</name>
+            <value>{{ hdfs_name }}</value>
+        </property>
+
         <property>
             <name>dfs.ha.namenodes.{{ hdfs_name }}</name>
             <value>{{ groups['hostgroup_hdfs_namenodes'] | map('extract',hostvars, 'ansible_fqdn') | join(',') }}</value>
