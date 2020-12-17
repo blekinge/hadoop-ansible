@@ -51,6 +51,10 @@ hostgroup_all:
               hosts: # Do not use this if hdfs_high_availability == true
                 hdfs002.adm.yak2.net:
 
+            hostgroup_hdfs_backupnodes:
+              hosts:
+
+
             hostgroup_hdfs_journalnodes:
               hosts:
 #                zkpr[001:003].adm.yak2.net:
@@ -66,11 +70,13 @@ hostgroup_all:
             zkpr[001:003].adm.yak2.net:
 
         hostgroup_yarn:
+
           children:
             hostgroup_yarn_resource_managers:
               hosts: # If yarn_high_availability == false, only the first host will be used
                 yarn001.adm.yak2.net:
 #                yarn002.adm.yak2.net:
+
             hostgroup_yarn_node_managers:
               hosts:
                 roda[001:004].adm.yak2.net:
@@ -78,6 +84,7 @@ hostgroup_all:
                   yarn_nodemanager_available_memory: 3072
                   yarn_data_dirs:
                     - /data/sdb1/yarn
+                    -
             hostgroup_yarn_timeline_servers:
               hosts:
                 hist001.adm.yak2.net:
