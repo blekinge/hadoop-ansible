@@ -1,6 +1,6 @@
 ---
 dependencies:
-  - role: config-validator
+  - role: validate-inventory
   - role: java_1_8_installed
   - role: firewalled
   - role: ipa_systemusers_config
