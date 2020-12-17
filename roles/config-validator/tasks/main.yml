@@ -10,7 +10,7 @@
 
 - name: Check for 0-1 spark_history_server
   ansible.builtin.fail: msg="Single host check failed."
-  when: "groups['hostgroup_spark_history_servers'] |length  =< 1"
+  when: "groups['hostgroup_spark_history_servers'] |length  <= 1"
 
 - name: Check for single namenode when not using HDFS High Availability
   ansible.builtin.fail: msg="Single host check failed."
@@ -18,7 +18,7 @@
 
 - name: Check for 0-1 secondary namenode when not using HDFS High Availability
   ansible.builtin.fail: msg="Single host check failed."
-  when: "not hdfs_high_availability and groups['hostgroup_hdfs_secondary_namenodes'] |length =< 1"
+  when: "not hdfs_high_availability and groups['hostgroup_hdfs_secondary_namenodes'] |length <= 1"
 
 
 - name: Check for 3+ journal nodes when using HDFS High Availability
@@ -34,4 +34,16 @@
 - name: Check for single Yarn Resourcemager when NOT using YARN High Availability
   ansible.builtin.fail: msg="Single host check failed."
   when: "not yarn_high_availability and groups['hostgroup_yarn_resource_managers'] |length <= 1"
+
+
+- name: Check for 1+ zookeeper servers when NOT using High Availability
+  ansible.builtin.fail: msg="Single host check failed."
+  when: "(not yarn_high_availability and not hdfs_high_availability) and groups['hostgroup_zookeeper_servers'] |length >= 1"
+
+
+
+- name: Check for 3+ zookeeper servers when usingg High Availability
+  ansible.builtin.fail: msg="Single host check failed."
+  when: "(yarn_high_availability or hdfs_high_availability) and groups['hostgroup_zookeeper_servers'] |length >= 3"
+
 
