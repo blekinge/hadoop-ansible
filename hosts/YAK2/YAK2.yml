@@ -69,7 +69,8 @@ hostgroup_all:
           children:
             hostgroup_yarn_resource_managers:
               hosts:
-                yarn[001:002].adm.yak2.net:
+                yarn001.adm.yak2.net:
+#                yarn002.adm.yak2.net:
             hostgroup_yarn_node_managers:
               hosts:
                 roda[001:004].adm.yak2.net:
