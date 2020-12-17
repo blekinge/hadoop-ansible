@@ -29,9 +29,9 @@
   become_user: "{{hdfs_user.name}}"
   shell:
     cmd:
-      /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh secondarynamenode -format -nonInteractive -force > "{{ hadoop_dfs_name }}/formatted"
+      /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh secondarynamenode -format -nonInteractive -force > "{{ hdfs_checkpoints_dir }}/formatted"
     executable: /bin/bash
-    creates: "{{ hadoop_dfs_name }}/formatted"
+    creates: "{{ hdfs_checkpoints_dir }}/formatted"
   ignore_errors: yes
 
 
