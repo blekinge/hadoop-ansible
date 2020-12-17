@@ -84,7 +84,7 @@ hostgroup_all:
                   yarn_nodemanager_available_memory: 3072
                   yarn_data_dirs:
                     - /data/sdb1/yarn
-                    -
+
             hostgroup_yarn_timeline_servers:
               hosts:
                 hist001.adm.yak2.net:
