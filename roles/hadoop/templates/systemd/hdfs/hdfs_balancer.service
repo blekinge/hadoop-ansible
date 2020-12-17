@@ -3,6 +3,7 @@
 [Unit]
 Description=Hadoop DFS balancer
 Requires=network-online.target
+Documentation=https://hadoop.apache.org/docs/r{{hadoop_version}}/hadoop-project-dist/hadoop-hdfs/HdfsUserGuide.html#Balancer
 
 [Service]
 User={{ hdfs_user.name }}
