@@ -10,67 +10,80 @@
     that: "groups['hostgroup_spark_history_servers'] | length <= 1"
 
 
-# Not using hdfs_high_availability
-- name: "Check for Single namenode when NOT using HDFS High Availability"
+# HDFS
+- name: HDFS
+  block:
+    - name: "Check for 0-1 backup namenode"
+      ansible.builtin.assert:
+        that: "groups['hostgroup_hdfs_backupnodes'] |length  <= 1"
+
+- name: HDFS non-HA
   when: "not hdfs_high_availability"
-  ansible.builtin.assert:
-    that: "groups['hostgroup_hdfs_namenodes'] |length  == 1"
+  block:
+    - name: "Check for Single namenode when NOT using HDFS High Availability"
+      ansible.builtin.assert:
+        that: "groups['hostgroup_hdfs_namenodes'] |length  == 1"
 
-- name: "Check for 0-1 secondary namenode when NOT using HDFS High Availability"
-  when: "not hdfs_high_availability"
-  ansible.builtin.assert:
-    that: "groups['hostgroup_hdfs_secondary_namenodes'] |length <= 1"
+    - name: "Check for 0-1 secondary namenode when NOT using HDFS High Availability"
+      ansible.builtin.assert:
+        that: "groups['hostgroup_hdfs_secondary_namenodes'] |length <= 1"
 
-- name: "Check for 0 journal nodes when NOT using HDFS High Availability"
-  when: "not hdfs_high_availability"
-  ansible.builtin.assert:
-    that: "groups['hostgroup_hdfs_journalnodes'] | length == 0"
+    - name: "Check for 0 journal nodes when NOT using HDFS High Availability"
+      ansible.builtin.assert:
+        that: "groups['hostgroup_hdfs_journalnodes'] | length == 0"
 
 
-# With hdfs_high_availability
-- name: "Check for 3+ journal nodes when using HDFS High Availability"
+
+- name: HDFS HA
   when: "hdfs_high_availability"
-  ansible.builtin.assert:
-    that: "groups['hostgroup_hdfs_journalnodes'] | length >= 3"
+  block:
+    - name: "Check for 3+ journal nodes when using HDFS High Availability"
+      ansible.builtin.assert:
+        that: "groups['hostgroup_hdfs_journalnodes'] | length >= 3"
 
-- name: "Check for 2+ namenodes nodes when using HDFS High Availability"
-  when: "hdfs_high_availability"
-  ansible.builtin.assert:
-    that: "groups['hostgroup_hdfs_namenodes'] | length >= 2"
+    - name: "Check for 2+ namenodes nodes when using HDFS High Availability"
+      ansible.builtin.assert:
+        that: "groups['hostgroup_hdfs_namenodes'] | length >= 2"
 
-- name: "Check for 0 secondary namenode when using HDFS High Availability"
-  when: "hdfs_high_availability"
-  ansible.builtin.assert:
-    that: "groups['hostgroup_hdfs_secondary_namenodes'] |length == 0"
+    - name: "Check for 0 secondary namenode when using HDFS High Availability"
+      ansible.builtin.assert:
+        that: "groups['hostgroup_hdfs_secondary_namenodes'] |length == 0"
+
+    - name: "Check for 3+ zookeeper servers when using High Availability"
+      ansible.builtin.assert:
+        that: "groups['hostgroup_zookeeper_servers'] | length >= 3"
 
 
-# YARN
 
-- name: "Check for single yarn_timeline_server"
-  ansible.builtin.assert:
-    that: "groups['hostgroup_yarn_timeline_servers'] | length == 1"
 
-- name: "Check for single Yarn Resourcemager when NOT using YARN High Availability"
+- name: YARN
+  block:
+    - name: "Check for single yarn_timeline_server"
+      ansible.builtin.assert:
+        that: "groups['hostgroup_yarn_timeline_servers'] | length == 1"
+
+
+- name: YARN non-HA
   when: "not yarn_high_availability"
-  ansible.builtin.assert:
-    that: "groups['hostgroup_yarn_resource_managers'] | length == 1"
+  block:
+    - name: "Check for single Yarn Resourcemager when NOT using YARN High Availability"
+      ansible.builtin.assert:
+        that: "groups['hostgroup_yarn_resource_managers'] | length == 1"
 
-- name: "Check for 2+ Yarn Resourcemager when using YARN High Availability"
+    - name: "Check for 1+ zookeeper servers when NOT using High Availability"
+      ansible.builtin.assert:
+        that: "groups['hostgroup_zookeeper_servers'] | length >= 1"
+
+
+- name: YARN HA
   when: "yarn_high_availability"
-  ansible.builtin.assert:
-    that: "groups['hostgroup_yarn_resource_managers'] | length >= 2"
+  block:
+    - name: "Check for 2+ Yarn Resourcemager when using YARN High Availability"
+      ansible.builtin.assert:
+        that: "groups['hostgroup_yarn_resource_managers'] | length >= 2"
 
-
-# Zookeeper
-
-- name: "Check for 1+ zookeeper servers when NOT using High Availability"
-  when: "not yarn_high_availability and not hdfs_high_availability"
-  ansible.builtin.assert:
-    that: "groups['hostgroup_zookeeper_servers'] | length >= 1"
-
-- name: "Check for 3+ zookeeper servers when using High Availability"
-  when: "yarn_high_availability or hdfs_high_availability"
-  ansible.builtin.assert:
-    that: "groups['hostgroup_zookeeper_servers'] | length >= 3"
+    - name: "Check for 3+ zookeeper servers when using YARN High Availability"
+      ansible.builtin.assert:
+        that: "groups['hostgroup_zookeeper_servers'] | length >= 3"
 
 
