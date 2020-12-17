@@ -92,6 +92,10 @@ ports_per_role: # This dict maps roles names to ports
     - port: "{{hdfs_namenode_https_port}}"
     - port: "{{hdfs_zkfc_port}}"
 
+  hadoop_hdfs_secondary_namenode:
+    - port: "{{hdfs_secondary_namenode_http_port}}"
+    - port: "{{hdfs_secondary_namenode_https_port}}"
+
   hadoop_hdfs_journalnode:
     - port: "{{hdfs_journalnode_rpc_port}}"
     - port: "{{hdfs_journalnode_https_port}}"
@@ -129,22 +133,25 @@ ports_per_role: # This dict maps roles names to ports
     - port: "{{yarn_resourcemanager_http_port}}"
     - port: "{{yarn_resourcemanager_https_port}}"
 
+  # Mapreduce
   hadoop_mapreduce_history_server:
     - port: "{{mapreduce_history_server_rpc_port}}"
     - port: "{{mapreduce_history_server_admin_port}}"
     - port: "{{mapreduce_history_server_http_port}}"
     - port: "{{mapreduce_history_server_https_port}}"
 
+  # Spark
   spark_history_server:
     - port: "{{spark_history_server_http_port}}"
     - port: "{{spark_history_server_https_port}}"
 
+  # Zookeeper
   zookeeper_server:
     - port: "{{zookeeper_port}}"
     - port: "{{zookeeper_leader_election_port}}"
     - port: "{{zookeeper_follower_port}}"
 
-
+  # Project nodes
   spark_client:
     - port: "{{spark_ui_http_portrange}}"
     - port: "{{spark_driver_http_portrange}}"
@@ -155,6 +162,7 @@ ports_per_role: # This dict maps roles names to ports
 
   jupyterhub:
     - port: "{{jupyterhub_port}}"
+
 
   rsyslog_server:
     - port: "{{rsyslog_server_tcp_port}}"
