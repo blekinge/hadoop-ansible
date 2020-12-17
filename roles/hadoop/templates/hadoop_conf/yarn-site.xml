@@ -611,6 +611,44 @@
 
 
         {% endfor %}
+
+        {%  else %}
+
+        <property>
+            <name>yarn.resourcemanager.hostname</name>
+            <value>{{ yarn_nonha_primary_resourcemanager }}</value>
+        </property>
+
+        <property>
+            <name>yarn.resourcemanager.address</name>
+            <value>{{ yarn_nonha_primary_resourcemanager }}:{{ yarn_resourcemanager_rpc_port }}</value>
+        </property>
+        <property>
+            <name>yarn.resourcemanager.scheduler.address</name>
+            <value>{{ yarn_nonha_primary_resourcemanager }}:{{ yarn_resourcemanager_scheduler_port }}</value>
+        </property>
+
+        <property>
+            <name>yarn.resourcemanager.resource-tracker.address</name>
+            <value>{{ yarn_nonha_primary_resourcemanager }}:{{ yarn_resourcemanager_tracker_port }}</value>
+        </property>
+
+        <property>
+            <name>yarn.resourcemanager.admin.address</name>
+            <value>{{ yarn_nonha_primary_resourcemanager }}:{{ yarn_resourcemanager_admin_port }}</value>
+        </property>
+
+        <property>
+            <name>yarn.resourcemanager.webapp.address</name>
+            <value>{{ yarn_nonha_primary_resourcemanager }}:{{ yarn_resourcemanager_http_port }}</value>
+        </property>
+
+
+        <property>
+            <name>yarn.resourcemanager.webapp.https.address</name>
+            <value>{{ yarn_nonha_primary_resourcemanager }}:{{ yarn_resourcemanager_https_port }}</value>
+        </property>
+
     {% endif %}
 
 

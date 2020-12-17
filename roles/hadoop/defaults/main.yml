@@ -28,10 +28,11 @@ hdfs_checkpoints_dir: "/hadoop/hdfs/namesecondary"
 
 #Primary namenode for non-HA setups
 hdfs_nonha_primary_namenode: "{{ groups['hostgroup_hdfs_namenodes'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
-
+#Primary yarn node for non-HA setups
+yarn_nonha_primary_resourcemanager: "{{ groups['hostgroup_yarn_resource_managers'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
 
 #Loggers
-hadoop_daemon_logger: "DEBUG,DRFA"
+hadoop_daemon_logger: "INFO,DRFA"
 hdfs_daemon_logger: "{{hadoop_daemon_logger}}"
 yarn_daemon_logger: "{{hadoop_daemon_logger}},EWMA"
 mapreduce_daemon_logger: "{{hadoop_daemon_logger}}"
@@ -39,11 +40,11 @@ mapreduce_daemon_logger: "{{hadoop_daemon_logger}}"
 mapreduce_jobsummary_logger: "INFO,JSA"
 yarn_resourcemanager_appsummary_logger: "DEBUG,RMSUMMARY"
 
-hadoop_security_logger: "DEBUG,DRFAS"
+hadoop_security_logger: "INFO,DRFAS"
 hdfs_security_logger: "{{hadoop_security_logger}}"
 mapreduce_security_logger: "{{hadoop_security_logger}}"
 
-hadoop_audit_logger: "DEBUG"
+hadoop_audit_logger: "INFO"
 hdfs_audit_logger: "{{hadoop_audit_logger}},DRFAAUDIT"
 yarn_nodemanager_audit_logger: "{{hadoop_audit_logger}},NMAUDIT"
 yarn_resourcemanager_audit_logger: "{{hadoop_audit_logger}},RMAUDIT"
@@ -112,7 +113,7 @@ mapreduce_history_server_host: "{{ groups['hostgroup_mapreduce_history_servers']
 mapreduce_create_path:
   - "/hadoop/mapreduce"
 
-mapreduce_jobhistory_recovery_store_leveldb_path: /hadoop/mapreduce/jhs
+mapreduce_jobhistory_recovery_store_leveldb_path: "/hadoop/mapreduce/jhs"
 
 mapreduce_jobhistory_dir: '/history/mr-history'
 
