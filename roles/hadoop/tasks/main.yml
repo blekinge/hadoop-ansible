@@ -4,20 +4,6 @@
   when: install_hadoop | default(true) # So we can depend on this role just for the vars, if nessesary
   block:
 
-    - name: Check for single yarn_timeline_server
-      ansible.builtin.fail: msg="Single host check failed."
-      when: "groups['hostgroup_yarn_timeline_servers'] |length  != 1"
-
-
-    - name: Check for single mapreduce_history_server
-      ansible.builtin.fail: msg="Single host check failed."
-      when: "groups['hostgroup_mapreduce_history_servers'] |length  != 1"
-
-
-    - name: Check for single spark_history_server
-      ansible.builtin.fail: msg="Single host check failed."
-      when: "groups['hostgroup_spark_history_servers'] |length  != 1"
-
     - name: Create common dirs
       ansible.builtin.file:
         path: "{{ item }}"

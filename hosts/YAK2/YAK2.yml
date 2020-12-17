@@ -44,11 +44,11 @@ hostgroup_all:
         hostgroup_hdfs:
           children:
             hostgroup_hdfs_namenodes:
-              hosts:
+              hosts: # If hdfs_high_availability == false, only the first host will be used
                 hdfs001.adm.yak2.net:
 
             hostgroup_hdfs_secondary_namenodes:
-              hosts:
+              hosts: # Do not use this if hdfs_high_availability == true
                 hdfs002.adm.yak2.net:
 
             hostgroup_hdfs_journalnodes:
@@ -68,7 +68,7 @@ hostgroup_all:
         hostgroup_yarn:
           children:
             hostgroup_yarn_resource_managers:
-              hosts:
+              hosts: # If yarn_high_availability == false, only the first host will be used
                 yarn001.adm.yak2.net:
 #                yarn002.adm.yak2.net:
             hostgroup_yarn_node_managers:

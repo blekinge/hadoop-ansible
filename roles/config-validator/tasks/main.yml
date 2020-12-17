@@ -1,0 +1,37 @@
+
+- name: Check for single yarn_timeline_server
+  ansible.builtin.fail: msg="Single host check failed."
+  when: "groups['hostgroup_yarn_timeline_servers'] |length  != 1"
+
+
+- name: Check for single mapreduce_history_server
+  ansible.builtin.fail: msg="Single host check failed."
+  when: "groups['hostgroup_mapreduce_history_servers'] |length  != 1"
+
+- name: Check for 0-1 spark_history_server
+  ansible.builtin.fail: msg="Single host check failed."
+  when: "groups['hostgroup_spark_history_servers'] |length  =< 1"
+
+- name: Check for single namenode when not using HDFS High Availability
+  ansible.builtin.fail: msg="Single host check failed."
+  when: "not hdfs_high_availability and groups['hostgroup_hdfs_namenodes'] |length  != 1"
+
+- name: Check for 0-1 secondary namenode when not using HDFS High Availability
+  ansible.builtin.fail: msg="Single host check failed."
+  when: "not hdfs_high_availability and groups['hostgroup_hdfs_secondary_namenodes'] |length =< 1"
+
+
+- name: Check for 3+ journal nodes when using HDFS High Availability
+  ansible.builtin.fail: msg="Not enough journal nodes configured"
+  when: "hdfs_high_availability and groups['hostgroup_hdfs_journalnodes'] |length >= 3"
+
+
+- name: Check for 0journal nodes when NOT using HDFS High Availability
+  ansible.builtin.fail: msg="Do not use journal nodes when not using hdfs HA"
+  when: "not hdfs_high_availability and groups['hostgroup_hdfs_journalnodes'] |length > 0"
+
+
+- name: Check for single Yarn Resourcemager when NOT using YARN High Availability
+  ansible.builtin.fail: msg="Single host check failed."
+  when: "not yarn_high_availability and groups['hostgroup_yarn_resource_managers'] |length <= 1"
+

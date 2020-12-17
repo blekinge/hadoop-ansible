@@ -1,5 +1,6 @@
 ---
 dependencies:
+  - role: config-validator
   - role: java_1_8_installed
   - role: firewalled
     when: install_hadoop | bool # Not relevant when we only depend to get variables
