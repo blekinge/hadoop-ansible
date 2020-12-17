@@ -33,6 +33,9 @@ hdfs_datanode_http_port: 50475
 hdfs_nfs_server_port: 2049
 hdfs_nfs_mountd_port: 4242
 
+hdfs_backupnode_service_port: 50100
+hdfs_backupnode_http_port: 50105
+
 
 yarn_timelineserver_http_port: 8188
 yarn_timelineserver_https_port: 8190
@@ -99,6 +102,10 @@ ports_per_role: # This dict maps roles names to ports
     - port: "{{hdfs_datanode_ipc_port}}"
     - port: "{{hdfs_datanode_http_port}}"
     - port: "{{hdfs_datanode_https_port}}"
+
+  hadoop_hdfs_backupnode:
+  - port: "{{hdfs_backupnode_service_port}}"
+  - port: "{{hdfs_backupnode_http_port}}"
 
   # YARN
   hadoop_yarn_timeline_server:

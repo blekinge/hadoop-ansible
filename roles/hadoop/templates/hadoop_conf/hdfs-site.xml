@@ -275,7 +275,27 @@
 
     {% endif %} {#End of HA setup#}
 
+    {% for backupnode in groups['hostgroup_hdfs_backupnodes'] %}
+        {% set backupnode_fqdn = hostvars[backupnode].ansible_fqdn %}
 
+    <property>
+        <name>dfs.namenode.backup.address</name>
+        <value>{{ backupnode_fqdn }}:{{ hdfs_backupnode_service_port }}</value>
+        <description>
+            The backup node server address and port.
+            If the port is 0 then the server will start on a free port.
+        </description>
+    </property>
+
+    <property>
+        <name>dfs.namenode.backup.http-address</name>
+        <value>{{ backupnode_fqdn }}:{{ hdfs_backupnode_http_port }}</value>
+        <description>
+            The backup node http server address and port.
+            If the port is 0 then the server will start on a free port.
+        </description>
+    </property>
+    {%  endfor %}
 
     {% if kerberos_authentication %}
 
