@@ -37,6 +37,9 @@ hostgroup_all:
         narchive-t-admn01.kb.dk:
 
     hostgroup_hadoop_nodes:
+      vars:
+        hdfs_high_availability: false
+        yarn_high_availability: false
       children:
 
         hostgroup_hdfs:
@@ -58,9 +61,9 @@ hostgroup_all:
 
             hostgroup_hdfs_datanodes:
               hosts:
-                narchive-t-data01.kb.dk:
-                narchive-t-data02.kb.dk:
-                narchive-t-data03.kb.dk:
+#                narchive-t-data01.kb.dk:
+#                narchive-t-data02.kb.dk:
+#                narchive-t-data03.kb.dk:
               vars:
                 mounts:
                   - mount: /data/sdc1
@@ -174,9 +177,9 @@ hostgroup_all:
                   - /data/sdx1/yarn
                   - /data/sdy1/yarn
               hosts:
-                narchive-t-data01.kb.dk:
-                narchive-t-data02.kb.dk:
-                narchive-t-data03.kb.dk:
+#                narchive-t-data01.kb.dk:
+#                narchive-t-data02.kb.dk:
+#                narchive-t-data03.kb.dk:
 
             hostgroup_yarn_timeline_servers:
               hosts:
