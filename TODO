@@ -66,6 +66,17 @@ Xpra X2go afløser. Mere avanceret. Modulopbygget.
 [ ] Gway
 
 
+
+
+[ ] Merge duplication of filesystem code in ovirtvm and disks_ready
+
+[/] HDFS low/high availability
+
+[ ] YARN low/high availability
+
+[ ]
+
+
 Dask is teh new multicore framework for python
 Dask works on HPC, kubernetes and YARN
 Dask on Yarn: https://yarn.dask.org/en/latest/index.html

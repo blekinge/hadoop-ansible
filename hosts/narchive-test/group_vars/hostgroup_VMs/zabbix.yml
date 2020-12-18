@@ -1,5 +1,0 @@
----
-
-VMs_zabbix_host_groups__to_merge:
-  - "Ovirt VMs"
-

@@ -1,7 +1,7 @@
 ---
 
 
-domain: kb.dk
+domain: kbhpc.kb.dk
 
 # This is the freeipa host. Set this variable if you need to clients to contact it on another hostname
 # than defined in the inventory
@@ -12,7 +12,8 @@ autohome_nfs_export_iprange: "130.226.228.0/24"
 
 ipaclient_force_join: true
 ipaclient_ntp_servers:
-  - kac-gway-001.kach.sblokalnet
+  - 130.225.24.33
+  - 130.226.220.16
 
 
 

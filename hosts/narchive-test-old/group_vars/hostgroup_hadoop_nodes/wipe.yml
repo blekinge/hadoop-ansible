@@ -1,7 +1,0 @@
----
-
-
-
-# Wipe HDFS and set up fresh. Nessesary for new installs
-wipe_hdfs: false
-
