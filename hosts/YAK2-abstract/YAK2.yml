@@ -1,0 +1,102 @@
+# You will make one inventory file per cluster. So all cluster-specific settings should go into this file
+# This inventory is not complete, you need the changes from either YAK2-ha or YAK2-nonHA
+
+# These are the magical hostgroups that are automagically bound to roles and behaviours
+# hostgroup_VMs: Machines to auto-create in ovirt
+# hostgroup_ipaserver: the FreeIPA server to register all hosts to
+# hostgroup_ipaclients: The list of hosts to setup as ipa clients
+# hostgroup_rsyslog_server: The rsyslog server forward all log messages to
+# hostgroup_zabbix_nodes: The list of hosts to setup zabbix agent on
+# hostgroup_hadoop_nodes: = role hadoop, role zookeeper, role spark
+# hostgroup_hdfs_namenodes: = role hadoop_hdfs_namenode
+# hostgroup_hdfs_journalnodes: = role hadoop_hdfs_journalnode
+# hostgroup_hdfs_datanodes: = role hadoop_hdfs_datanode
+# hostgroup_zookeeper_servers: = role zookeeper_server
+# hostgroup_yarn_resource_managers: = role hadoop_yarn_resource_manager
+# hostgroup_yarn_node_managers: = role hadoop_yarn_node_manager
+# hostgroup_yarn_timeline_servers: = role hadoop_yarn_timeline_server
+# hostgroup_mapreduce_history_servers: = role hadoop_mapreduce_history_server
+# hostgroup_spark_history_servers: = role spark_history_server
+# hostgroup_project_nodes: = role spark_client, role rstudio_server
+
+hostgroup_all:
+  children:
+    hostgroup_ipaserver: # Singular form as there can be only one here
+      hosts:
+        fipa001.adm.yak2.net:
+
+    hostgroup_ipaclients:
+      children: #Mark all hadoop nodes as ipa-clients
+        hostgroup_hadoop_nodes:
+
+    hostgroup_zabbix_nodes:
+      hosts:
+        rlog001.adm.yak2.net:
+      children:
+        hostgroup_ipaclients:
+
+    hostgroup_rsyslog_server:
+      hosts:
+        rlog001.adm.yak2.net:
+
+    hostgroup_hadoop_nodes:
+      children:
+
+        hostgroup_hdfs:
+          children:
+            hostgroup_hdfs_namenodes:
+              hosts: # If hdfs_high_availability == false, only the first host will be used
+
+            hostgroup_hdfs_secondary_namenodes:
+              hosts: # Do not use this if hdfs_high_availability == true
+
+            hostgroup_hdfs_backupnodes:
+              hosts:
+
+
+            hostgroup_hdfs_journalnodes:
+              hosts:
+
+            hostgroup_hdfs_datanodes:
+              hosts:
+                roda[001:004].adm.yak2.net:
+                  hdfs_data_dirs:
+                    - /data/sdb1/hdfs
+
+        hostgroup_zookeeper_servers:
+          hosts:
+            zkpr[001:003].adm.yak2.net:
+
+        hostgroup_yarn:
+
+          children:
+            hostgroup_yarn_resource_managers:
+              hosts: # If yarn_high_availability == false, only the first host will be used
+
+            hostgroup_yarn_node_managers:
+              hosts:
+                roda[001:004].adm.yak2.net:
+                  yarn_nodemanager_available_cpu_cores: 2
+                  yarn_nodemanager_available_memory: 3072
+                  yarn_data_dirs:
+                    - /data/sdb1/yarn
+
+            hostgroup_yarn_timeline_servers:
+              hosts:
+                hist001.adm.yak2.net:
+
+        hostgroup_mapreduce:
+          children:
+            hostgroup_mapreduce_history_servers:
+              hosts: # There can be only one here
+                hist001.adm.yak2.net:
+
+        hostgroup_spark:
+          children:
+            hostgroup_spark_history_servers:
+              hosts: # There can be only one here
+                hist001.adm.yak2.net:
+
+        hostgroup_project_nodes:
+          hosts:
+            proj[000:003].adm.yak2.net:

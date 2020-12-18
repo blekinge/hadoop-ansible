@@ -59,6 +59,7 @@ hostgroup_all:
             hostgroup_hdfs_datanodes:
               hosts:
                 narchive-t-data01.kb.dk:
+                narchive-t-data02.kb.dk:
                 narchive-t-data03.kb.dk:
               vars:
                 mounts:
@@ -174,6 +175,7 @@ hostgroup_all:
                   - /data/sdy1/yarn
               hosts:
                 narchive-t-data01.kb.dk:
+                narchive-t-data02.kb.dk:
                 narchive-t-data03.kb.dk:
 
             hostgroup_yarn_timeline_servers:
