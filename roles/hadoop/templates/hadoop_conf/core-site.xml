@@ -22,12 +22,12 @@
 
     <property>
         <name>fs.defaultFS</name>
-        {% if hdfs_high_availability  %}
+        {% if hdfs_high_availability %}
             <value>hdfs://{{ hdfs_name }}</value>
-        {%  else %}
+        {% else %}
             <value>hdfs://{{ hdfs_nonha_primary_namenode }}</value>
         {% endif %}
-            <description>The name of the default file system. A URI whose
+        <description>The name of the default file system. A URI whose
             scheme and authority determine the FileSystem implementation. The
             uri's scheme determines the config property (fs.SCHEME.impl) naming
             the FileSystem implementation class. The uri's authority is used to
@@ -73,6 +73,63 @@
             are discovered using a Java ServiceLoader.
         </description>
     </property>
+
+    {% if yarn_high_availability %}
+
+        <!-- YARN registry -->
+        <property>
+            <name>hadoop.zk.address</name>
+            <value>{{ zookeeper_quorum }}</value>
+            <description>Comma separated list of Host:Port pairs. Each corresponds to a ZooKeeper server (e.g.
+                "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002") to be used by the RM for storing RM state.
+            </description>
+        </property>
+
+        <property>
+            <name>hadoop.registry.zk.quorum</name>
+            <value>{{ zookeeper_quorum }}</value>
+            <description>
+                List of hostname:port pairs defining the
+                zookeeper quorum binding for the registry
+            </description>
+        </property>
+        <property>
+            <name>hadoop.registry.client.auth</name>
+            <value>kerberos</value>
+        </property>
+
+        <property>
+            <name>hadoop.registry.secure</name>
+            <value>true</value>
+            <description>
+                Key to set if the registry is secure. Turning it on
+                changes the permissions policy from "open access"
+                to restrictions on kerberos with the option of
+                a user adding one or more auth key pairs down their
+                own tree.
+            </description>
+        </property>
+        <property>
+            <name>hadoop.registry.system.acls</name>
+            <value>
+                sasl:{{ yarn_user.name }}, sasl:{{ mapreduce_user.name }}, sasl:{{ hadoop_group.name }}, sasl:{{ hdfs_user.name }}, sasl:{{ yarn_resourcemanager_service_name }}</value>
+        </property>
+        <property>
+            <name>hadoop.registry.kerberos.realm</name>
+            <value>{{ ipaserver_realm }}</value>
+            <description>
+                The kerberos realm: used to set the realm of
+                system principals which do not declare their realm,
+                and any other accounts that need the value.
+
+                If empty, the default realm of the running process
+                is used.
+
+                If neither are known and the realm is needed, then the registry
+                service/client will fail.
+            </description>
+        </property>
+    {% endif %}
 
     {% if hdfs_high_availability %}
 

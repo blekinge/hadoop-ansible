@@ -15,37 +15,103 @@
 {{ ansible_managed | comment('xml') }}
 
 <configuration>
+
+
     <property>
         <name>spark.authenticate</name>
         <value>true</value>
     </property>
+
+    <!-- ACLs -->
     <property>
         <name>yarn.acl.enable</name>
         <value>true</value>
+        <description>Are acls enabled.</description>
+        <default>false</default>
     </property>
+
     <property>
         <name>yarn.admin.acl</name>
         <value>{{ yarn_user.name }} {{ subadmins_group.name }}</value>
+        <description>ACL of who can be admin of the YARN cluster.</description>
+        <default>*</default>
     </property>
+
+
     <property>
         <name>yarn.application.classpath</name>
         <value>{{ hadoop_config_path }},{{ hadoop_path }}/hadoop-{{ hadoop_version }}/lib/*</value>
+        <description>
+            CLASSPATH for YARN applications. A comma-separated list
+            of CLASSPATH entries. When this value is empty, the following default
+            CLASSPATH for YARN applications would be used.
+            For Linux:
+            $HADOOP_CONF_DIR,
+            $HADOOP_COMMON_HOME/share/hadoop/common/*,
+            $HADOOP_COMMON_HOME/share/hadoop/common/lib/*,
+            $HADOOP_HDFS_HOME/share/hadoop/hdfs/*,
+            $HADOOP_HDFS_HOME/share/hadoop/hdfs/lib/*,
+            $HADOOP_YARN_HOME/share/hadoop/yarn/*,
+            $HADOOP_YARN_HOME/share/hadoop/yarn/lib/*
+            For Windows:
+            %HADOOP_CONF_DIR%,
+            %HADOOP_COMMON_HOME%/share/hadoop/common/*,
+            %HADOOP_COMMON_HOME%/share/hadoop/common/lib/*,
+            %HADOOP_HDFS_HOME%/share/hadoop/hdfs/*,
+            %HADOOP_HDFS_HOME%/share/hadoop/hdfs/lib/*,
+            %HADOOP_YARN_HOME%/share/hadoop/yarn/*,
+            %HADOOP_YARN_HOME%/share/hadoop/yarn/lib/*
+        </description>
+        <default></default>
     </property>
-    <property>
-        <name>yarn.client.nodemanager-connect.max-wait-ms</name>
-        <value>60000</value>
-    </property>
-    <property>
-        <name>yarn.client.nodemanager-connect.retry-interval-ms</name>
-        <value>10000</value>
-    </property>
+
+
+    <!-- SSL -->
     <property>
         <name>yarn.http.policy</name>
         <value>HTTPS_ONLY</value>
+        <description>
+            This configures the HTTP endpoint for YARN Daemons.The following
+            values are supported:
+            - HTTP_ONLY : Service is provided only on http
+            - HTTPS_ONLY : Service is provided only on https
+        </description>
+        <default>HTTP_ONLY</default>
     </property>
+
+
+    <!-- Log aggregation -->
     <property>
         <name>yarn.log-aggregation-enable</name>
         <value>true</value>
+        <description>Whether to enable log aggregation. Log aggregation collects
+            each container's logs and moves these logs onto a file-system, for e.g.
+            HDFS, after the application completes. Users can configure the
+            "yarn.nodemanager.remote-app-log-dir" and
+            "yarn.nodemanager.remote-app-log-dir-suffix" properties to determine
+            where these logs are moved to. Users can access the logs via the
+            Application Timeline Server.
+        </description>
+        <default>false</default>
+    </property>
+    <property>
+        <name>yarn.nodemanager.remote-app-log-dir</name>
+        <value>{{ yarn_nodemanager_remote_app_log_dir }}</value>
+        <description>Where to aggregate logs to.</description>
+    </property>
+    <property>
+        <name>yarn.log-aggregation.file-formats</name>
+        <value>IndexedFormat,TFile</value>
+        <description>Specify which log file controllers we will support. The first
+            file controller we add will be used to write the aggregated logs.
+            This comma separated configuration will work with the configuration:
+            yarn.log-aggregation.file-controller.%s.class which defines the supported
+            file controller's class. By default, the TFile controller would be used.
+            The user could override this configuration by adding more file controllers.
+            To support back-ward compatibility, make sure that we always
+            add TFile file controller.
+        </description>
+        <default>TFile</default>
     </property>
     <property>
         <name>yarn.log-aggregation.file-controller.IndexedFormat.class</name>
@@ -54,101 +120,144 @@
     <property>
         <name>yarn.log-aggregation.file-controller.TFile.class</name>
         <value>org.apache.hadoop.yarn.logaggregation.filecontroller.tfile.LogAggregationTFileController</value>
-    </property>
-    <property>
-        <name>yarn.log-aggregation.file-formats</name>
-        <value>IndexedFormat,TFile</value>
+        <description>Class that supports TFile read and write operations.</description>
+        <default>org.apache.hadoop.yarn.logaggregation.filecontroller.tfile.LogAggregationTFileController</default>
     </property>
     <property>
         <name>yarn.log-aggregation.retain-seconds</name>
         <value>2592000</value>
+        <description>How long to keep aggregation logs before deleting them. -1 disables.
+            Be careful set this too small and you will spam the name node.
+        </description>
+        <default>-1</default>
     </property>
     <property>
         <name>yarn.log.server.url</name>
         <value>http://{{ mapreduce_history_server_host }}:{{ mapreduce_history_server_https_port }}/jobhistory/logs
         </value>
+        <description>
+            URL for log aggregation server
+        </description>
     </property>
     <property>
         <name>yarn.log.server.web-service.url</name>
         <value>http://{{ yarn_timelineserver }}:{{ yarn_timelineserver_http_port }}/ws/v1/applicationhistory</value>
+        <description>
+            URL for log aggregation server web service
+        </description>
     </property>
+    <property>
+        <name>yarn.nodemanager.log-aggregation.compression-type</name>
+        <value>gz</value>
+        <description>T-file compression types used to compress aggregated logs.</description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.log-aggregation.num-log-files-per-app</name>
+        <value>336</value>
+        <description>Define how many aggregated log files per application per NM
+            we can have in remote file system. By default, the total number of
+            aggregated log files per application per NM is 30.
+        </description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.log-aggregation.roll-monitoring-interval-seconds</name>
+        <value>3600</value>
+        <description>Defines how often NMs wake up to upload log files.
+            The default value is -1. By default, the logs will be uploaded when
+            the application is finished. By setting this configuration logs can
+            be uploaded periodically while the application is running.
+            The minimum positive accepted value can be configured by the setting
+            "yarn.nodemanager.log-aggregation.roll-monitoring-interval-seconds.min".
+        </description>
+    </property>
+
+
+    <!-- Node labels-->
     <property>
         <name>yarn.node-labels.enabled</name>
         <value>false</value>
-    </property>
-    <property>
-        <name>yarn.node-labels.fs-store.retry-policy-spec</name>
-        <value>2000, 500</value>
-    </property>
-    <property>
-        <name>yarn.node-labels.fs-store.root-dir</name>
-        <value>/system/yarn/node-labels</value>
+        <description>
+            Enable node labels feature
+        </description>
     </property>
 
+
+    <!-- Node manager -->
+
+
+    <property>
+        <name>yarn.nodemanager.recovery.enabled</name>
+        <value>true</value>
+        <description>Enable the node manager to recover after starting</description>
+    </property>
+    <property>
+        <name>yarn.resourcemanager.nodemanagers.heartbeat-interval-ms</name>
+        <value>5000</value>
+        <description>The heart-beat interval in milliseconds for every NodeManager in the cluster.</description>
+    </property>
+
+
+    <!-- Node manager resources -->
+    <property>
+        <name>yarn.nodemanager.resource.cpu-vcores</name>
+        <value>{{ yarn_nodemanager_available_cpu_cores }}</value>
+        <description>Number of vcores that can be allocated
+            for containers. This is used by the RM scheduler when allocating
+            resources for containers. This is not used to limit the number of
+            CPUs used by YARN containers. If it is set to -1 and
+            yarn.nodemanager.resource.detect-hardware-capabilities is true, it is
+            automatically determined from the hardware in case of Windows and Linux.
+            In other cases, number of vcores is 8 by default.
+        </description>
+    </property>
+    <property>
+        <name>yarn.nodemanager.resource.memory-mb</name>
+        <value>{{ yarn_nodemanager_available_memory }}</value>
+        <description>Amount of physical memory, in MB, that can be allocated
+            for containers. If set to -1 and
+            yarn.nodemanager.resource.detect-hardware-capabilities is true, it is
+            automatically calculated(in case of Windows and Linux).
+            In other cases, the default is 8192MB.
+        </description>
+    </property>
+
+
+    <!-- Node manager hosts and ports -->
     <property>
         <name>yarn.nodemanager.address</name>
         <value>0.0.0.0:{{ yarn_nodemanager_port }}</value>
+        <description>The address of the container manager in the NM.</description>
+        <value>${yarn.nodemanager.hostname}:0</value>
     </property>
     <property>
-        <name>yarn.nodemanager.admin-env</name>
-        <value>MALLOC_ARENA_MAX=$MALLOC_ARENA_MAX</value>
+        <name>yarn.nodemanager.bind-host</name>
+        <value>0.0.0.0</value>
+        <description>
+            The actual address the server will bind to. If this optional address is
+            set, the RPC and webapp servers will bind to this address and the port specified in
+            yarn.nodemanager.address and yarn.nodemanager.webapp.address, respectively. This is
+            most useful for making NM listen to all interfaces by setting to 0.0.0.0.
+        </description>
     </property>
+
     <property>
         <name>yarn.nodemanager.aux-services</name>
         <value>mapreduce_shuffle</value>
+        <description>A comma separated list of services where service name should only
+            contain a-zA-Z0-9_ and can not start with numbers
+        </description>
         {#TODO spark shuffle here#}
     </property>
     <property>
         <name>yarn.nodemanager.aux-services.mapreduce_shuffle.class</name>
         <value>org.apache.hadoop.mapred.ShuffleHandler</value>
     </property>
-    <property>
-        <name>yarn.nodemanager.bind-host</name>
-        <value>0.0.0.0</value>
-    </property>
+
+    <!-- Node manager container executor -->
     <property>
         <name>yarn.nodemanager.container-executor.class</name>
         <value>org.apache.hadoop.yarn.server.nodemanager.LinuxContainerExecutor</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.container-metrics.unregister-delay-ms</name>
-        <value>60000</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.container-monitor.interval-ms</name>
-        <value>3000</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.delete.debug-delay-sec</name>
-        <value>0</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage</name>
-        <value>90</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.disk-health-checker.min-free-space-per-disk-mb</name>
-        <value>1000</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.disk-health-checker.min-healthy-disks</name>
-        <value>0.25</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.health-checker.interval-ms</name>
-        <value>135000</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.health-checker.script.timeout-ms</name>
-        <value>60000</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.kill-escape.launch-command-line</name>
-        <value>slider-agent,LLAP</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.kill-escape.user</name>
-        <value>hive</value>
+        <description>who will execute(launch) the containers.</description>
     </property>
     <property>
         <name>yarn.nodemanager.linux-container-executor.cgroups.strict-resource-usage</name>
@@ -161,6 +270,12 @@
     <property> <!--This should match field in container-executor.cfg -->
         <name>yarn.nodemanager.local-dirs</name>
         <value>{{ yarn_data_dirs_joined }}</value>
+        <description>List of directories to store localized files in. An
+            application's localized file directory will be found in:
+            ${yarn.nodemanager.local-dirs}/usercache/${user}/appcache/application_${appid}.
+            Individual containers' work directories, called container_${contid}, will
+            be subdirectories of this.
+        </description>
     </property>
     <property> <!--This should match field in container-executor.cfg -->
         <name>yarn.nodemanager.log-dirs</name>
@@ -173,108 +288,62 @@
             stderr, stdin, and syslog generated by that container.
         </description>
     </property>
-
     <property>
-        <name>yarn.nodemanager.localizer.cache.cleanup.interval-ms</name>
-        <value>600000</value>
+        <name>yarn.nodemanager.container-monitor.interval-ms</name>
+        <value>3000</value>
+        <description>How often to monitor containers. If not set, the value for
+            yarn.nodemanager.resource-monitor.interval-ms will be used.
+            If 0 or negative, container monitoring is disabled.
+        </description>
     </property>
     <property>
-        <name>yarn.nodemanager.localizer.cache.target-size-mb</name>
-        <value>10240</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.log-aggregation.compression-type</name>
-        <value>gz</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.log-aggregation.debug-enabled</name>
-        <value>false</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.log-aggregation.num-log-files-per-app</name>
-        <value>336</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.log-aggregation.roll-monitoring-interval-seconds</name>
-        <value>3600</value>
+        <name>yarn.nodemanager.disk-health-checker.min-free-space-per-disk-mb</name>
+        <value>1000</value>
+        <description>The minimum space in megabytes that must be available on a disk for
+            it to be used. If space on a disk falls below this threshold, it will be marked
+            as bad. This applies to yarn.nodemanager.local-dirs and
+            yarn.nodemanager.log-dirs.
+        </description>
     </property>
 
     <property>
-        <name>yarn.nodemanager.log.retain-seconds</name>
-        <value>2592000</value>
+        <name>yarn.nodemanager.kill-escape.launch-command-line</name>
+        <value>slider-agent,LLAP</value>
     </property>
     <property>
-        <name>yarn.nodemanager.pmem-check-enabled</name>
-        <value>false</value>
+        <name>yarn.nodemanager.kill-escape.user</name>
+        <value>hive</value>
     </property>
 
-    <property>
-        <name>yarn.nodemanager.recovery.enabled</name>
-        <value>true</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.remote-app-log-dir</name>
-        <value>{{ yarn_nodemanager_remote_app_log_dir }}</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.remote-app-log-dir-suffix</name>
-        <value>logs</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.resource.cpu-vcores</name>
-        <value>{{ yarn_nodemanager_available_cpu_cores }}</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.resource.memory-mb</name>
-        <value>{{ yarn_nodemanager_available_memory }}</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.resource.percentage-physical-cpu-limit</name>
-        <value>90</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.vmem-check-enabled</name>
-        <value>false</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.vmem-pmem-ratio</name>
-        <value>2.1</value>
-    </property>
 
-    <property>
-        <description>The heart-beat interval in milliseconds for every NodeManager in the cluster.</description>
-        <name>yarn.resourcemanager.nodemanagers.heartbeat-interval-ms</name>
-        <value>5000</value>
-    </property>
 
-    <property>
-        <name>yarn.resourcemanager.am.max-attempts</name>
-        <value>2</value>
-    </property>
+    <!-- Resource manager -->
+
     <property>
         <name>yarn.resourcemanager.bind-host</name>
         <value>0.0.0.0</value>
+        <description>
+            The actual address the server will bind to. If this optional address is
+            set, the RPC and webapp servers will bind to this address and the port specified in
+            yarn.resourcemanager.address and yarn.resourcemanager.webapp.address, respectively. This
+            is most useful for making RM listen to all interfaces by setting to 0.0.0.0.
+        </description>
     </property>
+
+
     <property>
-        <name>yarn.resourcemanager.connect.max-wait.ms</name>
-        <value>900000</value>
+        <name>yarn.resourcemanager.recovery.enabled</name>
+        <value>true</value>
     </property>
-    <property>
-        <name>yarn.resourcemanager.connect.retry-interval.ms</name>
-        <value>15000</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.fs.state-store.retry-policy-spec</name>
-        <value>2000, 500</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.fs.state-store.uri</name>
-        <value></value>
-    </property>
+
     <property>
         <name>yarn.resourcemanager.max-completed-applications</name>
         <value>20000</value>
+        <default>1000</default>
+        <description>The maximum number of completed applications RM keeps.</description>
     </property>
+
+
     <property>
         <name>yarn.resourcemanager.monitor.capacity.preemption.max_ignored_over_capacity</name>
         <value>0.1</value>
@@ -295,13 +364,23 @@
         <name>yarn.resourcemanager.monitor.capacity.preemption.total_preemption_per_round</name>
         <value>1.0</value>
     </property>
-    <property>
-        <name>yarn.resourcemanager.nodes.exclude-path</name>
-        <value>{{ hadoop_config_path }}/yarn.exclude</value>
-    </property>
+
+
     <property>
         <name>yarn.resourcemanager.proxy-user-privileges.enabled</name>
         <value>true</value>
+        <description>If true, ResourceManager will have proxy-user privileges.
+            Use case: In a secure cluster, YARN requires the user hdfs delegation-tokens to
+            do localization and log-aggregation on behalf of the user. If this is set to true,
+            ResourceManager is able to request new hdfs delegation tokens on behalf of
+            the user. This is needed by long-running-service, because the hdfs tokens
+            will eventually expire and YARN requires new valid tokens to do localization
+            and log-aggregation. Note that to enable this use case, the corresponding
+            HDFS NameNode has to configure ResourceManager as the proxy-user so that
+            ResourceManager can itself ask for new tokens on behalf of the user when
+            tokens are past their max-life-time.
+        </description>
+        <default>false</default>
     </property>
     <property>
         <name>yarn.resourcemanager.proxyuser.*.groups</name>
@@ -315,71 +394,33 @@
         <name>yarn.resourcemanager.proxyuser.*.users</name>
         <value></value>
     </property>
-    <property>
-        <name>yarn.resourcemanager.recovery.enabled</name>
-        <value>true</value>
-    </property>
 
-    <property>
-        <name>yarn.resourcemanager.scheduler.class</name>
-        <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.scheduler.monitor.enable</name>
-        <value>false</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.scheduler.monitor.policies</name>
-        <!--The system chokes on whitespaces in this name, do do NOT linebreak it-->
-        <value>org.apache.hadoop.yarn.server.resourcemanager.monitor.capacity.ProportionalCapacityPreemptionPolicy
-        </value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.state-store.max-completed-applications</name>
-        <value>${yarn.resourcemanager.max-completed-applications}</value>
-    </property>
+
+
     <property>
         <name>yarn.resourcemanager.store.class</name>
         <value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.system-metrics-publisher.dispatcher.pool-size</name>
-        <value>10</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.system-metrics-publisher.enabled</name>
-        <value>true</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.webapp.delegation-token-auth-filter.enabled</name>
-        <value>false</value>
+        <description>The class to use as the persistent store.
+
+            If org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore
+            is used, the store is implicitly fenced; meaning a single ResourceManager
+            is able to use the store at any point in time. More details on this
+            implicit fencing, along with setting up appropriate ACLs is discussed
+            under yarn.resourcemanager.zk-state-store.root-node.acl.
+        </description>
     </property>
 
+
     <property>
-        <name>yarn.resourcemanager.work-preserving-recovery.enabled</name>
+        <name>yarn.system-metrics-publisher.enabled</name>
         <value>true</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.work-preserving-recovery.scheduling-wait-ms</name>
-        <value>10000</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.zk-num-retries</name>
-        <value>1000</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.zk-retry-interval-ms</name>
-        <value>1000</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.zk-state-store.parent-path</name>
-        <value>/rmstore</value>
-    </property>
-    <property>
-        <name>yarn.resourcemanager.zk-timeout-ms</name>
-        <value>10000</value>
+        <description>The setting that controls whether yarn system metrics is
+            published on the Timeline service or not by RM And NM.
+        </description>
     </property>
 
+
+    <!-- Scheduler -->
     <property>
         <name>yarn.scheduler.capacity.ordering-policy.priority-utilization.underutilized-preemption.enabled</name>
         <value>true</value>
@@ -387,73 +428,145 @@
     <property>
         <name>yarn.scheduler.maximum-allocation-mb</name>
         <value>{{ yarn_scheduler_max_memory }}</value>
+        <description>The maximum allocation for every container request at the RM
+            in MBs. Memory requests higher than this will throw an
+            InvalidResourceRequestException.
+        </description>
     </property>
     <property>
         <name>yarn.scheduler.maximum-allocation-vcores</name>
         <value>{{ yarn_scheduler_max_cpu_cores }}</value>
+        <description>The maximum allocation for every container request at the RM
+            in terms of virtual CPU cores. Requests higher than this will throw an
+            InvalidResourceRequestException.
+        </description>
     </property>
     <property>
         <name>yarn.scheduler.minimum-allocation-mb</name>
         <value>{{ yarn_scheduler_min_memory }}</value>
+        <description>The minimum allocation for every container request at the RM
+            in MBs. Memory requests lower than this will be set to the value of this
+            property. Additionally, a node manager that is configured to have less memory
+            than this value will be shut down by the resource manager.
+        </description>
     </property>
     <property>
         <name>yarn.scheduler.minimum-allocation-vcores</name>
         <value>{{ yarn_scheduler_min_cpu_cores }}</value>
+        <description>The minimum allocation for every container request at the RM
+            in terms of virtual CPU cores. Requests lower than this will be set to the
+            value of this property. Additionally, a node manager that is configured to
+            have fewer virtual cores than this value will be shut down by the resource
+            manager.
+        </description>
+    </property>
+
+
+    <!-- Timeline server -->
+    <property>
+        <name>yarn.timeline-service.enabled</name>
+        <value>true</value>
+        <description>
+            In the server side it indicates whether timeline service is enabled or not.
+            And in the client side, users can enable it to indicate whether client wants
+            to use timeline service. If its enabled in the client side along with
+            security, then yarn client tries to fetch the delegation tokens for the
+            timeline server.
+        </description>
     </property>
 
     <property>
+        <name>yarn.timeline-service.version</name>
+        <value>1.5</value>
+        <description>Indicate what is the current version of the running
+            timeline service. For example, if "yarn.timeline-service.version" is 1.5,
+            and "yarn.timeline-service.enabled" is true, it means the cluster will and
+            should bring up the timeline service v.1.5 (and nothing else).
+            On the client side, if the client uses the same version of timeline service,
+            it should succeed. If the client chooses to use a smaller version in spite of this,
+            then depending on how robust the compatibility story is between versions,
+            the results may vary.
+        </description>
+    </property>
+
+
+
+    <property>
+        <name>yarn.timeline-service.ttl-enable</name>
+        <value>true</value>
+        <description>Enable age off of timeline store data.</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.ttl-ms</name>
+        <value>2592000000</value>
+        <description>Time to live for timeline store data in milliseconds.</description>
+    </property>
+
+
+    <!-- timeline service ports and hosts -->
+    <property>
         <name>yarn.timeline-service.address</name>
         <value>{{ yarn_timelineserver }}:{{ yarn_timelineserver_port2 }}</value>
+        <description>This is default address for the timeline server to start the
+            RPC server.</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.webapp.address</name>
+        <value>{{ yarn_timelineserver }}:{{ yarn_timelineserver_http_port }}</value>
+        <description>The http address of the timeline service web application.</description>
+    </property>
+    <property>
+        <name>yarn.timeline-service.webapp.https.address</name>
+        <value>{{ yarn_timelineserver }}:{{ yarn_timelineserver_https_port }}</value>
+        <description>The https address of the timeline service web application.</description>
     </property>
     <property>
         <name>yarn.timeline-service.bind-host</name>
         <value>0.0.0.0</value>
+        <description>
+            The actual address the server will bind to. If this optional address is
+            set, the RPC and webapp servers will bind to this address and the port specified in
+            yarn.timeline-service.address and yarn.timeline-service.webapp.address, respectively.
+            This is most useful for making the service listen to all interfaces by setting to
+            0.0.0.0.
+        </description>
     </property>
+
+
+
+
+    <!-- timeline service entity group -->
     <property>
-        <name>yarn.timeline-service.client.fd-flush-interval-secs</name>
-        <value>5</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.client.max-retries</name>
-        <value>30</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.client.retry-interval-ms</name>
-        <value>1000</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.enabled</name>
-        <value>true</value>
+        <name>yarn.timeline-service.store-class</name>
+        <value>org.apache.hadoop.yarn.server.timeline.EntityGroupFSTimelineStore</value>
+        <description>Store class name for timeline store.</description>
+        <default>org.apache.hadoop.yarn.server.timeline.LeveldbTimelineStore</default>
     </property>
     <property>
         <name>yarn.timeline-service.entity-group-fs-store.active-dir</name>
         <value>{{ yarn_timeline_server_dir }}/active/</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.entity-group-fs-store.app-cache-size</name>
-        <value>10</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.entity-group-fs-store.cleaner-interval-seconds</name>
-        <value>3600</value>
+        <description>HDFS path to store active application’s timeline data</description>
     </property>
     <property>
         <name>yarn.timeline-service.entity-group-fs-store.done-dir</name>
         <value>{{ yarn_timeline_server_dir }}/done/</value>
+        <description>HDFS path to store done application’s timeline data</description>
     </property>
-
     <property>
         <name>yarn.timeline-service.entity-group-fs-store.retain-seconds</name>
         <value>2592000</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.entity-group-fs-store.scan-interval-seconds</name>
-        <value>15</value>
+        <description>
+            How long the ATS v1.5 entity group file system storage will keep an
+            application's data in the done directory.
+        </description>
     </property>
     <property>
         <name>yarn.timeline-service.entity-group-fs-store.summary-store</name>
         <value>org.apache.hadoop.yarn.server.timeline.RollingLevelDBTimelineStore</value>
+        <description>Summary storage for ATS v1.5</description>
     </property>
+
+    <!-- timeline service generic application history -->
     <property>
         <name>yarn.timeline-service.generic-application-history.enabled</name>
         <value>true</value>
@@ -470,103 +583,54 @@
         <name>yarn.timeline-service.generic-application-history.store-class</name>
         <value>org.apache.hadoop.yarn.server.applicationhistoryservice.FileSystemApplicationHistoryStore</value>
     </property>
-    <property>
-        <name>yarn.timeline-service.http-authentication.simple.anonymous.allowed</name>
-        <value>false</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.leveldb-state-store.path</name>
-        <value>{{ yarn_timeline_store }}</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.leveldb-timeline-store.max-open-files</name>
-        <value>500</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.leveldb-timeline-store.path</name>
-        <value>{{ yarn_timeline_store }}</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.leveldb-timeline-store.read-cache-size</name>
-        <value>4194304</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.leveldb-timeline-store.start-time-read-cache-size</name>
-        <value>10000</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.leveldb-timeline-store.start-time-write-cache-size</name>
-        <value>10000</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.leveldb-timeline-store.ttl-interval-ms</name>
-        <value>300000</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.leveldb-timeline-store.write-buffer-size</name>
-        <value>4194304</value>
-    </property>
+
+
+    <!-- timeline service state store -->
     <property>
         <name>yarn.timeline-service.recovery.enabled</name>
         <value>true</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.rolling-period</name>
-        <value>daily</value>
+        <description>Enable timeline server to recover state after starting. If
+            true, then yarn.timeline-service.state-store-class must be specified.
+        </description>
     </property>
     <property>
         <name>yarn.timeline-service.state-store-class</name>
         <value>org.apache.hadoop.yarn.server.timeline.recovery.LeveldbTimelineStateStore</value>
+        <description>Store class name for timeline state store.</description>
     </property>
     <property>
-        <name>yarn.timeline-service.store-class</name>
-        <value>org.apache.hadoop.yarn.server.timeline.EntityGroupFSTimelineStore</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.ttl-enable</name>
-        <value>true</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.ttl-ms</name>
-        <value>2592000000</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.version</name>
-        <value>1.5</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.webapp.address</name>
-        <value>{{ yarn_timelineserver }}:{{ yarn_timelineserver_http_port }}</value>
-    </property>
-    <property>
-        <name>yarn.timeline-service.webapp.https.address</name>
-        <value>{{ yarn_timelineserver }}:{{ yarn_timelineserver_https_port }}</value>
+        <name>yarn.timeline-service.leveldb-state-store.path</name>
+        <value>{{ yarn_timeline_store }}</value>
+        <description>Store file name for leveldb state store.</description>
+        <default>${hadoop.tmp.dir}/yarn/timeline</default>
     </property>
 
-    <property>
-        <name>yarn.resourcemanager.cluster-id</name>
-        <value>YAK-YARN</value>
-    </property>
+
+
 
     <property>
-        <name>hadoop.zk.address</name>
-        <value>{{ zookeeper_quorum }}</value>
+        <name>yarn.resourcemanager.zk-acl</name>
+        <value>sasl:{{ yarn_resourcemanager_service_name }}:rwcda</value>
     </property>
+
+
 
     {% if yarn_high_availability %}
+
+        <property>
+            <name>yarn.resourcemanager.cluster-id</name>
+            <value>YAK-YARN</value>
+            <description>Name of the cluster. In a HA setting,
+                this is used to ensure the RM participates in leader
+                election for this cluster and ensures it does not affect
+                other clusters
+            </description>
+        </property>
 
         <property>
             <name>yarn.resourcemanager.ha.enabled</name>
             <value>true</value>
         </property>
-
-
-        <property>
-            <name>yarn.resourcemanager.ha.automatic-failover.enable</name>
-            <value>false</value>
-        </property>
-
-
 
         <property>
             <name>yarn.resourcemanager.ha.rm-ids</name>
@@ -612,7 +676,7 @@
 
         {% endfor %}
 
-        {%  else %}
+    {% else %}
 
         <property>
             <name>yarn.resourcemanager.hostname</name>
@@ -643,7 +707,6 @@
             <value>{{ yarn_nonha_primary_resourcemanager }}:{{ yarn_resourcemanager_http_port }}</value>
         </property>
 
-
         <property>
             <name>yarn.resourcemanager.webapp.https.address</name>
             <value>{{ yarn_nonha_primary_resourcemanager }}:{{ yarn_resourcemanager_https_port }}</value>
@@ -657,33 +720,6 @@
 
     {% if kerberos_authentication %}
         <!--    Kerberos-->
-
-        <property>
-            <name>hadoop.registry.client.auth</name>
-            <value>kerberos</value>
-        </property>
-        <property>
-            <name>hadoop.registry.jaas.context</name>
-            <value>Client</value>
-        </property>
-        <property>
-            <name>hadoop.registry.rm.enabled</name>
-            <value>false</value>
-        </property>
-        <property>
-            <name>hadoop.registry.secure</name>
-            <value>true</value>
-        </property>
-        <property>
-            <name>hadoop.registry.system.accounts</name>
-            <value>
-                sasl:{{ yarn_user.name }},sasl:{{ mapreduce_user.name }},sasl:{{ hadoop_group.name }},sasl:{{ hdfs_user.name }},sasl:{{ yarn_resourcemanager_service_name }}</value>
-        </property>
-        <property>
-            <name>hadoop.registry.zk.quorum</name>
-            <value>{{ zookeeper_quorum }}</value>
-        </property>
-
         <property>
             <name>yarn.nodemanager.principal</name>
             <value>{{ yarn_nodemanager_service_name }}/_HOST@{{ ipaserver_realm }}</value>
@@ -692,7 +728,6 @@
             <name>yarn.nodemanager.keytab</name>
             <value>{{ keytab_dir }}/{{ yarn_nodemanager_service_name }}.service.keytab</value>
         </property>
-
         <property>
             <name>yarn.nodemanager.webapp.spnego-principal</name>
             <value>HTTP/_HOST@{{ ipaserver_realm }}</value>
@@ -727,12 +762,6 @@
             <name>yarn.timeline-service.http-authentication.kerberos.keytab</name>
             <value>{{ keytab_dir }}/spnego.service.keytab</value>
         </property>
-
-        <property>
-            <name>yarn.timeline-service.http-authentication.simple.anonymous.allowed</name>
-            <value>false</value>
-        </property>
-
         <property>
             <name>yarn.timeline-service.http-authentication.type</name>
             <value>kerberos</value>
@@ -746,13 +775,18 @@
             <value>{{ keytab_dir }}/{{ yarn_timelineserver_service_name }}.service.keytab</value>
         </property>
 
-    {% endif %}
+    {% else  %}
 
-    <property>
-        <name>yarn.resourcemanager.zk-acl</name>
-        <value>sasl:{{ yarn_resourcemanager_service_name }}:rwcda</value>
-    </property>
+        <property>
+            <name>yarn.timeline-service.http-authentication.simple.anonymous.allowed</name>
+            <value>false</value>
+            <description>
+                Indicates if anonymous requests are allowed by the timeline server when using
+                'simple' authentication.
+            </description>
+        </property>
 
+    {%  endif %}
 
 
 </configuration>
