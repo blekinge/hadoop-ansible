@@ -25,6 +25,16 @@
     noprivate: "{{ not item.private_group | default('yes')}}"
 
 
+- name: "Add system users with shared primary groups to those"
+  loop: "{{system_users}}"
+  when: "not item.private_group"
+  freeipa.ansible_freeipa.ipagroup:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: "{{ item.group }}"
+    action: member
+    user: "{{item.name}}"
+
+
 - name: "Add system users to system groups "
   loop: "{{system_users}}"
   freeipa.ansible_freeipa.ipagroup:

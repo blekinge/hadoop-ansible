@@ -84,7 +84,6 @@ mapreduce_user:
   uid: "{{hadoop_group.gid|int+1}}"
   gid: "{{hadoop_group.gid}}"
   private_group: no
-  extra_groups: ["{{hadoop_group.name}}"]
 
 yarn_user:
   name: "yarn"
@@ -92,7 +91,6 @@ yarn_user:
   uid: "{{hadoop_group.gid|int+2}}"
   gid: "{{hadoop_group.gid}}"
   private_group: no
-  extra_groups: ["{{hadoop_group.name}}"]
 
 zookeeper_user:
   name: "zookeeper"
@@ -100,7 +98,6 @@ zookeeper_user:
   uid: "{{hadoop_group.gid|int+3}}"
   gid: "{{hadoop_group.gid}}"
   private_group: no
-  extra_groups: ["{{hadoop_group.name}}"]
 
 spark_user:
   name: "spark"
@@ -108,7 +105,6 @@ spark_user:
   uid: "{{hadoop_group.gid|int+4}}"
   gid: "{{hadoop_group.gid}}"
   private_group: no
-  extra_groups: ["{{hadoop_group.name}}"]
 
 hive_user:
   name: "hive"
@@ -116,7 +112,6 @@ hive_user:
   uid: "{{hadoop_group.gid|int+5}}"
   gid: "{{hadoop_group.gid}}"
   private_group: no
-  extra_groups: ["{{hadoop_group.name}}"]
 
 rstudio_user:
   name: "rstudio-server"
