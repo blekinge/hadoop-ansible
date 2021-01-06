@@ -1,6 +1,6 @@
 ---
 
-default_project_file_dir: hosts/narchive/group_vars/hostgroup_all/projects/
+default_project_file_dir: hosts/narchive-test/group_vars/hostgroup_all/projects/
 # Append new project names here, to automatically load ./projects/<name>.yml
 
 projects:
