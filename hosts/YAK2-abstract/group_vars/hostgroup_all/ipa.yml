@@ -10,7 +10,6 @@ domain: yak2.net
 #ipa_server above is used when nfs mounting homes, so it should match autohome_nfs_export_range below
 autohome_nfs_export_iprange: "172.16.215.0/24"
 
-ipaclient_force_join: true
 ipaclient_ntp_servers:
   - kac-gway-001.kach.sblokalnet
 
