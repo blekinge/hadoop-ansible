@@ -76,6 +76,13 @@
         mode: '0700'
         state: directory
 
+    - name: NFS firewall opened
+      ansible.posix.firewalld:
+        service: 'nfs'
+        permanent: yes
+        state: enabled
+        zone: "public"
+        immediate: yes
 
     - name: NFS autohome server
       ansible.builtin.systemd:
