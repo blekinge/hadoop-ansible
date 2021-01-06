@@ -11,3 +11,4 @@ syslog_appender_jar:
 hadoop_daemon_logger: "INFO,DRFA,SYSLOG"
 hadoop_security_logger: "INFO,DRFAS,SYSLOG_SECURITY"
 hadoop_audit_logger: "INFO,SYSLOG_AUDIT"
+zookeeper_daemon_logger: "DEBUG, CONSOLE, DAILYROLLINGFILE, SYSLOG"
