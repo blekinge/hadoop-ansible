@@ -10,10 +10,8 @@ domain: kbhpc.kb.dk
 #ipa_server above is used when nfs mounting homes, so it should match autohome_nfs_export_range below
 autohome_nfs_export_iprange: "130.226.228.0/24"
 
-ipaclient_force_join: true
 ipaclient_ntp_servers:
   - 130.225.24.33
-  - 130.226.220.16
 
 
 
