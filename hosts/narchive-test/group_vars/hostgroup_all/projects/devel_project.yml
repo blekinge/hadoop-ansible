@@ -10,10 +10,23 @@ project_ipa:
   users:
     - username: "csr"
       firstname: "Colin"
-      lastname: "Rosenthal"
-      mobile: "+450000000"
+      lastname: "Samuel Rosenthal"
+      mobile: "+4551671287"
       email: "csr@kb.dk"
       # If uid or gid is not specified, use group gid + position in this list.
+    - username: "rbkr"
+      firstname: "Rasmus"
+      lastname: "Bohl Kristensen"
+      mobile: "+4551671363"
+      email: "rbkr@kb.dk"
+
+    - username: "pech"
+      firstname: "Peter"
+      lastname: "Christiansen"
+      mobile: "+4520815945"
+      email: "pech@kb.dk"
+
+
 
 
 queue_mapping: "g:devel:devel_interactive"

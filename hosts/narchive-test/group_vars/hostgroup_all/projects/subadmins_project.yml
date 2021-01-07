@@ -6,15 +6,15 @@ project_ipa:
 #  project_host: proj000.yak2.net
   users:
     - username: abrsadm
-      firstname: Asger
-      lastname: Blekinge
-      mobile: +450000000
+      firstname: "Asger"
+      lastname: "Askov Blekinge"
+      mobile: +4551671277
       email: "abr@kb.dk"
 
     - username: tbasadm
-      firstname: Tony
-      lastname: Brian Albers
-      mobile: +450000000
+      firstname: "Tony"
+      lastname: "Brian Albers"
+      mobile: +4525662383
       email: "tba@kb.dk"
 
 yarn_queue:
