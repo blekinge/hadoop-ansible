@@ -26,6 +26,12 @@ project_ipa:
       mobile: "+4520815945"
       email: "pech@kb.dk"
 
+    - username: "netarkivet"
+      firstname: "Fælles"
+      lastname: "Bruger"
+      mobile: "+4551671287"
+      email: "csr@kb.dk"
+
 
 
 
