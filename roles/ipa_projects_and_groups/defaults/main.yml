@@ -6,4 +6,14 @@ common_usergroups: []
 
 shell: /bin/bash
 
-hdfs_delegation_host:  "{{ groups['hdfs'] | first }}"
+hdfs_delegation_host:  "{{ groups['hostgroup_hdfs'] | first }}"
+
+hbac_services:
+  - crond
+  - gdm
+  - kdm
+  - login
+  - sshd
+  - "{{ rstudio if groups['hostgroup_project_nodes'] | length > 0 else omit}}"
+  - "{{ jupyterhub if groups['hostgroup_project_nodes'] | length > 0 else omit}}"
+#  - screen

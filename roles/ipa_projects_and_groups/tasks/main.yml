@@ -1,6 +1,5 @@
 ---
 
-
 - name: Create default user groups
   loop: "{{default_user_groups}}"
   freeipa.ansible_freeipa.ipagroup:
@@ -11,7 +10,7 @@
 
 
 - name: "Projects setup"
-  loop: "{{projects_ipa}}"
+  loop: "{{projects_ipa}}" # TODO this fails if there is only one project defined. How to fix?
   loop_control:
     loop_var: group
   include_tasks: createGroupAndUsers.yml
@@ -22,15 +21,7 @@
   freeipa.ansible_freeipa.ipahbacsvcgroup:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "user-session"
-    hbacsvc:
-      - crond
-      - gdm
-      - kdm
-      - login
-      - sshd
-      - rstudio
-      - jupyterhub
-#      - screen
+    hbacsvc: "{{hbac_services | reject('eq',omit)}}"
 
 #  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacrule.md
 - name: "Projects HBAC rules"
@@ -48,7 +39,7 @@
     state: present
 
 #  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacrule.md
-- name: "Projects HBAC rules"
+- name: "Subadmin HBAC rules"
   freeipa.ansible_freeipa.ipahbacrule:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{subadmins_project.project_ipa.name}} allowed on all"

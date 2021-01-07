@@ -44,7 +44,7 @@
     user: "{{ user.username }}"
 
 
-- name: user home
+- name: "user home for {{user.username}}: {{ ipaserver_autohome_dir }}/{{ user.username }}"
   delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
   ansible.builtin.file:
     state: directory
@@ -53,7 +53,7 @@
     group: "{{ user.username }}"
     mode: 0750
 
-- name: HDFS user home
+- name: "HDFS user home for {{user.username}}: {{hdfs_home_dir}}/{{ user.username }}"
   become: yes
   become_user: "{{hdfs_user.name}}"
   delegate_to: "{{hdfs_delegation_host}}"
