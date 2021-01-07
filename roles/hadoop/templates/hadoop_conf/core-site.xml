@@ -74,17 +74,17 @@
         </description>
     </property>
 
+    <property>
+        <name>hadoop.zk.address</name>
+        <value>{{ zookeeper_quorum }}</value>
+        <description>Comma separated list of Host:Port pairs. Each corresponds to a ZooKeeper server (e.g.
+            "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002") to be used by the RM for storing RM state.
+        </description>
+    </property>
+
     {% if yarn_high_availability %}
 
         <!-- YARN registry -->
-        <property>
-            <name>hadoop.zk.address</name>
-            <value>{{ zookeeper_quorum }}</value>
-            <description>Comma separated list of Host:Port pairs. Each corresponds to a ZooKeeper server (e.g.
-                "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002") to be used by the RM for storing RM state.
-            </description>
-        </property>
-
         <property>
             <name>hadoop.registry.zk.quorum</name>
             <value>{{ zookeeper_quorum }}</value>
