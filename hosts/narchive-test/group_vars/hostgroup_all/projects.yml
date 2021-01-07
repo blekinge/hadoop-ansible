@@ -5,6 +5,7 @@ default_project_file_dir: hosts/narchive-test/group_vars/hostgroup_all/projects/
 
 projects:
   - name: subadmins_project
+  - name: devel_project
 
 
 default_queue_mapping: "g:{{users_group.name}}:default"

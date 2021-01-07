@@ -21,7 +21,7 @@ yarn_queue:
   name: "default"
   admins: "{{yarn_user.name}} {{subadmins_group.name}}"
   submitters: "{{yarn_user.name}} {{subadmins_group.name}}"
-  capacity: 40
+  capacity: 20
   max_capacity: 100
   minimum_user_limit: 25
   user_limit: 100
