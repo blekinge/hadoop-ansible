@@ -1,6 +1,5 @@
 ---
 
-
 domain: kbhpc.kb.dk
 
 # This is the freeipa host. Set this variable if you need to clients to contact it on another hostname
@@ -13,19 +12,6 @@ autohome_nfs_export_iprange: "130.226.228.0/24"
 ipaclient_ntp_servers:
   - 130.225.24.33
 
-
-
-# This user group is referred to from a lot of roles, so it must be defined
-users_group:
-  name: "narchiveusers"
-  # name: "clusterusers"
-  gid: 20000
-  description: Standard user accounts, for unprivileged users.
-
-
-# default_user_groups are the groups that all new (human) users will be made member of
-default_user_groups:
-  - "{{users_group}}"
 
 ipaadmin_password: !vault |
   $ANSIBLE_VAULT;1.1;AES256

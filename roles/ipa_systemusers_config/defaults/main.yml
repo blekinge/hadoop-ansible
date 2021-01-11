@@ -36,32 +36,27 @@ hdfs_home_dir: /user
 
 #Users and groups
 hadoop_group:
-  name: "hadoop"
-  gid: 11000
+  name: "{{user_prefix}}hadp"
+  gid: "{{cluster_id_prefix}}200"
   description: Hadoop System Services
 
 
+subadmins_group:
+  name: "{{user_prefix}}subadm"
+  gid: "{{cluster_id_prefix}}100"
+  description: For daily administration of users and hosts
+
+
 users_group:
-  name: "clusterusers"
-  gid: 20000
+  name: "{{user_prefix}}users"
+  gid: "{{cluster_id_prefix}}300"
   description: Standard user accounts, for unprivileged users.
 
 
-systemservices_group:
-  name: "systemservices"
-  gid: 15000
-  description: Standard user accounts, for non-hadoop services
-
-
-subadmins_group:
-  name: "subadmins"
-  gid: 12000
-  description: For daily administration of users and hosts
 
 #These are the user groups that are automatically created
 standard_user_groups:
   - "{{ hadoop_group }}"
-  - "{{ systemservices_group }}"
   - "{{ subadmins_group }}"
   - "{{ users_group }}"
 
@@ -71,63 +66,61 @@ default_user_groups:
 
 
 hdfs_user:
-  name: "hdfs"
-  group: "hdfs"
-  uid: 11200
-  gid: 11200
+  name: "{{user_prefix}}hdfs"
+  group: "{{user_prefix}}hdfs"
+  uid: "{{hadoop_group.gid|int+1}}"
+  gid: "{{hadoop_group.gid|int+1}}"
   private_group: yes
   extra_groups: [ "{{hadoop_group.name}}" ]
 
 mapreduce_user:
-  name: "mapred"
-  group: "{{hadoop_group.name}}"
-  uid: "{{hadoop_group.gid|int+1}}"
-  gid: "{{hadoop_group.gid}}"
-  private_group: no
-
-yarn_user:
-  name: "yarn"
+  name: "{{user_prefix}}mapr"
   group: "{{hadoop_group.name}}"
   uid: "{{hadoop_group.gid|int+2}}"
   gid: "{{hadoop_group.gid}}"
   private_group: no
 
-zookeeper_user:
-  name: "zookeeper"
+yarn_user:
+  name: "{{user_prefix}}yarn"
   group: "{{hadoop_group.name}}"
   uid: "{{hadoop_group.gid|int+3}}"
   gid: "{{hadoop_group.gid}}"
   private_group: no
 
-spark_user:
-  name: "spark"
+zookeeper_user:
+  name: "{{user_prefix}}zkpr"
   group: "{{hadoop_group.name}}"
   uid: "{{hadoop_group.gid|int+4}}"
   gid: "{{hadoop_group.gid}}"
   private_group: no
 
-hive_user:
-  name: "hive"
+spark_user:
+  name: "{{user_prefix}}sprk"
   group: "{{hadoop_group.name}}"
   uid: "{{hadoop_group.gid|int+5}}"
   gid: "{{hadoop_group.gid}}"
   private_group: no
 
+hive_user:
+  name: "{{user_prefix}}hive"
+  group: "{{hadoop_group.name}}"
+  uid: "{{hadoop_group.gid|int+6}}"
+  gid: "{{hadoop_group.gid}}"
+  private_group: no
+
 rstudio_user:
-  name: "rstudio-server"
-  group: "rstudio-server"
-  uid: "{{systemservices_group.gid|int+4}}"
-  gid: "{{systemservices_group.gid|int+4}}"
+  name: "{{user_prefix}}rstd"
+  group: "{{user_prefix}}rstd"
+  uid: "{{hadoop_group.gid|int+7}}"
+  gid: "{{hadoop_group.gid|int+7}}"
   private_group: yes
-  extra_groups: ["{{systemservices_group.name}}"]
 
 jupyterhub_user:
-  name: "jupyterhub"
-  group: "jupyterhub"
-  uid: "{{systemservices_group.gid|int+5}}"
-  gid: "{{systemservices_group.gid|int+5}}"
+  name: "{{user_prefix}}jhub"
+  group: "{{user_prefix}}jhub"
+  uid: "{{hadoop_group.gid|int+8}}"
+  gid: "{{hadoop_group.gid|int+8}}"
   private_group: yes
-  extra_groups: ["{{systemservices_group.name}}"]
 
 system_users:
   - "{{hdfs_user}}"
