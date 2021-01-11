@@ -614,7 +614,6 @@
     </property>
 
 
-
     {% if yarn_high_availability %}
 
         <property>
@@ -677,6 +676,12 @@
         {% endfor %}
 
     {% else %}
+
+
+        <property>
+            <name>yarn.resourcemanager.ha.enabled</name>
+            <value>false</value>
+        </property>
 
         <property>
             <name>yarn.resourcemanager.hostname</name>
