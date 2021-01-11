@@ -4,10 +4,9 @@
   hosts: hostgroup_all
   gather_facts: yes
 
-# The order here is important
 
+# Spark
 
-# HDFS HA requires zookeepers
-- hosts: hostgroup_zookeeper_servers
+- hosts: hostgroup_spark_history_servers
   roles:
-    - role: zookeeper_server
+    - role: spark_history_server

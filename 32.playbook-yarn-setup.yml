@@ -7,7 +7,18 @@
 # The order here is important
 
 
-# HDFS HA requires zookeepers
-- hosts: hostgroup_zookeeper_servers
+# YARN
+
+- hosts: hostgroup_yarn_timeline_servers
   roles:
-    - role: zookeeper_server
+    - role: hadoop_yarn_timeline_server
+
+
+- hosts: hostgroup_yarn_node_managers
+  roles:
+    - role: hadoop_yarn_node_manager
+
+
+- hosts: hostgroup_yarn_resource_managers
+  roles:
+    - role: hadoop_yarn_resource_manager
