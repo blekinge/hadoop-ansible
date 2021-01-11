@@ -189,13 +189,13 @@ hostgroup_all:
           children:
             hostgroup_mapreduce_history_servers:
               hosts: # There can be only one here
-                narchive-t-yarn001.kb.dk:
+                narchive-t-yarn01.kb.dk:
 
         hostgroup_spark:
           children:
             hostgroup_spark_history_servers:
               hosts: # There can be only one here
-                narchive-t-yarn001.kb.dk:
+                narchive-t-yarn01.kb.dk:
 
         hostgroup_project_nodes:
           hosts:
