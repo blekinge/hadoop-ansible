@@ -1,3 +1,7 @@
 ---
 dependencies:
   - role: hadoop
+    vars:
+      install_yarn: true
+      install_mapreduce: false
+      install_hdfs: false

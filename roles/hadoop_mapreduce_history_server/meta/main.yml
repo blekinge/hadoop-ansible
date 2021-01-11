@@ -2,4 +2,8 @@
 dependencies:
   - role: java_1_8_installed
   - role: hadoop
+    vars:
+      install_yarn: false
+      install_mapreduce: true
+      install_hdfs: false
   - role: firewalled

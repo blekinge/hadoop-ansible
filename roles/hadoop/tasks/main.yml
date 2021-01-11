@@ -69,6 +69,7 @@
         force: true
 
     - name: Install fixed container-executor
+      when: install_yarn
       ansible.builtin.copy:
         src: files/container-executor
         dest: "{{ hadoop_home }}/bin/"
@@ -101,6 +102,7 @@
       with_fileglob:
         - "templates/profile.d/*"
     - name: Upload Hadoop YARN systemd services
+      when: install_yarn
       ansible.builtin.template:
         src: "{{ item }}"
         dest: /etc/systemd/system/
@@ -110,6 +112,7 @@
       with_fileglob:
         - "templates/systemd/yarn/*"
     - name: Upload Hadoop HDFS systemd services
+      when: install_hdfs
       ansible.builtin.template:
         src: "{{ item }}"
         dest: /etc/systemd/system/
@@ -119,6 +122,7 @@
       with_fileglob:
         - "templates/systemd/hdfs/*"
     - name: Upload Hadoop Mapreduce systemd services
+      when: install_mapreduce
       ansible.builtin.template:
         src: "{{ item }}"
         dest: /etc/systemd/system/

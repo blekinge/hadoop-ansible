@@ -1,6 +1,9 @@
 ---
 #Flag if you just need to depend on this role to get variables
 install_hadoop: true
+install_hdfs: true
+install_yarn: true
+install_mapreduce: true
 
 hdfs_high_availability: false
 
