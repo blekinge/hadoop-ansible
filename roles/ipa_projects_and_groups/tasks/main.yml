@@ -18,9 +18,10 @@
 
 - name: Create HBAC services
   throttle: 1
+  loop: "{{hbac_services | reject('eq',omit)}}"
   freeipa.ansible_freeipa.ipahbacsvc:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{hbac_services | reject('eq',omit)}}"
+    name: "{{item}}"
     state: present
 
 - name: Create HBAC service group
