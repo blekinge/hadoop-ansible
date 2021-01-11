@@ -16,6 +16,13 @@
   include_tasks: createGroupAndUsers.yml
 
 
+- name: Create HBAC services
+  throttle: 1
+  freeipa.ansible_freeipa.ipahbacsvc:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: "{{hbac_services | reject('eq',omit)}}"
+    state: present
+
 - name: Create HBAC service group
   throttle: 1
   freeipa.ansible_freeipa.ipahbacsvcgroup:
