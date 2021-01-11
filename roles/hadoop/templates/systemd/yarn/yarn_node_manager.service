@@ -15,7 +15,7 @@ ExecStartPre=+/usr/bin/chmod 0755 {{ hadoop_pid_dir }}/{{ yarn_user.name }} {{ h
 ExecStartPre=+/usr/bin/chmod 0777 {{ yarn_application_logs_dir }}
 # Run ExecStart with User={{ yarn_user.name }} / Group={{ yarn_user.group }}
 ExecStart=/usr/local/bin/hadoop-invoker.sh yarn yarn-env.sh --daemon start nodemanager
-PIDFile={{ hadoop_pid_dir }}/{{ yarn_user.name }}/hadoop-yarn-nodemanager.pid
+PIDFile={{ hadoop_pid_dir }}/{{ yarn_user.name }}/hadoop-{{ yarn_user.name }}-nodemanager.pid
 
 [Install]
 WantedBy=multi-user.target

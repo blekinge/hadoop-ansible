@@ -13,7 +13,7 @@ ExecStartPre=+/usr/bin/mkdir -p {{ hadoop_pid_dir }}/{{ mapreduce_user.name }} {
 ExecStartPre=+/usr/bin/chown -R {{ mapreduce_user.name }}:{{ mapreduce_user.group }} {{ hadoop_pid_dir }}/{{ mapreduce_user.name }} {{ hadoop_log_dir }}/{{ mapreduce_user.name }}
 # Run ExecStart with User={{ mapreduce_user.name }} / Group={{ mapreduce_user.group }}
 ExecStart=/usr/local/bin/hadoop-invoker.sh mapred mapred-env.sh --daemon start historyserver
-PIDFile={{ hadoop_pid_dir }}/{{ mapreduce_user.name }}/hadoop-mapred-historyserver.pid
+PIDFile={{ hadoop_pid_dir }}/{{ mapreduce_user.name }}/hadoop-{{ mapreduce_user.name }}-historyserver.pid
 
 [Install]
 WantedBy=multi-user.target
