@@ -50,9 +50,6 @@
   shell:
     cmd: rstudio-server stop
 
-- name: check if rstudio-server user have been created
-
-
 - name: remove local rstudio-server user
   ansible.builtin.user:
     name: rstudio-server
