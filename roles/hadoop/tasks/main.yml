@@ -10,7 +10,7 @@
         owner: "root"
         group: "{{ hadoop_group.name }}"
         state: directory
-        mode: 0755
+        mode: 0775
       with_items:
         - "{{ hadoop_log_dir }}"
         - "{{hadoop_tmp}}"
