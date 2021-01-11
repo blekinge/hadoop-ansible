@@ -7,6 +7,7 @@
 #
 - name: oVirt ansible collection
   hosts: hostgroup_project_nodes
+  when: "'hostgroup_VMs' in {{ group_names }}"
   gather_facts: False
 #  serial: 1 # Only create and run 1 at a time.
 #  # This is nessesary to set the network up correctly, as otherwise the temp ips will clash
