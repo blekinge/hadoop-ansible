@@ -227,7 +227,6 @@
         <name>yarn.nodemanager.address</name>
         <value>0.0.0.0:{{ yarn_nodemanager_port }}</value>
         <description>The address of the container manager in the NM.</description>
-        <value>${yarn.nodemanager.hostname}:0</value>
     </property>
     <property>
         <name>yarn.nodemanager.bind-host</name>
