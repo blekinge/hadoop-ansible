@@ -15,8 +15,6 @@
     # So this is nessesary to ensure that what should have been owned by hadoop is now owned by root.
     hadoop_group:
       name: root
-    systemservices_group:
-      name: root
   roles:
     - role: ssl_certificates_recipient #Upload ssl certificates to host
 
