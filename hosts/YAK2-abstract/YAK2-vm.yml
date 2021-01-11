@@ -17,7 +17,7 @@ hostgroup_all:
           hostname: "{{shortname}}.{{domain}}"
 
         rlog001.adm.yak2.net:
-          host_disks:
+          ovirt_disks:
             - name: Disk1
               size: 100GiB
               mount: "{{log_folder}}"
@@ -36,14 +36,14 @@ hostgroup_all:
           memory: 8GiB # Set memory
           cpu_sockets: 4 # Set cpus
 
-          host_disks: # This is how to create additional disks
+          ovirt_disks: # This is how to create additional disks
             - name: HDFS
               size: 1024GiB
               mount: /data/sdb1
 
         proj[000:003].adm.yak2.net:
           comment: Project node
-#          host_disks:
+#          ovirt_disks:
 #            - name: data
 #              size: 10GiB
 #              mount: /data/sdb1

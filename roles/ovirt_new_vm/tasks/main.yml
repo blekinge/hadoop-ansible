@@ -19,8 +19,8 @@
   vars:
     mount: "{{item.mount}}"
     device: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_{{(attached_disks.results[idx]['id'])[0:20]}}"
-  when: host_disks is defined
-  loop: "{{host_disks}}"
+  when: ovirt_disks is defined
+  loop: "{{ovirt_disks}}"
   loop_control:
     index_var: idx
 

@@ -107,7 +107,7 @@ VMs: # This is the group of VMs created by 10.playbook-ovirt-vms.yml
       memory: 8GiB # Set memory
       cpu_sockets: 4 # Set cpus
 
-      host_disks: # This is how to create additional disks
+      ovirt_disks: # This is how to create additional disks
         - name: HDFS
           size: 1024GiB
           mount: /data/sdb1

@@ -121,8 +121,8 @@
         var: new_vm
 
     - name: "create extra disks for VMs"
-      when: host_disks is defined and new_vm.changed
-      loop: "{{ host_disks }}"
+      when: ovirt_disks is defined and new_vm.changed
+      loop: "{{ ovirt_disks }}"
       register: attached_disks
       ovirt.ovirt.ovirt_disk:
         auth: "{{ ovirt_auth }}"
