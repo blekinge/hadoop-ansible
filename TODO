@@ -34,7 +34,7 @@
 
 [X] SSL certs common parent
 
-[ ] Real SSL certs
+[/] Real SSL certs
 
 [-] Firewalld open ports should only be open to select subnets, not ALL
 
@@ -68,11 +68,11 @@ Xpra X2go afløser. Mere avanceret. Modulopbygget.
 
 
 
-[ ] Merge duplication of filesystem code in ovirtvm and disks_ready
+[WontFix] Merge duplication of filesystem code in ovirtvm and disks_ready
 
-[/] HDFS low/high availability
+[X] HDFS low/high availability
 
-[ ] YARN low/high availability
+[X] YARN low/high availability
 
 [ ]
 

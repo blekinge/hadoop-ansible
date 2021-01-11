@@ -12,6 +12,18 @@
   with_fileglob:
     - "templates/yum.repos.d/*"
 
+- name: Find sb-* yum repos
+  ansible.builtin.find:
+    paths: /etc/yum.repos.d/
+    patterns: 'sb-*.repo'
+  register: sb_repo_files
+
+- name: enable sb-* repos
+  ansible.builtin.replace:
+    path: "{{item.path}}"
+    regexp: '^enabled=0$'
+    replace: "enabled=1"
+  loop: "{{sb_repo_files.files}}"
 
 - name: Install Tools
   ansible.builtin.package:
