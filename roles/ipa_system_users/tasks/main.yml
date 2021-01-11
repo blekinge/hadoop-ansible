@@ -37,6 +37,7 @@
 
 - name: "Add system users to system groups "
   loop: "{{system_users}}"
+  when: "item.extra_groups is defined"
   freeipa.ansible_freeipa.ipagroup:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{ item.extra_groups }}"
