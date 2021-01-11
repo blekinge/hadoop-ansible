@@ -6,8 +6,8 @@
 #    En projekt maskine
 #
 - name: oVirt ansible collection
-  hosts: hostgroup_project_nodes
-  when: "'hostgroup_VMs' in {{ group_names }}"
+  #  https://docs.ansible.com/ansible/latest/user_guide/intro_patterns.html#common-patterns
+  hosts: hostgroup_project_nodes:&hostgroup_VMs
   gather_facts: False
 #  serial: 1 # Only create and run 1 at a time.
 #  # This is nessesary to set the network up correctly, as otherwise the temp ips will clash
