@@ -1,3 +1,5 @@
 ---
 dependencies:
   - role: spark
+    vars:
+      spark_config_path: "/etc/spark/conf"

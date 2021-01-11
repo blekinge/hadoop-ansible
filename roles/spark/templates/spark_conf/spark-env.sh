@@ -50,6 +50,9 @@
 #SPARK_YARN_DIST_ARCHIVES="" #Comma separated list of archives to be distributed with the job.
 
 export SPARK_HOME="{{spark_home}}"
+
+export SPARK_CONF_DIR="{{spark_config_path}}"
+
 # Where log files are stored.(Default:${SPARK_HOME}/logs)
 export SPARK_LOG_DIR="{{spark_log_dir}}/$USER"
 
@@ -64,6 +67,7 @@ SPARK_NICENESS=0
 
 export HADOOP_HOME="{{current_hadoop_home}}"
 export HADOOP_CONF_DIR="{{hadoop_config_path}}"
+
 
 # The java implementation to use.
 export JAVA_HOME="{{jvm_home}}"

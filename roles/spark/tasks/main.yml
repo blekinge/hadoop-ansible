@@ -6,7 +6,7 @@
     owner: "root"
     group: "{{ spark_user.group }}"
     state: directory
-    mode: 0755
+    mode: 0775
   with_items:
     - "{{ spark_log_dir }}"
     - "{{ spark_tmp }}"
