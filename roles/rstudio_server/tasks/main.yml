@@ -34,7 +34,7 @@
         url: "{{rstudio_download_url}}/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','')}}-x86_64.rpm"
         dest: /tmp/rstudio.rpm
 
-- name: "Get version {{ rstudio_version_fixed }}  of RStudio Server"
+- name: "Get version {{ rstudio_version_fixed }} of RStudio Server"
   ansible.builtin.get_url:
     url: "{{rstudio_download_url}}/rstudio-server-rhel-{{ rstudio_version_fixed }}-x86_64.rpm"
     dest: /tmp/rstudio.rpm
@@ -49,6 +49,9 @@
 - name: Stop rstudio server if running
   shell:
     cmd: rstudio-server stop
+
+- name: check if rstudio-server user have been created
+
 
 - name: remove local rstudio-server user
   ansible.builtin.user:
