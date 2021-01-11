@@ -76,6 +76,14 @@ Xpra X2go afløser. Mere avanceret. Modulopbygget.
 
 [ ]
 
+[ ] service aliases in kerberos/freeipa
+
+[X] new users email addresses
+
+[ ] Custom system user usernames
+narchive-t: nat-
+narchive-p: nap-
+narcana: nc-
 
 Dask is teh new multicore framework for python
 Dask works on HPC, kubernetes and YARN
