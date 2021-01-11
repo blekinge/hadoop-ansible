@@ -235,7 +235,7 @@ export HADOOP_DAEMON_ROOT_LOGGER="${HADOOP_DAEMON_ROOT_LOGGER:-{{hadoop_daemon_l
 # defaults for the NN and 2NN override this by default.)
 # Java property: hadoop.security.logger
 # export HADOOP_SECURITY_LOGGER=INFO,NullAppender
-export HADOOP_SECURITY_LOGGER={{hadoop_security_logger | quote}}
+#export HADOOP_SECURITY_LOGGER={{hadoop_security_logger | quote}}
 
 
 # Default process priority level
