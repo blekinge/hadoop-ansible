@@ -7,7 +7,7 @@
       copy:
         backup: yes
         src: /etc/pam.d/login
-        dest: /etc/pam.d/jupyterhub
+        dest: "/etc/pam.d/{{jupyterhub_user.name}}"
         remote_src: yes
 
     - name: Install systemd login permissions for jupyter
@@ -27,7 +27,16 @@
       loop:
         - dbus
         - systemd-logind
-#
+
+      #  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacsvc.md
+      - name: "Projects HBAC service definitions"
+        delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
+        run_once: true
+        freeipa.ansible_freeipa.ipahbacsvc:
+          ipaadmin_password: "{{ipaadmin_password}}"
+          name: "{{jupyterhub_user.name}}" #Name should match name in /etc/pam.d/ (jupyterhub)
+          description: "login to the {{jupyterhub_user.name}} process"
+  #
 ## SSL
 #- name: create jupyterhub ssl certificate
 #  block:

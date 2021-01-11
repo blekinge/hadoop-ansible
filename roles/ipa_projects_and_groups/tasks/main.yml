@@ -16,19 +16,11 @@
   include_tasks: createGroupAndUsers.yml
 
 
-- name: Create HBAC services
-  throttle: 1
-  loop: "{{hbac_services | reject('eq',omit)}}"
-  freeipa.ansible_freeipa.ipahbacsvc:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{item}}"
-    state: present
-
 - name: Create HBAC service group
   throttle: 1
   freeipa.ansible_freeipa.ipahbacsvcgroup:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: "user-session"
+    name: "{{user_prefix}}user-session"
     hbacsvc: "{{hbac_services | reject('eq',omit)}}"
 
 #  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacrule.md
@@ -43,7 +35,7 @@
     name: "{{group.name}} allowed on {{group.project_host}}"
     host: "{{group.project_host}}"
     group: "{{group.name}}"
-    hbacsvcgroup: "user-session"
+    hbacsvcgroup: "{{user_prefix}}user-session"
     state: present
 
 #  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacrule.md
@@ -53,5 +45,5 @@
     name: "{{subadmins_project.project_ipa.name}} allowed on all"
     group: "{{subadmins_project.project_ipa.name}}"
     hostcategory: "all"
-    hbacsvcgroup: "user-session"
+    hbacsvcgroup: "{{user_prefix}}user-session"
     state: present

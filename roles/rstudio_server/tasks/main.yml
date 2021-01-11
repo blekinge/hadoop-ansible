@@ -62,7 +62,7 @@
   ansible.builtin.copy:
     backup: yes
     src: /etc/pam.d/login
-    dest: /etc/pam.d/rstudio
+    dest: "/etc/pam.d/{{rstudio_user.name}}"
     remote_src: yes
 
 - name: Restrict users to humans
@@ -175,5 +175,5 @@
   run_once: true
   freeipa.ansible_freeipa.ipahbacsvc:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: "rstudio" #Name should match name in /etc/pam.d/ (rstudio)
-    description: "login to the rstudio-server process"
+    name: "{{rstudio_user.name}}" #Name should match name in /etc/pam.d/ (rstudio)
+    description: "login to the {{rstudio_user.name}} process"
