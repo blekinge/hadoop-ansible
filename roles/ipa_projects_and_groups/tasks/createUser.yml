@@ -24,6 +24,8 @@
 
     homedir: "{{ ipaclient_autohome_dir }}/{{ user.username }}"
     shell: "{{shell}}"
+    email: "{{user.email | default(omit)}}"
+
     password: "{{newPassword.stdout}}"
     update_password: on_create
   register: ipauser_result
