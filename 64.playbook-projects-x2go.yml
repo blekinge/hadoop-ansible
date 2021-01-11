@@ -6,7 +6,7 @@
   hosts: hostgroup_all
   gather_facts: yes
 
-- name: Rstudio/Jupyterhub
+- name: X2go
   hosts: hostgroup_project_nodes
   roles:
     - role: x2go

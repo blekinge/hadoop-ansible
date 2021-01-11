@@ -5,7 +5,10 @@
     state: present
     name:
       - x2goserver
-      - mate-desktop mate-terminal mate-settings-daemon mate-themes #Desktop environment
+      - mate-desktop
+      - mate-terminal
+      - mate-settings-daemon
+      - mate-themes #Desktop environment
       - caja # nautilus
       - pluma #gedit
       - atril #evince
