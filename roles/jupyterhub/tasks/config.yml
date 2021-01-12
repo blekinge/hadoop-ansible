@@ -1,0 +1,33 @@
+- name: Upload Jupyter systemd services
+  ansible.builtin.template:
+    src: "templates/systemd/jupyterhub.service"
+    dest: /etc/systemd/system/
+    mode: 0644
+    owner: "root"
+    group: "root"
+
+- name: Create jupyterhub config directory
+  ansible.builtin.file:
+    path: /etc/jupyterhub/
+    mode: 0755
+    state: directory
+    owner: "root"
+    group: "root"
+
+- name: Upload Jupyterhub config
+  ansible.builtin.template:
+    src: templates/jupyterhub/jupyterhub_config.py
+    dest: /etc/jupyterhub/jupyterhub_config.py
+    mode: 0644
+    owner: "root"
+    group: "root"
+
+- name: profile.d
+  ansible.builtin.template:
+    src: "{{item}}"
+    dest: /etc/profile.d/
+    mode: 0644
+    owner: "root"
+    group: "root"
+  with_fileglob:
+    - templates/profile.d/*

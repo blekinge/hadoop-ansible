@@ -1,0 +1,45 @@
+---
+
+
+# SSL
+- name: create jupyterhub ssl certificate
+  block:
+
+    # TODO use real certificates...
+    - name: Generate RSA key with password
+      command:
+        "openssl genrsa -out {{ssl_cert_dir}}/jupyterhub.key -passout pass:{{jupyterhub_ssl_password}} -aes256 4096"
+      args:
+        creates: "{{ssl_cert_dir}}/jupyterhub.key"
+
+    - name: Create a certificate request (jupyterhub.csr) for our org and server from the RSA key (jupyterhub.key)
+      command:
+        "openssl req -sha256 -passin pass:{{jupyterhub_ssl_password}} -subj '/C=DK/ST=Aarhus/L=Springfield/O=Royal\ Library/CN={{ansible_fqdn}}' -new -key {{ssl_cert_dir}}/jupyterhub.key -out {{ssl_cert_dir}}/jupyterhub.csr"
+      args:
+        creates: "{{ssl_cert_dir}}/jupyterhub.csr"
+
+    - name: Create the Certificate Key (jupyterhub.cert.key) from the RSA key
+      command:
+        "openssl rsa -passin pass:{{jupyterhub_ssl_password}} -in {{ssl_cert_dir}}/jupyterhub.key -out {{ssl_cert_dir}}/jupyterhub.cert.key"
+      args:
+        creates: "{{ssl_cert_dir}}/jupyterhub.cert.key"
+
+
+    - name: Create a Certificate (jupyterhub.cert) from the certificate request (jupyterhub.csr) and the certificate key (jupyterhub.cert.key)
+      command:
+        "openssl x509 -passin pass:{{jupyterhub_ssl_password}} -in {{ssl_cert_dir}}/jupyterhub.csr -out {{ssl_cert_dir}}/jupyterhub.cert -req -signkey {{ssl_cert_dir}}/jupyterhub.cert.key"
+      args:
+        creates: "{{ssl_cert_dir}}/jupyterhub.cert"
+
+    - name: permissions for jupyterhub certificates
+      ansible.builtin.file:
+        state: file
+        path: "{{item}}"
+        owner: "{{ jupyterhub_user.name }}"
+        group: "{{ jupyterhub_user.group }}"
+        mode: 0500
+      loop:
+        - "{{ssl_cert_dir}}/jupyterhub.key"
+        - "{{ssl_cert_dir}}/jupyterhub.csr"
+        - "{{ssl_cert_dir}}/jupyterhub.cert.key"
+        - "{{ssl_cert_dir}}/jupyterhub.cert"

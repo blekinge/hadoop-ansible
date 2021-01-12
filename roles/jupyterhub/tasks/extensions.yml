@@ -1,0 +1,29 @@
+---
+
+
+- name: Install PyYAML dependency without conflicting with OS
+  ansible.builtin.pip:
+    name: "PyYAML"
+    executable: pip3
+    state: latest
+    extra_args: "--ignore-installed"
+  loop: "{{jupyterhub_pip_extensions}}"
+
+- name: Install extra jupyter extensions
+  ansible.builtin.pip:
+    name: "{{item}}"
+    executable: pip3
+    state: latest
+  loop: "{{jupyterhub_pip_extensions}}"
+
+
+- name: Install jupyterlabs extensions
+  shell:
+    cmd: "/usr/local/bin/jupyter-labextension install {{item | quote }} --no-build"
+  loop: "{{jupyterlabs_npm_extensions}}"
+
+
+- name: Enable jupyterlabs extensions
+  shell:
+    cmd: "/usr/local/bin/jupyter lab build"
+    # Build extensions (must be done to activate extensions since --no-build is used above)

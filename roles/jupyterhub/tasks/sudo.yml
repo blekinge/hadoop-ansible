@@ -1,0 +1,54 @@
+- name: "jupyterhub Sudo rules"
+  delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
+  run_once: true # Since the resulting sudo rule works on all hosts, just execute this once
+  block:
+    - include_tasks: kinit_admin.yml
+
+    # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudocmd.md
+    - name: "sudo command /usr/bin/sudospawner"
+      freeipa.ansible_freeipa.ipasudocmd:
+        ipaadmin_password: "{{ipaadmin_password}}"
+        name: /usr/bin/sudospawner
+        state: present
+
+    - name: "sudo command /usr/local/bin/sudospawner"
+      freeipa.ansible_freeipa.ipasudocmd:
+        ipaadmin_password: "{{ipaadmin_password}}"
+        name: /usr/local/bin/sudospawner # #Sometimes it gets installed in /usr/local
+        state: present
+
+    # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudocmdgroup.md
+    - name: "Create sudo command group {{jupyterhub_user.name}}_cmdgroup"
+      freeipa.ansible_freeipa.ipasudocmdgroup:
+        ipaadmin_password: "{{ipaadmin_password}}"
+        name: "{{jupyterhub_user.name}}_cmdgroup"
+        action: sudocmdgroup
+
+    # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudocmdgroup.md
+    - name: "Add commands to {{jupyterhub_user.name}}_cmdgroup"
+      freeipa.ansible_freeipa.ipasudocmdgroup:
+        ipaadmin_password: "{{ipaadmin_password}}"
+        name: "{{jupyterhub_user.name}}_cmdgroup"
+        sudocmd:
+          - /usr/bin/sudospawner
+          - /usr/local/bin/sudospawner
+        action: member
+
+    # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudorule.md
+    - name: "{{jupyterhub_user.name}} Sudo rule"
+      freeipa.ansible_freeipa.ipasudorule:
+        ipaadmin_password: "{{ipaadmin_password}}"
+        name: "{{jupyterhub_user.name}}_sudorule"
+        hostcategory: all
+        runasusercategory: all
+        runasgroupcategory: all
+        sudooption:
+          - '!requiretty'
+          - '!authenticate'
+        user:
+          - "{{jupyterhub_user.name}}"
+        allow_sudocmdgroup:
+          - "{{jupyterhub_user.name}}_cmdgroup"
+
+  always:
+    - include_tasks: kdestroy.yml

@@ -1,0 +1,39 @@
+- name: Install NodeJS and Python
+  ansible.builtin.package:
+    state: present
+    name:
+      - npm
+      - nodejs
+      - python3
+      - python3-pip
+
+#https://docs.ansible.com/ansible/2.3/npm_module.html
+- name: Install npm dependencies
+  ansible.builtin.npm:
+    name: "{{item}}"
+    global: yes
+  loop: "{{npm_dependencies}}"
+
+#https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
+- name: Update python pip package
+  ansible.builtin.pip:
+    name: pip
+    executable: pip3
+    state: latest
+
+- name: Install jupyterhub by pip
+  ansible.builtin.pip:
+    name: "{{item}}"
+    executable: pip3
+    state: latest
+  loop: "{{jupyterhub_base_packages}}"
+
+
+
+- name: Install sudospawner for jupyter
+  ansible.builtin.template:
+    src: "templates/bin/sudospawner-singleuser"
+    dest: /usr/local/bin/
+    mode: 0755
+    owner: "root"
+    group: "root"

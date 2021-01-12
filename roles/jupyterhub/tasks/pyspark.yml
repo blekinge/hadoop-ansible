@@ -1,0 +1,15 @@
+- name: Create jupyter kernel directory
+  ansible.builtin.file:
+    path: /usr/local/share/jupyter/kernels/pyspark/
+    mode: 0755
+    state: directory
+    owner: "root"
+    group: "root"
+
+- name: Install jupyter kernel config
+  ansible.builtin.template:
+    src: templates/kernels/pyspark.json
+    dest: /usr/local/share/jupyter/kernels/pyspark/kernel.json
+    mode: 0644
+    owner: "root"
+    group: "root"
