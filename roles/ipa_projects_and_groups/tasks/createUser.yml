@@ -55,6 +55,15 @@
     group: "{{ user.username }}"
     mode: 0750
 
+- name: "Autohomes on freeipa server"
+  delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
+  run_once: true
+  ansible.builtin.file:
+    state: link
+    src: "{{ ipaclient_autohome_dir }}"
+    path: "{{ ipaserver_autohome_dir }}"
+
+
 - name: "HDFS user home for {{user.username}}: {{hdfs_home_dir}}/{{ user.username }}"
   become: yes
   become_user: "{{hdfs_user.name}}"

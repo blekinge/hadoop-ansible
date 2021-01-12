@@ -59,9 +59,9 @@ Xpra X2go afløser. Mere avanceret. Modulopbygget.
 
 [ ] RStudio SSL via apache proxy https://support.rstudio.com/hc/en-us/articles/200552326-Running-RStudio-Server-with-a-Proxy
 
-[ ] Bareos
+[ ] Bareos / Home Dir logging per project
 
-[ ] Freeipa
+[\] Freeipa
 
 [ ] Gway
 
