@@ -278,6 +278,6 @@
   run_once: true
   freeipa.ansible_freeipa.ipahbacsvc:
     ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{jupyterhub.name}}" #Name should match name in /etc/pam.d/ (jupyterhub)
-    description: "Login to the {{jupyterhub.name}} webservice"
+    name: "{{jupyterhub_user.name}}" #Name should match name in /etc/pam.d/ (jupyterhub)
+    description: "Login to the {{jupyterhub_user.name}} webservice"
     state: present
