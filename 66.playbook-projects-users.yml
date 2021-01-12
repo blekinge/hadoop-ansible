@@ -17,22 +17,3 @@
   collections:
     - freeipa.ansible_freeipa
 
-
-
-#    TODO Home Dir logging per project
-
-
-#    En YARN queue
-- hosts: hostgroup_yarn_timeline_servers
-  serial: 1
-  roles:
-    - role: hadoop_yarn_timeline_server
-- hosts: hostgroup_yarn_node_managers
-  serial: 1
-  roles:
-    - role: hadoop_yarn_node_manager
-- hosts: hostgroup_yarn_resource_managers
-  serial: 1
-  roles:
-    - role: hadoop_yarn_resource_manager
-
