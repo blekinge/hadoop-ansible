@@ -5,7 +5,7 @@ dependencies:
     vars:
       install_yarn: false
       install_mapreduce: false
-      install_hdfs: true
+      install_hdfs: false
   - role: firewalled
   - role: hive
   - role: syslog_config
