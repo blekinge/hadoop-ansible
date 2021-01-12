@@ -1,18 +1,28 @@
 ---
-#Flag if you just need to depend on this role to get variables
+#Flags if you just need to depend on this role to get variables
+
+#If true, the hadoop binaries is installed
 install_hadoop: true
+# If true, the hadoop system is configured on this node
+configure_hadoop: true
+# If true, the systemd services for HDFS is installed
 install_hdfs: true
+# If true, the systemd services for YARN is installed
 install_yarn: true
+# If true, the systemd services for MapReduce is installed
 install_mapreduce: true
 
-hdfs_high_availability: false
+# Should hdfs be configured for high availability
+hdfs_high_availability: "{{ groups['hostgroup_hdfs_namenodes'] | length > 1 }}"
 
-yarn_high_availability: false
+# Should yarn be configured for high availability
+yarn_high_availability: "{{ groups['hostgroup_yarn_resource_managers'] | length > 1 }}"
 
 
+#If true the cluster is set up for kerberos authentication. TODO test cluster without...
 kerberos_authentication: true
 
-
+# If true, every redeploy of name/data/journal nodes wipes HDFS
 wipe_hdfs: false
 
 

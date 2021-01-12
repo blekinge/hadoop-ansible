@@ -37,9 +37,6 @@ hostgroup_all:
         narchive-t-admn01.kb.dk:
 
     hostgroup_hadoop_nodes:
-      vars:
-        hdfs_high_availability: false
-        yarn_high_availability: false
       children:
 
         hostgroup_hdfs:

@@ -42,8 +42,9 @@
         dest: "{{current_hadoop_home}}"
         state: link
 
-
-
+- name: Configure Hadoop
+  when: install_hadoop | default(true) and configure_hadoop | default(true)
+  block:
     - name: Upload Hadoop config files
       ansible.builtin.template:
         src: "{{ item }}"
@@ -53,7 +54,6 @@
         group: "{{ hadoop_group.name }}"
       with_fileglob:
         - "templates/hadoop_conf/*"
-
 
     - name: remove {{ hadoop_home }}/etc/hadoop
       ansible.builtin.file:
@@ -69,7 +69,7 @@
         force: true
 
     - name: Install fixed container-executor
-      when: install_yarn
+      when: install_yarn | default(true)
       ansible.builtin.copy:
         src: files/container-executor
         dest: "{{ hadoop_home }}/bin/"
@@ -85,13 +85,14 @@
           name: root
           group: "{{hadoop_group.name}}"
 
-    - name: Upload Hadoop invoker Script
+    - name: Upload Hadoop daemon invoker Script
       ansible.builtin.template:
         src: "hadoop-invoker.sh"
         dest: "/usr/local/bin/"
         mode: "0755"
         owner: "root"
         group: "{{ hadoop_group.name }}"
+
     - name: Upload Hadoop profile files
       ansible.builtin.template:
         src: "{{ item }}"
@@ -101,8 +102,9 @@
         group: "{{ hadoop_group.name }}"
       with_fileglob:
         - "templates/profile.d/*"
+
     - name: Upload Hadoop YARN systemd services
-      when: install_yarn
+      when: install_yarn | default(true)
       ansible.builtin.template:
         src: "{{ item }}"
         dest: /etc/systemd/system/
@@ -111,8 +113,9 @@
         group: "root"
       with_fileglob:
         - "templates/systemd/yarn/*"
+
     - name: Upload Hadoop HDFS systemd services
-      when: install_hdfs
+      when: install_hdfs | default(true)
       ansible.builtin.template:
         src: "{{ item }}"
         dest: /etc/systemd/system/
@@ -121,8 +124,9 @@
         group: "root"
       with_fileglob:
         - "templates/systemd/hdfs/*"
+
     - name: Upload Hadoop Mapreduce systemd services
-      when: install_mapreduce
+      when: install_mapreduce | default(true)
       ansible.builtin.template:
         src: "{{ item }}"
         dest: /etc/systemd/system/
