@@ -49,6 +49,8 @@
 
       hdfs dfs -chown -R {{spark_user.name}}:{{hadoop_group.name}}  {{spark_eventLog_dir}};
 
+      hdfs dfs -chmod 777 {{spark_eventLog_dir}};
+
       kdestroy
 
 

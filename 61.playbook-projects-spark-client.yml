@@ -10,10 +10,7 @@
   gather_facts: yes
 
 
-#      med X2go
-#      med RStudio
-#      og måske Jupyter
-- name: Rstudio/Jupyterhub
+- name: Spark Client
   hosts: hostgroup_project_nodes
   roles:
     - role: spark_client
