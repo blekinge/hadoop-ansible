@@ -1,19 +1,6 @@
 ---
 
 
-- name: Install EPEL repositories
-  ansible.builtin.package:
-    state: present
-    name:
-      - "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ansible_distribution_major_version}}.noarch.rpm"
-
-- name: "on RHEL {{ansible_distribution_major_version}} it is required to also enable the codeready-builder-for-rhel-{{ansible_distribution_major_version}}-*-rpms repository since EPEL packages may depend on packages from it"
-  when: ansible_distribution == "RedHat" and ansible_distribution_major_version|int >= 8
-  community.general.rhsm_repository:
-    name: "codeready-builder-for-rhel-{{ansible_distribution_major_version}}-{{ansible_architecture}}-rpms"
-
-
-
 - name: "Install MATE repo for Centos 8"
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version|int >= 8
   yum_repository:
