@@ -16,7 +16,8 @@
   freeipa.ansible_freeipa.ipasudorule:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{subadmins_group.name}}"
-    hostcategory: all
+    hostgroup:
+      - "{{ipa_hostgroup | default(domain)}}"
     cmdcategory: all
     runasusercategory: all
     runasgroupcategory: all
