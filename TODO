@@ -50,6 +50,7 @@
 
 [/] X2GO
 Xpra X2go afløser. Mere avanceret. Modulopbygget.
+[ ] X2GO xfce NOT MATE on CentOS 8
 
 [X] Tabs preserved in Rsyslog messages
 
@@ -65,7 +66,7 @@ Xpra X2go afløser. Mere avanceret. Modulopbygget.
 
 [ ] Gway
 
-
+[ ] Disable HBAC ALLOW ALL when we do not need it any more (around step 66)
 
 
 [WontFix] Merge duplication of filesystem code in ovirtvm and disks_ready
@@ -74,13 +75,12 @@ Xpra X2go afløser. Mere avanceret. Modulopbygget.
 
 [X] YARN low/high availability
 
-[ ]
 
 [ ] service aliases in kerberos/freeipa
 
 [X] new users email addresses
 
-[ ] Custom system user usernames
+[X] Custom system user usernames
 narchive-t: nat-
 narchive-p: nap-
 narcana: nc-
