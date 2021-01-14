@@ -21,23 +21,23 @@ jupyterhub_base_packages:
 jupyterhub_pip_extensions:
   - jupyterlab-git
   - jupyterlab_latex
-  - jupyterlab-commenting-service
+#  - jupyterlab-commenting-service
 
 jupyterlabs_npm_extensions:
-  - "@jupyterlab/git"
+ # - "@jupyterlab/git"
   - "@jupyterlab/toc"
-  - "@jupyterlab/latex"
+ #  - "@jupyterlab/latex"
   - "@jupyterlab/debugger"
   - "@jupyterlab/celltags"
-  - "@jupyterlab/commenting-extension"
-  - "@jupyterlab/shortcutui"
+ # - "@jupyterlab/commenting-extension"
+ # - "@jupyterlab/shortcutui"
   - "@jupyterlab/inspector"
-  - "jupyterlab-favorites"
-  - "jupyterlab-execute-time"
-  - "jupyterlab-spreadsheet"
+ # - "jupyterlab-favorites"
+ # - "jupyterlab-execute-time"
+ # - "jupyterlab-spreadsheet"
   - "@krassowski/jupyterlab_go_to_definition"
-  - "@loganamcnichols/cell-indents"
-  - "@epi2melabs/jupyterlab-autorun-cells"
-  - "jupyterlab-logout"
+ #  - "@loganamcnichols/cell-indents"
+ #  - "@epi2melabs/jupyterlab-autorun-cells"
+ #  - "jupyterlab-logout"
   - "jupyterlab-topbar-extension"
 

@@ -25,9 +25,9 @@
 
 - name: install pyspark kernel
   include_tasks: pyspark.yml
-#
-#- name: Jupyterhub Extensions
-#  include_tasks: extensions.yml
+
+- name: Jupyterhub Extensions
+  include_tasks: extensions.yml
 
 # Start
 - name: (Re)Start Jupyterhub systemd service
