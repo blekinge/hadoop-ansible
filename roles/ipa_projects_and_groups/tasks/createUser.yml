@@ -35,7 +35,7 @@
 
 
 - name: "Put {{user.username}} in {{users_group.name}}"
-  loop: "{{initial_users_groups | default([]) | map(attribute='name') | list + [group.name]}}"
+  loop: "{{default_user_groups | default([]) | map(attribute='name') | list + [group.name]}}"
   loop_control:
     loop_var: common_group
   freeipa.ansible_freeipa.ipagroup:
