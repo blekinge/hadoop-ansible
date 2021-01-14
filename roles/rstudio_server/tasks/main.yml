@@ -29,16 +29,17 @@
         return_content: yes
       register: rstudio_version
 
-    - name: Get the archive of RStudio Server
+    - name: Get the installable package of RStudio Server for RedHat 6-7
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 6 and ansible_distribution_major_version|int <= 7
       ansible.builtin.get_url:
-        url: "{{rstudio_download_url}}/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','')}}-x86_64.rpm"
+        url: "{{rstudio_redhat6_download_url}}/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','')}}-x86_64.rpm"
         dest: /tmp/rstudio.rpm
 
-- name: "Get version {{ rstudio_version_fixed }} of RStudio Server"
-  ansible.builtin.get_url:
-    url: "{{rstudio_download_url}}/rstudio-server-rhel-{{ rstudio_version_fixed }}-x86_64.rpm"
-    dest: /tmp/rstudio.rpm
-  when: rstudio_version_fixed is defined
+    - name: Get the installable package of RStudio Server for RedHat 8+
+      when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 8
+      ansible.builtin.get_url:
+        url: "{{rstudio_redhat8_download_url}}/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','')}}-x86_64.rpm"
+        dest: /tmp/rstudio.rpm
 
 
 - name: rstudio install

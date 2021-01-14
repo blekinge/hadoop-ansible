@@ -1,3 +1,7 @@
 ---
 
-rstudio_download_url: "https://download2.rstudio.org/server/centos8/x86_64"
+rstudio_redhat8_download_url: "https://download2.rstudio.org/server/centos8/x86_64"
+
+rstudio_redhat6_download_url: "https://download2.rstudio.org/server/centos6/x86_64"
+
+rstudio_config_file: "/etc/rstudio/rserver.conf"
