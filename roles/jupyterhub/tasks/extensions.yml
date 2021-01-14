@@ -7,7 +7,6 @@
     executable: pip3
     state: latest
     extra_args: "--ignore-installed"
-  loop: "{{jupyterhub_pip_extensions}}"
 
 - name: Install extra jupyter extensions
   ansible.builtin.pip:
