@@ -9,8 +9,8 @@
       - x2goserver-desktopsharing
 
 
-- name: Install X2Go desktop for RedHat 8+
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 8
+- name: Install X2Go desktop for RedHat 7+
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
   ansible.builtin.package:
     state: present
     name:
