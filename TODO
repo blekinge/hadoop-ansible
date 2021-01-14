@@ -48,9 +48,11 @@
 
 [X] Adm network in ansible connect, not in configs
 
-[/] X2GO
+[X] Jupyterhub sudo rules
+
+[X] X2GO
 Xpra X2go afløser. Mere avanceret. Modulopbygget.
-[ ] X2GO xfce NOT MATE on CentOS 8
+[X] X2GO xfce NOT MATE on CentOS 8
 
 [X] Tabs preserved in Rsyslog messages
 
