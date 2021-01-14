@@ -1,10 +1,10 @@
 ---
 
-- name: "reset nodejs module"
+- name: "reset dnf nodejs module"
   command: dnf -y module reset nodejs
 
 
-- name: "enable nodejs:12 module"
+- name: "enable dnf nodejs:12 module"
   command: dnf -y module enable nodejs:12
 
 - name: Install NodeJS and Python

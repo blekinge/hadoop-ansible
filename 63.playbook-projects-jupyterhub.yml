@@ -10,8 +10,7 @@
   gather_facts: yes
 
 #      og måske Jupyter
-- name: Rstudio/Jupyterhub
+- name: Jupyterhub
   hosts: hostgroup_project_nodes
   roles:
-
     - role: jupyterhub
