@@ -20,5 +20,4 @@
     user: "{{jupyterhub_user.name}}"
     hbacsvc:
       - "sudo"
-      - "sudo-i"
     state: present
