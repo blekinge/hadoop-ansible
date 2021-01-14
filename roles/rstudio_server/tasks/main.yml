@@ -68,14 +68,14 @@
 
 - name: Restrict users to humans
   ansible.builtin.lineinfile:
-    path: /etc/rstudio/rstudio-server.conf
+    path: "{{rstudio_config_file}}"
     line: "auth-required-user-group={{users_group.name}}"
     regexp: "^auth-required-user-group=.*$"
     create: yes
 
 - name: "RStudio should run as {{rstudio_user.name}}"
   ansible.builtin.lineinfile:
-    path: /etc/rstudio/rstudio-server.conf
+    path: "{{rstudio_config_file}}"
     line: "server-user={{rstudio_user.name}}"
     regexp: "^server-user=.*$"
     create: yes
@@ -107,7 +107,7 @@
 
 - name: "RStudio port"
   ansible.builtin.lineinfile:
-    path: /etc/rstudio/rstudio-server.conf
+    path: "{{rstudio_config_file}}"
     line: "www-port={{rstudio_server_http_port}}"
     regexp: "^www-port==.*$"
     create: yes
