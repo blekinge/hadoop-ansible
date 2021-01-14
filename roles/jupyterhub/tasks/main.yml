@@ -6,7 +6,8 @@
 
 - name: HBAC rules
   include_tasks: hbac.yml
-#
+
+# We do no longer use our these, but rather the cluster ssl certs from role: ssl_certificates_recipient
 #- name: SSL certificates
 #  include_tasks: ssl.yml
 
