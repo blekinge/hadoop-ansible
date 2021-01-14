@@ -40,8 +40,7 @@
         ipaadmin_password: "{{ipaadmin_password}}"
         name: "{{jupyterhub_user.name}}_sudorule"
         hostcategory: all
-        runasusercategory: all
-        runasgroupcategory: all
+        runasgroup: "{{ [users_group | default(omit)] | map(attribute='name') }}"
         sudooption:
           - '!requiretty'
           - '!authenticate'
