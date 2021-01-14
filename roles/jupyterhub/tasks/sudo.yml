@@ -40,7 +40,6 @@
         ipaadmin_password: "{{ipaadmin_password}}"
         name: "{{jupyterhub_user.name}}_sudorule"
         hostcategory: all
-        runasgroup: "{{ [users_group | default(omit)] | map(attribute='name') }}"
         sudooption:
           - '!requiretty'
           - '!authenticate'
@@ -48,6 +47,16 @@
           - "{{jupyterhub_user.name}}"
         allow_sudocmdgroup:
           - "{{jupyterhub_user.name}}_cmdgroup"
+
+    - name: "check if {{ users_group.name }} is already a member of {{jupyterhub_user.name}}_sudorule"
+      shell:
+        cmd: "ipa sudorule-show '{{jupyterhub_user.name}}_sudorule' | grep 'Groups of RunAs Users:' | grep '{{ users_group.name }}'"
+      register: sudorule_member
+      failed_when: sudorule_member.rc >= 2
+
+    - name: "Set runasusergroup explicit as this apparently cannot be set with the ansible api"
+      when: sudorule_member.rc == 1
+      command: "ipa sudorule-add-runasuser {{jupyterhub_user.name}}_sudorule --groups={{ users_group.name }}"
 
   always:
     - include_tasks: kdestroy.yml
