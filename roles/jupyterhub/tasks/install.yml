@@ -1,6 +1,15 @@
+---
+
+- name: "reset nodejs module"
+  command: dnf -y module reset nodejs
+
+
+- name: "enable nodejs:12 module"
+  command: dnf -y module enable nodejs:12
+
 - name: Install NodeJS and Python
   ansible.builtin.package:
-    state: present
+    state: latest
     name:
       - npm
       - nodejs
@@ -12,6 +21,7 @@
   ansible.builtin.npm:
     name: "{{item}}"
     global: yes
+    state: latest
   loop: "{{npm_dependencies}}"
 
 #https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
