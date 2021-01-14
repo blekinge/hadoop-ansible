@@ -16,4 +16,5 @@
   include_tasks: createGroupAndUsers.yml
 
 - name: "Set up Projects HBAC"
+  run_once: true
   include_tasks: projects_hbac.yml

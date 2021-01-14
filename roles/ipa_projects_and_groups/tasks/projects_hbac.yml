@@ -1,6 +1,5 @@
 
 - name: Create HBAC service group
-  run_once: true
   freeipa.ansible_freeipa.ipahbacsvcgroup:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{user_prefix}}user-session"
@@ -8,7 +7,6 @@
 
 #  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacrule.md
 - name: "Projects HBAC rules"
-  run_once: true
   loop: "{{projects_ipa}}"
   loop_control:
     loop_var: group
@@ -18,7 +16,8 @@
     name: "{{group.name}} allowed on {{group.project_host}}"
     host: "{{group.project_host}}"
     group: "{{group.name}}"
-    hbacsvcgroup: "{{user_prefix}}user-session"
+    hbacsvcgroup:
+      - "{{user_prefix}}user-session"
     state: present
 
 #  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacrule.md
@@ -28,5 +27,7 @@
     name: "{{subadmins_project.project_ipa.name}} allowed on all"
     group: "{{subadmins_project.project_ipa.name}}"
     hostcategory: "all"
-    hbacsvcgroup: "{{user_prefix}}user-session"
+    hbacsvcgroup:
+      - "{{user_prefix}}user-session"
+      - "Sudo"
     state: present
