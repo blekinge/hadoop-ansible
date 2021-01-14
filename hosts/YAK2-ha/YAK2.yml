@@ -21,14 +21,11 @@
 hostgroup_all:
   children:
     hostgroup_hadoop_nodes:
-      vars:
-        hdfs_high_availability: true
-        yarn_high_availability: true
       children:
         hostgroup_hdfs:
           children:
             hostgroup_hdfs_namenodes:
-              hosts: # If hdfs_high_availability == false, only the first host will be used
+              hosts: # if only one here, HDFS HA will be disabled
                 hdfs001.adm.yak2.net:
                 hdfs002.adm.yak2.net:
 
@@ -39,6 +36,6 @@ hostgroup_all:
         hostgroup_yarn:
           children:
             hostgroup_yarn_resource_managers:
-              hosts: # If yarn_high_availability == false, only the first host will be used
+              hosts: # If only one, YARN HA will be disabled
                 yarn001.adm.yak2.net:
                 yarn002.adm.yak2.net:

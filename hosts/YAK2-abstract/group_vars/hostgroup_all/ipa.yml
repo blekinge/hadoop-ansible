@@ -1,6 +1,5 @@
 ---
 
-
 domain: yak2.net
 
 # This is the freeipa host. Set this variable if you need to clients to contact it on another hostname
@@ -16,12 +15,9 @@ ipaclient_ntp_servers:
 ipa_hostgroup: YAK2
 
 
-# This user group is referred to from a lot of roles, so it must be defined
-users_group:
-  name: "yakusers"
-  # name: "clusterusers"
-  gid: 20000
-  description: Standard user accounts, for unprivileged users.
+user_prefix: "yak-"
+
+cluster_id_prefix: "12"
 
 vpnu_group:
   name: vpnu

@@ -29,6 +29,8 @@ hostgroup_all:
         hostgroup_hadoop_nodes:
 
     hostgroup_zabbix_nodes:
+      hosts:
+        narchive-t-admn01.kb.dk:
       children:
         hostgroup_ipaclients:
 
@@ -46,15 +48,15 @@ hostgroup_all:
               hosts:
                 narchive-t-hdfs01.kb.dk:
 
+            hostgroup_hdfs_secondary_namenodes:
+              hosts:
+                narchive-t-hdfs02.kb.dk:
+
             hostgroup_hdfs_backupnodes:
               hosts:
 
             hostgroup_hdfs_journalnodes:
               hosts:
-
-            hostgroup_hdfs_secondary_namenodes:
-              hosts:
-                narchive-t-hdfs02.kb.dk:
 
             hostgroup_hdfs_datanodes:
               hosts:

@@ -44,6 +44,7 @@ hostgroup_all:
 
         hostgroup_hdfs:
           children:
+
             hostgroup_hdfs_namenodes:
               hosts: # If hdfs_high_availability == false, only the first host will be used
 
@@ -52,7 +53,6 @@ hostgroup_all:
 
             hostgroup_hdfs_backupnodes:
               hosts:
-
 
             hostgroup_hdfs_journalnodes:
               hosts:
@@ -68,8 +68,8 @@ hostgroup_all:
             zkpr[001:003].adm.yak2.net:
 
         hostgroup_yarn:
-
           children:
+
             hostgroup_yarn_resource_managers:
               hosts: # If yarn_high_availability == false, only the first host will be used
 
