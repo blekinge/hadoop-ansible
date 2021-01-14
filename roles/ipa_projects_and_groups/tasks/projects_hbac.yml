@@ -14,8 +14,10 @@
   freeipa.ansible_freeipa.ipahbacrule:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{group.name}} allowed on {{group.project_host}}"
-    host: "{{group.project_host}}"
-    group: "{{group.name}}"
+    host:
+      - "{{group.project_host}}"
+    group:
+      - "{{group.name}}"
     hbacsvcgroup:
       - "{{user_prefix}}user-session"
     state: present
@@ -25,8 +27,10 @@
   freeipa.ansible_freeipa.ipahbacrule:
     ipaadmin_password: "{{ipaadmin_password}}"
     name: "{{subadmins_project.project_ipa.name}} allowed on all"
-    group: "{{subadmins_project.project_ipa.name}}"
-    hostcategory: "all"
+    group:
+      - "{{subadmins_project.project_ipa.name}}"
+    hostgroup:
+      - "{{ipa_hostgroup | default(domain)}}"
     hbacsvcgroup:
       - "{{user_prefix}}user-session"
       - "Sudo"
