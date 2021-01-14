@@ -114,3 +114,21 @@
     group: "root"
   with_fileglob:
     - "templates/*"
+
+
+- name: "Create cluster hostgroup {{ipa_hostgroup | default(domain)}}"
+  delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
+  run_once: true
+  freeipa.ansible_freeipa.ipahostgroup:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: "{{ipa_hostgroup | default(domain)}}"
+    action: hostgroup
+
+- name: "Put hosts in cluster hostgroup {{ipa_hostgroup | default(domain)}}"
+  delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
+  freeipa.ansible_freeipa.ipahostgroup:
+    ipaadmin_password: "{{ipaadmin_password}}"
+    name: "{{ipa_hostgroup | default(domain)}}"
+    action: member
+    host:
+      - "{{ansible_hostname}}"

@@ -12,6 +12,7 @@ autohome_nfs_export_iprange: "130.226.228.0/24"
 ipaclient_ntp_servers:
   - 130.225.24.33
 
+ipa_hostgroup: narchive-t
 
 ipaadmin_password: !vault |
   $ANSIBLE_VAULT;1.1;AES256

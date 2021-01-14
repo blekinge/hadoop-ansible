@@ -13,6 +13,7 @@ autohome_nfs_export_iprange: "172.16.215.0/24"
 ipaclient_ntp_servers:
   - kac-gway-001.kach.sblokalnet
 
+ipa_hostgroup: YAK2
 
 
 # This user group is referred to from a lot of roles, so it must be defined
