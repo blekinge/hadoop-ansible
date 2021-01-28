@@ -35,5 +35,7 @@
 # And now that we have a working HDFS, create the basic directory structure
 - hosts: hostgroup_hdfs
   run_once: yes
+  vars:
+    install_hdfs: false # It should not be nessesary to reinstall hadoop hdfs as we have just set it up
   roles:
     - role: hadoop_hdfs_structure
