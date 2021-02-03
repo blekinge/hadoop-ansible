@@ -28,7 +28,7 @@ wipe_hdfs: false
 
 # hadoop basic vars
 # Set a local file here, if you do not want to download it dynamicallyl
-hadoop_version: "3.3.0"
+hadoop_version: "3.2.2"
 hadoop_download: http://ftp.download-by.net/apache/hadoop/common/hadoop-{{hadoop_version}}/hadoop-{{hadoop_version}}.tar.gz
 hadoop_path: "/usr/local/hadoop"
 hadoop_home: "{{ hadoop_path }}/hadoop-{{ hadoop_version }}"
