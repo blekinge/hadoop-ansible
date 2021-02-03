@@ -41,7 +41,12 @@ yarn_timelineserver_http_port: 8188
 yarn_timelineserver_https_port: 8190
 yarn_timelineserver_port2: 10200
 
-yarn_nodemanager_port: 45454
+yarn_nodemanager_rpc_port: 45454
+yarn_nodemanager_http_port: 8042
+yarn_nodemanager_https_port: 8044
+yarn_nodemanager_ipc_localizer_port: 8040
+yarn_nodemanager_ipc_collector_port: 8048
+
 
 yarn_resourcemanager_rpc_port: 8050
 yarn_resourcemanager_scheduler_port: 8030
@@ -118,7 +123,11 @@ ports_per_role: # This dict maps roles names to ports
     - port: "{{yarn_timelineserver_port2}}"
 
   hadoop_yarn_node_manager:
-    - port: "{{yarn_nodemanager_port}}"
+    - port: "{{yarn_nodemanager_rpc_port}}"
+    - port: "{{yarn_nodemanager_http_port}}"
+    - port: "{{yarn_nodemanager_https_port}}"
+    - port: "{{yarn_nodemanager_ipc_localizer_port}}"
+    - port: "{{yarn_nodemanager_ipc_collector_port}}"
     - port: "{{mapreduce_shuffle_port}}"
     - port: "{{mapreduce_am_portrange}}"
     - port: "{{spark_ui_http_portrange}}"

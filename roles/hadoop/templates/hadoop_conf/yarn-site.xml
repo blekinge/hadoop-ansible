@@ -225,7 +225,7 @@
     <!-- Node manager hosts and ports -->
     <property>
         <name>yarn.nodemanager.address</name>
-        <value>0.0.0.0:{{ yarn_nodemanager_port }}</value>
+        <value>${yarn.nodemanager.hostname}:{{ yarn_nodemanager_rpc_port }}</value>
         <description>The address of the container manager in the NM.</description>
     </property>
     <property>
@@ -237,6 +237,32 @@
             yarn.nodemanager.address and yarn.nodemanager.webapp.address, respectively. This is
             most useful for making NM listen to all interfaces by setting to 0.0.0.0.
         </description>
+    </property>
+
+    <property>
+        <description>NM Webapp address.</description>
+        <name>yarn.nodemanager.webapp.address</name>
+        <value>${yarn.nodemanager.hostname}:{{ yarn_nodemanager_http_port }}</value>
+    </property>
+
+    <property>
+        <description>
+            The https adddress of the NM web application.
+        </description>
+        <name>yarn.nodemanager.webapp.https.address</name>
+        <value>${yarn.nodemanager.hostname}:{{ yarn_nodemanager_https_port }}</value>
+    </property>
+
+    <property>
+        <description>Address where the localizer IPC is.</description>
+        <name>yarn.nodemanager.localizer.address</name>
+        <value>${yarn.nodemanager.hostname}:{{ yarn_nodemanager_ipc_localizer_port }}</value>
+    </property>
+
+    <property>
+        <description>Address where the collector service IPC is.</description>
+        <name>yarn.nodemanager.collector-service.address</name>
+        <value>${yarn.nodemanager.hostname}:{{ yarn_nodemanager_ipc_collector_port }}</value>
     </property>
 
     <property>
