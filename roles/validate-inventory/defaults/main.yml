@@ -1,0 +1,6 @@
+
+# Should hdfs be configured for high availability
+hdfs_high_availability: "{{ groups['hostgroup_hdfs_namenodes'] | length > 1 }}"
+
+# Should yarn be configured for high availability
+yarn_high_availability: "{{ groups['hostgroup_yarn_resource_managers'] | length > 1 }}"
