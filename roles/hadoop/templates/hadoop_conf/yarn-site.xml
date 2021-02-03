@@ -133,8 +133,7 @@
     </property>
     <property>
         <name>yarn.log.server.url</name>
-        <value>http://{{ mapreduce_history_server_host }}:{{ mapreduce_history_server_https_port }}/jobhistory/logs
-        </value>
+        <value>https://{{ mapreduce_history_server_host }}:{{ mapreduce_history_server_https_port }}/jobhistory/logs</value>
         <description>
             URL for log aggregation server
         </description>
