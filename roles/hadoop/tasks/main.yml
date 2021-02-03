@@ -68,14 +68,12 @@
         state: link
         force: true
 
-#    - name: Install fixed container-executor
-#      when: install_yarn | default(true)
-#      ansible.builtin.copy:
-#        src: files/container-executor
-#        dest: "{{ hadoop_home }}/bin/"
-#        owner: root
-#        group: "{{hadoop_group.name}}"
-#        mode: '6050'
+    - name: Set the right permissions for container-executor
+      ansible.builtin.file:
+        path: "{{ hadoop_home }}/bin/container-executor"
+        owner: root
+        group: "{{ hadoop_group.name }}"
+        mode: '6050'
 
     - name: install log4jSyslogWriter64k in classpath
       include_tasks: installLog4jSyslogAppender.yml
