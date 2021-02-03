@@ -60,7 +60,7 @@ mkdir -p ~/projects
 cd ~/projects
 git clone  git@github.com:apache/hadoop.git
 cd hadoop
-git checkout release-3.3.0-RC0
+git checkout branch-3.2.2
 ```
 
 
