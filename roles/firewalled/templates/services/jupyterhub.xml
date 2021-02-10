@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+{{ ansible_managed | comment('xml') }}
 <service>
     <short>jupyterhub</short>
     <description>Allow services for jupyterhub service</description>
     <port protocol="tcp" port="{{jupyterhub_port}}"/>
-
 </service>

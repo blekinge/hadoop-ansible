@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+{{ ansible_managed | comment('xml') }}
 <service>
     <short>zabbix_agent</short>
     <description>Allow services for Zabbix agent</description>
     <port protocol="tcp" port="{{ zabbix_agent_listenport }}"/>
-    <destination ipv4="{{ zabbix_agent_server }}"/>
 </service>

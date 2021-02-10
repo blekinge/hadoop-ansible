@@ -7,7 +7,7 @@ zabbix_agent_hostname: "{{ansible_fqdn}}"
 hostname: "{{ansible_fqdn}}"
 
 zabbix_link_templates:
-  - "Template OS Linux"
+  - "Template OS Linux by Zabbix agent"
 
 zabbix_api_create_hosts: true
 zabbix_api_create_hostgroup: true

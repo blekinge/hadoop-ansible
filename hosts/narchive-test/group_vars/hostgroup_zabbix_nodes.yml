@@ -27,7 +27,7 @@ zabbix_agent_tlspsk_secret: !vault |
   63383162613438396264
 
 
-zabbix_url: "https://{{zabbix_agent_server}}/zabbix/"
+zabbix_url: "https://{{zabbix_agent_server}}/"
 zabbix_validate_certs: no
 
 zabbix_api_user: Admin

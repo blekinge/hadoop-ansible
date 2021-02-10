@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+{{ ansible_managed | comment('xml') }}
 <service>
     <short>hadoop_mapreduce_history_server</short>
     <description>Allow services for hadoop_mapreduce_history_server service</description>
@@ -6,5 +7,4 @@
     <port protocol="tcp" port="{{mapreduce_history_server_admin_port}}"/>
     <port protocol="tcp" port="{{mapreduce_history_server_http_port}}"/>
     <port protocol="tcp" port="{{mapreduce_history_server_https_port}}"/>
-
 </service>

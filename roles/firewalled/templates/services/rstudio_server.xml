@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+{{ ansible_managed | comment('xml') }}
 <service>
     <short>rstudio_server</short>
     <description>Allow services for rstudio_server service</description>
     <port protocol="tcp" port="{{rstudio_server_http_port}}"/>
-
 </service>

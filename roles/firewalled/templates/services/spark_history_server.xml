@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+{{ ansible_managed | comment('xml') }}
 <service>
     <short>spark_history_server</short>
     <description>Allow services for spark_history_server service</description>

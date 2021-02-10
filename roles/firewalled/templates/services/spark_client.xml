@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+{{ ansible_managed | comment('xml') }}
 <service>
     <short>spark_client</short>
     <description>Allow services for spark_client service</description>
     <port protocol="tcp" port="{{spark_ui_http_portrange}}"/>
     <port protocol="tcp" port="{{spark_driver_http_portrange}}"/>
     <port protocol="tcp" port="{{spark_blockmanager_http_portrange}}"/>
-
 </service>
