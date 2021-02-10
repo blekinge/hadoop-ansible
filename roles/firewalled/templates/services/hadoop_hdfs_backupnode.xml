@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+    <short>hadoop_hdfs_backupnode</short>
+    <description>Allow services for hadoop_hdfs_backup service</description>
+    <port protocol="tcp" port="{{hdfs_backupnode_service_port}}"/>
+    <port protocol="tcp" port="{{hdfs_backupnode_http_port}}"/>
+</service>

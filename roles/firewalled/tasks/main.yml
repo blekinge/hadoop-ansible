@@ -6,10 +6,29 @@
       - firewalld
       - python3-firewall
 
+- name: Upload Service config files
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/etc/firewalld/services/"
+    mode: 0644
+    owner: "root"
+    group: "root"
+  with_fileglob:
+    - "templates/services/*"
+
+
 - name: firewalld is running
   ansible.builtin.systemd:
     state: started
     service: firewalld
+    enabled: yes
+
+
+- name: Ensure the new firewall services are loaded
+  ansible.builtin.systemd:
+    state: reloaded
+    service: firewalld
+
 
 - name: "Open Firewall for group {{item}}"
   include: open_firewall.yml rolename={{item}}

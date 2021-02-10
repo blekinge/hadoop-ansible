@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+    <short>hadoop_hdfs_journalnode</short>
+    <description>Allow services for hadoop_hdfs_journalnode service</description>
+    <port protocol="tcp" port="{{hdfs_journalnode_http_port}}"/>
+    <port protocol="tcp" port="{{hdfs_journalnode_https_port}}"/>
+    <port protocol="tcp" port="{{hdfs_journalnode_rpc_port}}"/>
+</service>

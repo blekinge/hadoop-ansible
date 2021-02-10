@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+    <short>zookeeper_server</short>
+    <description>Allow services for zookeeper_server service</description>
+    <port protocol="tcp" port="{{ zookeeper_port }}"/>
+    <port protocol="tcp" port="{{ zookeeper_leader_election_port }}"/>
+    <port protocol="tcp" port="{{ zookeeper_follower_port }}"/>
+
+</service>

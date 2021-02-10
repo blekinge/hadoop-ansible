@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+    <short>hadoop_yarn_resource_manager</short>
+    <description>Allow services for hadoop_yarn_resource_manager service</description>
+    <port protocol="tcp" port="{{yarn_resourcemanager_rpc_port}}"/>
+    <port protocol="tcp" port="{{yarn_resourcemanager_scheduler_port}}"/>
+    <port protocol="tcp" port="{{yarn_resourcemanager_tracker_port}}"/>
+    <port protocol="tcp" port="{{yarn_resourcemanager_admin_port}}"/>
+    <port protocol="tcp" port="{{yarn_resourcemanager_http_port}}"/>
+    <port protocol="tcp" port="{{yarn_resourcemanager_https_port}}"/>
+
+</service>
