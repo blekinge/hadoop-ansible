@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<service>
-{#    TODO#}
-    <short>Zabbix</short>
-    <description>Allow services for Zabbix server and agent</description>
-    <port protocol="tcp" port="10050"/>
-    <port protocol="tcp" port="10051"/>
-</service>
