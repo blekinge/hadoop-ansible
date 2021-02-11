@@ -1,6 +1,6 @@
 ---
 
-default_project_file_dir: hosts/YAK2/group_vars/hostgroup_all/projects/
+default_project_file_dir: hosts/YAK2-abstract/group_vars/hostgroup_all/projects
 # Append new project names here, to automatically load ./projects/<name>.yml
 
 projects:
