@@ -1,0 +1,93 @@
+
+
+user_prefix: ""
+
+
+
+#Users and groups
+hadoop_group:
+  name: "hadoop"
+  gid: "11000"
+  description: Hadoop System Services
+
+
+subadmins_group:
+  name: "subadmins"
+  gid: "12000"
+  description: For daily administration of users and hosts
+
+
+users_group:
+  name: "yakusers"
+  gid: "20000"
+  description: Standard user accounts, for unprivileged users.
+
+
+
+#These are the user groups that are automatically created
+standard_user_groups:
+  - "{{ hadoop_group }}"
+  - "{{ subadmins_group }}"
+  - "{{ users_group }}"
+
+# These groups are also automatically created, and all new users will be made members of them
+default_user_groups:
+  - "{{ users_group }}"
+
+
+hdfs_user:
+  name: "hdfs"
+  group: "hdfs"
+  uid: "11200"
+  gid: "11200"
+  private_group: yes
+  extra_groups: [ "{{hadoop_group.name}}" ]
+
+mapreduce_user:
+  name: "mapred"
+  group: "{{hadoop_group.name}}"
+  uid: "11001"
+  gid: "{{hadoop_group.gid}}"
+  private_group: no
+
+yarn_user:
+  name: "yarn"
+  group: "{{hadoop_group.name}}"
+  uid: "11002"
+  gid: "{{hadoop_group.gid}}"
+  private_group: no
+
+zookeeper_user:
+  name: "zookeeper"
+  group: "{{hadoop_group.name}}"
+  uid: "11003"
+  gid: "{{hadoop_group.gid}}"
+  private_group: no
+
+spark_user:
+  name: "spark"
+  group: "{{hadoop_group.name}}"
+  uid: "11004"
+  gid: "{{hadoop_group.gid}}"
+  private_group: no
+
+hive_user:
+  name: "hive"
+  group: "{{hadoop_group.name}}"
+  uid: "11005"
+  gid: "{{hadoop_group.gid}}"
+  private_group: no
+
+rstudio_user:
+  name: "rstudio-server"
+  group: "rstudio-server"
+  uid: "15004"
+  gid: "15004"
+  private_group: yes
+
+jupyterhub_user:
+  name: "jupyterhub"
+  group: "jupyterhub"
+  uid: "15005"
+  gid: "15005"
+  private_group: yes
