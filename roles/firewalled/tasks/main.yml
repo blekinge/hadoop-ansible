@@ -2,6 +2,8 @@
 # Remove open ports with a command like
 # ansible -i  hosts/narchive-test/ all -u root -a "bash -c \"firewall-cmd --list-ports | tr ' ' '\n' | xargs -r -Iæ firewall-cmd --permanent --remove-port='æ'\""
 # ansible -i  hosts/narchive-test/ all -u root -a "bash -c \"firewall-cmd --list-rich-rules | xargs -r -Iæ firewall-cmd --permanent --remove-rich-rule='æ'\""
+#  ansible -i hosts/YAK2-abstract/ -i  hosts/YAK2-ha/ all -u root -a "bash -c \"firewall-cmd --list-ports | tr ' ' '\n' | xargs -r -Iæ firewall-cmd --permanent --remove-port='æ'\""
+#  ansible -i hosts/YAK2-abstract/ -i  hosts/YAK2-ha/ all -u root -a "bash -c \"firewall-cmd --list-rich-rules | xargs -r -Iæ firewall-cmd --permanent --remove-rich-rule='æ'\""
 - name: install firewalld
   ansible.builtin.package:
     state: present
