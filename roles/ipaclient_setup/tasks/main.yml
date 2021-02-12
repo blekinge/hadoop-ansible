@@ -60,6 +60,11 @@
     service: sssd
     state: restarted
 
+- name: Restart autofs and enable it
+  ansible.builtin.systemd:
+    service: autofs
+    state: restarted
+    enabled: yes
 
 - name: "Mount {{ipaclient_syshome_dir}}"
   ansible.builtin.mount:
