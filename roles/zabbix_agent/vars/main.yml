@@ -2,7 +2,9 @@
 
 zabbix_useuip: "1"
 
-zabbix_agent_serveractive: "{{zabbix_agent_server}}"
+# Do not enable active checks
+#zabbix_agent_serveractive: "{{zabbix_agent_server}}"
+
 zabbix_agent_hostname: "{{ansible_fqdn}}"
 hostname: "{{ansible_fqdn}}"
 
