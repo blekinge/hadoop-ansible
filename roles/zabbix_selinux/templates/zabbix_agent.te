@@ -12,5 +12,10 @@ require {
 #============= zabbix_agent_t ==============
 
 #!!!! WARNING: 'var_lib_t' is a base type.
+# Allows zabbix to read it's psk file in /var/lib/zabbix/zabbix_agentd.psk
 allow zabbix_agent_t var_lib_t:file { open read };
 allow zabbix_agent_t zabbix_var_lib_t:file { open read };
+
+allow zabbix_agent_t proc_kcore_t:file { getattr };
+allow zabbix_agent_t initctl_t:fifo_file { getattr };
+allow zabbix_agent_t devlog_t:sock_file { getattr };

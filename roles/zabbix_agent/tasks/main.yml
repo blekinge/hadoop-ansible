@@ -26,6 +26,10 @@
     service: firewalld
     state: restarted
 
+- name: Enable zabbix selinux module
+  when: zabbix_custom_selinux
+  import_role:
+    name: zabbix_selinux
 
 
 - name: Fix selinux permissions

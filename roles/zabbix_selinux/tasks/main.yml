@@ -35,5 +35,16 @@
       shell:
         cmd: semodule --install zabbix_agent.pp
 
+    - name: Reload modules to work out overlaps
+      command: semodule --reload
+
+
+    - name: "SELinux | Disable permissive zabbix agent, we will handle it from here"
+      selinux_permissive:
+        name: zabbix_agent_t
+        permissive: false
+      become: yes
+
+
 - name: Fix selinux permissions
   command: restorecon -R -v /var/lib/zabbix
