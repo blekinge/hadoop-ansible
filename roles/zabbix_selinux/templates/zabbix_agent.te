@@ -16,6 +16,6 @@ require {
 allow zabbix_agent_t var_lib_t:file { open read };
 allow zabbix_agent_t zabbix_var_lib_t:file { open read };
 
-allow zabbix_agent_t proc_kcore_t:file { getattr };
+#allow zabbix_agent_t proc_kcore_t:file { getattr };
 allow zabbix_agent_t initctl_t:fifo_file { getattr };
 allow zabbix_agent_t devlog_t:sock_file { getattr };
