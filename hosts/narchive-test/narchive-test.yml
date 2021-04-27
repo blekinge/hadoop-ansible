@@ -61,7 +61,151 @@ hostgroup_all:
             hostgroup_hdfs_datanodes:
               hosts:
                 narchive-t-data01.kb.dk:
+                  mounts:
+                    - mount: /data/sdc1
+                      device: /dev/sdc
+                    - mount: /data/sdd1
+                      device: /dev/sdd
+                    - mount: /data/sde1
+                      device: /dev/sde
+                    - mount: /data/sdf1
+                      device: /dev/sdf
+                    - mount: /data/sdg1
+                      device: /dev/sdg
+                    - mount: /data/sdh1
+                      device: /dev/sdh
+                    - mount: /data/sdi1
+                      device: /dev/sdi
+                    - mount: /data/sdj1
+                      device: /dev/sdj
+                    - mount: /data/sdk1
+                      device: /dev/sdk
+                    - mount: /data/sdl1
+                      device: /dev/sdl
+                    - mount: /data/sdm1
+                      device: /dev/sdm
+#                    - mount: /data/sdn1
+#                      device: /dev/sdn
+                    - mount: /data/sdo1
+                      device: /dev/sdo
+                    - mount: /data/sdp1
+                      device: /dev/sdp
+                    - mount: /data/sdq1
+                      device: /dev/sdq
+                    - mount: /data/sdr1
+                      device: /dev/sdr
+                    - mount: /data/sds1
+                      device: /dev/sds
+                    - mount: /data/sdt1
+                      device: /dev/sdt
+                    - mount: /data/sdu1
+                      device: /dev/sdu
+                    - mount: /data/sdv1
+                      device: /dev/sdv
+                    - mount: /data/sdw1
+                      device: /dev/sdw
+                    - mount: /data/sdx1
+                      device: /dev/sdx
+                    - mount: /data/sdy1
+                      device: /dev/sdy
+                  hdfs_data_dirs:
+                    - /data/sdc1/hdfs
+                    - /data/sdd1/hdfs
+                    - /data/sde1/hdfs
+                    - /data/sdf1/hdfs
+                    - /data/sdg1/hdfs
+                    - /data/sdh1/hdfs
+                    - /data/sdi1/hdfs
+                    - /data/sdj1/hdfs
+                    - /data/sdk1/hdfs
+                    - /data/sdl1/hdfs
+                    - /data/sdm1/hdfs
+#                    - /data/sdn1/hdfs
+                    - /data/sdo1/hdfs
+                    - /data/sdp1/hdfs
+                    - /data/sdq1/hdfs
+                    - /data/sdr1/hdfs
+                    - /data/sds1/hdfs
+                    - /data/sdt1/hdfs
+                    - /data/sdu1/hdfs
+                    - /data/sdv1/hdfs
+                    - /data/sdw1/hdfs
+                    - /data/sdx1/hdfs
+                    - /data/sdy1/hdfs
+
                 narchive-t-data02.kb.dk:
+                  mounts:
+                    - mount: /data/sdc1
+                      device: /dev/sdc
+                    - mount: /data/sdd1
+                      device: /dev/sdd
+                    - mount: /data/sde1
+                      device: /dev/sde
+                    - mount: /data/sdf1
+                      device: /dev/sdf
+                    - mount: /data/sdg1
+                      device: /dev/sdg
+                    - mount: /data/sdh1
+                      device: /dev/sdh
+                    - mount: /data/sdi1
+                      device: /dev/sdi
+                    - mount: /data/sdj1
+                      device: /dev/sdj
+                    - mount: /data/sdk1
+                      device: /dev/sdk
+                    - mount: /data/sdl1
+                      device: /dev/sdl
+                    - mount: /data/sdm1
+                      device: /dev/sdm
+#                    - mount: /data/sdn1
+#                      device: /dev/sdn
+                    - mount: /data/sdo1
+                      device: /dev/sdo
+                    - mount: /data/sdp1
+                      device: /dev/sdp
+                    - mount: /data/sdq1
+                      device: /dev/sdq
+                    - mount: /data/sdr1
+                      device: /dev/sdr
+                    - mount: /data/sds1
+                      device: /dev/sds
+                    - mount: /data/sdt1
+                      device: /dev/sdt
+                    - mount: /data/sdu1
+                      device: /dev/sdu
+                    - mount: /data/sdv1
+                      device: /dev/sdv
+                    - mount: /data/sdw1
+                      device: /dev/sdw
+                    - mount: /data/sdx1
+                      device: /dev/sdx
+                    - mount: /data/sdy1
+                      device: /dev/sdy
+                  hdfs_data_dirs:
+                    - /data/sdc1/hdfs
+                    - /data/sdd1/hdfs
+                    - /data/sde1/hdfs
+                    - /data/sdf1/hdfs
+                    - /data/sdg1/hdfs
+                    - /data/sdh1/hdfs
+                    - /data/sdi1/hdfs
+                    - /data/sdj1/hdfs
+                    - /data/sdk1/hdfs
+                    - /data/sdl1/hdfs
+                    - /data/sdm1/hdfs
+                    - /data/sdn1/hdfs
+                    - /data/sdo1/hdfs
+#                    - /data/sdp1/hdfs
+                    - /data/sdq1/hdfs
+                    - /data/sdr1/hdfs
+                    - /data/sds1/hdfs
+                    - /data/sdt1/hdfs
+                    - /data/sdu1/hdfs
+                    - /data/sdv1/hdfs
+                    - /data/sdw1/hdfs
+                    - /data/sdx1/hdfs
+                    - /data/sdy1/hdfs
+
                 narchive-t-data03.kb.dk:
               vars:
                 mounts:
@@ -177,7 +321,55 @@ hostgroup_all:
                   - /data/sdy1/yarn
               hosts:
                 narchive-t-data01.kb.dk:
+                  yarn_data_dirs:
+                    - /data/sdc1/yarn
+                    - /data/sdd1/yarn
+                    - /data/sde1/yarn
+                    - /data/sdf1/yarn
+                    - /data/sdg1/yarn
+                    - /data/sdh1/yarn
+                    - /data/sdi1/yarn
+                    - /data/sdj1/yarn
+                    - /data/sdk1/yarn
+                    - /data/sdl1/yarn
+                    - /data/sdm1/yarn
+#                    - /data/sdn1/yarn
+                    - /data/sdo1/yarn
+                    - /data/sdp1/yarn
+                    - /data/sdq1/yarn
+                    - /data/sdr1/yarn
+                    - /data/sds1/yarn
+                    - /data/sdt1/yarn
+                    - /data/sdu1/yarn
+                    - /data/sdv1/yarn
+                    - /data/sdw1/yarn
+                    - /data/sdx1/yarn
+                    - /data/sdy1/yarn
                 narchive-t-data02.kb.dk:
+                  yarn_data_dirs:
+                    - /data/sdc1/yarn
+                    - /data/sdd1/yarn
+                    - /data/sde1/yarn
+                    - /data/sdf1/yarn
+                    - /data/sdg1/yarn
+                    - /data/sdh1/yarn
+                    - /data/sdi1/yarn
+                    - /data/sdj1/yarn
+                    - /data/sdk1/yarn
+                    - /data/sdl1/yarn
+                    - /data/sdm1/yarn
+                    - /data/sdn1/yarn
+                    - /data/sdo1/yarn
+#                    - /data/sdp1/yarn
+                    - /data/sdq1/yarn
+                    - /data/sdr1/yarn
+                    - /data/sds1/yarn
+                    - /data/sdt1/yarn
+                    - /data/sdu1/yarn
+                    - /data/sdv1/yarn
+                    - /data/sdw1/yarn
+                    - /data/sdx1/yarn
+                    - /data/sdy1/yarn
                 narchive-t-data03.kb.dk:
 
             hostgroup_yarn_timeline_servers:
