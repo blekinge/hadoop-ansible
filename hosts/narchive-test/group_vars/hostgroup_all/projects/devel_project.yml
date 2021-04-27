@@ -9,42 +9,50 @@ project_ipa:
   # Project_host is used to set up HBAC rules
   project_host: "narchive-t-admn02.kb.dk"
   users:
-    - username: "{{user_prefix}}csr"
+    - username: "{{user_prefix}}nas-devel"
+      firstname: "NetArchive Suite"
+      lastname: "Application user"
+      mobile: ""
+      uid: "{{users_group.gid | int +1}}"
+      gid: "{{users_group.gid}}"
+      noprivate: yes
+
+    - username: "{{user_prefix}}elzi-devel"
+      firstname: "Eld"
+      lastname: "Zierau"
+      mobile: "+4591324690"
+      email: "elzi@kb.dk"
+
+    - username: "{{user_prefix}}rbkr-devel"
+      firstname: "Rasmus"
+      lastname: "Bohl Kristensen"
+      mobile: "+4551671363"
+      email: "rbkr@kb.dk"
+
+    - username: "{{user_prefix}}pech-devel"
+      firstname: "Peter"
+      lastname: "Christiansen"
+      mobile: "+4520815945"
+      email: "pech@kb.dk"
+
+    - username: "{{user_prefix}}csr-devel"
       firstname: "Colin"
       lastname: "Samuel Rosenthal"
       mobile: "+4551671287"
       email: "csr@kb.dk"
       # If uid or gid is not specified, use group gid + position in this list.
 
-    - username: "{{user_prefix}}elzi"
-      firstname: "Eld"
-      lastname: "Zierau"
-      mobile: "+4591324690"
-      email: "elzi@kb.dk"
-
-    - username: "{{user_prefix}}rbkr"
-      firstname: "Rasmus"
-      lastname: "Bohl Kristensen"
-      mobile: "+4551671363"
-      email: "rbkr@kb.dk"
-
-    - username: "{{user_prefix}}pech"
-      firstname: "Peter"
-      lastname: "Christiansen"
-      mobile: "+4520815945"
-      email: "pech@kb.dk"
 
 
 
-
-queue_mapping: "g:{{users_group.name}}:{{users_group.name}}_interactive"
+queue_mapping: "g:{{users_group.name}}:{{users_group.name}}-devel_interactive"
 
 
 yarn_queue:
-  name: "{{users_group.name}}"
+  name: "{{users_group.name}}-devel"
   admins: " {{users_group.name}}"
   submitters: " {{users_group.name}}"
-  capacity: 80
+  capacity: 40
   max_capacity: 100
   minimum_user_limit: 25
   user_limit: 100
@@ -53,7 +61,7 @@ yarn_queue:
   state: RUNNING
 
   children:
-    - name: "{{users_group.name}}_batch"
+    - name: "{{users_group.name}}-devel_batch"
       admins: " {{users_group.name}}"
       submitters: " {{users_group.name}}"
       capacity: 30
@@ -64,7 +72,7 @@ yarn_queue:
       priority: 1
       state: RUNNING
 
-    - name: "{{users_group.name}}_interactive"
+    - name: "{{users_group.name}}-devel_interactive"
       admins: " {{users_group.name}}"
       submitters: " {{users_group.name}}"
       capacity: 70
