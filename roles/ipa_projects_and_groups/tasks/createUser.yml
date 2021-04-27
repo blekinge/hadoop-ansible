@@ -21,6 +21,7 @@
 
     uid: "{{user.uid | default(group.gid | int + user_num + 1) }}"
     gid: "{{user.gid | default(group.gid | int + user_num + 1)}}"
+    noprivate: "{{ not user.private_group | default('no')}}"
 
     homedir: "{{ ipaclient_autohome_dir }}/{{ user.username }}"
     shell: "{{shell}}"
