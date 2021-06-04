@@ -3,7 +3,6 @@
 - hosts: localhost
   roles:
     - role: capacity_scheduler
-    - role: capacity_scheduler
   tasks:
     - debug:
         msg: "{{capacity_queues | map(attribute='longname') | list}}"

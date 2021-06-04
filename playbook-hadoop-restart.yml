@@ -42,6 +42,22 @@
         name: hdfs_datanode
         daemon_reload: yes
 
+# YARN will fail if the HDFS is still in safe mode
+- hosts: hostgroup_hdfs_namenodes
+  vars:
+    - keytab_dir:  "/etc/security/keytabs"
+    - kinit_principal: "{{user_prefix}}hdfs"
+  tasks:
+    - import_tasks: tasks/kinit_keytab.yml
+    - name: wait for HDFS to leave safemode
+      changed_when: false
+      shell:
+        cmd: |
+          source /etc/profile.d/hadoop.sh
+          source /etc/profile.d/kerberos.sh
+          hdfs dfsadmin -safemode wait
+
+
 ## YARN
 
 - hosts: hostgroup_yarn_timeline_servers
