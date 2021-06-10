@@ -13,30 +13,73 @@
     </property>
 
     <property>
-        <name>mapreduce.am.max-attempts</name>
-        <value>2</value>
-    </property>
-
-    <property>
         <name>mapreduce.application.classpath</name>
         <value>
             $HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*,$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*,$PWD/mr-framework/*,/etc/hadoop/conf/
         </value>
+        <description>CLASSPATH for MR applications. A comma-separated list
+            of CLASSPATH entries. If mapreduce.application.framework is set then this
+            must specify the appropriate classpath for that archive, and the name of
+            the archive must be present in the classpath.
+            If mapreduce.app-submission.cross-platform is false, platform-specific
+            environment vairable expansion syntax would be used to construct the default
+            CLASSPATH entries.
+            For Linux:
+            $HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*,
+            $HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*.
+            For Windows:
+            %HADOOP_MAPRED_HOME%/share/hadoop/mapreduce/*,
+            %HADOOP_MAPRED_HOME%/share/hadoop/mapreduce/lib/*.
+
+            If mapreduce.app-submission.cross-platform is true, platform-agnostic default
+            CLASSPATH for MR applications would be used:
+            { {HADOOP_MAPRED_HOME}}/share/hadoop/mapreduce/*,
+            { {HADOOP_MAPRED_HOME}}/share/hadoop/mapreduce/lib/*
+            Parameter expansion marker will be replaced by NodeManager on container
+            launch based on the underlying OS accordingly.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.application.framework.path</name>
         <value>/system/mapreduce/mapreduce.tar.gz#mr-framework</value>
+        <description>Path to the MapReduce framework archive. If set, the framework
+            archive will automatically be distributed along with the job, and this
+            path would normally reside in a public location in an HDFS filesystem. As
+            with distributed cache files, this can be a URL with a fragment specifying
+            the alias to use for the archive name. For example,
+            hdfs:/mapred/framework/hadoop-mapreduce-2.1.1.tar.gz#mrframework would
+            alias the localized archive as "mrframework".
+
+            Note that mapreduce.application.classpath must include the appropriate
+            classpath for the specified framework. The base name of the archive, or
+            alias of the archive if an alias is used, must appear in the specified
+            classpath.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.client.submit.file.replication</name>
         <value>3</value>
+        <description>The replication level for submitted job files. This
+            should be around the square root of the number of nodes.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.cluster.acls.enabled</name>
         <value>true</value>
+        <description>Specifies whether ACLs should be checked
+            for authorization of users for doing various queue and job level operations.
+            ACLs are disabled by default. If enabled, access control checks are made by
+            MapReduce ApplicationMaster when requests are made by users for queue
+            operations like submit job to a queue and kill a job in the queue and job
+            operations like viewing the job-details (See mapreduce.job.acl-view-job)
+            or for modifying the job (See mapreduce.job.acl-modify-job) using
+            Map/Reduce APIs, RPCs or via the console and web user interfaces.
+            For enabling this flag, set to true in mapred-site.xml file of all
+            MapReduce clients (MR job submitting nodes).
+        </description>
     </property>
 
     <property>
@@ -52,41 +95,36 @@
     <property>
         <name>mapreduce.framework.name</name>
         <value>yarn</value>
-    </property>
-
-    <property>
-        <name>mapreduce.job.counters.max</name>
-        <value>130</value>
+        <description>The runtime framework for executing MapReduce jobs.
+            Can be one of local, classic or yarn.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.job.emit-timeline-data</name>
         <value>true</value>
-    </property>
-
-    <property>
-        <name>mapreduce.job.queuename</name>
-        <value>default</value>
-    </property>
-
-    <property>
-        <name>mapreduce.job.reduce.slowstart.completedmaps</name>
-        <value>0.05</value>
+        <description>Specifies if the Application Master should emit timeline data
+            to the timeline server. Individual jobs can override this value.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.jobhistory.address</name>
         <value>{{ mapreduce_history_server_host }}:{{ mapreduce_history_server_rpc_port }}</value>
+        <description>MapReduce JobHistory Server IPC host:port</description>
+
     </property>
 
     <property>
         <name>mapreduce.jobhistory.admin.acl</name>
         <value>{{ yarn_user.name }} {{ subadmins_group.name }}</value>
+        <description>ACL of who can be admin of the History server.</description>
     </property>
 
     <property>
         <name>mapreduce.jobhistory.admin.address</name>
         <value>{{ mapreduce_history_server_host }}:{{ mapreduce_history_server_admin_port }}</value>
+        <description>The address of the History server admin interface.</description>
     </property>
 
     <property>
@@ -94,10 +132,6 @@
         <value>0.0.0.0</value>
     </property>
 
-    <property>
-        <name>mapreduce.jobhistory.cleaner.enable</name>
-        <value>true</value>
-    </property>
 
     <property>
         <name>mapreduce.jobhistory.done-dir</name>
@@ -107,16 +141,24 @@
     <property>
         <name>mapreduce.jobhistory.http.policy</name>
         <value>HTTPS_ONLY</value>
+        <description>
+            This configures the HTTP endpoint for JobHistoryServer web UI.
+            The following values are supported:
+            - HTTP_ONLY : Service is provided only on http
+            - HTTPS_ONLY : Service is provided only on https
+        </description>
     </property>
 
     <property>
         <name>mapreduce.jobhistory.intermediate-done-dir</name>
         <value>{{ mapreduce_jobhistory_dir }}/tmp</value>
+        <description></description>
     </property>
 
     <property>
         <name>mapreduce.jobhistory.joblist.cache.size</name>
         <value>100000</value>
+        <description>Size of the job list cache</description>
     </property>
 
     {% if kerberos_authentication %}
@@ -124,22 +166,37 @@
         <property>
             <name>mapreduce.jobhistory.keytab</name>
             <value>{{ keytab_dir }}/{{ mapreduce_historyserver_service_name }}.service.keytab</value>
+            <description>
+                Location of the kerberos keytab file for the MapReduce
+                JobHistory Server.
+            </description>
         </property>
 
         <property>
             <name>mapreduce.jobhistory.principal</name>
             <value>{{ mapreduce_historyserver_service_name }}/_HOST@{{ ipaserver_realm }}</value>
+            <description>
+                Kerberos principal name for the MapReduce JobHistory Server.
+            </description>
         </property>
 
     {% endif %}
     <property>
         <name>mapreduce.jobhistory.max-age-ms</name>
         <value>2592000000</value>
+        <description>How often the job history cleaner checks for files to delete,
+            in milliseconds. Defaults to 86400000 (one day). Files are only deleted if
+            they are older than mapreduce.jobhistory.max-age-ms.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.jobhistory.recovery.enable</name>
         <value>true</value>
+        <description>Enable the history server to store server state and recover
+            server state upon startup. If enabled then
+            mapreduce.jobhistory.recovery.store.class must be specified.
+        </description>
     </property>
 
     <property>
@@ -150,11 +207,16 @@
     <property>
         <name>mapreduce.jobhistory.recovery.store.leveldb.path</name>
         <value>{{ mapreduce_jobhistory_recovery_store_leveldb_path }}</value>
+        <description>The HistoryServerStateStoreService class to store history server
+            state for recovery.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.jobhistory.webapp.address</name>
         <value>{{ mapreduce_history_server_host }}:{{ mapreduce_history_server_http_port }}</value>
+        <description>MapReduce JobHistory Server Web UI host:port</description>
+
     </property>
 
     <property>
@@ -182,56 +244,64 @@
     <property>
         <name>mapreduce.map.java.opts</name>
         <value>-Xmx{{ mapreduce_map_java_memory }}</value>
+        <description>Java opts only for the child processes that are maps. If set,
+            this will be used instead of mapred.child.java.opts. If -Xmx is not set,
+            it is inferred from mapreduce.map.memory.mb and
+            mapreduce.job.heap.memory-mb.ratio.
+        </description>
     </property>
 
-    <property>
-        <name>mapreduce.map.log.level</name>
-        <value>INFO</value>
-    </property>
 
     <property>
         <name>mapreduce.map.memory.mb</name>
         <value>{{ mapreduce_map_yarn_memory }}</value>
+        <description>The amount of memory to request from the scheduler for each
+            map task. If this is not specified or is non-positive, it is inferred from
+            mapreduce.map.java.opts and mapreduce.job.heap.memory-mb.ratio.
+            If java-opts are also not specified, we set it to 1024.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.map.output.compress</name>
         <value>true</value>
-    </property>
-
-    <property>
-        <name>mapreduce.map.sort.spill.percent</name>
-        <value>0.7</value>
+        <description>Should the outputs of the maps be compressed before being
+            sent across the network. Uses SequenceFile compression.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.map.speculative</name>
         <value>false</value>
+        <description>If true, then multiple instances of some map tasks
+            may be executed in parallel.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.output.fileoutputformat.compress</name>
         <value>false</value>
+        <description>Should the job outputs be compressed?
+        </description>
     </property>
 
     <property>
         <name>mapreduce.output.fileoutputformat.compress.type</name>
         <value>BLOCK</value>
+        <description>If the job outputs are to compressed as SequenceFiles, how should
+            they be compressed? Should be one of NONE, RECORD or BLOCK.
+        </description>
     </property>
 
-    <property>
-        <name>mapreduce.reduce.input.buffer.percent</name>
-        <value>0.0</value>
-    </property>
 
     <property>
         <name>mapreduce.reduce.java.opts</name>
         <value>-Xmx{{ mapreduce_reduce_java_memory }}</value>
-    </property>
-
-    <property>
-        <name>mapreduce.reduce.log.level</name>
-        <value>INFO</value>
+        <description>Java opts only for the child processes that are reduces. If set,
+            this will be used instead of mapred.child.java.opts. If -Xmx is not set,
+            it is inferred from mapreduce.reduce.memory.mb and
+            mapreduce.job.heap.memory-mb.ratio.
+        </description>
     </property>
 
     <property>
@@ -241,82 +311,101 @@
 
     <property>
         <name>mapreduce.reduce.shuffle.fetch.retry.enabled</name>
-        <value>1</value>
+        <value>true</value>
+        <description>Set to enable fetch retry during host restart.</description>
     </property>
 
-    <property>
-        <name>mapreduce.reduce.shuffle.fetch.retry.interval-ms</name>
-        <value>1000</value>
-    </property>
-
-    <property>
-        <name>mapreduce.reduce.shuffle.fetch.retry.timeout-ms</name>
-        <value>30000</value>
-    </property>
-
-    <property>
-        <name>mapreduce.reduce.shuffle.input.buffer.percent</name>
-        <value>0.7</value>
-    </property>
-
-    <property>
-        <name>mapreduce.reduce.shuffle.merge.percent</name>
-        <value>0.66</value>
-    </property>
 
     <property>
         <name>mapreduce.reduce.shuffle.parallelcopies</name>
         <value>30</value>
+        <description>The default number of parallel transfers run by reduce
+            during the copy(shuffle) phase.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.reduce.speculative</name>
         <value>false</value>
+        <description>If true, then multiple instances of some reduce tasks
+            may be executed in parallel.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.shuffle.port</name>
         <value>{{ mapreduce_shuffle_port }}</value>
+        <description>Default port that the ShuffleHandler will run on. ShuffleHandler
+            is a service run at the NodeManager to facilitate transfers of intermediate
+            Map outputs to requesting Reducers.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.task.io.sort.factor</name>
         <value>100</value>
+        <description>The number of streams to merge at once while sorting
+            files. This determines the number of open file handles.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.task.io.sort.mb</name>
         <value>{{ mapreduce_task_sort_memory }}</value>
+        <description>The total amount of buffer memory to use while sorting
+            files, in megabytes. By default, gives each merge stream 1MB, which
+            should minimize seeks.
+        </description>
     </property>
 
     <property>
         <name>mapreduce.task.timeout</name>
         <value>300000</value>
+        <description>The number of milliseconds before a task will be
+            terminated if it neither reads an input, writes an output, nor
+            updates its status string. A value of 0 disables the timeout.
+        </description>
     </property>
 
     <property>
         <name>yarn.app.mapreduce.am.command-opts</name>
         <value>-Xmx{{ mapreduce_am_java_memory }}</value>
-    </property>
+        <description>Java opts for the MR App Master processes.
+            The following symbol, if present, will be interpolated: @taskid@ is replaced
+            by current TaskID. Any other occurrences of '@' will go unchanged.
+            For example, to enable verbose gc logging to a file named for the taskid in
+            /tmp and to set the heap maximum to be a gigabyte, pass a 'value' of:
+            -Xmx1024m -verbose:gc -Xloggc:/tmp/@taskid@.gc
 
-    <property>
-        <name>yarn.app.mapreduce.am.log.level</name>
-        <value>INFO</value>
+            Usage of -Djava.library.path can cause programs to no longer function if
+            hadoop native libraries are used. These values should instead be set as part
+            of LD_LIBRARY_PATH in the map / reduce JVM env using the mapreduce.map.env and
+            mapreduce.reduce.env config settings.
+        </description>
     </property>
 
     <property>
         <name>yarn.app.mapreduce.am.resource.mb</name>
         <value>{{ mapreduce_am_yarn_memory }}</value>
+        <description>The amount of memory the MR AppMaster needs.</description>
     </property>
 
     <property>
         <name>yarn.app.mapreduce.am.staging-dir</name>
         <value>{{ hdfs_home_dir }}</value>
+        <description>The staging dir used while submitting jobs.
+        </description>
     </property>
 
     <property>
         <name>yarn.app.mapreduce.client.job.max-retries</name>
         <value>30</value>
+        <description>The number of retries the client will make for getJob and
+            dependent calls.
+            This is needed for non-HDFS DFS where additional, high level
+            retries are required to avoid spurious failures during the getJob call.
+            30 is a good value for WASB
+        </description>
     </property>
 
     <property>
@@ -341,15 +430,77 @@
     <property>
         <name>yarn.app.mapreduce.am.env</name>
         <value>HADOOP_MAPRED_HOME={{ current_hadoop_home }}</value>
+        <description>User added environment variables for the MR App Master
+            processes, specified as a comma separated list.
+            Example :
+            1) A=foo This will set the env variable A to foo
+            2) B=$B:c This is inherit tasktracker's B env variable.
+
+            To define environment variables individually, you can specify
+            multiple properties of the form yarn.app.mapreduce.am.env.VARNAME,
+            where VARNAME is the name of the environment variable. This is the only
+            way to add a variable when its value contains commas.
+        </description>
     </property>
     <property>
         <name>mapreduce.map.env</name>
         <value>HADOOP_MAPRED_HOME={{ current_hadoop_home }}</value>
+        <description>User added environment variables for the map task processes,
+            specified as a comma separated list.
+            Example:
+            VAR1=value1,VAR2=value2
+
+            To define environment variables individually, you can specify
+            multiple properties of the form mapreduce.map.env.VARNAME,
+            where VARNAME is the name of the environment variable. This is the only
+            way to add a variable when its value contains commas.
+        </description>
     </property>
     <property>
         <name>mapreduce.reduce.env</name>
         <value>HADOOP_MAPRED_HOME={{ current_hadoop_home }}</value>
+        <description>User added environment variables for the reduce task processes,
+            specified as a comma separated list.
+            Example:
+            VAR1=value1,VAR2=value2
+
+            To define environment variables individually, you can specify
+            multiple properties of the form mapreduce.reduce.env.VARNAME,
+            where VARNAME is the name of the environment variable. This is the only
+            way to add a variable when its value contains commas.
+            contains commas.
+        </description>
     </property>
 
+
+
+    <!-- Ubertasks -->
+
+    <property>
+        <name>mapreduce.job.ubertask.enable</name>
+        <value>true</value>
+        <description>Whether to enable the small-jobs "ubertask" optimization,
+            which runs "sufficiently small" jobs sequentially within a single JVM.
+            "Small" is defined by the following maxmaps, maxreduces, and maxbytes
+            settings. Note that configurations for application masters also affect
+            the "Small" definition - yarn.app.mapreduce.am.resource.mb must be
+            larger than both mapreduce.map.memory.mb and mapreduce.reduce.memory.mb,
+            and yarn.app.mapreduce.am.resource.cpu-vcores must be larger than
+            both mapreduce.map.cpu.vcores and mapreduce.reduce.cpu.vcores to enable
+            ubertask. Users may override this value.
+        </description>
+    </property>
+
+
+    <property>
+        <name>mapreduce.job.ubertask.maxbytes</name>
+        <value>134217728</value>
+        <description>Threshold for number of input bytes, beyond which job is
+            considered too big for the ubertasking optimization. If no value is
+            specified, dfs.blocksize is used as a default. Be sure to specify a
+            default value in mapred-site.xml if the underlying filesystem is not HDFS.
+            Users may override this value, but only downward.
+        </description>
+    </property>
 
 </configuration>
