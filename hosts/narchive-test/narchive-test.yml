@@ -285,6 +285,9 @@ hostgroup_all:
             narchive-t-zook01.kb.dk:
 
         hostgroup_yarn:
+          vars:
+            yarn_scheduler_max_memory: 8192
+            yarn_scheduler_max_cpu_cores: 8
           children:
 
             hostgroup_yarn_resource_managers:
