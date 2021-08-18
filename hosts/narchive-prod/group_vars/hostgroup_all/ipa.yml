@@ -16,7 +16,8 @@ ipa_hostgroup: narchive-p
 
 user_prefix: "nap-"
 
-cluster_id_prefix: "12"
+#See https://sbprojects.statsbiblioteket.dk/display/HPC/Users
+cluster_id_prefix: "11"
 
 
 ipaadmin_password: !vault |

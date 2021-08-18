@@ -5,7 +5,7 @@ default_project_file_dir: hosts/narchive-prod/group_vars/hostgroup_all/projects/
 
 projects:
   - name: subadmins_project
-  - name: prod_project
+  - name: nas_project
 
 
 
