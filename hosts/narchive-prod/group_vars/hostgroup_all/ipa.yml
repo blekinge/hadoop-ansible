@@ -1,0 +1,29 @@
+---
+
+domain: kbhpc.kb.dk
+
+# This is the freeipa host. Set this variable if you need to clients to contact it on another hostname
+# than defined in the inventory
+#ipa_server: "{{  groups['hostgroup_ipaserver'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
+
+#ipa_server above is used when nfs mounting homes, so it should match autohome_nfs_export_range below
+autohome_nfs_export_iprange: "130.226.228.0/24"
+
+ipaclient_ntp_servers:
+  - 130.225.24.33
+
+ipa_hostgroup: narchive-p
+
+user_prefix: "nap-"
+
+cluster_id_prefix: "12"
+
+
+ipaadmin_password: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  61636633336164356138383464333764616264653930393831363066653863343062343335646465
+  6637303461663162303930616431643562666261623264380a383636346337663762333338666139
+  30616534633961623633636238616336623135323461666238303731303065343135333663363634
+  6361616365313331660a363761663636326466343964656638346466323131306363653962386266
+  33333065343237653934356133616530333939336366383331313536653132666438356432313332
+  6236343030613430373932616666366635323438386332623934
