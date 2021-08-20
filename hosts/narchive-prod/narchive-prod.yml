@@ -22,7 +22,7 @@ hostgroup_all:
   children:
     hostgroup_ipaserver: # Singular form as there can be only one here
       hosts:
-        kbhpc-fipa-001.kbhpc.kb.dk:
+        kbhpc-fipa-001.kbhpc.bitarkiv.kb.dk:
 
     hostgroup_ipaclients:
       children: #Mark all hadoop nodes as ipa-clients
@@ -30,38 +30,38 @@ hostgroup_all:
 
     hostgroup_zabbix_nodes:
       hosts:
-        narchive-p-admn01.kb.dk:
+        narchive-p-admn01.bitarkiv.kb.dk:
       children:
         hostgroup_ipaclients:
 
 #TODO what happens if this is not set?
     hostgroup_rsyslog_server:
       hosts:
-        narchive-p-admn01.kb.dk:
+        narchive-p-admn01.bitarkiv.kb.dk:
 
     hostgroup_hadoop_nodes:
       children:
 #        hostgroup_project_nodes:
 #          hosts:
-#            narchive-p-admn02.kb.dk:
+#            narchive-p-admn02.bitarkiv.kb.dk:
 
         hostgroup_hdfs:
           children:
 
             hostgroup_hdfs_namenodes:
               hosts:
-                narchive-p-hdfs[01:02].kb.dk:
+                narchive-p-hdfs[01:02].bitarkiv.kb.dk:
 
             hostgroup_hdfs_journalnodes:
               hosts:
-                narchive-p-zook[01:03].kb.dk:
+                narchive-p-zook[01:03].bitarkiv.kb.dk:
 
             hostgroup_hdfs_backupnodes:
               hosts:
 
             hostgroup_hdfs_datanodes:
               hosts:
-                narchive-p-data[01:03].kb.dk:
+                narchive-p-data[01:03].bitarkiv.kb.dk:
               vars:
                 mounts:
                   - mount: /data/sdc1
@@ -137,7 +137,7 @@ hostgroup_all:
 
         hostgroup_zookeeper_servers:
           hosts:
-            narchive-p-zook[01:03].kb.dk:
+            narchive-p-zook[01:03].bitarkiv.kb.dk:
 
         hostgroup_yarn:
           vars:
@@ -147,7 +147,7 @@ hostgroup_all:
 
             hostgroup_yarn_resource_managers:
               hosts:
-                narchive-p-yarn[01:02].kb.dk:
+                narchive-p-yarn[01:02].bitarkiv.kb.dk:
 
             hostgroup_yarn_node_managers:
               vars:
@@ -178,21 +178,21 @@ hostgroup_all:
                   - /data/sdx1/yarn
                   - /data/sdy1/yarn
               hosts:
-                narchive-p-data[01:03].kb.dk:
+                narchive-p-data[01:03].bitarkiv.kb.dk:
 
             hostgroup_yarn_timeline_servers:
               hosts:
-                narchive-p-hist01.kb.dk:
+                narchive-p-hist01.bitarkiv.kb.dk:
 
         hostgroup_mapreduce:
           children:
             hostgroup_mapreduce_history_servers:
               hosts: # There can be only one here
-                narchive-p-hist01.kb.dk:
+                narchive-p-hist01.bitarkiv.kb.dk:
 
         hostgroup_spark:
           children:
             hostgroup_spark_history_servers:
               hosts: # There can be only one here
-                narchive-p-hist01.kb.dk:
+                narchive-p-hist01.bitarkiv.kb.dk:
 
