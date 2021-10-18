@@ -3,4 +3,5 @@ yum_packages:
   - rsync
   - wget
   - yum-utils
-  - python36
+  - python38
+  - glibc-langpack-en

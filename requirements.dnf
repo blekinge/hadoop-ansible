@@ -2,6 +2,9 @@
 #Ansible
 openssl-devel
 
+# To prevent locale errors, when only DK is installed
+glibc-langpack-en
+
 #Python
 python38
 python38-devel
