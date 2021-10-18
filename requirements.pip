@@ -1,5 +1,7 @@
-# Ansible itself
+# This seems to be required by ansible...
+setuptools-rust
 
+# Ansible itself
 ansible
 
 # These are the pip packages that should be available to the python used to execute ansible

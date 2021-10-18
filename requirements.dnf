@@ -1,4 +1,11 @@
 #These are the dnf packages that must be installed to install the pip dependencies
+#Ansible
+openssl-devel
+
+#Python
+python38
+python38-devel
+python3-virtualenv
 
 # Ovirt
 libcurl-devel
