@@ -24,13 +24,21 @@ ipa_admin_user:
   name: admin
   group: admins
 
-ipaserver_autohome_dir: /sto-data/home
-ipaserver_syshome_dir: /sto-data/syshome
+#TODO this should follow from use_autofs_homes...
+ipaclient_mkhomedir: yes
 
+#Config for Automounted user homedirs
+use_autofs_homes: true
 ipaclient_autohome_dir: /autohome
-ipaclient_syshome_dir: /syshome
+ipaserver_autohome_dir: /sto-data/home
 #Nessesary to set up the automount
 ipaautomount_location: "default"
+
+#Config for static mounted system users homedirs
+use_nfs_syshomes: true
+ipaserver_syshome_dir: /sto-data/syshome
+ipaclient_syshome_dir: /syshome
+
 
 hdfs_home_dir: /user
 

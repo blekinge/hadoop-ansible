@@ -1,95 +1,98 @@
 ---
-- include_tasks: kinit_admin.yml
+- name: setup AutoFS homedirs
+  when: use_autofs_homes
+  block:
+    - include_tasks: kinit_admin.yml
 
 
-#Add the NFS service principal for the server and client to Kerberos.
-- name: FreeIPA automount setup service
-  freeipa.ansible_freeipa.ipaservice:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: "nfs/{{ ansible_fqdn }}"
-    state: present
-    force: yes
-
-
-#https://blog.delouw.ch/2015/03/14/using-ipa-to-provide-automount-maps-for-nfsv4-home-directories/
-
-#This require the ipa admintools to be installed and the host to be an ipa client
-- block:
-
-    - name: setup autohome
-      shell:
-        cmd: |
-          LC_ALL="C.UTF-8"
-
-          #Add the auto.home map
-          ipa automountmap-show {{ipaautomount_location}} --map=auto.home || \
-            ipa automountmap-add {{ipaautomount_location}} auto.home;
-
-          #And add the auto.home map to auto.master
-          ipa automountkey-show {{ipaautomount_location}} auto.master --key "{{ ipaclient_autohome_dir }}" || \
-            ipa automountkey-add {{ipaautomount_location}} --key "{{ ipaclient_autohome_dir }}" --info auto.home auto.master;
-
-          #Finally add the key to the auto.home map
-
-          ipa automountkey-show {{ipaautomount_location}}  \
-                                --key "*" \
-                                --info "-fstype=nfs4,rw,sec=krb5,intr,hard {{ ansible_fqdn }}:{{ ipaserver_autohome_dir }}/&" \
-                                auto.home || \
-            ipa automountkey-add {{ipaautomount_location}} \
-              --key "*" \
-              --info "-fstype=nfs4,rw,sec=krb5:krb5i,intr,hard {{ ansible_fqdn }}:{{ ipaserver_autohome_dir }}/&" \
-              auto.home;
-
-
-    - name: Tell your NFS service to use NFSv4
-      ansible.builtin.lineinfile:
-        path: /etc/sysconfig/nfs
+    #Add the NFS service principal for the server and client to Kerberos.
+    - name: FreeIPA automount setup service
+      freeipa.ansible_freeipa.ipaservice:
+        ipaadmin_password: "{{ipaadmin_password}}"
+        name: "nfs/{{ ansible_fqdn }}"
         state: present
-        create: yes
-        line: 'SECURE_NFS="yes"'
-
-    - name: setup autohome
-      shell:
-        cmd: ipa-getkeytab --server {{ ansible_fqdn }} -p "nfs/{{ ansible_fqdn }}" -k /etc/krb5.keytab
+        force: yes
 
 
-    - name: Autohome dir
-      ansible.builtin.file:
-        path: "{{ ipaserver_autohome_dir }}"
-        owner: root
-        group: root
-        mode: '0755'
-        state: directory
+    #https://blog.delouw.ch/2015/03/14/using-ipa-to-provide-automount-maps-for-nfsv4-home-directories/
 
-    - name: #Create your NFS share and start the NFS server
-      ansible.builtin.lineinfile:
-        path: /etc/exports
-        state: present
-        create: yes
-        line: "{{ ipaserver_autohome_dir }}    {{  autohome_nfs_export_iprange }}(rw,sec=sys:krb5:krb5i:krb5p)"
+    #This require the ipa admintools to be installed and the host to be an ipa client
+    - block:
 
-    - name: admin home
-      ansible.builtin.file:
-        path: "{{ ipaserver_autohome_dir }}/{{ipa_admin_user.name}}"
-        owner: "{{ipa_admin_user.name}}"
-        group: "{{ipa_admin_user.group}}"
-        mode: '0700'
-        state: directory
+        - name: setup autohome
+          shell:
+            cmd: |
+              LC_ALL="C.UTF-8"
 
-    - name: NFS firewall opened
-      ansible.posix.firewalld:
-        service: 'nfs'
-        permanent: yes
-        state: enabled
-        zone: "public"
-        immediate: yes
+              #Add the auto.home map
+              ipa automountmap-show {{ipaautomount_location}} --map=auto.home || \
+                ipa automountmap-add {{ipaautomount_location}} auto.home;
 
-    - name: NFS autohome server
-      ansible.builtin.systemd:
-        name: nfs-server
-        state: restarted
-        enabled: yes
-        daemon_reload: yes
+              #And add the auto.home map to auto.master
+              ipa automountkey-show {{ipaautomount_location}} auto.master --key "{{ ipaclient_autohome_dir }}" || \
+                ipa automountkey-add {{ipaautomount_location}} --key "{{ ipaclient_autohome_dir }}" --info auto.home auto.master;
+
+              #Finally add the key to the auto.home map
+
+              ipa automountkey-show {{ipaautomount_location}}  \
+                                    --key "*" \
+                                    --info "-fstype=nfs4,rw,sec=krb5,intr,hard {{ ansible_fqdn }}:{{ ipaserver_autohome_dir }}/&" \
+                                    auto.home || \
+                ipa automountkey-add {{ipaautomount_location}} \
+                  --key "*" \
+                  --info "-fstype=nfs4,rw,sec=krb5:krb5i,intr,hard {{ ansible_fqdn }}:{{ ipaserver_autohome_dir }}/&" \
+                  auto.home;
 
 
-- include_tasks: kdestroy.yml
+        - name: Tell your NFS service to use NFSv4
+          ansible.builtin.lineinfile:
+            path: /etc/sysconfig/nfs
+            state: present
+            create: yes
+            line: 'SECURE_NFS="yes"'
+
+        - name: setup autohome
+          shell:
+            cmd: ipa-getkeytab --server {{ ansible_fqdn }} -p "nfs/{{ ansible_fqdn }}" -k /etc/krb5.keytab
+
+
+        - name: Autohome dir
+          ansible.builtin.file:
+            path: "{{ ipaserver_autohome_dir }}"
+            owner: root
+            group: root
+            mode: '0755'
+            state: directory
+
+        - name: #Create your NFS share and start the NFS server
+          ansible.builtin.lineinfile:
+            path: /etc/exports
+            state: present
+            create: yes
+            line: "{{ ipaserver_autohome_dir }}    {{  autohome_nfs_export_iprange }}(rw,sec=sys:krb5:krb5i:krb5p)"
+
+        - name: admin home
+          ansible.builtin.file:
+            path: "{{ ipaserver_autohome_dir }}/{{ipa_admin_user.name}}"
+            owner: "{{ipa_admin_user.name}}"
+            group: "{{ipa_admin_user.group}}"
+            mode: '0700'
+            state: directory
+
+        - name: NFS firewall opened
+          ansible.posix.firewalld:
+            service: 'nfs'
+            permanent: yes
+            state: enabled
+            zone: "public"
+            immediate: yes
+
+        - name: NFS autohome server
+          ansible.builtin.systemd:
+            name: nfs-server
+            state: restarted
+            enabled: yes
+            daemon_reload: yes
+
+
+    - include_tasks: kdestroy.yml

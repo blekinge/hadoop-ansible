@@ -6,6 +6,10 @@ domain: hadoop.bitarkiv.kb.dk
 # than defined in the inventory
 #ipa_server: "{{  groups['hostgroup_ipaserver'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
 
+use_nfs_syshomes: false
+
+use_autofs_homes: false
+
 #TODO do not use automounted homes for narchive-prod
 #TODO do hadoop system users even need nfs homes or could we use local homes here?
 #ipa_server above is used when nfs mounting homes, so it should match autohome_nfs_export_range below

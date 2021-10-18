@@ -1,49 +1,51 @@
 ---
 
+- name: Setup syshomes on IPA server
+  when: use_nfs_syshomes
+  block:
+    - name: "Create {{ ipaserver_syshome_dir }}"
+      ansible.builtin.file:
+        path: "{{ ipaserver_syshome_dir }}"
+        owner: root
+        group: root
+        mode: '0755'
+        state: directory
 
-- name: "Create {{ ipaserver_syshome_dir }}"
-  ansible.builtin.file:
-    path: "{{ ipaserver_syshome_dir }}"
-    owner: root
-    group: root
-    mode: '0755'
-    state: directory
+    - name: Create syshomes for syshome users
+      ansible.builtin.file:
+        path: "{{ ipaserver_syshome_dir }}/{{ item.name }}"
+        owner: "{{ item.uid }}"
+        group: "{{ item.gid }}"
+        mode: '0700'
+        state: directory
+      loop: "{{system_users}}"
 
-- name: Create syshomes for syshome users
-  ansible.builtin.file:
-    path: "{{ ipaserver_syshome_dir }}/{{ item.name }}"
-    owner: "{{ item.uid }}"
-    group: "{{ item.gid }}"
-    mode: '0700'
-    state: directory
-  loop: "{{system_users}}"
+    - name: "Create {{ ipaclient_syshome_dir }}"
+      ansible.builtin.file:
+        path: "{{ ipaclient_syshome_dir }}"
+        owner: root
+        group: root
+        mode: '0755'
+        state: directory
 
-- name: "Create {{ ipaclient_syshome_dir }}"
-  ansible.builtin.file:
-    path: "{{ ipaclient_syshome_dir }}"
-    owner: root
-    group: root
-    mode: '0755'
-    state: directory
+    - name: "link syshomes from {{ ipaserver_syshome_dir }} to {{ ipaclient_syshome_dir }}"
+      ansible.builtin.file:
+        src: "{{ ipaserver_syshome_dir }}/{{ item.name }}"
+        dest: "{{ ipaclient_syshome_dir }}/{{ item.name }}"
+        state: link
+      loop: "{{system_users}}"
 
-- name: "link syshomes from {{ ipaserver_syshome_dir }} to {{ ipaclient_syshome_dir }}"
-  ansible.builtin.file:
-    src: "{{ ipaserver_syshome_dir }}/{{ item.name }}"
-    dest: "{{ ipaclient_syshome_dir }}/{{ item.name }}"
-    state: link
-  loop: "{{system_users}}"
+    #NFS exports this folder
+    - name: setup nfs exports
+      ansible.builtin.lineinfile:
+        path: /etc/exports
+        state: present
+        line: "{{ ipaserver_syshome_dir }} {{ autohome_nfs_export_iprange }}(rw,sec=sys,fsid=1339)"
 
-#NFS exports this folder
-- name: setup nfs exports
-  ansible.builtin.lineinfile:
-    path: /etc/exports
-    state: present
-    line: "{{ ipaserver_syshome_dir }} {{ autohome_nfs_export_iprange }}(rw,sec=sys,fsid=1339)"
-
-- name: NFS syshome server
-  ansible.builtin.systemd:
-    name: nfs-server
-    state: restarted
-    enabled: yes
-    daemon_reload: yes
+    - name: NFS syshome server
+      ansible.builtin.systemd:
+        name: nfs-server
+        state: restarted
+        enabled: yes
+        daemon_reload: yes
 
