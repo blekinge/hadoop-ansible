@@ -27,4 +27,4 @@
       {%- set _= temp_list.append(temp_dic) -%}
       {%- endfor %}
       {%- endfor %}
-      {{- temp_list -}}
+      {{ - temp_list - }}

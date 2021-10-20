@@ -9,14 +9,14 @@
   block:
     # This DNS looks up the vm to determine it's configured IP address
     # Fun note: The VM does not have to exist yet, as long as it is in DNS
-    - name: "Simple A record (IPV4 address) lookup for {{inventory_hostname}}"
+    - name: "Simple A record (IPV4 address) lookup for {{ inventory_hostname }}"
       register: hostnumberblob
       shell:
-        cmd: "( set -o pipefail && host {{inventory_hostname}} | grep '{{inventory_hostname}}' | cut -d' ' -f4 | cut -d'.' -f4 )"
+        cmd: "( set -o pipefail && host {{ inventory_hostname }} | grep '{{ inventory_hostname }}' | cut -d' ' -f4 | cut -d'.' -f4 )"
 
     # Save the hostnumber as variable; Hostnumber is the last block of the IP, as this is alike in all the networks
     - ansible.builtin.set_fact:
-        hostnumber: "{{ hostnumberblob.stdout | int}}"
+        hostnumber: "{{ hostnumberblob.stdout | int }}"
 
     - ansible.builtin.debug:
         var: hostnumber
@@ -24,12 +24,12 @@
     - name: "set ip1 if not set"
       when: ip1 is undefined
       ansible.builtin.set_fact:
-        ip1: "{{nic1_subnet}}.{{hostnumber}}"
+        ip1: "{{ nic1_subnet }}.{{ hostnumber }}"
 
     - name: "set ip2 if not set"
       when: ip2 is undefined
       ansible.builtin.set_fact:
-        ip2: "{{nic2_subnet}}.{{hostnumber}}"
+        ip2: "{{ nic2_subnet }}.{{ hostnumber }}"
 
 
 - name: setup vm
@@ -41,8 +41,8 @@
     # The use of ovirt.ovirt before ovirt_auth is to check if the collection is correctly loaded
     - name: Obtain SSO token with using username/password credentials
       ovirt.ovirt.ovirt_auth:
-        url: "https://{{ovirt_api_host}}/ovirt-engine/api"
-        username: "{{ovirt_username}}"
+        url: "https://{{ ovirt_api_host }}/ovirt-engine/api"
+        username: "{{ ovirt_username }}"
         password: "{{ ovirt_password }}"
 
     # Previous task generated I(ovirt_auth) fact, which you can later use
@@ -51,7 +51,7 @@
     # Gather info about next run configuration of virtual machine named myvm
     - ovirt.ovirt.ovirt_vm_info:
         auth: "{{ ovirt_auth }}"
-        pattern: "name={{shortname}}"
+        pattern: "name={{ shortname }}"
       register: ovirt_vm_existing_state
 
 
@@ -63,17 +63,17 @@
         auth: "{{ ovirt_auth }}"
         timeout: 1200
         state: present
-        name: "{{shortname}}"
-        template: "{{template}}"
+        name: "{{ shortname }}"
+        template: "{{ template }}"
         clone: yes
-        cluster: "{{ovirt_cluster}}"
+        cluster: "{{ ovirt_cluster }}"
 
-        memory: "{{memory}}"
-        memory_guaranteed: "{{memory}}"
-        cpu_sockets: "{{cpu_sockets}}"
-        cpu_cores: "{{cpu_cores}}"
-        comment: "{{comment | default(omit)}}"
-        description: "{{description | default(omit)}}"
+        memory: "{{ memory }}"
+        memory_guaranteed: "{{ memory }}"
+        cpu_sockets: "{{ cpu_sockets }}"
+        cpu_cores: "{{ cpu_cores }}"
+        comment: "{{ comment | default(omit) }}"
+        description: "{{ description | default(omit) }}"
 
         type: server
         usb_support: no
@@ -82,39 +82,39 @@
 
         cloud_init_persist: True # This seems to be nessesary for cloud init to work...
         cloud_init:
-          host_name: "{{hostname}}"
+          host_name: "{{ hostname }}"
           timezone: "GMT+01:00"
           user_name: root
-          root_password: "{{root_password}}"
+          root_password: "{{ root_password }}"
           #          Base64 encode so we do not have to fight with linebreaks and indentions here
           # https://cloudinit.readthedocs.io/en/latest/topics/modules.html#write-files
           # https://cloudinit.readthedocs.io/en/latest/topics/modules.html#runcmd
           custom_script: |
             write_files:
-              - path: /etc/sysconfig/network-scripts/ifcfg-{{nic2}}
+              - path: /etc/sysconfig/network-scripts/ifcfg-{{ nic2 }}
                 permissions: '0644'
                 encoding: base64
                 content: {{ lookup('template', 'ifcfg-nic2') | b64encode }}
 
-              - path: /etc/sysconfig/network-scripts/route-{{nic2}}
+              - path: /etc/sysconfig/network-scripts/route-{{ nic2 }}
                 permissions: '0644'
                 encoding: base64
                 content:  {{ lookup('template', 'route-nic2') | b64encode }}
 
-              - path: /etc/sysconfig/network-scripts/ifcfg-{{nic1}}
+              - path: /etc/sysconfig/network-scripts/ifcfg-{{ nic1 }}
                 permissions: '0644'
                 encoding: base64
                 content: {{ lookup('template', 'ifcfg-nic1') | b64encode }}
 
-              - path: /etc/sysconfig/network-scripts/route-{{nic1}}
+              - path: /etc/sysconfig/network-scripts/route-{{ nic1 }}
                 permissions: '0644'
                 encoding: base64
                 content:  {{ lookup('template', 'route-nic1') | b64encode }}
 
             runcmd:
               - "nmcli con reload"
-              - "nmcli con up '{{nic1}}'"
-              - "nmcli con up '{{nic2}}'"
+              - "nmcli con up '{{ nic1 }}'"
+              - "nmcli con up '{{ nic2 }}'"
               - "ping 'wonky.statsbiblioteket.dk' -c 2"
 
     - debug:
@@ -131,40 +131,40 @@
         content_type: data
         format: cow
         interface: "virtio_scsi"
-        name: "{{shortname}}_{{item.name}}"
+        name: "{{ shortname }}_{{ item.name }}"
         shareable: no
         sparse: yes
-        size: "{{item.size}}"
+        size: "{{ item.size }}"
         state: present
         storage_domain: "VMs"
-        vm_name: "{{shortname}}"
+        vm_name: "{{ shortname }}"
         wait: yes
       no_log: true
 
-    - name: "Attaching network {{nic1}} to nic1"
+    - name: "Attaching network {{ nic1 }} to nic1"
       when: new_vm.changed
       ovirt.ovirt.ovirt_nic:
         auth: "{{ ovirt_auth }}"
         state: present
-        vm: "{{shortname}}"
+        vm: "{{ shortname }}"
         name: nic1
-        profile: "{{nic1}}"
-        network: "{{nic1}}"
+        profile: "{{ nic1 }}"
+        network: "{{ nic1 }}"
 
-    - name: "Attaching network {{nic2}} to nic2"
+    - name: "Attaching network {{ nic2 }} to nic2"
       when: new_vm.changed
       ovirt.ovirt.ovirt_nic:
         auth: "{{ ovirt_auth }}"
         state: present
-        vm: "{{shortname}}"
+        vm: "{{ shortname }}"
         name: nic2
-        profile: "{{nic2}}"
-        network: "{{nic2}}"
+        profile: "{{ nic2 }}"
+        network: "{{ nic2 }}"
 
     # Gather info about next run configuration of virtual machine named myvm
     - ovirt.ovirt.ovirt_vm_info:
         auth: "{{ ovirt_auth }}"
-        pattern: "name={{shortname}}"
+        pattern: "name={{ shortname }}"
       register: ovirt_vm_new_state
 
 
@@ -173,8 +173,8 @@
       ovirt.ovirt.ovirt_vm:
         auth: "{{ ovirt_auth }}"
         state: running
-        name: "{{shortname}}"
-        cluster: "{{ovirt_cluster}}"
+        name: "{{ shortname }}"
+        cluster: "{{ ovirt_cluster }}"
         wait: yes
 
     - name: "Reboot VMs to activate new networks"
@@ -182,8 +182,8 @@
       ovirt.ovirt.ovirt_vm:
         auth: "{{ ovirt_auth }}"
         state: reboot
-        name: "{{shortname}}"
-        cluster: "{{ovirt_cluster}}"
+        name: "{{ shortname }}"
+        cluster: "{{ ovirt_cluster }}"
         wait: yes
 
   always:

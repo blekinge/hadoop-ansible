@@ -17,10 +17,10 @@
 - name: format+mount extra disks
   include: task_format_disk.yml
   vars:
-    mount: "{{item.mount}}"
-    device: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_{{(attached_disks.results[idx]['id'])[0:20]}}"
+    mount: "{{ item.mount }}"
+    device: "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_{{ (attached_disks.results[idx]['id'])[0:20] }}"
   when: ovirt_disks is defined
-  loop: "{{ovirt_disks}}"
+  loop: "{{ ovirt_disks }}"
   loop_control:
     index_var: idx
 

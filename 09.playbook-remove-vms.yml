@@ -14,8 +14,8 @@
         # The use of ovirt.ovirt before ovirt_auth is to check if the collection is correctly loaded
         - name: Obtain SSO token with using username/password credentials
           ovirt.ovirt.ovirt_auth:
-            url: "https://{{ovirt_api_host}}/ovirt-engine/api"
-            username: "{{ovirt_username}}"
+            url: "https://{{ ovirt_api_host }}/ovirt-engine/api"
+            username: "{{ ovirt_username }}"
             password: "{{ ovirt_password }}"
 
         # Previous task generated I(ovirt_auth) fact, which you can later use
@@ -25,8 +25,8 @@
           ovirt.ovirt.ovirt_vm:
             auth: "{{ ovirt_auth }}"
             state: absent
-            name: "{{shortname}}"
-            cluster: "{{ovirt_cluster}}"
+            name: "{{ shortname }}"
+            cluster: "{{ ovirt_cluster }}"
 
 
   collections: # This require the ovirt-ansible plugin installed. See ovirt_sdk_setup.sh

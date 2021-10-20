@@ -36,9 +36,9 @@ ssl_country_name: DK
 
 
 certificate_authority:
-  certificate_file: "{{temp_ssl_dir}}/CA.crt"
+  certificate_file: "{{ temp_ssl_dir }}/CA.crt"
   name: "CA"
-  private_key_file: "{{temp_ssl_dir}}/CA-private.pem"
+  private_key_file: "{{ temp_ssl_dir }}/CA-private.pem"
   private_key_passphrase: !vault |
     $ANSIBLE_VAULT;1.1;AES256
     35636263383737663466303133316365643061663164366535623239303338663663616633303937

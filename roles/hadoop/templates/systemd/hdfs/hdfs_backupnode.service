@@ -3,7 +3,7 @@
 [Unit]
 Description=Hadoop DFS namenode backupnode
 Requires=network-online.target
-Documentation=https://hadoop.apache.org/docs/r{{hadoop_version}}/hadoop-project-dist/hadoop-hdfs/HdfsUserGuide.html#Backup_Node
+Documentation=https://hadoop.apache.org/docs/r{{ hadoop_version }}/hadoop-project-dist/hadoop-hdfs/HdfsUserGuide.html#Backup_Node
 
 [Service]
 User={{ hdfs_user.name }}

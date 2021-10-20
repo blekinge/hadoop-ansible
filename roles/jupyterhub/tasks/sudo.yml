@@ -1,5 +1,5 @@
 - name: "jupyterhub Sudo rules"
-  delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
+  delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
   run_once: true # Since the resulting sudo rule works on all hosts, just execute this once
   block:
     - include_tasks: kinit_admin.yml
@@ -7,56 +7,56 @@
     # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudocmd.md
     - name: "sudo command /usr/bin/sudospawner"
       freeipa.ansible_freeipa.ipasudocmd:
-        ipaadmin_password: "{{ipaadmin_password}}"
+        ipaadmin_password: "{{ ipaadmin_password }}"
         name: /usr/bin/sudospawner
         state: present
 
     - name: "sudo command /usr/local/bin/sudospawner"
       freeipa.ansible_freeipa.ipasudocmd:
-        ipaadmin_password: "{{ipaadmin_password}}"
+        ipaadmin_password: "{{ ipaadmin_password }}"
         name: /usr/local/bin/sudospawner # #Sometimes it gets installed in /usr/local
         state: present
 
     # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudocmdgroup.md
-    - name: "Create sudo command group {{jupyterhub_user.name}}_cmdgroup"
+    - name: "Create sudo command group {{ jupyterhub_user.name }}_cmdgroup"
       freeipa.ansible_freeipa.ipasudocmdgroup:
-        ipaadmin_password: "{{ipaadmin_password}}"
-        name: "{{jupyterhub_user.name}}_cmdgroup"
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: "{{ jupyterhub_user.name }}_cmdgroup"
         action: sudocmdgroup
 
     # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudocmdgroup.md
-    - name: "Add commands to {{jupyterhub_user.name}}_cmdgroup"
+    - name: "Add commands to {{ jupyterhub_user.name }}_cmdgroup"
       freeipa.ansible_freeipa.ipasudocmdgroup:
-        ipaadmin_password: "{{ipaadmin_password}}"
-        name: "{{jupyterhub_user.name}}_cmdgroup"
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: "{{ jupyterhub_user.name }}_cmdgroup"
         sudocmd:
           - /usr/bin/sudospawner
           - /usr/local/bin/sudospawner
         action: member
 
     # https://github.com/freeipa/ansible-freeipa/blob/master/README-sudorule.md
-    - name: "{{jupyterhub_user.name}} Sudo rule"
+    - name: "{{ jupyterhub_user.name }} Sudo rule"
       freeipa.ansible_freeipa.ipasudorule:
-        ipaadmin_password: "{{ipaadmin_password}}"
-        name: "{{jupyterhub_user.name}}_sudorule"
+        ipaadmin_password: "{{ ipaadmin_password }}"
+        name: "{{ jupyterhub_user.name }}_sudorule"
         hostcategory: all
         sudooption:
           - '!requiretty'
           - '!authenticate'
         user:
-          - "{{jupyterhub_user.name}}"
+          - "{{ jupyterhub_user.name }}"
         allow_sudocmdgroup:
-          - "{{jupyterhub_user.name}}_cmdgroup"
+          - "{{ jupyterhub_user.name }}_cmdgroup"
 
-    - name: "check if {{ users_group.name }} is already a member of {{jupyterhub_user.name}}_sudorule"
+    - name: "check if {{ users_group.name }} is already a member of {{ jupyterhub_user.name }}_sudorule"
       shell:
-        cmd: "ipa sudorule-show '{{jupyterhub_user.name}}_sudorule' | grep 'Groups of RunAs Users:' | grep '{{ users_group.name }}'"
+        cmd: "ipa sudorule-show '{{ jupyterhub_user.name }}_sudorule' | grep 'Groups of RunAs Users:' | grep '{{ users_group.name }}'"
       register: sudorule_member
       failed_when: sudorule_member.rc >= 2
 
     - name: "Set runasusergroup explicit as this apparently cannot be set with the ansible api"
       when: sudorule_member.rc == 1
-      command: "ipa sudorule-add-runasuser {{jupyterhub_user.name}}_sudorule --groups={{ users_group.name }}"
+      command: "ipa sudorule-add-runasuser {{ jupyterhub_user.name }}_sudorule --groups={{ users_group.name }}"
 
   always:
     - include_tasks: kdestroy.yml

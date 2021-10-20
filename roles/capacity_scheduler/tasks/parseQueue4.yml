@@ -1,27 +1,27 @@
 ---
 # Input var = queue4, queueName4
 
-- name: "Level 4: queue ({{queueName4}})"
+- name: "Level 4: queue ({{ queueName4 }})"
   ansible.builtin.set_fact:
-    capacity_queues: "{{capacity_queues | default([]) + [item]}}"
+    capacity_queues: "{{ capacity_queues | default([]) + [item] }}"
   loop:
-    -  "{{ queue4 | 
-          dict2items | 
+    -  "{{ queue4 |
+          dict2items |
           rejectattr('key', 'equalto', 'children') |
-          list | 
+          list |
           items2dict |
-          combine( 
+          combine(
             { 'longname':queueName4,
               'subqueues': queue4.children | default([]) | map(attribute='name') | join(',')
             })
         }}"
-    
-    
-- name: "Level 4: subqueues for ({{queueName4}})"
+
+
+- name: "Level 4: subqueues for ({{ queueName4 }})"
   include_tasks: parseQueue5.yml
   vars:
-    queue5: "{{subqueue4}}"
-    queueName5: "{{queueName4}}.{{subqueue4.name}}"
-  loop: "{{queue4.children | default([]) | list}}"
+    queue5: "{{ subqueue4 }}"
+    queueName5: "{{ queueName4 }}.{{ subqueue4.name }}"
+  loop: "{{ queue4.children | default([]) | list }}"
   loop_control:
     loop_var: subqueue4

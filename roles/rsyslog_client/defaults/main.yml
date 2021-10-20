@@ -5,7 +5,7 @@
 rsyslog_inputs:
   - module: imtcp
     listeners:
-      - port: "{{syslog_forwarder_port}}"
+      - port: "{{ syslog_forwarder_port }}"
         address: localhost # Only bind on localhost, so only local processes can log
         Ruleset: "rulesetFromHadoop"
 
@@ -15,9 +15,9 @@ rsyslog_rulesets:
     script: |-4
             action(
                 type="omfwd"
-                target="{{rsyslog_server}}"
+                target="{{ rsyslog_server }}"
                 Template="wireformat" #This ensures that log lines keep their format when send to the log server
-                port="{{rsyslog_server_tcp_port}}"
+                port="{{ rsyslog_server_tcp_port }}"
                 protocol="tcp"
                 action.resumeRetryCount="100"
                 queue.type="linkedList"
@@ -25,7 +25,7 @@ rsyslog_rulesets:
                 StreamDriver="gtls"
                 StreamDriverMode="1"
                 StreamDriverAuthMode="x509/name"
-                StreamDriverPermittedPeers="{{rsyslog_server}}"
+                StreamDriverPermittedPeers="{{ rsyslog_server }}"
             )
             stop
 
@@ -36,6 +36,6 @@ rsyslog_templates:
 
 
 rsyslog_outputs:
-  - "{{rsyslog_omfile_default_outputs}}"
-  - "{{rsyslog_omusrmsg_default_outputs}}"
+  - "{{ rsyslog_omfile_default_outputs }}"
+  - "{{ rsyslog_omusrmsg_default_outputs }}"
 

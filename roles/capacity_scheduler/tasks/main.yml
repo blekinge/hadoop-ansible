@@ -6,8 +6,8 @@
 - name: Yarn queues root
   include: parseQueue1.yml
   vars:
-    queue1: "{{queue}}"
-    queueName1: "{{queue.name}}"
-  loop: "{{yarn_queues }}"
+    queue1: "{{ queue }}"
+    queueName1: "{{ queue.name }}"
+  loop: "{{ yarn_queues }}"
   loop_control:
     loop_var: queue

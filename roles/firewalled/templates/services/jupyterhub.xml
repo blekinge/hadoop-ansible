@@ -3,5 +3,5 @@
 <service>
     <short>jupyterhub</short>
     <description>Allow services for jupyterhub service</description>
-    <port protocol="tcp" port="{{jupyterhub_port}}"/>
+    <port protocol="tcp" port="{{ jupyterhub_port }}"/>
 </service>

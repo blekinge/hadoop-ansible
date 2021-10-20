@@ -25,12 +25,12 @@ export HADOOP_CLIENT_OPTS="$HADOOP_CLIENT_OPTS"
 # appropriate for hive server (hwi etc).
 
 # Set HADOOP_HOME to point to a specific hadoop install directory
-HADOOP_HOME=${HADOOP_HOME:-{{current_hadoop_home}} }
+HADOOP_HOME=${HADOOP_HOME:-{{ current_hadoop_home }} }
 
-export HIVE_HOME=${HIVE_HOME:-{{current_hive_home}} }
+export HIVE_HOME=${HIVE_HOME:-{{ current_hive_home }} }
 
 # Hive Configuration Directory can be controlled by:
-export HIVE_CONF_DIR=${HIVE_CONF_DIR:-{{current_hive_home}}/conf}
+export HIVE_CONF_DIR=${HIVE_CONF_DIR:-{{ current_hive_home }}/conf}
 #
 ## Folder containing extra libraries required for hive compilation/execution can be controlled by:
 #if [ "${HIVE_AUX_JARS_PATH}" != "" ]; then

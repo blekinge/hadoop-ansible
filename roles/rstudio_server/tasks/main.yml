@@ -32,13 +32,13 @@
     - name: Get the installable package of RStudio Server for RedHat 6-7
       when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 6 and ansible_distribution_major_version|int <= 7
       ansible.builtin.get_url:
-        url: "{{rstudio_redhat6_download_url}}/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','')}}-x86_64.rpm"
+        url: "{{ rstudio_redhat6_download_url }}/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','') }}-x86_64.rpm"
         dest: /tmp/rstudio.rpm
 
     - name: Get the installable package of RStudio Server for RedHat 8+
       when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 8
       ansible.builtin.get_url:
-        url: "{{rstudio_redhat8_download_url}}/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','')}}-x86_64.rpm"
+        url: "{{ rstudio_redhat8_download_url }}/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','') }}-x86_64.rpm"
         dest: /tmp/rstudio.rpm
 
 
@@ -68,15 +68,15 @@
 
 - name: Restrict users to humans
   ansible.builtin.lineinfile:
-    path: "{{rstudio_config_file}}"
-    line: "auth-required-user-group={{users_group.name}}"
+    path: "{{ rstudio_config_file }}"
+    line: "auth-required-user-group={{ users_group.name }}"
     regexp: "^auth-required-user-group=.*$"
     create: yes
 
-- name: "RStudio should run as {{rstudio_user.name}}"
+- name: "RStudio should run as {{ rstudio_user.name }}"
   ansible.builtin.lineinfile:
-    path: "{{rstudio_config_file}}"
-    line: "server-user={{rstudio_user.name}}"
+    path: "{{ rstudio_config_file }}"
+    line: "server-user={{ rstudio_user.name }}"
     regexp: "^server-user=.*$"
     create: yes
 
@@ -92,7 +92,7 @@
 #- name: "RStudio ssl config cert"
 #  ansible.builtin.lineinfile:
 #    path: /etc/rstudio/rstudio-server.conf
-#    line: "ssl-certificate={{ssl_cert_dir}}/{{ ansible_fqdn }}.crt"
+#    line: "ssl-certificate={{ ssl_cert_dir }}/{{ ansible_fqdn }}.crt"
 #    regexp: "^ssl-certificate=.*$"
 #    create: yes
 #
@@ -100,15 +100,15 @@
 #- name: "RStudio ssl config key"
 #  ansible.builtin.lineinfile:
 #    path: /etc/rstudio/rstudio-server.conf
-#    line: "ssl-certificate-key={{ssl_key_dir}}/{{ ansible_fqdn }}-private.pem"
+#    line: "ssl-certificate-key={{ ssl_key_dir }}/{{ ansible_fqdn }}-private.pem"
 #    regexp: "^ssl-certificate-key=.*$"
 #    create: yes
 
 
 - name: "RStudio port"
   ansible.builtin.lineinfile:
-    path: "{{rstudio_config_file}}"
-    line: "www-port={{rstudio_server_http_port}}"
+    path: "{{ rstudio_config_file }}"
+    line: "www-port={{ rstudio_server_http_port }}"
     regexp: "^www-port==.*$"
     create: yes
 
@@ -118,8 +118,8 @@
     path:
       - /var/log/rstudio-server
       - /var/lib/rstudio-server
-    owner: "{{rstudio_user.name}}"
-    group: "{{rstudio_user.group}}"
+    owner: "{{ rstudio_user.name }}"
+    group: "{{ rstudio_user.group }}"
     recurse: yes
 
 #https://community.rstudio.com/t/rserver-1692-error-system-error-13-permission-denied/46972/7
@@ -138,7 +138,7 @@
 - name: Configure Spark home
   ansible.builtin.lineinfile:
     path:  /usr/lib64/R/etc/Renviron
-    line: "SPARK_HOME={{current_spark_home}}"
+    line: "SPARK_HOME={{ current_spark_home }}"
     regexp: "^SPARK_HOME=.*$"
     create: yes
 
@@ -172,9 +172,9 @@
 
 #  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacsvc.md
 - name: "Projects HBAC service definitions"
-  delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
+  delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
   run_once: true
   freeipa.ansible_freeipa.ipahbacsvc:
-    ipaadmin_password: "{{ipaadmin_password}}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
     name: "rstudio" #Name should match name in /etc/pam.d/ (rstudio)
-    description: "login to the {{rstudio_user.name}} process"
+    description: "login to the {{ rstudio_user.name }} process"

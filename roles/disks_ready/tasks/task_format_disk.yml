@@ -1,31 +1,32 @@
 ---
 - name: format and setup disk
   block:
-    - name: "Parting {{device}}"
+    - name: "Parting {{ device }}"
       ansible.builtin.parted:
-        device: "{{device}}"
+        device: "{{ device }}"
         number: 1
         flags: [ lvm ]
         state: present
       register: parted
 
-    - debug:
+    - name: "print parted info"
+      debug:
         var: parted
 
-    - name: "Creating filesystem on {{device}}"
+    - name: "Creating filesystem on {{ device }}" 
       ansible.builtin.filesystem:
         fstype: xfs
-        dev: "{{device}}1"
+        dev: "{{ device }}1"
 
     - name: "Discover UUID of new filesystem"
       shell:
-        cmd: "blkid {{device}}1 -o udev | grep ID_FS_UUID= | cut -d'=' -f2"
+        cmd: "blkid {{ device }}1 -o udev | grep ID_FS_UUID= | cut -d'=' -f2"
       register: blkid
 
 
-    - name: "Mounting filesystem from {{device}} on {{mount}}"
+    - name: "Mounting filesystem from {{ device }} on {{ mount }}"
       ansible.builtin.mount:
         fstype: xfs
-        src: "UUID={{blkid.stdout}}"
-        path: "{{mount}}"
+        src: "UUID={{ blkid.stdout }}"
+        path: "{{ mount }}"
         state: mounted

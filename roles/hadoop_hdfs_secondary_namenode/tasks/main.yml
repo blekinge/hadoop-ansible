@@ -11,22 +11,22 @@
 
 - name: Wipe data
   ansible.builtin.file:
-    path: "{{hdfs_checkpoints_dir}}"
+    path: "{{ hdfs_checkpoints_dir }}"
     state: absent
   when: wipe_hdfs | bool
 
 
 - name: Create data dir
   ansible.builtin.file:
-    path: "{{hdfs_checkpoints_dir}}"
+    path: "{{ hdfs_checkpoints_dir }}"
     state: directory
-    owner: "{{hdfs_user.name}}"
-    group: "{{hdfs_user.group}}"
+    owner: "{{ hdfs_user.name }}"
+    group: "{{ hdfs_user.group }}"
     mode: 0750
 
 - name: Format Secondary Namenode
   become: yes
-  become_user: "{{hdfs_user.name}}"
+  become_user: "{{ hdfs_user.name }}"
   shell:
     cmd:
       /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh secondarynamenode -format -nonInteractive -force > "{{ hdfs_checkpoints_dir }}/formatted"

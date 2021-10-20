@@ -49,15 +49,15 @@
 #SPARK_YARN_DIST_FILES="" #Comma separated list of files to be distributed with the job.
 #SPARK_YARN_DIST_ARCHIVES="" #Comma separated list of archives to be distributed with the job.
 
-export SPARK_HOME="{{spark_home}}"
+export SPARK_HOME="{{ spark_home }}"
 
-export SPARK_CONF_DIR="{{spark_config_path}}"
+export SPARK_CONF_DIR="{{ spark_config_path }}"
 
 # Where log files are stored.(Default:${SPARK_HOME}/logs)
-export SPARK_LOG_DIR="{{spark_log_dir}}/$USER"
+export SPARK_LOG_DIR="{{ spark_log_dir }}/$USER"
 
 # Where the pid file is stored. (Default: /tmp)
-export SPARK_PID_DIR="{{spark_pid_dir}}/$USER"
+export SPARK_PID_DIR="{{ spark_pid_dir }}/$USER"
 
 # A string representing this instance of spark.(Default: $USER)
 SPARK_IDENT_STRING=$USER
@@ -65,21 +65,21 @@ SPARK_IDENT_STRING=$USER
 # The scheduling priority for daemons. (Default: 0)
 SPARK_NICENESS=0
 
-export HADOOP_HOME="{{current_hadoop_home}}"
-export HADOOP_CONF_DIR="{{hadoop_config_path}}"
+export HADOOP_HOME="{{ current_hadoop_home }}"
+export HADOOP_CONF_DIR="{{ hadoop_config_path }}"
 
 
 # The java implementation to use.
-export JAVA_HOME="{{jvm_home}}"
+export JAVA_HOME="{{ jvm_home }}"
 
 # https://spark.apache.org/docs/latest/monitoring.html#environment-variables
 #Memory for Master, Worker and history server (default: 1024MB)
 export SPARK_DAEMON_MEMORY=1024m
 
 #Special properties for the Master, Worker and History Servers
-export SPARK_DAEMON_JAVA_OPTS="-Dspark.root.logger={{spark_daemon_logger}} -Dspark.log.file=$SPARK_LOG_DIR/spark-$SPARK_IDENT_STRING-$(basename ${BASH_SOURCE[-1]} .sh)-$HOSTNAME.log -Dspark.syslog.file=spark-$SPARK_IDENT_STRING-$(basename ${BASH_SOURCE[-1]} .sh)-$HOSTNAME.log"
+export SPARK_DAEMON_JAVA_OPTS="-Dspark.root.logger={{ spark_daemon_logger }} -Dspark.log.file=$SPARK_LOG_DIR/spark-$SPARK_IDENT_STRING-$(basename ${BASH_SOURCE[-1]} .sh)-$HOSTNAME.log -Dspark.syslog.file=spark-$SPARK_IDENT_STRING-$(basename ${BASH_SOURCE[-1]} .sh)-$HOSTNAME.log"
 
-export SPARK_DAEMON_CLASSPATH="{{spark_classpath}}"
+export SPARK_DAEMON_CLASSPATH="{{ spark_classpath }}"
 
 # Options for the daemons used in the standalone deploy mode
 # - SPARK_MASTER_HOST, to bind the master to a different IP address or hostname

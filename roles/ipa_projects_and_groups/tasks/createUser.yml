@@ -9,25 +9,25 @@
   register: newPassword
 
 
-- name: "Project user {{user.username}}"
+- name: "Project user {{ user.username }}"
   ipauser:
-    ipaadmin_password: "{{ipaadmin_password}}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
 
     name: "{{ user.username }}"
 
-    first: "{{user.firstname}}"
-    last: "{{user.lastname}}"
-    mobile: "{{user.mobile}}"
+    first: "{{ user.firstname }}"
+    last: "{{ user.lastname }}"
+    mobile: "{{ user.mobile }}"
 
-    uid: "{{user.uid | default(group.gid | int + user_num + 1) }}"
-    gid: "{{user.gid | default(group.gid | int + user_num + 1)}}"
-    noprivate: "{{ not user.private_group | default('no')}}"
+    uid: "{{ user.uid | default(group.gid | int + user_num + 1) }}"
+    gid: "{{ user.gid | default(group.gid | int + user_num + 1) }}"
+    noprivate: "{{ not user.private_group | default('no') }}"
 
     homedir: "{{ ipaclient_autohome_dir }}/{{ user.username }}"
-    shell: "{{shell}}"
-    email: "{{user.email | default(omit)}}"
+    shell: "{{ shell }}"
+    email: "{{ user.email | default(omit) }}"
 
-    password: "{{newPassword.stdout}}"
+    password: "{{ newPassword.stdout }}"
     update_password: on_create
   register: ipauser_result
 
@@ -35,20 +35,20 @@
     var: ipauser_result
 
 
-- name: "Put {{user.username}} in {{users_group.name}}"
-  loop: "{{default_user_groups | default([]) | map(attribute='name') | list + [group.name]}}"
+- name: "Put {{ user.username }} in {{ users_group.name }}"
+  loop: "{{ default_user_groups | default([]) | map(attribute='name') | list + [group.name] }}"
   loop_control:
     loop_var: common_group
   freeipa.ansible_freeipa.ipagroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ common_group }}"
     action: member
     state: present
     user: "{{ user.username }}"
 
 
-- name: "user home for {{user.username}}: {{ ipaserver_autohome_dir }}/{{ user.username }}"
-  delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
+- name: "user home for {{ user.username }}: {{ ipaserver_autohome_dir }}/{{ user.username }}"
+  delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
   ansible.builtin.file:
     state: directory
     path: "{{ ipaserver_autohome_dir }}/{{ user.username }}"
@@ -57,7 +57,7 @@
     mode: 0750
 
 - name: "Autohomes on freeipa server"
-  delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
+  delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
   run_once: true
   ansible.builtin.file:
     state: link
@@ -67,17 +67,17 @@
 
 
 
-- name: "HDFS user home for {{user.username}}: {{hdfs_home_dir}}/{{ user.username }}"
+- name: "HDFS user home for {{ user.username }}: {{ hdfs_home_dir }}/{{ user.username }}"
   become: yes
-  become_user: "{{hdfs_user.name}}"
-  delegate_to: "{{hdfs_delegation_host}}"
+  become_user: "{{ hdfs_user.name }}"
+  delegate_to: "{{ hdfs_delegation_host }}"
   run_once: true
   shell:
     cmd: |
       set -e # Fail on anything
       source /etc/profile.d/hadoop.sh
       source /etc/profile.d/kerberos.sh
-      kinit -kt {{keytab_dir}}/{{hdfs_user.name}}.headless.keytab {{hdfs_user.name}};
-      hdfs dfs -mkdir -p {{hdfs_home_dir}}/{{ user.username }};
-      hdfs dfs -chown -R {{ user.username }}:{{ user.username }} {{hdfs_home_dir}}/{{ user.username }};
+      kinit -kt {{ keytab_dir }}/{{ hdfs_user.name }}.headless.keytab {{ hdfs_user.name }};
+      hdfs dfs -mkdir -p {{ hdfs_home_dir }}/{{ user.username }};
+      hdfs dfs -chown -R {{ user.username }}:{{ user.username }} {{ hdfs_home_dir }}/{{ user.username }};
   #    kdestroy

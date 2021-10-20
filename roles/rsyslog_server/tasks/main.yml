@@ -1,37 +1,37 @@
 
 - name: create log collection dirs
   ansible.builtin.file:
-    path: "{{item}}"
+    path: "{{ item }}"
     state: directory
     owner: root
     group: root
     mode: 0700
   loop:
-    - "{{remote_log_folder}}"
-    - "{{structured_log_folder}}"
+    - "{{ remote_log_folder }}"
+    - "{{ structured_log_folder }}"
 
-- name: "Allow rsyslog to write log files in {{remote_log_folder}}"
+- name: "Allow rsyslog to write log files in {{ remote_log_folder }}"
   community.general.sefcontext:
-    target: "{{remote_log_folder}}(/.*)?"
+    target: "{{ remote_log_folder }}(/.*)?"
     seuser: system_u
     setype: var_log_t
     state: present
 
 - name: Fix selinux permissions
   when: ansible_selinux.mode == 'enforcing'
-  command: "restorecon -R -v {{remote_log_folder}}"
+  command: "restorecon -R -v {{ remote_log_folder }}"
 
 - name: create log sorting dirs
   ansible.builtin.file:
-    src: "{{remote_log_folder}}/{{item.value}}"
-    dest: "{{structured_log_folder}}/{{item.key}}"
+    src: "{{ remote_log_folder }}/{{ item.value }}"
+    dest: "{{ structured_log_folder }}/{{ item.key }}"
     state: link
     force: yes
     owner: root
     group: root
     mode: 0700
     follow: no
-  loop: "{{syslog_facilities | dict2items}}"
+  loop: "{{ syslog_facilities | dict2items }}"
 
 
 - name: Restart rsyslog service after SELinux changes

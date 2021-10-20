@@ -7,7 +7,7 @@ After=network-online.target
 
 [Service]
 # The system user for jupyterhub
-User={{jupyterhub_user.name}}
+User={{ jupyterhub_user.name }}
 
 # Two ways of specifying the runtime directory
 RuntimeDirectory=jupyterhub
@@ -15,9 +15,9 @@ WorkingDirectory=/var/run/jupyterhub
 
  # Prefix with + to Run ExecStartPre with root-permissions, see https://www.freedesktop.org/software/systemd/man/systemd.service.html#ExecStart=
 # This sets up the logging directory
-ExecStartPre=+/usr/bin/mkdir -p {{jupyterhub_log_dir}}
-ExecStartPre=+/usr/bin/touch {{jupyterhub_log_dir}}/jupyterhub.log
-ExecStartPre=+/usr/bin/chown {{jupyterhub_user.name}}:{{jupyterhub_user.group}} {{jupyterhub_log_dir}} -R
+ExecStartPre=+/usr/bin/mkdir -p {{ jupyterhub_log_dir }}
+ExecStartPre=+/usr/bin/touch {{ jupyterhub_log_dir }}/jupyterhub.log
+ExecStartPre=+/usr/bin/chown {{ jupyterhub_user.name }}:{{ jupyterhub_user.group }} {{ jupyterhub_log_dir }} -R
 
 # Param explanation
 # Config = path to config file

@@ -24,7 +24,7 @@
 
 - name: profile.d
   ansible.builtin.template:
-    src: "{{item}}"
+    src: "{{ item }}"
     dest: /etc/profile.d/
     mode: 0644
     owner: "root"

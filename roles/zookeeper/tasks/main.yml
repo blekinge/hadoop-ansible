@@ -6,22 +6,22 @@
 
 
 - ansible.builtin.debug:
-    msg: "Downloading Zookeeper from {{zookeeper_download}}"
+    msg: "Downloading Zookeeper from {{ zookeeper_download }}"
 
 - name: Unzip Zookeeper
   ansible.builtin.unarchive:
     src: "{{ zookeeper_download }}"
     dest: "{{ zookeeper_path }}"
     remote_src: yes
-    creates: "{{zookeeper_home}}"
+    creates: "{{ zookeeper_home }}"
     group: "{{ zookeeper_user.group }}"
     owner: "root"
 
 
-- name: "Link {{zookeeper_home}} to {{current_zookeeper_home}}"
+- name: "Link {{ zookeeper_home }} to {{ current_zookeeper_home }}"
   ansible.builtin.file:
-    src: "{{zookeeper_home}}"
-    dest: "{{current_zookeeper_home}}"
+    src: "{{ zookeeper_home }}"
+    dest: "{{ current_zookeeper_home }}"
     state: link
 
 

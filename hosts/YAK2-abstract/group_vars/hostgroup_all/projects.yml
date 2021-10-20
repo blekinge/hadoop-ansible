@@ -12,4 +12,4 @@ projects:
 #    file: hosts/YAK2/group_vars/hostgroup_all/projects/p002.yml
   - name: p003
 
-default_queue_mapping: "g:{{users_group.name}}:default"
+default_queue_mapping: "g:{{ users_group.name }}:default"

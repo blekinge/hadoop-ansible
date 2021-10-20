@@ -1,6 +1,6 @@
 ---
 
-ovirt_api_host: "ovim001.adm.{{domain}}"
+ovirt_api_host: "ovim001.adm.{{ domain }}"
 ovirt_username: "admin@internal"
 ovirt_password: !vault |
   $ANSIBLE_VAULT;1.1;AES256

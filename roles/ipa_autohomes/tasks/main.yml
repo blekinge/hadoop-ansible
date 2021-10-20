@@ -8,7 +8,7 @@
     #Add the NFS service principal for the server and client to Kerberos.
     - name: FreeIPA automount setup service
       freeipa.ansible_freeipa.ipaservice:
-        ipaadmin_password: "{{ipaadmin_password}}"
+        ipaadmin_password: "{{ ipaadmin_password }}"
         name: "nfs/{{ ansible_fqdn }}"
         state: present
         force: yes
@@ -25,20 +25,20 @@
               LC_ALL="C.UTF-8"
 
               #Add the auto.home map
-              ipa automountmap-show {{ipaautomount_location}} --map=auto.home || \
-                ipa automountmap-add {{ipaautomount_location}} auto.home;
+              ipa automountmap-show {{ ipaautomount_location }} --map=auto.home || \
+                ipa automountmap-add {{ ipaautomount_location }} auto.home;
 
               #And add the auto.home map to auto.master
-              ipa automountkey-show {{ipaautomount_location}} auto.master --key "{{ ipaclient_autohome_dir }}" || \
-                ipa automountkey-add {{ipaautomount_location}} --key "{{ ipaclient_autohome_dir }}" --info auto.home auto.master;
+              ipa automountkey-show {{ ipaautomount_location }} auto.master --key "{{ ipaclient_autohome_dir }}" || \
+                ipa automountkey-add {{ ipaautomount_location }} --key "{{ ipaclient_autohome_dir }}" --info auto.home auto.master;
 
               #Finally add the key to the auto.home map
 
-              ipa automountkey-show {{ipaautomount_location}}  \
+              ipa automountkey-show {{ ipaautomount_location }}  \
                                     --key "*" \
                                     --info "-fstype=nfs4,rw,sec=krb5,intr,hard {{ ansible_fqdn }}:{{ ipaserver_autohome_dir }}/&" \
                                     auto.home || \
-                ipa automountkey-add {{ipaautomount_location}} \
+                ipa automountkey-add {{ ipaautomount_location }} \
                   --key "*" \
                   --info "-fstype=nfs4,rw,sec=krb5:krb5i,intr,hard {{ ansible_fqdn }}:{{ ipaserver_autohome_dir }}/&" \
                   auto.home;
@@ -73,9 +73,9 @@
 
         - name: admin home
           ansible.builtin.file:
-            path: "{{ ipaserver_autohome_dir }}/{{ipa_admin_user.name}}"
-            owner: "{{ipa_admin_user.name}}"
-            group: "{{ipa_admin_user.group}}"
+            path: "{{ ipaserver_autohome_dir }}/{{ ipa_admin_user.name }}"
+            owner: "{{ ipa_admin_user.name }}"
+            group: "{{ ipa_admin_user.group }}"
             mode: '0700'
             state: directory
 

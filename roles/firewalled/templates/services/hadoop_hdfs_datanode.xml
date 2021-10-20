@@ -3,8 +3,8 @@
 <service>
     <short>hadoop_hdfs_datanode</short>
     <description>Allow services for hadoop_hdfs_datanode service</description>
-    <port protocol="tcp" port="{{hdfs_datanode_https_port}}"/>
-    <port protocol="tcp" port="{{hdfs_datanode_http_port}}"/>
-    <port protocol="tcp" port="{{hdfs_datanode_rpc_port}}"/>
-    <port protocol="tcp" port="{{hdfs_datanode_ipc_port}}"/>
+    <port protocol="tcp" port="{{ hdfs_datanode_https_port }}"/>
+    <port protocol="tcp" port="{{ hdfs_datanode_http_port }}"/>
+    <port protocol="tcp" port="{{ hdfs_datanode_rpc_port }}"/>
+    <port protocol="tcp" port="{{ hdfs_datanode_ipc_port }}"/>
 </service>

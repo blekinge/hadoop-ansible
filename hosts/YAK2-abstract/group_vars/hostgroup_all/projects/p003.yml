@@ -8,7 +8,7 @@ project_ipa:
       firstname: "p003"
       lastname: "User"
       mobile: "+450000000"
-      email: "userp003@{{ipa_domain}}"
+      email: "userp003@{{ ipa_domain }}"
       # If uid or gid is not specified, use group gid + position in this list.
 
 

@@ -1,1 +1,1 @@
-{{sealbin_user}} ALL=(ALL) NOPASSWD:ALL
+{{ sealbin_user }} ALL=(ALL) NOPASSWD:ALL

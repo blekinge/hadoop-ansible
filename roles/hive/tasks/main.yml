@@ -7,7 +7,7 @@
 
 
 - debug:
-    msg: "Downloading hive from {{hive_download}}"
+    msg: "Downloading hive from {{ hive_download }}"
 
 
 - name: Unzip hive
@@ -20,10 +20,10 @@
     owner: "root"
 
 
-- name: "Link {{hive_home}} to {{current_hive_home}}"
+- name: "Link {{ hive_home }} to {{ current_hive_home }}"
   ansible.builtin.file:
-    src: "{{hive_home}}"
-    dest: "{{current_hive_home}}"
+    src: "{{ hive_home }}"
+    dest: "{{ current_hive_home }}"
     state: link
 
 

@@ -3,5 +3,5 @@
 <service>
     <short>rsyslog_server</short>
     <description>Allow services for rsyslog_server service</description>
-    <port protocol="tcp" port="{{rsyslog_server_tcp_port}}"/>
+    <port protocol="tcp" port="{{ rsyslog_server_tcp_port }}"/>
 </service>

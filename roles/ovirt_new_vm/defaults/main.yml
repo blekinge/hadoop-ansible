@@ -3,13 +3,13 @@
 #Defaults if the relevant field have not been set
 
 shortname: "{{  inventory_hostname.split('.')[0] | lower }}"
-hostname: "{{shortname}}.{{domain}}"
+hostname: "{{ shortname }}.{{ domain }}"
 
 template: "SDL8-4R-30D-MIN-TMPL"
 memory: "4GiB"
 cpu_sockets: 2
 cpu_cores: 1
-description: "{{group_names | sort | join(' ')}}"
+description: "{{ group_names | sort | join(' ') }}"
 
 nic1_routes_list: []
 
@@ -17,13 +17,13 @@ nic2_routes_list: []
 
 network_scripts:
   - file: ifcfg-nic1
-    name: "ifcfg-{{nic1}}"
+    name: "ifcfg-{{ nic1 }}"
 
   - file: route-nic1
-    name: "route-{{nic1}}"
+    name: "route-{{ nic1 }}"
 
   - file: ifcfg-nic2
-    name: "ifcfg-{{nic2}}"
+    name: "ifcfg-{{ nic2 }}"
 
   - file: route-nic2
-    name: "route-{{nic2}}"
+    name: "route-{{ nic2 }}"

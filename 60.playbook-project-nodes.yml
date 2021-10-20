@@ -18,7 +18,7 @@
     - community.general
 
 
-- name: "Enable the {{sealbin_user}} ansible user account"
+- name: "Enable the {{ sealbin_user }} ansible user account"
   hosts: hostgroup_project_nodes
   remote_user: root
   ignore_unreachable: yes

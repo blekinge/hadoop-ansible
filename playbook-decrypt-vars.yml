@@ -5,26 +5,26 @@
   run_once: true
   tasks:
     - debug:
-        msg: "{{item.name}} '{{item.value}}'"
+        msg: "{{ item.name }} '{{ item.value }}'"
       loop:
         - name: "ipaadmin_password"
-          value: "{{ipaadmin_password}}"
+          value: "{{ ipaadmin_password }}"
 
         - name: "ssl_ownca_pass"
-          value: "{{ssl_ownca_pass | default(omit)}}"
+          value: "{{ ssl_ownca_pass | default(omit) }}"
 
         - name: "ssl_keystore_pass"
-          value: "{{ssl_keystore_pass}}"
+          value: "{{ ssl_keystore_pass }}"
 
         - name: "ssl_truststore_pass"
-          value: "{{ssl_truststore_pass}}"
+          value: "{{ ssl_truststore_pass }}"
 
         - name: "ovirt_password"
-          value: "{{ovirt_password | default(omit)}}"
+          value: "{{ ovirt_password | default(omit) }}"
 
         - name: "zabbix_agent_tlspsk_secret"
-          value: "{{zabbix_agent_tlspsk_secret | default(omit)}}"
+          value: "{{ zabbix_agent_tlspsk_secret | default(omit) }}"
 
         - name: "zabbix_api_pass"
-          value: "{{zabbix_api_pass | default(omit)}}"
+          value: "{{ zabbix_api_pass | default(omit) }}"
 

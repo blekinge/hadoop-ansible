@@ -1,16 +1,16 @@
 ---
 
 - name: Create default user groups
-  loop: "{{default_user_groups}}"
+  loop: "{{ default_user_groups }}"
   freeipa.ansible_freeipa.ipagroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ item.name }}"
     gid: "{{ item.gid }}"
-    description: "{{item.description}}"
+    description: "{{ item.description }}"
 
 
 - name: "Projects setup"
-  loop: "{{projects_ipa}}" # TODO this fails if there is only one project defined. How to fix?
+  loop: "{{ projects_ipa }}" # TODO this fails if there is only one project defined. How to fix?
   loop_control:
     loop_var: group
   include_tasks: createGroupAndUsers.yml

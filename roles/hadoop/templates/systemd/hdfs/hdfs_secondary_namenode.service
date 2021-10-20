@@ -3,7 +3,7 @@
 [Unit]
 Description=Hadoop DFS secondary namenode
 Requires=network-online.target
-Documentation=https://hadoop.apache.org/docs/r{{hadoop_version}}/hadoop-project-dist/hadoop-hdfs/HdfsUserGuide.html#Secondary_NameNode
+Documentation=https://hadoop.apache.org/docs/r{{ hadoop_version }}/hadoop-project-dist/hadoop-hdfs/HdfsUserGuide.html#Secondary_NameNode
 
 [Service]
 User={{ hdfs_user.name }}

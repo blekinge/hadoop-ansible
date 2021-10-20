@@ -1,16 +1,16 @@
 ---
 
-- name: "Project Group '{{group.name}}'"
+- name: "Project Group '{{ group.name }}'"
   freeipa.ansible_freeipa.ipagroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ group.name }}"
     gidnumber: "{{ group.gid }}"
 
 
 - name: "HDFS project dir /projects/{{ group.name }}"
   become: yes
-  become_user: "{{hdfs_user.name}}"
-  delegate_to: "{{hdfs_delegation_host}}"
+  become_user: "{{ hdfs_user.name }}"
+  delegate_to: "{{ hdfs_delegation_host }}"
   delegate_facts: false
   run_once: true
   shell:
@@ -18,7 +18,7 @@
       set -e # Fail on anything
       source /etc/profile.d/hadoop.sh
       source /etc/profile.d/kerberos.sh
-      kinit -kt {{keytab_dir}}/{{hdfs_user.name}}.headless.keytab {{hdfs_user.name}};
+      kinit -kt {{ keytab_dir }}/{{ hdfs_user.name }}.headless.keytab {{ hdfs_user.name }};
       hdfs dfs -mkdir -p /projects/{{ group.name }};
       hdfs dfs -chown {{ hdfs_user.name }}:{{ group.name }} /projects/{{ group.name }};
       hdfs dfs -chmod 0770 /projects/{{ group.name }};
@@ -26,8 +26,8 @@
   #    kdestroy
 
 
-- name: "Project Users for '{{group}}'"
-  loop: "{{group.users | default([])}}"
+- name: "Project Users for '{{ group }}'"
+  loop: "{{ group.users | default([]) }}"
   loop_control:
     loop_var: user
     index_var: user_num

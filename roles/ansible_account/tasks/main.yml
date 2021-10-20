@@ -1,25 +1,25 @@
 ---
-- name: "Setup {{sealbin_user}}"
+- name: "Setup {{ sealbin_user }}"
   block:
-    - name: "Add {{sealbin_user}} group"
+    - name: "Add {{ sealbin_user }} group"
       ansible.builtin.group:
-        name: "{{sealbin_user}}"
-        gid: "{{sealbin_user_gid}}"
+        name: "{{ sealbin_user }}"
+        gid: "{{ sealbin_user_gid }}"
         state: present
 
-    - name: "Add the user '{{sealbin_user}}' appending the groups 'adm' and 'wheel' to the user's groups"
+    - name: "Add the user '{{ sealbin_user }}' appending the groups 'adm' and 'wheel' to the user's groups"
       ansible.builtin.user:
-        name: "{{sealbin_user}}"
-        uid: "{{sealbin_user_uid}}"
+        name: "{{ sealbin_user }}"
+        uid: "{{ sealbin_user_uid }}"
         shell: /bin/bash
-        group: "{{sealbin_user}}"
+        group: "{{ sealbin_user }}"
         groups: adm,wheel
         append: yes
         create_home: yes
-        home: "{{sealbin_home}}"
+        home: "{{ sealbin_home }}"
         state: present
 
-    - name: "Upload sudoers config file to give {{sealbin_user}} sudo rights"
+    - name: "Upload sudoers config file to give {{ sealbin_user }} sudo rights"
       ansible.builtin.template:
         src: sudoers
         dest: /etc/sudoers.d/ansible
@@ -28,9 +28,9 @@
         mode: '0644'
 
 
-    - name: "Set authorized key for user {{sealbin_user}} copying it from current user"
+    - name: "Set authorized key for user {{ sealbin_user }} copying it from current user"
       ansible.posix.authorized_key:
-        user: "{{sealbin_user}}"
+        user: "{{ sealbin_user }}"
         state: present
         key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
 
@@ -46,7 +46,7 @@
       register: root_logins_denied
 
     - name: enable root logins directly
-      remote_user: "{{sealbin_user}}"
+      remote_user: "{{ sealbin_user }}"
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: '^PermitRootLogin'
@@ -54,10 +54,11 @@
       register: root_logins_permitted
       when: permit_root_logins  | bool
 
-    - ansible.builtin.systemd:
+    - name: "Restart SSHD"
+      ansible.builtin.systemd:
         service: sshd
         state: reloaded
         enabled: yes
-      remote_user: "{{sealbin_user}}"
+      remote_user: "{{ sealbin_user }}"
       when: (root_logins_permitted is defined and root_logins_permitted.changed) or (root_logins_denied is defined and root_logins_denied.changed)
 

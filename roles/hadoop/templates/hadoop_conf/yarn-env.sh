@@ -31,21 +31,21 @@ if [ -f "{{ hadoop_config_path }}/hadoop-env.sh" ]; then
   source "{{ hadoop_config_path }}/hadoop-env.sh"
 fi
 
-export HADOOP_YARN_HOME={{ current_hadoop_home | quote}}
+export HADOOP_YARN_HOME={{ current_hadoop_home | quote }}
 HADOOP_OPTS="$HADOOP_OPTS -Dyarn.home.dir=$HADOOP_YARN_HOME"
 
 export HADOOP_LOG_DIR={{ (hadoop_log_dir + '/' + yarn_user.name) | quote }}
-export HADOOP_DAEMON_ROOT_LOGGER={{yarn_daemon_logger | quote}}
+export HADOOP_DAEMON_ROOT_LOGGER={{ yarn_daemon_logger | quote }}
 
 export HADOOP_PID_DIR={{ (hadoop_pid_dir + '/' + yarn_user.name) | quote }}
 export HADOOP_LIBEXEC_DIR="$HADOOP_YARN_HOME/libexec"
 export HADOOP_CONF_DIR="{{ hadoop_config_path | quote }}"
 
 # User for YARN daemons
-HADOOP_IDENT_STRING="{{ yarn_user.name}}"
+HADOOP_IDENT_STRING="{{ yarn_user.name }}"
 HADOOP_OPTS="$HADOOP_OPTS -Dyarn.id.str=$HADOOP_IDENT_STRING"
 
-export HADOOP_YARN_USER="${HADOOP_YARN_USER:-{{ yarn_user.name }}}"
+export HADOOP_YARN_USER="${HADOOP_YARN_USER:-{{ yarn_user.name } }}"
 
 # The java implementation to use.  Required.
 export JAVA_HOME="{{ jvm_home }}"
@@ -125,9 +125,9 @@ export YARN_RESOURCEMANAGER_HEAPSIZE=2048
 #
 #
 # export YARN_RESOURCEMANAGER_OPTS=
-YARN_RESOURCEMANAGER_OPTS="-Dyarn.server.resourcemanager.appsummary.logger={{yarn_resourcemanager_appsummary_logger | quote}}"
-YARN_RESOURCEMANAGER_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username=zookeeper -Djava.security.auth.login.config={{ hadoop_config_path}}/yarn_jaas.conf -Dzookeeper.sasl.clientconfig=Client $YARN_RESOURCEMANAGER_OPTS"
-export YARN_RESOURCEMANAGER_OPTS="$YARN_RESOURCEMANAGER_OPTS -Drm.audit.logger={{yarn_resourcemanager_audit_logger | quote}} -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+YARN_RESOURCEMANAGER_OPTS="-Dyarn.server.resourcemanager.appsummary.logger={{ yarn_resourcemanager_appsummary_logger | quote }}"
+YARN_RESOURCEMANAGER_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username=zookeeper -Djava.security.auth.login.config={{ hadoop_config_path }}/yarn_jaas.conf -Dzookeeper.sasl.clientconfig=Client $YARN_RESOURCEMANAGER_OPTS"
+export YARN_RESOURCEMANAGER_OPTS="$YARN_RESOURCEMANAGER_OPTS -Drm.audit.logger={{ yarn_resourcemanager_audit_logger | quote }} -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
 
 
 
@@ -155,7 +155,7 @@ export YARN_NODEMANAGER_HEAPSIZE=1024
 #export YARN_NODEMANAGER_OPTS=
 
 # Node Manager specific parameters
-export YARN_NODEMANAGER_OPTS="$YARN_NODEMANAGER_OPTS -Dnm.audit.logger={{yarn_nodemanager_audit_logger | quote}}"
+export YARN_NODEMANAGER_OPTS="$YARN_NODEMANAGER_OPTS -Dnm.audit.logger={{ yarn_nodemanager_audit_logger | quote }}"
 
 ###
 # TimeLineServer specific parameters

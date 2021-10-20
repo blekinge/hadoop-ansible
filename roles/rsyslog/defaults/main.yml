@@ -17,9 +17,9 @@ rsyslog_globals:
 
 
 rsyslog_tls:
-  cacert: "{{ssl_server_dir}}/certs/CA.crt"
-  cert: "{{ssl_server_dir}}/certs/{{ ansible_fqdn }}.crt"
-  key: "{{ssl_server_dir}}/private/{{ ansible_fqdn }}-private.pem"
+  cacert: "{{ ssl_server_dir }}/certs/CA.crt"
+  cert: "{{ ssl_server_dir }}/certs/{{ ansible_fqdn }}.crt"
+  key: "{{ ssl_server_dir }}/private/{{ ansible_fqdn }}-private.pem"
 
 
 

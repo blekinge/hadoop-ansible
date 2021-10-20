@@ -3,8 +3,8 @@
 <service>
     <short>hadoop_hdfs_namenode</short>
     <description>Allow services for hadoop_hdfs_namenode service</description>
-    <port protocol="tcp" port="{{hdfs_namenode_rpc_port}}"/>
-    <port protocol="tcp" port="{{hdfs_namenode_http_port}}"/>
-    <port protocol="tcp" port="{{hdfs_namenode_https_port}}"/>
-    <port protocol="tcp" port="{{hdfs_zkfc_port}}"/>
+    <port protocol="tcp" port="{{ hdfs_namenode_rpc_port }}"/>
+    <port protocol="tcp" port="{{ hdfs_namenode_http_port }}"/>
+    <port protocol="tcp" port="{{ hdfs_namenode_https_port }}"/>
+    <port protocol="tcp" port="{{ hdfs_zkfc_port }}"/>
 </service>

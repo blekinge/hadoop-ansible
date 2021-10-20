@@ -26,8 +26,8 @@ vpnu_group:
 
 # default_user_groups are the groups that all new (human) users will be made member of
 default_user_groups:
-  - "{{vpnu_group}}"
-  - "{{users_group}}"
+  - "{{ vpnu_group }}"
+  - "{{ users_group }}"
 
 
 ipaadmin_password: !vault |

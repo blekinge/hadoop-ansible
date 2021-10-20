@@ -20,14 +20,14 @@
 
 - name: enable sb-* repos
   ansible.builtin.replace:
-    path: "{{item.path}}"
+    path: "{{ item.path }}"
     regexp: '^enabled=0$'
     replace: "enabled=1"
-  loop: "{{sb_repo_files.files}}"
+  loop: "{{ sb_repo_files.files }}"
 
 - name: Install Tools
   ansible.builtin.package:
-    name: "{{yum_packages}}"
+    name: "{{ yum_packages }}"
     state: present
 
 - name: Upgrade all packages

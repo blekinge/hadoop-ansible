@@ -3,15 +3,15 @@
     name: python3-lxml
 #
 #- name: remove other versions of java library
-#  shell: "find {{ dest | quote }} -name {{artifact_id | default('log4jSyslogWriter64k-kb') | quote }}* | xargs -r -i rm -f '{}'"
+#  shell: "find {{ dest | quote }} -name {{ artifact_id | default('log4jSyslogWriter64k-kb') | quote }}* | xargs -r -i rm -f '{}'"
 
 - community.general.maven_artifact:
-    group_id: "{{syslog_appender_jar.group_id | default('com.hlag')}}"
-    artifact_id: "{{syslog_appender_jar.artifact_id | default('log4jSyslogWriter64k-kb')}}"
-    version: "{{syslog_appender_jar.version| default('1.1.1-SNAPSHOT')}}"
-    repository_url: "{{syslog_appender_jar.nexus | default('https://sbforge.org/nexus/content/groups/public')}}"
-    keep_name: "{{syslog_appender_jar.keep_name | default('no')}}"
+    group_id: "{{ syslog_appender_jar.group_id | default('com.hlag') }}"
+    artifact_id: "{{ syslog_appender_jar.artifact_id | default('log4jSyslogWriter64k-kb') }}"
+    version: "{{ syslog_appender_jar.version| default('1.1.1-SNAPSHOT') }}"
+    repository_url: "{{ syslog_appender_jar.nexus | default('https://sbforge.org/nexus/content/groups/public') }}"
+    keep_name: "{{ syslog_appender_jar.keep_name | default('no') }}"
     dest: "{{ dest }}"
     owner: "{{ owner.name }}"
     group: "{{ owner.group }}"
-    mode: "{{ mode | default('0644')}}"
+    mode: "{{ mode | default('0644') }}"

@@ -1,6 +1,6 @@
 ---
 
-projects_ipa: "{{lookup('vars', *(projects | map(attribute='name'))) | map(attribute='project_ipa') | list }}"
+projects_ipa: "{{ lookup('vars', *(projects | map(attribute='name'))) | map(attribute='project_ipa') | list }}"
 
 common_usergroups: []
 
@@ -14,6 +14,6 @@ hbac_services:
   - kdm
   - login
   - sshd
-  - "{{ 'rstudio' if groups['hostgroup_project_nodes'] | length > 0 else omit}}"
-  - "{{ jupyterhub_user.name if groups['hostgroup_project_nodes'] | length > 0 else omit}}"
+  - "{{ 'rstudio' if groups['hostgroup_project_nodes'] | length > 0 else omit }}"
+  - "{{ jupyterhub_user.name if groups['hostgroup_project_nodes'] | length > 0 else omit }}"
 #  - screen

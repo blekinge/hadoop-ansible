@@ -1,15 +1,15 @@
 ---
-- name: "check if {{rolename}} corresponds to a service"
+- name: "check if {{ rolename }} corresponds to a service"
   shell:
-    cmd: "firewall-cmd --get-services | tr ' ' '\n' | grep -q '^{{rolename}}$'"
+    cmd: "firewall-cmd --get-services | tr ' ' '\n' | grep -q '^{{ rolename }}$'"
   register: service_exists
   failed_when: false
 
-- name: "Open Firewall ports for {{rolename}}"
+- name: "Open Firewall ports for {{ rolename }}"
   ansible.posix.firewalld:
     permanent: yes
     state: enabled
-    service: "{{rolename}}"
+    service: "{{ rolename }}"
     zone: public
     immediate: yes
   when: service_exists.rc == 0

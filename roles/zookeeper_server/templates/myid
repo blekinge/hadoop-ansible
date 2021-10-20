@@ -1,1 +1,1 @@
-{{ play_hosts.index(inventory_hostname) | int +1}}
+{{ play_hosts.index(inventory_hostname) | int +1 }}

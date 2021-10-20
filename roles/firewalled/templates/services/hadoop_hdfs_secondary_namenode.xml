@@ -3,6 +3,6 @@
 <service>
     <short>hadoop_hdfs_secondary_namenode</short>
     <description>Allow services for hadoop_hdfs_secondary_namenode service</description>
-    <port protocol="tcp" port="{{hdfs_secondary_namenode_http_port}}"/>
-    <port protocol="tcp" port="{{hdfs_secondary_namenode_https_port}}"/>
+    <port protocol="tcp" port="{{ hdfs_secondary_namenode_http_port }}"/>
+    <port protocol="tcp" port="{{ hdfs_secondary_namenode_https_port }}"/>
 </service>

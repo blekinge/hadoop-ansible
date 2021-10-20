@@ -44,7 +44,7 @@
 
     <property>
         <name>hive.cluster.delegation.token.store.zookeeper.connectString</name>
-        <value>{{zookeeper_quorum}}</value>
+        <value>{{ zookeeper_quorum }}</value>
     </property>
 
     <property>
@@ -369,12 +369,12 @@
 
     <property>
         <name>hive.metastore.kerberos.keytab.file</name>
-        <value>{{keytab_dir}}/{{hive_metastore_service_name}}.service.keytab</value>
+        <value>{{ keytab_dir }}/{{ hive_metastore_service_name }}.service.keytab</value>
     </property>
 
     <property>
         <name>hive.metastore.kerberos.principal</name>
-        <value>{{hive_metastore_service_name}}/_HOST@KAC.SBLOKALNET</value>
+        <value>{{ hive_metastore_service_name }}/_HOST@KAC.SBLOKALNET</value>
     </property>
 
     <property>
@@ -510,22 +510,22 @@
 
     <property>
         <name>hive.server2.authentication.kerberos.keytab</name>
-        <value>{{keytab_dir}}/{{hive_server2_service_name}}.service.keytab</value>
+        <value>{{ keytab_dir }}/{{ hive_server2_service_name }}.service.keytab</value>
     </property>
 
     <property>
         <name>hive.server2.authentication.kerberos.principal</name>
-        <value>{{hive_server2_service_name}}/_HOST@{{ipaserver_realm}}</value>
+        <value>{{ hive_server2_service_name }}/_HOST@{{ ipaserver_realm }}</value>
     </property>
 
     <property>
         <name>hive.server2.authentication.spnego.keytab</name>
-        <value>{{keytab_dir}}/spnego.service.keytab</value>
+        <value>{{ keytab_dir }}/spnego.service.keytab</value>
     </property>
 
     <property>
         <name>hive.server2.authentication.spnego.principal</name>
-        <value>HTTP/_HOST@{{ipaserver_realm}}</value>
+        <value>HTTP/_HOST@{{ ipaserver_realm }}</value>
     </property>
 
     <property>
@@ -722,7 +722,7 @@
 
     <property>
         <name>hive.user.install.directory</name>
-        <value>{{hdfs_home_dir}}/</value>
+        <value>{{ hdfs_home_dir }}/</value>
     </property>
 
     <property>
@@ -752,7 +752,7 @@
 
     <property>
         <name>hive.zookeeper.client.port</name>
-        <value>{{zookeeper_port}}</value>
+        <value>{{ zookeeper_port }}</value>
     </property>
 
     <property>
@@ -762,7 +762,7 @@
 
     <property>
         <name>hive.zookeeper.quorum</name>
-        <value>{{zookeeper_quorum}}</value>
+        <value>{{ zookeeper_quorum }}</value>
     </property>
 
 </configuration>

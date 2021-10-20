@@ -3,30 +3,30 @@
 
 #project_ipa controls project group and users.
 project_ipa:
-  name: "{{users_group.name}}-stage"
-  gid: "{{users_group.gid| int +50}}"
+  name: "{{ users_group.name }}-stage"
+  gid: "{{ users_group.gid| int +50 }}"
   # Project_host is used to set up HBAC rules
   project_host: "narchive-t-admn02.kb.dk"
   users:
-    - username: "{{user_prefix}}nas-stage"
+    - username: "{{ user_prefix }}nas-stage"
       firstname: "NetArchive Suite"
       lastname: "Application user"
       mobile: ""
-      uid: "{{users_group.gid | int +51}}"
-      gid: "{{users_group.gid | int +50}}"
+      uid: "{{ users_group.gid | int +51 }}"
+      gid: "{{ users_group.gid | int +50 }}"
       noprivate: yes
 
 
 
 
 
-queue_mapping: "g:{{users_group.name}}-stage:{{users_group.name}}-stage_interactive"
+queue_mapping: "g:{{ users_group.name }}-stage:{{ users_group.name }}-stage_interactive"
 
 
 yarn_queue:
-  name: "{{users_group.name}}-stage"
-  admins: " {{users_group.name}}-stage"
-  submitters: " {{users_group.name}}-stage"
+  name: "{{ users_group.name }}-stage"
+  admins: " {{ users_group.name }}-stage"
+  submitters: " {{ users_group.name }}-stage"
   capacity: 40
   max_capacity: 100
   minimum_user_limit: 25
@@ -36,9 +36,9 @@ yarn_queue:
   state: RUNNING
 
   children:
-    - name: "{{users_group.name}}-stage_batch"
-      admins: " {{users_group.name}}-stage"
-      submitters: " {{users_group.name}}-stage"
+    - name: "{{ users_group.name }}-stage_batch"
+      admins: " {{ users_group.name }}-stage"
+      submitters: " {{ users_group.name }}-stage"
       capacity: 30
       max_capacity: 100
       minimum_user_limit: 25
@@ -47,9 +47,9 @@ yarn_queue:
       priority: 1
       state: RUNNING
 
-    - name: "{{users_group.name}}-stage_interactive"
-      admins: " {{users_group.name}}-stage"
-      submitters: " {{users_group.name}}-stage"
+    - name: "{{ users_group.name }}-stage_interactive"
+      admins: " {{ users_group.name }}-stage"
+      submitters: " {{ users_group.name }}-stage"
       capacity: 70
       max_capacity: 80
       minimum_user_limit: 25

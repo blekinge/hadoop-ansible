@@ -9,4 +9,4 @@ projects:
 
 
 
-default_queue_mapping: "g:{{users_group.name}}:default"
+default_queue_mapping: "g:{{ users_group.name }}:default"

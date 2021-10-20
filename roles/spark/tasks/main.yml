@@ -20,7 +20,7 @@
 
 
 - ansible.builtin.debug:
-    msg: "Downloading Spark from {{spark_download}}"
+    msg: "Downloading Spark from {{ spark_download }}"
 
 
 - name: Unzip Spark
@@ -34,15 +34,15 @@
 
 - name: Replace spark log4j library with hadoop log4j library to avoid warnings
   block:
-    - name: "Link {{spark_home}} to {{current_spark_home}}"
+    - name: "Link {{ spark_home }} to {{ current_spark_home }}"
       ansible.builtin.file:
-        src: "{{spark_home}}"
-        dest: "{{current_spark_home}}"
+        src: "{{ spark_home }}"
+        dest: "{{ current_spark_home }}"
         state: link
 
     - name: Ansible delete file wildcard
       ansible.builtin.find:
-        paths: "{{current_spark_home}}/jars/"
+        paths: "{{ current_spark_home }}/jars/"
         patterns: "slf4j-log4j12-*.jar"
       register: wildcard_files_to_delete
 
@@ -54,7 +54,7 @@
 
     - name: Ansible link file wildcard
       ansible.builtin.find:
-        paths: "{{current_hadoop_home}}/share/hadoop/common/lib/"
+        paths: "{{ current_hadoop_home }}/share/hadoop/common/lib/"
         patterns: "slf4j-log4j12-*.jar"
       register: wildcard_files_to_link
 
@@ -62,7 +62,7 @@
       ansible.builtin.file:
         src: "{{ item.path }}"
         force: yes
-        dest: "{{current_spark_home}}/jars/{{item.path | basename}}"
+        dest: "{{ current_spark_home }}/jars/{{ item.path | basename }}"
         state: link
       with_items: "{{ wildcard_files_to_link.files }}"
 

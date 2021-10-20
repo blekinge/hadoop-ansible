@@ -3,10 +3,10 @@
 zabbix_useuip: "1"
 
 # Do not enable active checks
-#zabbix_agent_serveractive: "{{zabbix_agent_server}}"
+#zabbix_agent_serveractive: "{{ zabbix_agent_server }}"
 
-zabbix_agent_hostname: "{{ansible_fqdn}}"
-hostname: "{{ansible_fqdn}}"
+zabbix_agent_hostname: "{{ ansible_fqdn }}"
+hostname: "{{ ansible_fqdn }}"
 
 zabbix_link_templates:
   - "Template OS Linux by Zabbix agent"

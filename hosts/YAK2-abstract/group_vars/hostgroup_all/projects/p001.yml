@@ -13,7 +13,7 @@ project_ipa:
       firstname: "p001"
       lastname: "User2"
       mobile: "+450000000"
-      email: "userp001@{{ipa_domain}}"
+      email: "userp001@{{ ipa_domain }}"
       # If uid or gid is not specified, use group gid + position in this list.
 
 

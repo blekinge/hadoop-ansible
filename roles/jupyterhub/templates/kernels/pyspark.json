@@ -4,9 +4,9 @@
   "argv": [ "/usr/bin/python3", "-m", "ipykernel", "-f", "{connection_file}" ],
   "env": {
     "PATH": "/bin:/sbin:/usr/sbin:/usr/bin",
-    "SPARK_HOME": "{{current_spark_home}}",
+    "SPARK_HOME": "{{ current_spark_home }}",
     "PYSPARK_PYTHON": "/usr/bin/python3",
-    "PYTHONPATH": "{{current_spark_home}}/python/:{{current_spark_home}}/python/lib/py4j-0.10.9-src.zip",
+    "PYTHONPATH": "{{ current_spark_home }}/python/:{{ current_spark_home }}/python/lib/py4j-0.10.9-src.zip",
     "PYSPARK_SUBMIT_ARGS": "--master yarn pyspark-shell"
   }
 }

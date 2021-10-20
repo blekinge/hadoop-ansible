@@ -2,10 +2,10 @@
 - name: format+mount extra disks
   include: task_format_disk.yml
   vars:
-    mount: "{{item.mount}}"
-    device: "{{item.device}}"
+    mount: "{{ item.mount }}"
+    device: "{{ item.device }}"
   when: mounts is defined
-  loop: "{{mounts}}"
+  loop: "{{ mounts }}"
   loop_control:
     index_var: idx
 

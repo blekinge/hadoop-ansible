@@ -13,7 +13,7 @@
         mode: 0775
       with_items:
         - "{{ hadoop_log_dir }}"
-        - "{{hadoop_tmp}}"
+        - "{{ hadoop_tmp }}"
 
 
 
@@ -24,22 +24,22 @@
 
 
     - ansible.builtin.debug:
-        msg: "Downloading hadoop from {{hadoop_download}}"
+        msg: "Downloading hadoop from {{ hadoop_download }}"
 
 
     - name: Unzip Hadoop
       ansible.builtin.unarchive:
-        src: "{{hadoop_download}}"
+        src: "{{ hadoop_download }}"
         dest: "{{ hadoop_path }}"
         remote_src: yes
         creates: "{{ hadoop_home }}"
         group: "{{ hadoop_group.name }}"
         owner: "root"
 
-    - name: "Link {{hadoop_home}} to {{current_hadoop_home}}"
+    - name: "Link {{ hadoop_home }} to {{ current_hadoop_home }}"
       ansible.builtin.file:
-        src: "{{hadoop_home}}"
-        dest: "{{current_hadoop_home}}"
+        src: "{{ hadoop_home }}"
+        dest: "{{ current_hadoop_home }}"
         state: link
 
 - name: Configure Hadoop
@@ -81,7 +81,7 @@
         dest: "{{ hadoop_home }}/share/hadoop/common/lib/"
         owner:
           name: root
-          group: "{{hadoop_group.name}}"
+          group: "{{ hadoop_group.name }}"
 
     - name: Upload Hadoop daemon invoker Script
       ansible.builtin.template:

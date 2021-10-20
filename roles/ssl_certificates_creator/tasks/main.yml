@@ -7,8 +7,8 @@
 
 
 - name: create certificates
-  become: no # Do this as {{sealbin_user}}, as this user will be used to scp(rsync) to each of the hosts to install these certs later on
-  # This works because when we ssh into {{ipa_server}} as {{sealbin_user}} we use agent forwarding, and thus {{sealbin_user}}
+  become: no # Do this as {{ sealbin_user }}, as this user will be used to scp(rsync) to each of the hosts to install these certs later on
+  # This works because when we ssh into {{ ipa_server }} as {{ sealbin_user }} we use agent forwarding, and thus {{ sealbin_user }}
   # will be allowed  to ssh on to any other host
   # But this will break when we become root
   block:
@@ -21,27 +21,27 @@
     #All this is done only on ipaserver host
     - name: Create ssl working dir
       ansible.builtin.file:
-        path: "{{temp_ssl_dir}}/"
+        path: "{{ temp_ssl_dir }}/"
         state: "directory"
         mode: 0755
 
-#TODO ensure we do not create when already present
+    #TODO ensure we do not create when already present
     - name: "CA: Generate an OpenSSL private key in PEM format"
       community.crypto.openssl_privatekey:
-        path: "{{certificate_authority.private_key_file}}"
+        path: "{{ certificate_authority.private_key_file }}"
 
         size: "{{ ssl_key_size }}"
-        passphrase: "{{certificate_authority.private_key_passphrase}}"
+        passphrase: "{{ certificate_authority.private_key_passphrase }}"
         cipher: "auto"
         type: RSA
         state: present
 
     - name: "CA: Generate an OpenSSL Certificate Signing Request"
       community.crypto.openssl_csr:
-        path: "{{temp_ssl_dir}}/{{ certificate_authority.name }}.csr"
+        path: "{{ temp_ssl_dir }}/{{ certificate_authority.name }}.csr"
 
-        privatekey_path: "{{certificate_authority.private_key_file}}"
-        privatekey_passphrase: "{{certificate_authority.private_key_passphrase}}"
+        privatekey_path: "{{ certificate_authority.private_key_file }}"
+        privatekey_passphrase: "{{ certificate_authority.private_key_passphrase }}"
 
         key_usage:
           - "keyCertSign"
@@ -55,42 +55,42 @@
         basic_constraints_critical: yes
 
         common_name: "{{ certificate_authority.name }}"
-        organizational_unit_name: "{{ssl_organizational_unit_name | default(omit)}}"
-        organization_name: "{{ssl_organization_name | default(omit)}}"
-        locality_name: "{{ssl_locality_name | default(omit)}}"
-        state_or_province_name: "{{ssl_state_or_province_name | default(omit)}}"
-        country_name: "{{ssl_country_name | default(omit)}}"
+        organizational_unit_name: "{{ ssl_organizational_unit_name | default(omit) }}"
+        organization_name: "{{ ssl_organization_name | default(omit) }}"
+        locality_name: "{{ ssl_locality_name | default(omit) }}"
+        state_or_province_name: "{{ ssl_state_or_province_name | default(omit) }}"
+        country_name: "{{ ssl_country_name | default(omit) }}"
 
     #TODO ensure we do not create when already present
     - name: "CA: Create the actual certificate"
       community.crypto.x509_certificate:
-        path: "{{certificate_authority.certificate_file}}"
+        path: "{{ certificate_authority.certificate_file }}"
 
-        privatekey_path: "{{certificate_authority.private_key_file}}"
-        privatekey_passphrase: "{{certificate_authority.private_key_passphrase}}"
-        csr_path: "{{temp_ssl_dir}}/{{ certificate_authority.name }}.csr"
+        privatekey_path: "{{ certificate_authority.private_key_file }}"
+        privatekey_passphrase: "{{ certificate_authority.private_key_passphrase }}"
+        csr_path: "{{ temp_ssl_dir }}/{{ certificate_authority.name }}.csr"
         provider: selfsigned
 
     # Result all.jks
     - name: "CA: Create a single trust store file that contains parent certificate."
       community.general.java_cert:
-        cert_alias: "{{certificate_authority.name}}"
-        cert_path: "{{certificate_authority.certificate_file}}"
+        cert_alias: "{{ certificate_authority.name }}"
+        cert_path: "{{ certificate_authority.certificate_file }}"
         keystore_create: yes
         keystore_pass: "{{ ssl_truststore_pass  }}"
-        keystore_path: "{{temp_ssl_dir}}/all.jks"
+        keystore_path: "{{ temp_ssl_dir }}/all.jks"
 
     - name: "Create certificate for each host"
       include_tasks: createCertificate.yml
       loop: "{{ groups['all'] }}"
       when: group_host != 'localhost'
       vars:
-        ssl_host: "{{hostvars[group_host].ansible_fqdn}}"
+        ssl_host: "{{ hostvars[group_host].ansible_fqdn }}"
       loop_control:
         loop_var: "group_host"
 
     - name: Create http secret.
-      command: "dd if=/dev/urandom of={{temp_ssl_dir}}/http_secret bs=1024 count=1"
+      command: "dd if=/dev/urandom of={{ temp_ssl_dir }}/http_secret bs=1024 count=1"
       args:
-        creates: "{{temp_ssl_dir}}/http_secret"
+        creates: "{{ temp_ssl_dir }}/http_secret"
 

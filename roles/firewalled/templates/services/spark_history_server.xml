@@ -3,6 +3,6 @@
 <service>
     <short>spark_history_server</short>
     <description>Allow services for spark_history_server service</description>
-    <port protocol="tcp" port="{{spark_history_server_http_port}}"/>
-    <port protocol="tcp" port="{{spark_history_server_https_port}}"/>
+    <port protocol="tcp" port="{{ spark_history_server_http_port }}"/>
+    <port protocol="tcp" port="{{ spark_history_server_https_port }}"/>
 </service>

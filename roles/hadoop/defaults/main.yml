@@ -29,7 +29,7 @@ wipe_hdfs: false
 # hadoop basic vars
 # Set a local file here, if you do not want to download it dynamicallyl
 hadoop_version: "3.2.2"
-hadoop_download: http://ftp.download-by.net/apache/hadoop/common/hadoop-{{hadoop_version}}/hadoop-{{hadoop_version}}.tar.gz
+hadoop_download: http://ftp.download-by.net/apache/hadoop/common/hadoop-{{ hadoop_version }}/hadoop-{{ hadoop_version }}.tar.gz
 hadoop_path: "/usr/local/hadoop"
 hadoop_home: "{{ hadoop_path }}/hadoop-{{ hadoop_version }}"
 
@@ -43,21 +43,21 @@ hadoop_pid_dir: "/var/run/hadoop"
 
 #Loggers
 hadoop_daemon_logger: "INFO,DRFA"
-hdfs_daemon_logger: "{{hadoop_daemon_logger}}"
-yarn_daemon_logger: "{{hadoop_daemon_logger}},EWMA"
-mapreduce_daemon_logger: "{{hadoop_daemon_logger}}"
+hdfs_daemon_logger: "{{ hadoop_daemon_logger }}"
+yarn_daemon_logger: "{{ hadoop_daemon_logger }},EWMA"
+mapreduce_daemon_logger: "{{ hadoop_daemon_logger }}"
 
 mapreduce_jobsummary_logger: "INFO,JSA"
 yarn_resourcemanager_appsummary_logger: "DEBUG,RMSUMMARY"
 
 hadoop_security_logger: "INFO,DRFAS"
-hdfs_security_logger: "{{hadoop_security_logger}}"
-mapreduce_security_logger: "{{hadoop_security_logger}}"
+hdfs_security_logger: "{{ hadoop_security_logger }}"
+mapreduce_security_logger: "{{ hadoop_security_logger }}"
 
 hadoop_audit_logger: "INFO"
-hdfs_audit_logger: "{{hadoop_audit_logger}},DRFAAUDIT"
-yarn_nodemanager_audit_logger: "{{hadoop_audit_logger}},NMAUDIT"
-yarn_resourcemanager_audit_logger: "{{hadoop_audit_logger}},RMAUDIT"
+hdfs_audit_logger: "{{ hadoop_audit_logger }},DRFAAUDIT"
+yarn_nodemanager_audit_logger: "{{ hadoop_audit_logger }},NMAUDIT"
+yarn_resourcemanager_audit_logger: "{{ hadoop_audit_logger }},RMAUDIT"
 
 # Memory and resources
 hdfs_namenode_memory: "4096m"

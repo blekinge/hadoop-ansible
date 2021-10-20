@@ -248,7 +248,7 @@
             </description>
         </property>
 
-        <!-- {{queue}}: Priority -->
+        <!-- {{ queue }}: Priority -->
 
         <property>
             <name>yarn.scheduler.capacity.{{ queue.longname }}.default-application-priority</name>
@@ -296,7 +296,7 @@
             <name>yarn.scheduler.capacity.{{ queue.longname }}.ordering-policy.fair.enable-size-based-weight</name>
             <value>{{ queue.size_based | default('false') }}</value>
         </property>
-        <!-- End queue {{queue.longname}} -->
+        <!-- End queue {{ queue.longname }} -->
 
 
 

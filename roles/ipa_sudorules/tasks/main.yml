@@ -3,7 +3,7 @@
 
 - name: Default Sudo rules
   freeipa.ansible_freeipa.ipasudorule:
-    ipaadmin_password: "{{ipaadmin_password}}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
     name: defaults
     hostcategory: all
     usercategory: all
@@ -12,12 +12,12 @@
       - '!env_reset'
       - 'env_delete-=PATH'
 
-- name: "{{subadmins_group.name}} Sudo rules"
+- name: "{{ subadmins_group.name }} Sudo rules"
   freeipa.ansible_freeipa.ipasudorule:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{subadmins_group.name}}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    name: "{{ subadmins_group.name }}"
     hostgroup:
-      - "{{ipa_hostgroup | default(domain)}}"
+      - "{{ ipa_hostgroup | default(domain) }}"
     cmdcategory: all
     runasusercategory: all
     runasgroupcategory: all
@@ -25,6 +25,6 @@
       - '!requiretty'
       - '!authenticate'
     group:
-      - "{{subadmins_group.name}}"
-      - "{{ipa_admin_user.group}}"
+      - "{{ subadmins_group.name }}"
+      - "{{ ipa_admin_user.group }}"
 

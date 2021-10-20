@@ -3,30 +3,30 @@
 # See https://sbprojects.statsbiblioteket.dk/display/HPC/Users
 #project_ipa controls project group and users.
 project_ipa:
-  name: "{{users_group.name}}"
-  gid: "{{users_group.gid| int }}"
+  name: "{{ users_group.name }}"
+  gid: "{{ users_group.gid| int }}"
   # Project_host is used to set up HBAC rules
 #  project_host: "narchive-p-admn02.kb.dk"
   users:
-    - username: "{{user_prefix}}nas"
+    - username: "{{ user_prefix }}nas"
       firstname: "NetArchive Suite"
       lastname: "Application user"
       mobile: ""
-      uid: "{{users_group.gid | int +1}}"
-      gid: "{{users_group.gid | int }}"
+      uid: "{{ users_group.gid | int +1 }}"
+      gid: "{{ users_group.gid | int }}"
       noprivate: yes
 
 
 
 
 
-queue_mapping: "g:{{users_group.name}}:{{users_group.name}}_interactive"
+queue_mapping: "g:{{ users_group.name }}:{{ users_group.name }}_interactive"
 
 
 yarn_queue:
-  name: "{{users_group.name}}"
-  admins: " {{users_group.name}}"
-  submitters: " {{users_group.name}}"
+  name: "{{ users_group.name }}"
+  admins: " {{ users_group.name }}"
+  submitters: " {{ users_group.name }}"
   capacity: 80
   max_capacity: 100
   minimum_user_limit: 25
@@ -36,9 +36,9 @@ yarn_queue:
   state: RUNNING
 
   children:
-    - name: "{{users_group.name}}_batch"
-      admins: " {{users_group.name}}"
-      submitters: " {{users_group.name}}"
+    - name: "{{ users_group.name }}_batch"
+      admins: " {{ users_group.name }}"
+      submitters: " {{ users_group.name }}"
       capacity: 30
       max_capacity: 100
       minimum_user_limit: 25
@@ -47,9 +47,9 @@ yarn_queue:
       priority: 1
       state: RUNNING
 
-    - name: "{{users_group.name}}_interactive"
-      admins: " {{users_group.name}}"
-      submitters: " {{users_group.name}}"
+    - name: "{{ users_group.name }}_interactive"
+      admins: " {{ users_group.name }}"
+      submitters: " {{ users_group.name }}"
       capacity: 70
       max_capacity: 80
       minimum_user_limit: 25

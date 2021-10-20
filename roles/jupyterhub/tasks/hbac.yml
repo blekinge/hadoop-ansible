@@ -1,23 +1,23 @@
 #  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacsvc.md
 - name: "Jupyterhub HBAC service definitions for user login groups"
-  delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
+  delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
   run_once: true
   freeipa.ansible_freeipa.ipahbacsvc:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{jupyterhub_user.name}}" #Name should match name in /etc/pam.d/ (jupyterhub)
-    description: "login to the {{jupyterhub_user.name}} process"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    name: "{{ jupyterhub_user.name }}" #Name should match name in /etc/pam.d/ (jupyterhub)
+    description: "login to the {{ jupyterhub_user.name }} process"
 
 
 #  https://github.com/freeipa/ansible-freeipa/blob/master/README-hbacrule.md
 - name: "Jupyterhub HBAC rules"
-  delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
+  delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
   run_once: true
   freeipa.ansible_freeipa.ipahbacrule:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{jupyterhub_user.name}} sudospawner"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    name: "{{ jupyterhub_user.name }} sudospawner"
     description: "Allow the jupyterhub sudospawner to use sudo to start a session for a user"
-    host: "{{groups['hostgroup_project_nodes']}}"
-    user: "{{jupyterhub_user.name}}"
+    host: "{{ groups['hostgroup_project_nodes'] }}"
+    user: "{{ jupyterhub_user.name }}"
     hbacsvc:
       - "sudo"
     state: present

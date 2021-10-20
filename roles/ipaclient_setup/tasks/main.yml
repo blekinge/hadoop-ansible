@@ -2,9 +2,9 @@
 - name: Setup autohomes
   when: use_autofs_homes
   block:
-    - name: "create {{ipaclient_autohome_dir}}"
+    - name: "create {{ ipaclient_autohome_dir }}"
       ansible.builtin.file:
-          path: "{{ipaclient_autohome_dir}}"
+          path: "{{ ipaclient_autohome_dir }}"
           state: directory
           mode: '0755'
 
@@ -36,7 +36,7 @@
       ansible.builtin.replace:
         path: /etc/sssd/sssd.conf
         regexp: '^homedir_substring *= [^\n]*$'
-        replace: 'homedir_substring = {{ipaclient_autohome_dir}}'
+        replace: 'homedir_substring = {{ ipaclient_autohome_dir }}'
       register: homedir_substring_changed
 
 
@@ -70,11 +70,11 @@
         enabled: yes
 
 
-- name: "Mount {{ipaclient_syshome_dir}}"
+- name: "Mount {{ ipaclient_syshome_dir }}"
   when: use_nfs_syshomes
   ansible.builtin.mount:
-      path: "{{ipaclient_syshome_dir}}"
-      src: "{{ipa_server}}:{{ipaserver_syshome_dir}}"
+      path: "{{ ipaclient_syshome_dir }}"
+      src: "{{ ipa_server }}:{{ ipaserver_syshome_dir }}"
       fstype: "nfs4"
       opts: "rw,defaults,_netdev,hard,intr,_netdev"
       state: mounted
@@ -126,19 +126,19 @@
     - "templates/*"
 
 
-- name: "Create cluster hostgroup {{ipa_hostgroup | default(domain)}}"
-  delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
+- name: "Create cluster hostgroup {{ ipa_hostgroup | default(domain) }}"
+  delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
   run_once: true
   freeipa.ansible_freeipa.ipahostgroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{ipa_hostgroup | default(domain)}}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    name: "{{ ipa_hostgroup | default(domain) }}"
     action: hostgroup
 
-- name: "Put hosts in cluster hostgroup {{ipa_hostgroup | default(domain)}}"
-  delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
+- name: "Put hosts in cluster hostgroup {{ ipa_hostgroup | default(domain) }}"
+  delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
   freeipa.ansible_freeipa.ipahostgroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{ipa_hostgroup | default(domain)}}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    name: "{{ ipa_hostgroup | default(domain) }}"
     action: member
     host:
-      - "{{ansible_hostname}}"
+      - "{{ ansible_hostname }}"

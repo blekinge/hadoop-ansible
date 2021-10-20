@@ -68,13 +68,13 @@ spark_history_server_http_port: 18080
 
 spark_portrange_width: 50
 spark_ui_http_port: 4400
-spark_ui_http_portrange: "{{spark_ui_http_port}}-{{spark_ui_http_port|int+spark_portrange_width|int}}"
+spark_ui_http_portrange: "{{ spark_ui_http_port }}-{{ spark_ui_http_port|int+spark_portrange_width|int }}"
 
 spark_driver_http_port: 12000
-spark_driver_http_portrange: "{{spark_driver_http_port}}-{{spark_driver_http_port|int+spark_portrange_width|int}}"
+spark_driver_http_portrange: "{{ spark_driver_http_port }}-{{ spark_driver_http_port|int+spark_portrange_width|int }}"
 
 spark_blockmanager_http_port: 12500
-spark_blockmanager_http_portrange: "{{spark_blockmanager_http_port}}-{{spark_blockmanager_http_port|int+spark_portrange_width|int}}"
+spark_blockmanager_http_portrange: "{{ spark_blockmanager_http_port }}-{{ spark_blockmanager_http_port|int+spark_portrange_width|int }}"
 
 rstudio_server_http_port: 8787
 

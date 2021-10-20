@@ -8,7 +8,7 @@
 
 - name: "test existing keytab for  {{ entry.principal }}"
   shell:
-    cmd: kinit -kt {{ entry.keytab_file }} {{ entry.principal}} -c test.ticket && rm test.ticket
+    cmd: kinit -kt {{ entry.keytab_file }} {{ entry.principal }} -c test.ticket && rm test.ticket
   when: keytab_file.stat.exists == True
   register: keytab_valid
   failed_when: keytab_valid.rc >= 2
@@ -24,13 +24,13 @@
 
     - name: "getKeytab for {{ entry.principal }}"
       shell:
-        cmd: ipa-getkeytab --server={{ipa_server}} --principal={{ entry.principal}} --keytab={{ entry.keytab_file }}
+        cmd: ipa-getkeytab --server={{ ipa_server }} --principal={{ entry.principal }} --keytab={{ entry.keytab_file }}
       args:
         creates: "{{ entry.keytab_file }}"
 
 - name: "set permissions for {{ entry.keytab_file }}"
   ansible.builtin.file:
-    owner: "{{ entry.owner}}"
+    owner: "{{ entry.owner }}"
     group: "{{ entry.group }}"
     mode: "{{ entry.file_permissions }}"
     path: "{{ entry.keytab_file }}"

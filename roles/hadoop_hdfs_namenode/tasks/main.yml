@@ -2,15 +2,15 @@
 
 - name: Create Name dir
   ansible.builtin.file:
-    path: "{{hadoop_dfs_name}}"
+    path: "{{ hadoop_dfs_name }}"
     state: directory
-    owner: "{{hdfs_user.name}}"
-    group: "{{hdfs_user.name}}"
+    owner: "{{ hdfs_user.name }}"
+    group: "{{ hdfs_user.name }}"
   register: hadoop_dfs_name_dir_status
 
 - name: check if Fresh HDFS install
   ansible.builtin.set_fact:
-    fresh_HDFS: '{{hadoop_dfs_name_dir_status.changed == true and hadoop_dfs_name_dir_status.diff.before.state == "absent"}}'
+    fresh_HDFS: '{{ hadoop_dfs_name_dir_status.changed == true and hadoop_dfs_name_dir_status.diff.before.state == "absent" }}'
 
 - include: initialize_ha_hdfs.yml
   when: hdfs_high_availability | bool and (fresh_HDFS | bool or wipe_hdfs | bool)

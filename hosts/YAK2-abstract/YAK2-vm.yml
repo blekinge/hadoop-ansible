@@ -14,13 +14,13 @@ hostgroup_all:
         hist001.adm.yak2.net: #Example of how to set hostname
           comment: History server
           shortname: hist001
-          hostname: "{{shortname}}.{{domain}}"
+          hostname: "{{ shortname }}.{{ domain }}"
 
         rlog001.adm.yak2.net:
           ovirt_disks:
             - name: Disk1
               size: 100GiB
-              mount: "{{log_folder}}"
+              mount: "{{ log_folder }}"
 
         zkpr[001:003].adm.yak2.net:
           comment: Zookeeper/Journalnode server

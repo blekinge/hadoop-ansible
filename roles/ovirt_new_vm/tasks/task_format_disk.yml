@@ -4,17 +4,17 @@
   become: no
   block:
     - ansible.builtin.parted:
-        device: "{{device}}"
+        device: "{{ device }}"
         number: 1
         flags: [ lvm ]
         state: present
 
     - ansible.builtin.filesystem:
         fstype: xfs
-        dev: "{{device}}-part1"
+        dev: "{{ device }}-part1"
 
     - ansible.builtin.mount:
         fstype: xfs
-        src: "{{device}}-part1"
-        path: "{{mount}}"
+        src: "{{ device }}-part1"
+        path: "{{ mount }}"
         state: mounted

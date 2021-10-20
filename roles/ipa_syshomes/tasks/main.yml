@@ -18,7 +18,7 @@
         group: "{{ item.gid }}"
         mode: '0700'
         state: directory
-      loop: "{{system_users}}"
+      loop: "{{ system_users }}"
 
     - name: "Create {{ ipaclient_syshome_dir }}"
       ansible.builtin.file:
@@ -33,7 +33,7 @@
         src: "{{ ipaserver_syshome_dir }}/{{ item.name }}"
         dest: "{{ ipaclient_syshome_dir }}/{{ item.name }}"
         state: link
-      loop: "{{system_users}}"
+      loop: "{{ system_users }}"
 
     #NFS exports this folder
     - name: setup nfs exports

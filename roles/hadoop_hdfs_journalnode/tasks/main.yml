@@ -11,16 +11,16 @@
 
 - name: Wipe journal
   ansible.builtin.file:
-    path: "{{hadoop_dfs_journal}}"
+    path: "{{ hadoop_dfs_journal }}"
     state: absent
   when: wipe_hdfs | bool
 
 - name: Create journal dir
   ansible.builtin.file:
-    path: "{{hadoop_dfs_journal}}"
+    path: "{{ hadoop_dfs_journal }}"
     state: directory
-    owner: "{{hdfs_user.name}}"
-    group: "{{hdfs_user.group}}"
+    owner: "{{ hdfs_user.name }}"
+    group: "{{ hdfs_user.group }}"
 
 
 - name: (Re)Start journalnode systemd service

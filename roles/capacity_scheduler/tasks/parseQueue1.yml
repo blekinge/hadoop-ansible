@@ -1,9 +1,9 @@
 
 - name: "Block"
   block:
-    - name: "Level 1: queue ({{queueName1}})"
+    - name: "Level 1: queue ({{ queueName1 }})"
       ansible.builtin.set_fact:
-        capacity_queues: "{{capacity_queues | default([]) + [item]}}"
+        capacity_queues: "{{ capacity_queues | default([]) + [item] }}"
       loop:
         -  "{{ queue1 |
               dict2items |
@@ -16,11 +16,11 @@
                 })
             }}"
 
-    - name: "Level 1: subqueues for ({{queueName1}})"
+    - name: "Level 1: subqueues for ({{ queueName1 }})"
       include_tasks: "parseQueue2.yml"
       vars:
-        queue2: "{{subqueue1}}"
-        queueName2: "{{queueName1}}.{{subqueue1.name}}"
-      loop: "{{queue1.children | default([]) | list}}"
+        queue2: "{{ subqueue1 }}"
+        queueName2: "{{ queueName1 }}.{{ subqueue1.name }}"
+      loop: "{{ queue1.children | default([]) | list }}"
       loop_control:
         loop_var: "subqueue1"

@@ -2,7 +2,7 @@
 - hosts: hostgroup_hdfs_namenodes
   vars:
     - keytab_dir:  "/etc/security/keytabs"
-    - kinit_principal: "{{user_prefix}}hdfs"
+    - kinit_principal: "{{ user_prefix }}hdfs"
   tasks:
     - import_tasks: tasks/kinit_keytab.yml
     - name: wait for HDFS to leave safemode

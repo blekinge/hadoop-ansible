@@ -3,9 +3,9 @@ rsyslog_selinux_enable: yes
 
 log_folder: /var/log/rsyslog
 
-remote_log_folder: "{{log_folder}}/remote"
+remote_log_folder: "{{ log_folder }}/remote"
 
-structured_log_folder: "{{log_folder}}/hadoop"
+structured_log_folder: "{{ log_folder }}/hadoop"
 
 
 
@@ -13,7 +13,7 @@ structured_log_folder: "{{log_folder}}/hadoop"
 # properties from https://rsyslog.readthedocs.io/en/latest/configuration/properties.html
 rsyslog_templates:
   - name: "templateFromRemote"
-    string: "{{remote_log_folder}}/%syslogfacility-text%/%fromhost:::secpath-replace%/%fromhost:::secpath-replace%-%app-name:::secpath-replace%.log"
+    string: "{{ remote_log_folder }}/%syslogfacility-text%/%fromhost:::secpath-replace%/%fromhost:::secpath-replace%-%app-name:::secpath-replace%.log"
 
   - name: "rfc5424Format"
 #    string: "<%PRI%>%PROTOCOL-VERSION% timestamp=%TIMESTAMP% hostname=%hostname% app-name=%app-name% procid=%procid% msgid=%msgid% structured_data=%STRUCTURED-DATA% msg=%msg%\\n"
@@ -38,13 +38,13 @@ rsyslog_inputs:
       "StreamDriver.Mode": "1"
       "StreamDriver.Authmode": "anon"
     listeners:
-      - port: "{{rsyslog_server_tcp_port}}"
+      - port: "{{ rsyslog_server_tcp_port }}"
         ruleset: "rulesetFromRemote"
 
 
 
 
 rsyslog_outputs:
-  - "{{rsyslog_omfile_default_outputs}}"
-  - "{{rsyslog_omusrmsg_default_outputs}}"
+  - "{{ rsyslog_omfile_default_outputs }}"
+  - "{{ rsyslog_omusrmsg_default_outputs }}"
 

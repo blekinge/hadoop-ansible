@@ -11,19 +11,19 @@
 
 - name: Create data dirs
   ansible.builtin.file:
-    path: "{{item}}"
+    path: "{{ item }}"
     state: directory
-    owner: "{{yarn_user.name}}"
-    group: "{{yarn_user.group}}"
+    owner: "{{ yarn_user.name }}"
+    group: "{{ yarn_user.group }}"
     mode: 0755
-  with_items: "{{yarn_data_dirs}}"
+  with_items: "{{ yarn_data_dirs }}"
 
 - name: Create other dirs
   ansible.builtin.file:
-    path: "{{item}}"
+    path: "{{ item }}"
     state: directory
-    owner: "{{yarn_user.name}}"
-    group: "{{yarn_user.group}}"
+    owner: "{{ yarn_user.name }}"
+    group: "{{ yarn_user.group }}"
     mode: 0755
   with_items: #TODO get these configurable
     - /tmp/hadoop/yarn-nm-recovery/

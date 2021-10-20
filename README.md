@@ -121,7 +121,7 @@ You need to set these blocks
 #### Ovirt Auth
 
 ```yaml
-ovirt_api_host: "ovim001.adm.{{domain}}"
+ovirt_api_host: "ovim001.adm.{{ domain }}"
 ovirt_username: "admin@internal"
 ovirt_password: "..."
 ovirt_cluster: "KAC"
@@ -151,35 +151,35 @@ As this setup was written for YAK2, and YAK2 have 2 NICs per host, this is what 
 
 ```yaml
 # The network settings used when creating new virtual hosts for the cluster
-domain_nfs: "nfs.{{domain}}"
-domain_adm: "adm.{{domain}}" # 172.16.216
-domain_dmz: "dmz.{{domain}}"
+domain_nfs: "nfs.{{ domain }}"
+domain_adm: "adm.{{ domain }}" # 172.16.216
+domain_dmz: "dmz.{{ domain }}"
 
 dns_search_domains: "{{ [domain,domain_nfs,domain_adm,domain_dmz] | join(' ') }}"
 
 # DNS server used to look up the ip of the new host
 # The host should be added to DNS prior to creation
-dns_server: "bind001.{{domain}}"
+dns_server: "bind001.{{ domain }}"
 
 # Nic1 profile
 nic1: "yak2net"
 nic1_subnet: 172.16.215
-nic1_domain: "{{domain}}"
+nic1_domain: "{{ domain }}"
 
 #The dns servers to configure for the new host
-dns1: "{{nic1_subnet}}.52" #bind001
-dns2: "{{nic1_subnet}}.53" #bind002
+dns1: "{{ nic1_subnet }}.52" #bind001
+dns2: "{{ nic1_subnet }}.53" #bind002
 
 # New VMs are always created with this ip, so we can ssh to this and set up the machine
-new_vm_ip: "{{nic2_subnet}}.254"
+new_vm_ip: "{{ nic2_subnet }}.254"
 
 # The gateway to use
-gateway: "{{nic1_subnet}}.51"
+gateway: "{{ nic1_subnet }}.51"
 
 
 nic2: "ovirtmgmt"
 nic2_subnet: 172.16.216
-nic2_domain: "{{domain_adm}}"
+nic2_domain: "{{ domain_adm }}"
 
 nic2_routes_list:
   - "172.16.7.0/24"
@@ -206,14 +206,14 @@ This is the `sealbin` account and you can control his name and id with
 ```yaml
 ---
 sealbin_user: "sealbin"
-sealbin_group: "{{sealbin_user}}"
+sealbin_group: "{{ sealbin_user }}"
 
 sealbin_user_uid: 1111
-sealbin_user_gid: "{{sealbin_user_uid}}"
+sealbin_user_gid: "{{ sealbin_user_uid }}"
 
-sealbin_home: "/home/{{sealbin_user}}"
+sealbin_home: "/home/{{ sealbin_user }}"
 
-# If no, we disable root ssh logins so you will have to use {{sealbin_user}} to login
+# If no, we disable root ssh logins so you will have to use {{ sealbin_user }} to login
 permit_root_logins: yes
 ``` 
 
@@ -236,12 +236,12 @@ The next step is setting up the zabbix agent on the hosts.
 zabbix_agent_server: 172.18.0.24 # pc543.sb.statsbiblioteket.dk
 
 #This ensures that the zabbix agent uses the 216 address, which the zabbix server can reach
-zabbix_agent_ip: "{{ansible_all_ipv4_addresses | select('match', '^'+nic2_subnet+'.*') | first}}"
+zabbix_agent_ip: "{{ ansible_all_ipv4_addresses | select('match', '^'+nic2_subnet+'.*') | first }}"
 
 zabbix_agent_tlspskidentity: YAKPSK
 zabbix_agent_tlspsk_secret: "..."
 
-zabbix_url: "https://{{zabbix_agent_server}}/zabbix/"
+zabbix_url: "https://{{ zabbix_agent_server }}/zabbix/"
 zabbix_validate_certs: no
 
 zabbix_api_user: Admin
@@ -280,7 +280,7 @@ Then we get to the ipa client config. These are the non-defaultable variables th
 
 ```yaml
 ---
-ipa_domain: "{{domain}}"
+ipa_domain: "{{ domain }}"
 ipa_realm: YAK2.NET
 
 ipaclient_force_join: true
@@ -302,8 +302,8 @@ vpnu_group:
 
 # default_user_groups are the groups that all new (human) users will be made member of
 default_user_groups:
-  - "{{vpnu_group}}"
-  - "{{users_group}}"
+  - "{{ vpnu_group }}"
+  - "{{ users_group }}"
 
 ipaadmin_password: "..."
 ```

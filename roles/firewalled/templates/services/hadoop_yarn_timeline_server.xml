@@ -3,7 +3,7 @@
 <service>
     <short>hadoop_yarn_timeline_server</short>
     <description>Allow services for hadoop_yarn_timeline_server service</description>
-    <port protocol="tcp" port="{{yarn_timelineserver_http_port}}"/>
-    <port protocol="tcp" port="{{yarn_timelineserver_https_port}}"/>
-    <port protocol="tcp" port="{{yarn_timelineserver_port2}}"/>
+    <port protocol="tcp" port="{{ yarn_timelineserver_http_port }}"/>
+    <port protocol="tcp" port="{{ yarn_timelineserver_https_port }}"/>
+    <port protocol="tcp" port="{{ yarn_timelineserver_port2 }}"/>
 </service>

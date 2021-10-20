@@ -1,83 +1,82 @@
 ---
 #vars: ssl_host
 #
-#- name: "{{ssl_host}}: check if private key {{ ssl_host }}-private.pem file exists"
+#- name: "{{ ssl_host }}: check if private key {{ ssl_host }}-private.pem file exists"
 #  ansible.builtin.stat:
-#    path: "{{temp_ssl_dir}}/{{ ssl_host }}-private.pem"
+#    path: "{{ temp_ssl_dir }}/{{ ssl_host }}-private.pem"
 #  register: private_key_file
 
-- name: "{{ssl_host}}: Generate an OpenSSL private key {{ ssl_host }}-private.pem"
+- name: "{{ ssl_host }}: Generate an OpenSSL private key {{ ssl_host }}-private.pem"
 #  when: private_key_file.stat.exists == False
   community.crypto.openssl_privatekey:
-    path: "{{temp_ssl_dir}}/{{ ssl_host }}-private.pem"
+    path: "{{ temp_ssl_dir }}/{{ ssl_host }}-private.pem"
 
     size: "{{ ssl_key_size }}"
-#    passphrase: "{{ssl_key_pass}}"
+#    passphrase: "{{ ssl_key_pass }}"
 #    cipher: "auto"
     type: RSA
     state: present
   register: private_key
 
-- name: "{{ssl_host}}: As {{ssl_host}} (via private key {{ ssl_host }}-private.pem) generate an
- OpenSSL Certificate Signing Request ({{ ssl_host }}.csr)"
+- name: "{{ ssl_host }}: As {{ ssl_host }} (via private key {{ ssl_host }}-private.pem) generate an OpenSSL Certificate Signing Request ({{ ssl_host }}.csr)"
   community.crypto.openssl_csr:
-    path: "{{temp_ssl_dir}}/{{ ssl_host }}.csr"
+    path: "{{ temp_ssl_dir }}/{{ ssl_host }}.csr"
 
-    privatekey_path: "{{temp_ssl_dir}}/{{ ssl_host }}-private.pem"
-#    privatekey_passphrase: "{{ssl_key_pass}}"
+    privatekey_path: "{{ temp_ssl_dir }}/{{ ssl_host }}-private.pem"
+#    privatekey_passphrase: "{{ ssl_key_pass }}"
 
     subject_alt_name:
       - 'DNS:{{ ssl_host }}'
       - 'DNS:{{ group_host }}'
-    organizational_unit_name: "{{ssl_organizational_unit_name | default(omit)}}"
-    organization_name: "{{ssl_organization_name | default(omit)}}"
-    locality_name: "{{ssl_locality_name | default(omit)}}"
-    state_or_province_name: "{{ssl_state_or_province_name | default(omit)}}"
-    country_name: "{{ssl_country_name | default(omit)}}"
+    organizational_unit_name: "{{ ssl_organizational_unit_name | default(omit) }}"
+    organization_name: "{{ ssl_organization_name | default(omit) }}"
+    locality_name: "{{ ssl_locality_name | default(omit) }}"
+    state_or_province_name: "{{ ssl_state_or_province_name | default(omit) }}"
+    country_name: "{{ ssl_country_name | default(omit) }}"
 
 
-# As parent, sign the incoming certificate request for {{ssl_host}}
-- name: "{{ssl_host}}: As CA, Approve the Certificate Signing Request ({{ ssl_host }}.csr) to generate {{ ssl_host }}.crt"
+# As parent, sign the incoming certificate request for {{ ssl_host }}
+- name: "{{ ssl_host }}: As CA, Approve the Certificate Signing Request ({{ ssl_host }}.csr) to generate {{ ssl_host }}.crt"
   community.crypto.x509_certificate:
-    path: "{{temp_ssl_dir}}/{{ ssl_host }}.crt"
+    path: "{{ temp_ssl_dir }}/{{ ssl_host }}.crt"
 
-    csr_path: "{{temp_ssl_dir}}/{{ ssl_host }}.csr"
+    csr_path: "{{ temp_ssl_dir }}/{{ ssl_host }}.csr"
     provider: ownca
-    ownca_path: "{{certificate_authority.certificate_file}}"
-    ownca_privatekey_path: "{{certificate_authority.private_key_file}}"
-    ownca_privatekey_passphrase: "{{certificate_authority.private_key_passphrase}}"
+    ownca_path: "{{ certificate_authority.certificate_file }}"
+    ownca_privatekey_path: "{{ certificate_authority.private_key_file }}"
+    ownca_privatekey_passphrase: "{{ certificate_authority.private_key_passphrase }}"
   register: cert
 
 # Result -keystore.p12
 # Depends on .crt
 # Depends on -private.pem
-- name: "{{ssl_host}}: Generate PKCS#12 keystore ({{ ssl_host }}-keystore.p12) with {{ ssl_host }}.crt and {{ ssl_host }}-private.pem"
+- name: "{{ ssl_host }}: Generate PKCS#12 keystore ({{ ssl_host }}-keystore.p12) with {{ ssl_host }}.crt and {{ ssl_host }}-private.pem"
   when: cert.changed or private_key.changed #TODO but also do this if p12 file do not exist
   community.crypto.openssl_pkcs12:
     action: export
     friendly_name: "{{ ssl_host }}"
-    certificate_path: "{{temp_ssl_dir}}/{{ ssl_host }}.crt"
+    certificate_path: "{{ temp_ssl_dir }}/{{ ssl_host }}.crt"
 
-    path: "{{temp_ssl_dir}}/{{ ssl_host }}-keystore.p12"
+    path: "{{ temp_ssl_dir }}/{{ ssl_host }}-keystore.p12"
     passphrase: "{{ ssl_keystore_pass }}"
 
-    privatekey_path: "{{temp_ssl_dir}}/{{ ssl_host }}-private.pem"
-#    privatekey_passphrase: "{{ssl_key_pass}}"
+    privatekey_path: "{{ temp_ssl_dir }}/{{ ssl_host }}-private.pem"
+#    privatekey_passphrase: "{{ ssl_key_pass }}"
 
     state: present
   register: p12Keystore
 
 # Result -keystore.jks
 # Depends on -keystore.p12
-- name: "{{ssl_host}}: Generate a JKS keystore ({{ ssl_host }}-keystore.jks) from the PKCS#12 keystore ({{ ssl_host }}-keystore.p12)"
+- name: "{{ ssl_host }}: Generate a JKS keystore ({{ ssl_host }}-keystore.jks) from the PKCS#12 keystore ({{ ssl_host }}-keystore.p12)"
   when: p12Keystore.changed
   command: "keytool -importkeystore
-                -srckeystore {{temp_ssl_dir}}/{{ ssl_host }}-keystore.p12
+                -srckeystore {{ temp_ssl_dir }}/{{ ssl_host }}-keystore.p12
                 -srcstoretype PKCS12
                 -srcstorepass {{ ssl_keystore_pass | quote }}
-                -destkeystore {{temp_ssl_dir}}/{{ ssl_host }}-keystore.jks
+                -destkeystore {{ temp_ssl_dir }}/{{ ssl_host }}-keystore.jks
                 -deststoretype JKS
-                -storepass {{ ssl_keystore_pass | quote}}
+                -storepass {{ ssl_keystore_pass | quote }}
                 -noprompt"
 #  args:
-#    creates: "{{temp_ssl_dir}}/{{ ssl_host }}-keystore.jks"
+#    creates: "{{ temp_ssl_dir }}/{{ ssl_host }}-keystore.jks"

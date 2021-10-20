@@ -1,5 +1,6 @@
 ---
-- ansible.builtin.package:
+- name: Install rsyslog
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
     update_cache: yes
@@ -14,7 +15,7 @@
 
 - name: create working dir
   ansible.builtin.file:
-    path: "{{rsyslog_working_dir}}"
+    path: "{{ rsyslog_working_dir }}"
     state: directory
     owner: root
     group: root
@@ -30,7 +31,7 @@
     validate: "rsyslogd -f %s -N 1"
 
 - name: SELinux (UDP)
-  ansible.builtin.seport:
+  community.general.seport:
     proto: udp
     ports: "{{ item }}"
     setype: syslogd_port_t
@@ -49,7 +50,7 @@
   when: ansible_selinux|bool
 
 - name: SELinux (TCP)
-  ansible.builtin.seport:
+  community.general.seport:
     proto: tcp
     ports: "{{ item }}"
     setype: syslogd_port_t

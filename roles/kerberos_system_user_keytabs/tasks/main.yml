@@ -7,7 +7,7 @@
     mode: 0750
     path: "{{ dir }}"
     state: "directory"
-  loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | map(attribute="keytab_file") | map("dirname") |unique| list}}'
+  loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | map(attribute="keytab_file") | map("dirname") |unique| list }}'
   loop_control:
     loop_var: "dir"
 
@@ -15,11 +15,11 @@
 
 - name: "uploading headless keytabs to hosts"
   throttle: 2
-  delegate_to: "{{groups['hostgroup_ipaserver'] | first}}"
+  delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
   remote_user: root
   ansible.builtin.synchronize:
     src: "{{ item }}"
-    dest: "{{keytab_dir}}"
+    dest: "{{ keytab_dir }}"
     mode: push
-  loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | map(attribute="keytab_file") |unique| list}}'
+  loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | map(attribute="keytab_file") |unique| list }}'
 

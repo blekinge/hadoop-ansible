@@ -1,7 +1,7 @@
 ---
 
 - name: zookeeper_id
-  ansible.builtin.template: src=myid dest={{zookeeper_data_dir}}/myid mode=0644 owner="root" group="root"
+  ansible.builtin.template: src=myid dest={{ zookeeper_data_dir }}/myid mode=0644 owner="root" group="root"
 
 - name: (Re)Start zookeeper server
   throttle: 1

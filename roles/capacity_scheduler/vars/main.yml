@@ -19,12 +19,12 @@ queue_mappings: "{{
 #Each level must sum capacity to 100
 yarn_queues:
   - name: root
-    admins: "{{yarn_user.name}}"
-    submitters: "{{yarn_user.name}}"
+    admins: "{{ yarn_user.name }}"
+    submitters: "{{ yarn_user.name }}"
     capacity: 100
     ordering: priority-utilization
     max_capacity: 100
-    children: "{{lookup('vars', *(projects | map(attribute='name'))) |
+    children: "{{ lookup('vars', *(projects | map(attribute='name'))) |
                  rejectattr('yarn_queue', 'undefined') |
                  map(attribute='yarn_queue') |
                  list }}"

@@ -2,45 +2,45 @@
 
 
 - name: Create standard user groups
-  loop: "{{standard_user_groups}}"
+  loop: "{{ standard_user_groups }}"
   freeipa.ansible_freeipa.ipagroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ item.name }}"
     gid: "{{ item.gid }}"
-    description: "{{item.description}}"
+    description: "{{ item.description }}"
 
 - name: system users
-  loop: "{{system_users}}"
+  loop: "{{ system_users }}"
   freeipa.ansible_freeipa.ipauser:
-    ipaadmin_password: "{{ipaadmin_password}}"
-    name: "{{item.name}}"
-    first: "{{item.name}}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
+    name: "{{ item.name }}"
+    first: "{{ item.name }}"
     last: "System User"
     userclass: SystemUser
 
-    uid: "{{item.uid | default(omit)}}"
-    gid: "{{item.gid | default(omit)}}"
-    homedir: "{{ipaclient_syshome_dir}}/{{item.name}}"
-    shell: "{{item.shell | default('/bin/bash')}}"
-    noprivate: "{{ not item.private_group | default('yes')}}"
+    uid: "{{ item.uid | default(omit) }}"
+    gid: "{{ item.gid | default(omit) }}"
+    homedir: "{{ ipaclient_syshome_dir }}/{{ item.name }}"
+    shell: "{{ item.shell | default('/bin/bash') }}"
+    noprivate: "{{ not item.private_group | default('yes') }}"
 
 
 - name: "Add system users with shared primary groups to those"
-  loop: "{{system_users}}"
+  loop: "{{ system_users }}"
   when: "not item.private_group"
   freeipa.ansible_freeipa.ipagroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ item.group }}"
     action: member
-    user: "{{item.name}}"
+    user: "{{ item.name }}"
 
 
 - name: "Add system users to system groups "
-  loop: "{{system_users}}"
+  loop: "{{ system_users }}"
   when: "item.extra_groups is defined"
   freeipa.ansible_freeipa.ipagroup:
-    ipaadmin_password: "{{ipaadmin_password}}"
+    ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ item.extra_groups }}"
     action: member
-    user: "{{item.name}}"
+    user: "{{ item.name }}"
 

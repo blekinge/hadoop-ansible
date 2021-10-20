@@ -9,12 +9,12 @@ User={{ spark_user.name }}
 Group={{ spark_user.group }}
 Type=forking
 # Prefix with + to Run ExecStartPre with root-permissions, see https://www.freedesktop.org/software/systemd/man/systemd.service.html#ExecStart=
-ExecStartPre=+/usr/bin/mkdir -p {{ spark_pid_dir }}/{{spark_user.name}} {{ spark_log_dir }}/{{ spark_user.name }}
-ExecStartPre=+/usr/bin/chown -R {{ spark_user.name }}:{{ spark_user.group }} {{ spark_pid_dir }}/{{spark_user.name}} {{ spark_log_dir }}/{{ spark_user.name }}
+ExecStartPre=+/usr/bin/mkdir -p {{ spark_pid_dir }}/{{ spark_user.name }} {{ spark_log_dir }}/{{ spark_user.name }}
+ExecStartPre=+/usr/bin/chown -R {{ spark_user.name }}:{{ spark_user.group }} {{ spark_pid_dir }}/{{ spark_user.name }} {{ spark_log_dir }}/{{ spark_user.name }}
 # Run ExecStart with User={{ spark_user.name }} / Group={{ spark_user.group }}
 ExecStart=/usr/local/bin/spark-invoker.sh spark-env.sh start-history-server.sh
 ExecStop=/usr/local/bin/spark-invoker.sh spark-env.sh stop-history-server.sh
-PIDFile={{spark_pid_dir}}/{{spark_user.name}}/spark-{{spark_user.name}}-org.apache.spark.deploy.history.HistoryServer-1.pid
+PIDFile={{ spark_pid_dir }}/{{ spark_user.name }}/spark-{{ spark_user.name }}-org.apache.spark.deploy.history.HistoryServer-1.pid
 
 [Install]
 WantedBy=multi-user.target

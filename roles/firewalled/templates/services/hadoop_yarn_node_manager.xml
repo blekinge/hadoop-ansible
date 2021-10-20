@@ -3,15 +3,15 @@
 <service>
     <short>hadoop_yarn_node_manager</short>
     <description>Allow services for hadoop_yarn_node_manager service</description>
-    <port protocol="tcp" port="{{yarn_nodemanager_rpc_port}}"/>
-    <port protocol="tcp" port="{{yarn_nodemanager_http_port}}"/>
-    <port protocol="tcp" port="{{yarn_nodemanager_https_port}}"/>
-    <port protocol="tcp" port="{{yarn_nodemanager_ipc_localizer_port}}"/>
-    <port protocol="tcp" port="{{yarn_nodemanager_ipc_collector_port}}"/>
+    <port protocol="tcp" port="{{ yarn_nodemanager_rpc_port }}"/>
+    <port protocol="tcp" port="{{ yarn_nodemanager_http_port }}"/>
+    <port protocol="tcp" port="{{ yarn_nodemanager_https_port }}"/>
+    <port protocol="tcp" port="{{ yarn_nodemanager_ipc_localizer_port }}"/>
+    <port protocol="tcp" port="{{ yarn_nodemanager_ipc_collector_port }}"/>
 
-    <port protocol="tcp" port="{{mapreduce_shuffle_port}}"/>
-    <port protocol="tcp" port="{{mapreduce_am_portrange}}"/>
-    <port protocol="tcp" port="{{spark_ui_http_portrange}}"/>
-    <port protocol="tcp" port="{{spark_driver_http_portrange}}"/>
-    <port protocol="tcp" port="{{spark_blockmanager_http_portrange}}"/>
+    <port protocol="tcp" port="{{ mapreduce_shuffle_port }}"/>
+    <port protocol="tcp" port="{{ mapreduce_am_portrange }}"/>
+    <port protocol="tcp" port="{{ spark_ui_http_portrange }}"/>
+    <port protocol="tcp" port="{{ spark_driver_http_portrange }}"/>
+    <port protocol="tcp" port="{{ spark_blockmanager_http_portrange }}"/>
 </service>

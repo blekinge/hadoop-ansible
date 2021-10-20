@@ -5,7 +5,7 @@ keytab_permissions: "0400"
 
 temp_keytab_dir: "/tmp/temp_keytabs"
 
-kinit_principal: "{{ipa_admin_user.name}}@{{ipaserver_realm}}"
+kinit_principal: "{{ ipa_admin_user.name }}@{{ ipaserver_realm }}"
 
 yarn_nodemanager_service_name: "nm"
 yarn_resourcemanager_service_name: "rm"
@@ -81,7 +81,7 @@ keytab_services:
   }
   - {
     hostgroup: "hostgroup_yarn_resource_managers",
-    name: "{{ yarn_resourcemanager_service_name}}",
+    name: "{{ yarn_resourcemanager_service_name }}",
     owner: "{{ yarn_user.name }}",
     group: "{{ yarn_user.group }}"
   }

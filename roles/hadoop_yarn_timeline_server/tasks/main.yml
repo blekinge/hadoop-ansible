@@ -2,10 +2,10 @@
 
 - name: Create Timeline dir
   ansible.builtin.file:
-    path: "{{yarn_timeline_store}}"
+    path: "{{ yarn_timeline_store }}"
     state: directory
-    owner: "{{yarn_user.name}}"
-    group: "{{yarn_user.group}}"
+    owner: "{{ yarn_user.name }}"
+    group: "{{ yarn_user.group }}"
 
 - name: (Re)Start YARN Timeline Server systemd service
   ansible.builtin.systemd:
