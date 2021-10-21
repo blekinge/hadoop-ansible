@@ -29,10 +29,7 @@ use_nfs_syshomes: false
 # Use localhomes for project users
 use_autofs_homes: false
 
-ipaclient_ntp_servers: []
-
-ipaclient_ntp_pool:
-  - pool.ntp.kb.dk
+ipaclient_ntp_pool: pool.ntp.kb.dk
 
 ipa_hostgroup: narchive-p
 

@@ -1,4 +1,24 @@
 ---
+
+- name: remove other ntp servers from chrony.conf
+  lineinfile:
+    path: /etc/chrony.conf
+    state: absent
+    line: "^server|^pool"
+#TODO only do this if ipaclient_ntp_pool is actually defined
+- name: setup chronyd to use ntp
+  lineinfile:
+    path: /etc/chrony.conf
+    line: "pool {{ ipaclient_ntp_pool }} iburst"
+    insertafter: "# Please consider joining the pool (http://www.pool.ntp.org/join.html)."
+    state: present
+
+- name: setup chronyd to use ntp
+  systemd:
+    name: chronyd
+    state: restarted
+
+
 - name: Setup autohomes
   when: use_autofs_homes
   block:
