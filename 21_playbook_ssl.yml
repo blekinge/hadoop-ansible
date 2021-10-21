@@ -5,7 +5,7 @@
 
 
 # Now that the hosts have been added as ipa clients, we can setup the kerberos services
-- hosts: localhost
+- hosts: hostgroup_ssl_creator
   roles:
     - role: ssl_certificates_creator
 
