@@ -27,7 +27,7 @@
   # Be {{ sealbin_user }} on the src(fipa001) side
   # This allows us to use agent our agent forwarding so {{ ipa_serve }} can ssh to the right host
   synchronize:
-    src: "{{ item.file }}"
+    src: "{{ sealbin_user }}@{{ groups['hostgroup_ssl_creator'] | first }}:{{ item.file }}"
     dest: "{{ item.dest  }}"
     archive: no
     mode: push
