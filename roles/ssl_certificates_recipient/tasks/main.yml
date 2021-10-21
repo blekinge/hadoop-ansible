@@ -22,6 +22,7 @@
 - name: "uploading ssl certs to hosts"
   throttle: 2
   delegate_to: "{{ groups['hostgroup_ssl_creator'] | first }}"
+  connection: ssh
   become: no
   # Be {{ sealbin_user }} on the src(fipa001) side
   # This allows us to use agent our agent forwarding so {{ ipa_serve }} can ssh to the right host
