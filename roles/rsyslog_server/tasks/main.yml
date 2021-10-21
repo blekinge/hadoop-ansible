@@ -11,7 +11,7 @@
     - "{{ structured_log_folder }}"
 
 - name: "Allow rsyslog to write log files in {{ remote_log_folder }}"
-  when: ansible_selinux.mode != 'disabled'
+  when: ansible_selinux.status != 'disabled'
   community.general.sefcontext:
     target: "{{ remote_log_folder }}(/.*)?"
     seuser: system_u
@@ -20,7 +20,7 @@
   notify: "Restart rsyslog service after SELinux changes"
 
 - name: Fix selinux permissions
-  when: ansible_selinux.mode != 'disabled'
+  when: ansible_selinux.status != 'disabled'
   command: "restorecon -R -v {{ remote_log_folder }}"
   notify: "Restart rsyslog service after SELinux changes"
 
