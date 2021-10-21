@@ -5,6 +5,7 @@
     path: /etc/chrony.conf
     state: absent
     regexp: "^(server|pool).*"
+  notify: "restart chronyd"
 
 #TODO only do this if ipaclient_ntp_pool is actually defined
 - name: setup chronyd to use ntp
@@ -13,11 +14,8 @@
     line: "pool {{ ipaclient_ntp_pool }} iburst"
     insertafter: "^# Please consider joining the pool .*"
     state: present
+  notify: "restart chronyd"
 
-- name: setup chronyd to use ntp
-  systemd:
-    name: chronyd
-    state: restarted
 
 
 - name: Setup autohomes
@@ -94,11 +92,11 @@
 - name: "Mount {{ ipaclient_syshome_dir }}"
   when: use_nfs_syshomes
   mount:
-      path: "{{ ipaclient_syshome_dir }}"
-      src: "{{ ipa_server }}:{{ ipaserver_syshome_dir }}"
-      fstype: "nfs4"
-      opts: "rw,defaults,_netdev,hard,intr,_netdev"
-      state: mounted
+    path: "{{ ipaclient_syshome_dir }}"
+    src: "{{ ipa_server }}:{{ ipaserver_syshome_dir }}"
+    fstype: "nfs4"
+    opts: "rw,defaults,_netdev,hard,intr,_netdev"
+    state: mounted
 
 
 - name: ensure ipa is reloaded
