@@ -1,8 +1,6 @@
 ---
 rsyslog_selinux_enable: yes
 
-rsyslog_use_selinux: yes
-
 log_folder: /var/log/rsyslog
 
 remote_log_folder: "{{ log_folder }}/remote"
