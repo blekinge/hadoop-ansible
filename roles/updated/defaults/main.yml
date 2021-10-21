@@ -5,3 +5,4 @@ yum_packages:
   - yum-utils
   - python38
   - glibc-langpack-en
+  - python3-netaddr
