@@ -11,15 +11,18 @@
     - "{{ structured_log_folder }}"
 
 - name: "Allow rsyslog to write log files in {{ remote_log_folder }}"
+  when: rsyslog_use_selinux
   community.general.sefcontext:
     target: "{{ remote_log_folder }}(/.*)?"
     seuser: system_u
     setype: var_log_t
     state: present
+  notify: "Restart rsyslog service after SELinux changes"
 
 - name: Fix selinux permissions
-  when: ansible_selinux.mode == 'enforcing'
+  when: rsyslog_use_selinux and ansible_selinux.mode == 'enforcing'
   command: "restorecon -R -v {{ remote_log_folder }}"
+  notify: "Restart rsyslog service after SELinux changes"
 
 - name: create log sorting dirs
   file:
@@ -33,8 +36,3 @@
     follow: no
   loop: "{{ syslog_facilities | dict2items }}"
 
-
-- name: Restart rsyslog service after SELinux changes
-  service:
-    name: rsyslog
-    state: restarted
