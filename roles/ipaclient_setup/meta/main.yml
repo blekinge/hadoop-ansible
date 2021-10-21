@@ -1,4 +1,4 @@
 ---
 dependencies:
   - role: ipa_systemusers_config
-  - role: ipaclient
+  - role: freeipa.ansible_freeipa.ipaclient
