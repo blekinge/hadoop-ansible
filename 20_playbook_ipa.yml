@@ -9,8 +9,6 @@
   roles:
     - role: ipa_system_users
 
-    - role: ipa_sudorules
-
     - role: ipa_syshomes
 
     - role: ipa_autohomes
@@ -26,3 +24,8 @@
     - freeipa.ansible_freeipa
 
 
+- hosts: hostgroup_ipaserver
+  roles:
+    - role: ipa_sudorules
+  collections:
+    - freeipa.ansible_freeipa
