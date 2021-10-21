@@ -30,7 +30,7 @@ use_nfs_syshomes: false
 use_autofs_homes: false
 
 ipaclient_ntp_servers:
-  - 130.225.24.33 #orion.statsbiblioteket.dk
+  - pool.ntp.kb.dk
 
 ipa_hostgroup: narchive-p
 
