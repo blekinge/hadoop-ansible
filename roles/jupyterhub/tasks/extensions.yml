@@ -2,14 +2,14 @@
 
 
 - name: Install PyYAML dependency without conflicting with OS
-  ansible.builtin.pip:
+  pip:
     name: "PyYAML"
     executable: pip3
     state: latest
     extra_args: "--ignore-installed"
 
 - name: Install extra jupyter extensions
-  ansible.builtin.pip:
+  pip:
     name: "{{ item }}"
     executable: pip3
     state: latest

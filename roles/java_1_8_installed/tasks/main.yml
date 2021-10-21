@@ -1,9 +1,13 @@
 ---
 - name: Install OpenJdk.
-  ansible.builtin.package: name={{ java_packages }} state=present
+  package: name={{ java_packages }} state=present
 
 - name: Upload Java Home Script
-  ansible.builtin.template: src=java_home.sh dest=/etc/profile.d
+  template:
+    src: java_home.sh
+    dest: /etc/profile.d
+    mode: "0644"
+
 #
 #- name: Set Java Home Script
 #  shell: source /etc/profile.d/java_home.sh

@@ -1,6 +1,6 @@
 ---
 - name: (Re)Start YARN Resource Manager systemd service
-  ansible.builtin.systemd:
+  systemd:
     state: restarted
     daemon_reload: yes
     name: yarn_resource_manager

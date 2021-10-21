@@ -1,7 +1,7 @@
 ---
 
 - name: Create Mapreduce Paths
-  ansible.builtin.file:
+  file:
     path: "{{ item }}"
     owner: "{{ mapreduce_user.name }}"
     group: "{{ mapreduce_user.group }}"
@@ -26,7 +26,7 @@
       mapred frameworkuploader  -target /system/mapreduce/mapreduce.tar.gz#mr-framework
 
 - name: (Re)Start Mapreduce History Server systemd service
-  ansible.builtin.systemd:
+  systemd:
     state: restarted
     daemon_reload: yes
     enabled: yes

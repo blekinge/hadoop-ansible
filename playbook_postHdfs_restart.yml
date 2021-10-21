@@ -20,7 +20,7 @@
   serial: 1
   tasks:
     - name: restart timeline_server
-      ansible.builtin.systemd:
+      systemd:
         state: restarted
         name: yarn_timeline_server
         daemon_reload: yes
@@ -30,7 +30,7 @@
   serial: 1
   tasks:
     - name: restart node manager
-      ansible.builtin.systemd:
+      systemd:
         state: restarted
         name: yarn_node_manager
         daemon_reload: yes
@@ -40,7 +40,7 @@
   serial: 1
   tasks:
     - name: restart resource manager
-      ansible.builtin.systemd:
+      systemd:
         state: restarted
         name: yarn_resource_manager
         daemon_reload: yes
@@ -52,7 +52,7 @@
   serial: 1
   tasks:
     - name: restart mapreduce_historyserver
-      ansible.builtin.systemd:
+      systemd:
         state: restarted
         name: mapreduce_history_server
         daemon_reload: yes
@@ -65,7 +65,7 @@
   serial: 1
   tasks:
     - name: (Re)Start Spark History Server systemd service
-      ansible.builtin.systemd:
+      systemd:
         state: restarted
         name: spark_history_server
         daemon_reload: yes

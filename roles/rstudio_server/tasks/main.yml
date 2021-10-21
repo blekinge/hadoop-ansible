@@ -1,5 +1,5 @@
 - name: Install dependencies
-  ansible.builtin.package:
+  package:
     name:
       - R-devel
       - texlive-framed
@@ -16,7 +16,7 @@
     - gpg --armor --export 3F32EE77E331692F > rstudio-signing.key
 
 - name: Import Rstudio GPG key.
-  ansible.builtin.rpm_key:
+  rpm_key:
     key: rstudio-signing.key
     state: present
 
@@ -24,26 +24,26 @@
   when: rstudio_version_fixed is not defined
   block:
     - name: Check the newest version of RStudio
-      ansible.builtin.uri:
+      uri:
         url: http://download2.rstudio.org/current.ver
         return_content: yes
       register: rstudio_version
 
     - name: Get the installable package of RStudio Server for RedHat 6-7
       when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 6 and ansible_distribution_major_version|int <= 7
-      ansible.builtin.get_url:
+      get_url:
         url: "{{ rstudio_redhat6_download_url }}/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','') }}-x86_64.rpm"
         dest: /tmp/rstudio.rpm
 
     - name: Get the installable package of RStudio Server for RedHat 8+
       when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 8
-      ansible.builtin.get_url:
+      get_url:
         url: "{{ rstudio_redhat8_download_url }}/rstudio-server-rhel-{{ rstudio_version.content | regex_replace('-1$','') }}-x86_64.rpm"
         dest: /tmp/rstudio.rpm
 
 
 - name: rstudio install
-  ansible.builtin.package:
+  package:
     name: /tmp/rstudio.rpm
     state: present
 
@@ -52,7 +52,7 @@
     cmd: rstudio-server stop
 
 - name: remove local rstudio-server user
-  ansible.builtin.user:
+  user:
     name: rstudio-server
     state: absent
     remove: yes
@@ -60,21 +60,21 @@
 
 
 - name: setup PAM
-  ansible.builtin.copy:
+  copy:
     backup: yes
     src: /etc/pam.d/login
     dest: "/etc/pam.d/rstudio"
     remote_src: yes
 
 - name: Restrict users to humans
-  ansible.builtin.lineinfile:
+  lineinfile:
     path: "{{ rstudio_config_file }}"
     line: "auth-required-user-group={{ users_group.name }}"
     regexp: "^auth-required-user-group=.*$"
     create: yes
 
 - name: "RStudio should run as {{ rstudio_user.name }}"
-  ansible.builtin.lineinfile:
+  lineinfile:
     path: "{{ rstudio_config_file }}"
     line: "server-user={{ rstudio_user.name }}"
     regexp: "^server-user=.*$"
@@ -83,14 +83,14 @@
 
 #
 #- name: "RStudio ssl config"
-#  ansible.builtin.lineinfile:
+#  lineinfile:
 #    path: /etc/rstudio/rstudio-server.conf
 #    line: "ssl-enabled=1"
 #    regexp: "^ssl-enabled=.*$"
 #    create: yes
 #
 #- name: "RStudio ssl config cert"
-#  ansible.builtin.lineinfile:
+#  lineinfile:
 #    path: /etc/rstudio/rstudio-server.conf
 #    line: "ssl-certificate={{ ssl_cert_dir }}/{{ ansible_fqdn }}.crt"
 #    regexp: "^ssl-certificate=.*$"
@@ -98,7 +98,7 @@
 #
 #
 #- name: "RStudio ssl config key"
-#  ansible.builtin.lineinfile:
+#  lineinfile:
 #    path: /etc/rstudio/rstudio-server.conf
 #    line: "ssl-certificate-key={{ ssl_key_dir }}/{{ ansible_fqdn }}-private.pem"
 #    regexp: "^ssl-certificate-key=.*$"
@@ -106,14 +106,14 @@
 
 
 - name: "RStudio port"
-  ansible.builtin.lineinfile:
+  lineinfile:
     path: "{{ rstudio_config_file }}"
     line: "www-port={{ rstudio_server_http_port }}"
     regexp: "^www-port==.*$"
     create: yes
 
 - name: Create rstudio logging folder if it did not exist already
-  ansible.builtin.file:
+  file:
     state: directory
     path:
       - /var/log/rstudio-server
@@ -129,21 +129,21 @@
     state: permissive
 
 - name: (Re)Start RStudio Server service
-  ansible.builtin.systemd:
+  systemd:
     service: rstudio-server
     state: restarted
     enabled: yes
     daemon_reload: yes
 
 - name: Configure Spark home
-  ansible.builtin.lineinfile:
+  lineinfile:
     path:  /usr/lib64/R/etc/Renviron
     line: "SPARK_HOME={{ current_spark_home }}"
     regexp: "^SPARK_HOME=.*$"
     create: yes
 
 - name: install Sparklyr dependencies
-  ansible.builtin.package:
+  package:
     name:
       - libxml2-devel
       - libcurl-devel

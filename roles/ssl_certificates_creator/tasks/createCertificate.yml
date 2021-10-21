@@ -2,7 +2,7 @@
 #vars: ssl_host
 #
 #- name: "{{ ssl_host }}: check if private key {{ ssl_host }}-private.pem file exists"
-#  ansible.builtin.stat:
+#  stat:
 #    path: "{{ temp_ssl_dir }}/{{ ssl_host }}-private.pem"
 #  register: private_key_file
 

@@ -1,5 +1,5 @@
 - name: install lxml so we can fetch from maven
-  ansible.builtin.package:
+  package:
     name: python3-lxml
 #
 #- name: remove other versions of java library

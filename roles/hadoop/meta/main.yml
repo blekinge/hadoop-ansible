@@ -1,6 +1,6 @@
 ---
 dependencies:
-  - role: validate-inventory
+  - role: validate_inventory
 
   - role: java_1_8_installed
 

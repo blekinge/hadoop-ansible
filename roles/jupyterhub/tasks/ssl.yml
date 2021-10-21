@@ -32,7 +32,7 @@
         creates: "{{ ssl_cert_dir }}/jupyterhub.cert"
 
     - name: permissions for jupyterhub certificates
-      ansible.builtin.file:
+      file:
         state: file
         path: "{{ item }}"
         owner: "{{ jupyterhub_user.name }}"

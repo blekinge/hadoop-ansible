@@ -4,7 +4,7 @@
   serial: 1
   tasks:
     - name: restart zookeeper_server
-      ansible.builtin.systemd:
+      systemd:
         state: restarted
         name: zookeeper
         daemon_reload: yes
@@ -14,7 +14,7 @@
   serial: 1
   tasks:
     - name: restart journalnode
-      ansible.builtin.systemd:
+      systemd:
         state: restarted
         name: hdfs_journalnode
         daemon_reload: yes
@@ -25,7 +25,7 @@
   serial: 1
   tasks:
     - name: restart namenode
-      ansible.builtin.systemd:
+      systemd:
         state: restarted
         name: hdfs_namenode
         daemon_reload: yes
@@ -37,7 +37,7 @@
   serial: 1
   tasks:
     - name: restart datanode
-      ansible.builtin.systemd:
+      systemd:
         state: restarted
         name: hdfs_datanode
         daemon_reload: yes

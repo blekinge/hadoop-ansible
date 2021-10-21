@@ -49,7 +49,7 @@
 
 - name: "user home for {{ user.username }}: {{ ipaserver_autohome_dir }}/{{ user.username }}"
   delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
-  ansible.builtin.file:
+  file:
     state: directory
     path: "{{ ipaserver_autohome_dir }}/{{ user.username }}"
     owner: "{{ user.username }}"
@@ -59,7 +59,7 @@
 - name: "Autohomes on freeipa server"
   delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
   run_once: true
-  ansible.builtin.file:
+  file:
     state: link
     src: "{{ ipaserver_autohome_dir }}"
     dest: "{{ ipaclient_autohome_dir }}"

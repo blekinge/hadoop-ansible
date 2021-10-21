@@ -32,7 +32,7 @@
 
 # Start
 - name: (Re)Start Jupyterhub systemd service
-  ansible.builtin.systemd:
+  systemd:
     state: restarted
     name: jupyterhub
     enabled: true

@@ -5,14 +5,14 @@
 #  ansible -i hosts/YAK2-abstract/ -i  hosts/YAK2-ha/ all -u root -a "bash -c \"firewall-cmd --list-ports | tr ' ' '\n' | xargs -r -Iæ firewall-cmd --permanent --remove-port='æ'\""
 #  ansible -i hosts/YAK2-abstract/ -i  hosts/YAK2-ha/ all -u root -a "bash -c \"firewall-cmd --list-rich-rules | xargs -r -Iæ firewall-cmd --permanent --remove-rich-rule='æ'\""
 - name: install firewalld
-  ansible.builtin.package:
+  package:
     state: present
     name:
       - firewalld
       - python3-firewall
 
 - name: Upload Service config files
-  ansible.builtin.template:
+  template:
     src: "{{ item }}"
     dest: "/etc/firewalld/services/"
     mode: 0644
@@ -23,14 +23,14 @@
 
 
 - name: firewalld is running
-  ansible.builtin.systemd:
+  systemd:
     state: started
     service: firewalld
     enabled: yes
 
 
 - name: Ensure the new firewall services are loaded
-  ansible.builtin.systemd:
+  systemd:
     state: reloaded
     service: firewalld
 

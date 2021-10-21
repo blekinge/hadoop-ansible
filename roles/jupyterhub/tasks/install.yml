@@ -8,7 +8,7 @@
   command: dnf -y module enable nodejs:12
 
 - name: Install NodeJS and Python
-  ansible.builtin.package:
+  package:
     state: latest
     name:
       - npm
@@ -18,7 +18,7 @@
 
 #https://docs.ansible.com/ansible/2.3/npm_module.html
 - name: Install npm dependencies
-  ansible.builtin.npm:
+  npm:
     name: "{{ item }}"
     global: yes
     state: latest
@@ -26,13 +26,13 @@
 
 #https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
 - name: Update python pip package
-  ansible.builtin.pip:
+  pip:
     name: pip
     executable: pip3
     state: latest
 
 - name: Install jupyterhub by pip
-  ansible.builtin.pip:
+  pip:
     name: "{{ item }}"
     executable: pip3
     state: latest
@@ -41,7 +41,7 @@
 
 
 - name: Install sudospawner for jupyter
-  ansible.builtin.template:
+  template:
     src: "templates/bin/sudospawner-singleuser"
     dest: /usr/local/bin/
     mode: 0755

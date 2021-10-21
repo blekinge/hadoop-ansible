@@ -1,0 +1,66 @@
+---
+
+- name: hostgroup_VMs
+  import_playbook: 10_playbook_ovirt_vms.yml
+
+
+
+- name: Ansible user account
+  import_playbook: 11_playbook_ansible_user.yml
+
+
+
+- name: Update hosts
+  import_playbook: 12_playbook_updated.yml
+
+
+
+
+- name: Zabbix agents
+  import_playbook: 13_playbook_zabbix.yml
+
+
+- name: IPA server and clients setup
+  import_playbook: 20_playbook_ipa.yml
+
+
+- name: RSyslog setup
+  import_playbook: 28_playbook_rsyslog.yml
+
+
+- name: Setup Zookeeper
+  import_playbook: 30_playbook_hadoop_setup.yml
+
+- name: Setup HDFS
+  import_playbook: 31_playbook_hdfs_setup.yml
+
+- name: Setup YARN
+  import_playbook: 32_playbook_yarn_setup.yml
+
+- name: Setup MapReduce
+  import_playbook: 33_playbook_mapreduce_setup.yml
+
+- name: Setup Spark
+  import_playbook: 34_playbook_spark_setup.yml
+
+
+
+- name: Create Project nodes
+  import_playbook: 60_playbook_project_nodes.yml
+
+- name: Setup Spark Clients
+  import_playbook: 61_playbook_projects_spark_client.yml
+
+- name: Setup RStudio
+  import_playbook: 62_playbook_projects_rstudio.yml
+
+- name: Setup Jupyterhub
+  import_playbook: 63_playbook_projects_jupyterhub.yml
+
+
+- name: Setup X2Go
+  import_playbook: 64_playbook_projects_x2go.yml
+
+
+- name: Create Project users
+  import_playbook: 66_playbook_projects_users.yml

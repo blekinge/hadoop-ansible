@@ -2,7 +2,7 @@
 
 - name: Force OS Redhat when on Springdale
   when: ansible_os_family == 'Springdale'
-  ansible.builtin.set_fact:
+  set_fact:
     zabbix_agent_os_family: RedHat
 
 
@@ -13,7 +13,7 @@
     merged_var_name: zabbix_host_groups
     expected_type: 'list'
 
-- ansible.builtin.debug: var=zabbix_host_groups
+- debug: var=zabbix_host_groups
 
 # https://github.com/ansible-collections/community.zabbix/blob/main/docs/ZABBIX_AGENT_ROLE.md
 - name: zetup zabbix agentz
@@ -38,7 +38,7 @@
 
 
 - name: (Re)Start zabbix agent service
-  ansible.builtin.systemd:
+  systemd:
     service: zabbix-agent
     state: restarted
     enabled: yes

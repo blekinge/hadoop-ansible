@@ -3,7 +3,7 @@
 
 - name: Upload updated yum repos
   when: ansible_os_family == 'Springdale'
-  ansible.builtin.template:
+  template:
     src: "{{ item }}"
     dest: "/etc/yum.repos.d/"
     mode: 0644
@@ -13,25 +13,25 @@
     - "templates/yum.repos.d/*"
 
 - name: Find sb-* yum repos
-  ansible.builtin.find:
+  find:
     paths: /etc/yum.repos.d/
     patterns: 'sb-*.repo'
   register: sb_repo_files
 
 - name: enable sb-* repos
-  ansible.builtin.replace:
+  replace:
     path: "{{ item.path }}"
     regexp: '^enabled=0$'
     replace: "enabled=1"
   loop: "{{ sb_repo_files.files }}"
 
 - name: Install Tools
-  ansible.builtin.package:
+  package:
     name: "{{ yum_packages }}"
     state: present
 
 - name: Upgrade all packages
-  ansible.builtin.package:
+  package:
     name: '*'
     state: latest
 
@@ -44,14 +44,14 @@
 
 
 - name: reboot
-  ansible.builtin.reboot:
+  reboot:
   when: needs_restarting.rc != 0
 
 
 - name: "Wait 600 seconds for host to become reachable/usable"
   remote_user: root # Ensure that we do not try to login as a user that does not exist yet
   become: no
-  ansible.builtin.wait_for_connection:
+  wait_for_connection:
     delay: 0 # Number of seconds to wait before starting to poll.
     timeout: 600 # Maximum number of seconds to wait for.
     sleep: 2 # Number of seconds to sleep between checks.

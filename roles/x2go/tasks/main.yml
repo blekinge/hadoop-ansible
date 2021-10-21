@@ -1,7 +1,7 @@
 ---
 
 - name: Install X2Go server
-  ansible.builtin.package:
+  package:
     state: present
     name:
       - x2goserver
@@ -11,14 +11,14 @@
 
 - name: Install X2Go desktop for RedHat 7+
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
-  ansible.builtin.package:
+  package:
     state: present
     name:
       - "@Xfce"
 
 - name: Install X2Go desktop for RedHat 7
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 7
-  ansible.builtin.package:
+  package:
     state: present
     name:
       - mate-desktop

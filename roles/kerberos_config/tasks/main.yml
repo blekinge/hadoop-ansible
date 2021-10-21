@@ -1,4 +1,4 @@
-- ansible.builtin.set_fact: # set_fact to register this variable
+- set_fact: # set_fact to register this variable
     kerberos_conf: >
       {%- set temp_list = [] -%}
       {%- for host in groups['hostgroup_all'] -%}

@@ -1,7 +1,7 @@
 ---
 
 - name: Create common dirs
-  ansible.builtin.file:
+  file:
     path: "{{ item }}"
     owner: "root"
     group: "{{ spark_user.group }}"
@@ -14,17 +14,20 @@
 
 
 - name: ensure spark directory exists
-  ansible.builtin.file:
+  file:
     path: "{{ spark_path }}"
     state: directory
+    mode: "0750"
+    owner: "{{ spark_user.name }}"
+    group: "{{ spark_user.group }}"
 
 
-- ansible.builtin.debug:
+- debug:
     msg: "Downloading Spark from {{ spark_download }}"
 
 
 - name: Unzip Spark
-  ansible.builtin.unarchive:
+  unarchive:
     src: "{{ spark_download }}"
     dest: "{{ spark_path }}"
     remote_src: yes
@@ -35,31 +38,31 @@
 - name: Replace spark log4j library with hadoop log4j library to avoid warnings
   block:
     - name: "Link {{ spark_home }} to {{ current_spark_home }}"
-      ansible.builtin.file:
+      file:
         src: "{{ spark_home }}"
         dest: "{{ current_spark_home }}"
         state: link
 
     - name: Ansible delete file wildcard
-      ansible.builtin.find:
+      find:
         paths: "{{ current_spark_home }}/jars/"
         patterns: "slf4j-log4j12-*.jar"
       register: wildcard_files_to_delete
 
     - name: Ansible remove file wildcard
-      ansible.builtin.file:
+      file:
         path: "{{ item.path }}"
         state: absent
       with_items: "{{ wildcard_files_to_delete.files }}"
 
     - name: Ansible link file wildcard
-      ansible.builtin.find:
+      find:
         paths: "{{ current_hadoop_home }}/share/hadoop/common/lib/"
         patterns: "slf4j-log4j12-*.jar"
       register: wildcard_files_to_link
 
     - name: Ansible link file wildcard
-      ansible.builtin.file:
+      file:
         src: "{{ item.path }}"
         force: yes
         dest: "{{ current_spark_home }}/jars/{{ item.path | basename }}"
@@ -69,7 +72,7 @@
 
 
 - name: Upload spark config files
-  ansible.builtin.template:
+  template:
     src: "{{ item }}"
     dest: "{{ spark_config_path }}/"
     mode: 0644
@@ -80,11 +83,11 @@
 
 
 - name: remove {{ spark_home }}/conf
-  ansible.builtin.file:
+  file:
     path: "{{ spark_home }}/conf"
     state: absent
 - name: symlink {{ spark_home }}/conf to {{ spark_config_path }}
-  ansible.builtin.file:
+  file:
     src: "{{ spark_config_path }}"
     dest:  "{{ spark_home }}/conf"
     owner: root
@@ -94,7 +97,7 @@
 
 
 - name: Upload Spark profile files
-  ansible.builtin.template:
+  template:
     src: "{{ item }}"
     dest: "/etc/profile.d/"
     mode: 0644

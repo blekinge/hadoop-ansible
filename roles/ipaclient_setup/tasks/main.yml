@@ -3,7 +3,7 @@
   when: use_autofs_homes
   block:
     - name: "create {{ ipaclient_autohome_dir }}"
-      ansible.builtin.file:
+      file:
           path: "{{ ipaclient_autohome_dir }}"
           state: directory
           mode: '0755'
@@ -17,7 +17,7 @@
 
     - name: setup automount as the ipaclient module did not do it correctly
       when: autofsEnabled.rc == 1
-      ansible.builtin.replace:
+      replace:
         path: /etc/sssd/sssd.conf
         regexp: '^(services *= *[^\n]*)$'
         replace: '\1, autofs'
@@ -33,7 +33,7 @@
 
     - name: setup homedir as the ipaclient module did not do it correctly
       when: homedirCorrect.rc == 1
-      ansible.builtin.replace:
+      replace:
         path: /etc/sssd/sssd.conf
         regexp: '^homedir_substring *= [^\n]*$'
         replace: 'homedir_substring = {{ ipaclient_autohome_dir }}'
@@ -41,14 +41,14 @@
 
 
     - name: add missing automount config to /etc/sssd/sssd.conf
-      ansible.builtin.lineinfile:
+      lineinfile:
         path: /etc/sssd/sssd.conf
         line: autofs_provider = ipa
         insertbefore: '^\[sssd\]$'
       register: autofs_provider_changed
 
     - name: add missing automount config to /etc/sssd/sssd.conf
-      ansible.builtin.lineinfile:
+      lineinfile:
         path: /etc/sssd/sssd.conf
         line: ipa_automount_location = default
         insertbefore: '^\[sssd\]$'
@@ -59,12 +59,12 @@
         automount_location_changed.changed or
         homedir_substring_changed.changed or
         service_autofs_changed.changed
-      ansible.builtin.systemd:
+      systemd:
         service: sssd
         state: restarted
 
     - name: Restart autofs and enable it
-      ansible.builtin.systemd:
+      systemd:
         service: autofs
         state: restarted
         enabled: yes
@@ -72,7 +72,7 @@
 
 - name: "Mount {{ ipaclient_syshome_dir }}"
   when: use_nfs_syshomes
-  ansible.builtin.mount:
+  mount:
       path: "{{ ipaclient_syshome_dir }}"
       src: "{{ ipa_server }}:{{ ipaserver_syshome_dir }}"
       fstype: "nfs4"
@@ -83,40 +83,41 @@
 - name: ensure ipa is reloaded
   shell:
     cmd: sss_cache -E
+  changed_when: false
 
 - name: set correct ccache
-  ansible.builtin.replace:
+  replace:
     path: /etc/krb5.conf
     regexp: 'default_ccache_name.*'
     replace: 'default_ccache_name = /tmp/krb5cc_%{uid}'
 
 - name: set correct ccache 2
-  ansible.builtin.replace:
+  replace:
     path: /etc/krb5.conf.d/kcm_default_ccache
     regexp: '^( *default_ccache_name *= *KCM: *)'
     replace: '#\1'
 
 - name: stop sssd KCM service
-  ansible.builtin.systemd:
+  systemd:
     state: stopped
     service: sssd-kcm.service
     enabled: no
 
 - name: stop sssd KCM socket service
-  ansible.builtin.systemd:
+  systemd:
     state: stopped
     service: sssd-kcm.socket
     enabled: no
 
 - name: restart sssd service
-  ansible.builtin.systemd:
+  systemd:
     state: restarted
     service: sssd.service
     enabled: yes
 
 
 - name: Upload Kerberos profile files
-  ansible.builtin.template:
+  template:
     src: "{{ item }}"
     dest: "/etc/profile.d/"
     mode: 0644

@@ -1,6 +1,6 @@
 ---
 - name: Create service keytabs dir
-  ansible.builtin.file:
+  file:
     owner: root
     group: "{{ hadoop_group.name }}"
     mode: 0750

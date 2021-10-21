@@ -14,9 +14,9 @@ If you understand the basics of what each of these do, you should be able to und
 
 
 * Ansible internals
-    * ansible.builtin.**set_fact** – Set host facts from a task: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/set_fact_module.html>
+    * **set_fact** – Set host facts from a task: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/set_fact_module.html>
 
-    * ansible.builtin.**include_tasks** – Dynamically include a task list: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_tasks_module.html>
+    * **include_tasks** – Dynamically include a task list: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/include_tasks_module.html>
 
     * **block** - Blocks create logical groups of tasks. <https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html>
 
@@ -35,38 +35,38 @@ If you understand the basics of what each of these do, you should be able to und
     * **run_once** - If you want a task to run only on the first host in your batch of hosts, set run_once to true on that task: <https://docs.ansible.com/ansible/latest/user_guide/playbooks_strategies.html#running-on-a-single-machine-with-run-once>
 
 * When all you have is a hammer:
-    * ansible.builtin.shell – Execute shell commands on targets: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/shell_module.html>
+    * shell – Execute shell commands on targets: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/shell_module.html>
 
 
 * File externals
     
-    * ansible.builtin.file – Manage files and file properties: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html>
+    * file – Manage files and file properties: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html>
 
-    * ansible.builtin.stat – Retrieve file or file system status: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/stat_module.html>
+    * stat – Retrieve file or file system status: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/stat_module.html>
   
     
 * File internals
-    * ansible.builtin.lineinfile – Manage lines in text files: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html>
+    * lineinfile – Manage lines in text files: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html>
 
-    * ansible.builtin.replace – Replace all instances of a particular string in a file using a back-referenced regular expression: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/replace_module.html>
+    * replace – Replace all instances of a particular string in a file using a back-referenced regular expression: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/replace_module.html>
 
 
 * Upload to remote host
-    * ansible.builtin.copy – Copy files to remote locations: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html>
+    * copy – Copy files to remote locations: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html>
 
-    * ansible.builtin.template – Template a file out to a remote server: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html>
+    * template – Template a file out to a remote server: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html>
 
     * ansible.posix.synchronize – A wrapper around rsync to make common tasks in your playbooks quick and easy: <https://docs.ansible.com/ansible/latest/collections/ansible/posix/synchronize_module.html>
 
-    * ansible.builtin.unarchive – Unpacks an archive after (optionally) copying it from the local machine: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/unarchive_module.html>
+    * unarchive – Unpacks an archive after (optionally) copying it from the local machine: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/unarchive_module.html>
 
 
 
 * System health
 
-    * ansible.builtin.wait_for_connection – Waits until remote system is reachable/usable: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/wait_for_connection_module.html>
+    * wait_for_connection – Waits until remote system is reachable/usable: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/wait_for_connection_module.html>
 
-    * ansible.builtin.reboot – Reboot a machine: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/reboot_module.html>
+    * reboot – Reboot a machine: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/reboot_module.html>
 
 
 * File systems and disks
@@ -82,27 +82,27 @@ If you understand the basics of what each of these do, you should be able to und
     merge_vars: TODO
 
 *  System management
-    * ansible.builtin.systemd – Manage services: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_module.html>
+    * systemd – Manage services: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_module.html>
 
     * ansible.posix.firewalld – Manage arbitrary ports/services with firewalld: <https://docs.ansible.com/ansible/latest/collections/ansible/posix/firewalld_module.html>
 
 
 * Install stuff
     
-    * ansible.builtin.package – Generic OS package manager: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/package_module.html>
+    * package – Generic OS package manager: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/package_module.html>
     
-    * ansible.builtin.rpm_key – Adds or removes a gpg key from the rpm db: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/rpm_key_module.html>
+    * rpm_key – Adds or removes a gpg key from the rpm db: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/rpm_key_module.html>
 
-    * ansible.builtin.pip – Manages Python library dependencies: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html>
+    * pip – Manages Python library dependencies: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html>
     
     * community.general.npm – Manage node.js packages with npm:  <https://docs.ansible.com/ansible/latest/collections/community/general/npm_module.htm>
     
 
 * User management
 
-    * ansible.builtin.user – Manage user accounts: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html>
+    * user – Manage user accounts: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html>
 
-    * ansible.builtin.group – Add or remove groups: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/group_module.html>
+    * group – Add or remove groups: <https://docs.ansible.com/ansible/latest/collections/ansible/builtin/group_module.html>
     
     * ansible.posix.authorized_key – Adds or removes an SSH authorized key: <https://docs.ansible.com/ansible/latest/collections/ansible/posix/authorized_key_module.html>
 

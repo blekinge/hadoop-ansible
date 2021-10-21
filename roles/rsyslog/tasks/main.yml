@@ -1,6 +1,6 @@
 ---
 - name: Install rsyslog
-  ansible.builtin.package:
+  package:
     name: "{{ item }}"
     state: present
     update_cache: yes
@@ -9,12 +9,12 @@
     - "{{ rsyslog_additional_packages }}"
 
 - name: Remove useless configuration file
-  ansible.builtin.file:
+  file:
     path: "/etc/rsyslog.d/listen.conf"
     state: absent
 
 - name: create working dir
-  ansible.builtin.file:
+  file:
     path: "{{ rsyslog_working_dir }}"
     state: directory
     owner: root
@@ -22,7 +22,7 @@
     mode: 0700
 
 - name: Set up configuration file
-  ansible.builtin.template:
+  template:
     src: templates/rsyslog.conf
     dest: "/etc/rsyslog.conf"
     owner: root
@@ -70,7 +70,7 @@
   when: ansible_selinux|bool
 
 - name: (Re)Start RSyslog service
-  ansible.builtin.service:
+  service:
     name: rsyslog
     state: restarted
     enabled: yes

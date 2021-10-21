@@ -1,6 +1,6 @@
 
 - name: create log collection dirs
-  ansible.builtin.file:
+  file:
     path: "{{ item }}"
     state: directory
     owner: root
@@ -22,7 +22,7 @@
   command: "restorecon -R -v {{ remote_log_folder }}"
 
 - name: create log sorting dirs
-  ansible.builtin.file:
+  file:
     src: "{{ remote_log_folder }}/{{ item.value }}"
     dest: "{{ structured_log_folder }}/{{ item.key }}"
     state: link
@@ -35,6 +35,6 @@
 
 
 - name: Restart rsyslog service after SELinux changes
-  ansible.builtin.service:
+  service:
     name: rsyslog
     state: restarted

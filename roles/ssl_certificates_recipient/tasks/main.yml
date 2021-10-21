@@ -1,13 +1,13 @@
 ---
 
 - name: install rsync so we can use ansible synchronize
-  ansible.builtin.package:
+  package:
     name: rsync
     state: present
 
 
 - name: Create ssl dirs dir
-  ansible.builtin.file:
+  file:
     path: "{{ dir }}"
     state: "directory"
     mode: 0755
@@ -25,7 +25,7 @@
   become: no
   # Be {{ sealbin_user }} on the src(fipa001) side
   # This allows us to use agent our agent forwarding so {{ ipa_serve }} can ssh to the right host
-  ansible.builtin.synchronize:
+  synchronize:
     src: "{{ item.file }}"
     dest: "{{ item.dest  }}"
     archive: no
@@ -55,7 +55,7 @@
 
 
 - name: "Setting permissions on ssl certificates"
-  ansible.builtin.file:
+  file:
     path:  "{{ item.file }}"
     mode:  "{{ item.mode  | default('0440') }}" #Not public
     group: "{{ item.group | default(hadoop_group.name) }}"
@@ -80,7 +80,7 @@
 
 
 - name: "Uploading hadoop ssl config to host"
-  ansible.builtin.template:
+  template:
     src: "{{ item }}"
     dest: "{{ hadoop_config_path }}/"
     mode: 0644

@@ -1,24 +1,25 @@
 ---
 
 - name: Stop namenode systemd service
-  ansible.builtin.systemd:
+  systemd:
     state: stopped
     daemon_reload: yes
     name: hdfs_namenode
 
 
 - name: Wipe Namenode
-  ansible.builtin.file:
+  file:
     path: "{{ hadoop_dfs_name }}"
     state: absent
 
 
 - name: Create Hadoop Namenode directories
-  ansible.builtin.file:
+  file:
     path: "{{ item }}"
     owner: "{{ hdfs_user.name }}"
     group: "{{ hdfs_user.group }}"
     state: directory
+    mode: "0750"
   loop:
     - "{{ hadoop_pid_dir }}/{{ hdfs_user.name }}"
     - "{{ hadoop_log_dir }}/{{ hdfs_user.name }}"

@@ -1,15 +1,16 @@
 ---
 
 - name: Create Name dir
-  ansible.builtin.file:
+  file:
     path: "{{ hadoop_dfs_name }}"
     state: directory
     owner: "{{ hdfs_user.name }}"
-    group: "{{ hdfs_user.name }}"
+    group: "{{ hdfs_user.group }}"
+    mode: "0750"
   register: hadoop_dfs_name_dir_status
 
 - name: check if Fresh HDFS install
-  ansible.builtin.set_fact:
+  set_fact:
     fresh_HDFS: '{{ hadoop_dfs_name_dir_status.changed == true and hadoop_dfs_name_dir_status.diff.before.state == "absent" }}'
 
 - include: initialize_ha_hdfs.yml
@@ -23,7 +24,7 @@
 # Start both
 - name: (Re)Start namenode systemd service
   throttle: 1
-  ansible.builtin.systemd:
+  systemd:
     state: restarted
     daemon_reload: yes
     name: hdfs_namenode
@@ -33,7 +34,7 @@
 - name: (Re)Start namenode zkfc systemd service
   when: hdfs_high_availability
   throttle: 1
-  ansible.builtin.systemd:
+  systemd:
     state: restarted
     daemon_reload: yes
     name: hdfs_zkfc

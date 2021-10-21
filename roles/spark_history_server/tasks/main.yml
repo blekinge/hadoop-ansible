@@ -2,7 +2,7 @@
 
 
 - name: Upload spark config files
-  ansible.builtin.template:
+  template:
     src: "{{ item }}"
     dest: "{{ spark_config_path }}/"
     mode: 0640
@@ -14,7 +14,7 @@
 
 
 - name: Upload Spark invoker Script
-  ansible.builtin.template:
+  template:
     src: "spark-invoker.sh"
     dest: "/usr/local/bin/"
     mode: "0755"
@@ -23,7 +23,7 @@
 
 
 - name: Upload Spark systemd services
-  ansible.builtin.template:
+  template:
     src: "{{ item }}"
     dest: /etc/systemd/system/
     mode: 0644
@@ -55,7 +55,7 @@
 
 
 - name: (Re)Start Spark History Server systemd service
-  ansible.builtin.systemd:
+  systemd:
     state: restarted
     daemon_reload: yes
     enabled: true

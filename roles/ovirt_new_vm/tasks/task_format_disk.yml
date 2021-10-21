@@ -3,17 +3,17 @@
   remote_user: root
   become: no
   block:
-    - ansible.builtin.parted:
+    - parted:
         device: "{{ device }}"
         number: 1
         flags: [ lvm ]
         state: present
 
-    - ansible.builtin.filesystem:
+    - filesystem:
         fstype: xfs
         dev: "{{ device }}-part1"
 
-    - ansible.builtin.mount:
+    - mount:
         fstype: xfs
         src: "{{ device }}-part1"
         path: "{{ mount }}"

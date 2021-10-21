@@ -3,6 +3,7 @@
   shell:
     cmd: "firewall-cmd --get-services | tr ' ' '\n' | grep -q '^{{ rolename }}$'"
   register: service_exists
+  changed_when: false
   failed_when: false
 
 - name: "Open Firewall ports for {{ rolename }}"

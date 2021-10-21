@@ -45,7 +45,7 @@
 
 
         - name: Tell your NFS service to use NFSv4
-          ansible.builtin.lineinfile:
+          lineinfile:
             path: /etc/sysconfig/nfs
             state: present
             create: yes
@@ -57,7 +57,7 @@
 
 
         - name: Autohome dir
-          ansible.builtin.file:
+          file:
             path: "{{ ipaserver_autohome_dir }}"
             owner: root
             group: root
@@ -65,14 +65,14 @@
             state: directory
 
         - name: #Create your NFS share and start the NFS server
-          ansible.builtin.lineinfile:
+          lineinfile:
             path: /etc/exports
             state: present
             create: yes
             line: "{{ ipaserver_autohome_dir }}    {{  autohome_nfs_export_iprange }}(rw,sec=sys:krb5:krb5i:krb5p)"
 
         - name: admin home
-          ansible.builtin.file:
+          file:
             path: "{{ ipaserver_autohome_dir }}/{{ ipa_admin_user.name }}"
             owner: "{{ ipa_admin_user.name }}"
             group: "{{ ipa_admin_user.group }}"
@@ -88,7 +88,7 @@
             immediate: yes
 
         - name: NFS autohome server
-          ansible.builtin.systemd:
+          systemd:
             name: nfs-server
             state: restarted
             enabled: yes

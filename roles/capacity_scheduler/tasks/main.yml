@@ -1,6 +1,6 @@
 ---
 
-- ansible.builtin.set_fact:
+- set_fact:
     capacity_queues: []
 
 - name: Yarn queues root

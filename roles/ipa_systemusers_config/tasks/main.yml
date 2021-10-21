@@ -1,6 +1,6 @@
 ---
 
 - name: Check for single freeipa server
-  ansible.builtin.fail: msg="Single host check failed."
+  fail: msg="Single host check failed."
   when: " groups['hostgroup_ipaserver'] |length  != 1"
 

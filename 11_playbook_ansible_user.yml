@@ -6,7 +6,8 @@
   roles:
     - role: ansible_account
   tasks:
-    - meta: clear_host_errors
+    - name: Clear Host Errors
+      meta: clear_host_errors
   collections:
     - ansible.posix
 

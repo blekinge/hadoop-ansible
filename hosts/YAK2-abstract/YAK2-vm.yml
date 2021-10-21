@@ -6,7 +6,7 @@ hostgroup_all:
       ansible_python_interpreter: "python"
 
   children:
-    hostgroup_VMs: # This is the group of VMs created by 10.playbook-ovirt-vms.yml
+    hostgroup_VMs: # This is the group of VMs created by 10_playbook_ovirt_vms.yml
       hosts:
         # The "short name", ie. the first part of the name here will be used as the name of the VM
         # IF you have to use a "wrong" hostname or an IP here, use the variables "hostname" and "shortname" to set

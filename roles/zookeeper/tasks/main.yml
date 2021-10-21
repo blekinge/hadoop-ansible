@@ -1,15 +1,18 @@
 ---
 - name: ensure zookeeper directory exists
-  ansible.builtin.file:
+  file:
     path: "{{ zookeeper_path }}"
     state: directory
+    owner: "{{ zookeeper_user.name }}"
+    group: "{{ zookeeper_user.group }}"
+    mode: "0750"
 
 
-- ansible.builtin.debug:
+- debug:
     msg: "Downloading Zookeeper from {{ zookeeper_download }}"
 
 - name: Unzip Zookeeper
-  ansible.builtin.unarchive:
+  unarchive:
     src: "{{ zookeeper_download }}"
     dest: "{{ zookeeper_path }}"
     remote_src: yes
@@ -19,14 +22,14 @@
 
 
 - name: "Link {{ zookeeper_home }} to {{ current_zookeeper_home }}"
-  ansible.builtin.file:
+  file:
     src: "{{ zookeeper_home }}"
     dest: "{{ current_zookeeper_home }}"
     state: link
 
 
 - name: Create Zookeeper Paths
-  ansible.builtin.file:
+  file:
     path: "{{ item }}"
     owner: "{{ zookeeper_user.name }}"
     group: "{{ zookeeper_user.group }}"
@@ -44,7 +47,7 @@
       group: "{{ zookeeper_user.group }}"
 
 - name: Upload Zookeeper config files
-  ansible.builtin.template:
+  template:
     src: "{{ item }}"
     dest: "{{ zookeeper_config_path }}/"
     mode: 0644
@@ -55,7 +58,7 @@
 
 
 - name: Upload Hadoop Zookeeper systemd services
-  ansible.builtin.template:
+  template:
     src: "{{ item }}"
     dest: /etc/systemd/system/
     mode: 0644

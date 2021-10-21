@@ -2,7 +2,7 @@
 
 
 - name: Stop journalnode systemd service
-  ansible.builtin.systemd:
+  systemd:
     state: stopped
     daemon_reload: yes
     name: hdfs_journalnode
@@ -10,22 +10,23 @@
   when: wipe_hdfs | bool
 
 - name: Wipe journal
-  ansible.builtin.file:
+  file:
     path: "{{ hadoop_dfs_journal }}"
     state: absent
   when: wipe_hdfs | bool
 
 - name: Create journal dir
-  ansible.builtin.file:
+  file:
     path: "{{ hadoop_dfs_journal }}"
     state: directory
     owner: "{{ hdfs_user.name }}"
     group: "{{ hdfs_user.group }}"
+    mode: "0750"
 
 
 - name: (Re)Start journalnode systemd service
   throttle: 1
-  ansible.builtin.systemd:
+  systemd:
     state: restarted
     name: hdfs_journalnode
     enabled: true

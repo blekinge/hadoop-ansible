@@ -3,7 +3,7 @@
 - name: Zetup Zelinux for Zabbix.
   block:
     - name: Upload Zabbix selinux modulue
-      ansible.builtin.template:
+      template:
         src: "zabbix_agent.te"
         dest: "."
         mode: 0644
@@ -12,7 +12,7 @@
 
 
     - name: Install tools for selinux
-      ansible.builtin.package:
+      package:
         name: checkpolicy
         state: present
 

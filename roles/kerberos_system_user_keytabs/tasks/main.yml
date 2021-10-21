@@ -1,7 +1,7 @@
 ---
 
 - name: Create system user keytabs dir
-  ansible.builtin.file:
+  file:
     owner: root
     group: "{{ hadoop_group.name }}"
     mode: 0750
@@ -17,7 +17,7 @@
   throttle: 2
   delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
   remote_user: root
-  ansible.builtin.synchronize:
+  synchronize:
     src: "{{ item }}"
     dest: "{{ keytab_dir }}"
     mode: push

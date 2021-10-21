@@ -6,7 +6,7 @@
     remote_src: yes
 
 - name: Install systemd login permissions for jupyter
-  ansible.builtin.template:
+  template:
     src: "templates/dbus/jupyterhub.conf"
     dest: /etc/dbus-1/system.d/
     mode: 0644
@@ -16,7 +16,7 @@
 
 - name: Restart systemd
   when: dbus.changed
-  ansible.builtin.systemd:
+  systemd:
     state: restarted
     name: "{{ item }}"
   loop:

@@ -5,7 +5,7 @@
   block:
 
     - name: Create common dirs
-      ansible.builtin.file:
+      file:
         path: "{{ item }}"
         owner: "root"
         group: "{{ hadoop_group.name }}"
@@ -18,17 +18,17 @@
 
 
     - name: ensure hadoop directory exists
-      ansible.builtin.file:
+      file:
         path: "{{ hadoop_path }}"
         state: directory
 
 
-    - ansible.builtin.debug:
+    - debug:
         msg: "Downloading hadoop from {{ hadoop_download }}"
 
 
     - name: Unzip Hadoop
-      ansible.builtin.unarchive:
+      unarchive:
         src: "{{ hadoop_download }}"
         dest: "{{ hadoop_path }}"
         remote_src: yes
@@ -37,7 +37,7 @@
         owner: "root"
 
     - name: "Link {{ hadoop_home }} to {{ current_hadoop_home }}"
-      ansible.builtin.file:
+      file:
         src: "{{ hadoop_home }}"
         dest: "{{ current_hadoop_home }}"
         state: link
@@ -46,7 +46,7 @@
   when: install_hadoop | default(true) and configure_hadoop | default(true)
   block:
     - name: Upload Hadoop config files
-      ansible.builtin.template:
+      template:
         src: "{{ item }}"
         dest: "{{ hadoop_config_path }}/"
         mode: 0644
@@ -56,11 +56,11 @@
         - "templates/hadoop_conf/*"
 
     - name: remove {{ hadoop_home }}/etc/hadoop
-      ansible.builtin.file:
+      file:
         path: "{{ hadoop_home }}/etc/hadoop"
         state: absent
     - name: symlink {{ hadoop_home }}/etc/hadoop to {{ hadoop_config_path }}
-      ansible.builtin.file:
+      file:
         src: "{{ hadoop_config_path }}"
         dest:  "{{ hadoop_home }}/etc/hadoop"
         owner: root
@@ -69,7 +69,7 @@
         force: true
 
     - name: Set the right permissions for container-executor
-      ansible.builtin.file:
+      file:
         path: "{{ hadoop_home }}/bin/container-executor"
         owner: root
         group: "{{ hadoop_group.name }}"
@@ -84,7 +84,7 @@
           group: "{{ hadoop_group.name }}"
 
     - name: Upload Hadoop daemon invoker Script
-      ansible.builtin.template:
+      template:
         src: "hadoop-invoker.sh"
         dest: "/usr/local/bin/"
         mode: "0755"
@@ -92,7 +92,7 @@
         group: "{{ hadoop_group.name }}"
 
     - name: Upload Hadoop profile files
-      ansible.builtin.template:
+      template:
         src: "{{ item }}"
         dest: "/etc/profile.d/"
         mode: 0644
@@ -103,7 +103,7 @@
 
     - name: Upload Hadoop YARN systemd services
       when: install_yarn | default(true)
-      ansible.builtin.template:
+      template:
         src: "{{ item }}"
         dest: /etc/systemd/system/
         mode: 0644
@@ -114,7 +114,7 @@
 
     - name: Upload Hadoop HDFS systemd services
       when: install_hdfs | default(true)
-      ansible.builtin.template:
+      template:
         src: "{{ item }}"
         dest: /etc/systemd/system/
         mode: 0644
@@ -125,7 +125,7 @@
 
     - name: Upload Hadoop Mapreduce systemd services
       when: install_mapreduce | default(true)
-      ansible.builtin.template:
+      template:
         src: "{{ item }}"
         dest: /etc/systemd/system/
         mode: 0644
