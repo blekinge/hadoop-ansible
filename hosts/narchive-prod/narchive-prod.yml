@@ -41,9 +41,9 @@ hostgroup_all:
 
     hostgroup_hadoop_nodes:
       children:
-#        hostgroup_project_nodes:
-#          hosts:
-#            narchive-p-admn02.hadoop-mgmt.bitarkiv.kb.dk:
+        hostgroup_project_nodes:
+          hosts:
+            narchive-p-admn02.hadoop-mgmt.bitarkiv.kb.dk:
 
         hostgroup_hdfs:
           children:
