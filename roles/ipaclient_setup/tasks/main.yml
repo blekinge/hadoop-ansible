@@ -4,13 +4,13 @@
   lineinfile:
     path: /etc/chrony.conf
     state: absent
-    line: "^server|^pool"
+    line: "^(server|pool).*"
 #TODO only do this if ipaclient_ntp_pool is actually defined
 - name: setup chronyd to use ntp
   lineinfile:
     path: /etc/chrony.conf
     line: "pool {{ ipaclient_ntp_pool }} iburst"
-    insertafter: "# Please consider joining the pool (http://www.pool.ntp.org/join.html)."
+    insertafter: "^# Please consider joining the pool .*"
     state: present
 
 - name: setup chronyd to use ntp
