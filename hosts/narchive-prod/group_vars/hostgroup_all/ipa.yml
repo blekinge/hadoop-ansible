@@ -1,12 +1,26 @@
 ---
 
 domain: hadoop.bitarkiv.kb.dk
+
+# If not defined, the system will use the uppercase of the domain above
+# But as the IPA server apparently only handles ONE realm, we must use this realm
+# IF not set at all, it might autodiscover from DNS
+# _kerberos.hadoop.bitarkiv.kb.dk. 86400 IN TXT "KBHPC.KB.DK"
 ipa_realm: "KBHPC.KB.DK"
 
 
 # This is the freeipa host. Set this variable if you need to clients to contact it on another hostname
 # than defined in the inventory
 #ipa_server: "{{ groups['hostgroup_ipaserver'] | map('extract',hostvars, 'ansible_fqdn') | first }}"
+
+#If you do not define this, the clients will use DNS autodiscovery where they look for
+# _kerberos-master._tcp.hadoop.bitarkiv.kb.dk. 86400 IN SRV 0 100 88 kbhpc-fipa-001.kbhpc.kb.dk.
+# _kerberos-master._udp.hadoop.bitarkiv.kb.dk. 86400 IN SRV 0 100 88 kbhpc-fipa-001.kbhpc.kb.dk.
+# _kerberos._tcp.hadoop.bitarkiv.kb.dk. 86400 IN SRV 0 100 88 kbhpc-fipa-001.kbhpc.kb.dk.
+# _kerberos._udp.hadoop.bitarkiv.kb.dk. 86400 IN SRV 0 100 88 kbhpc-fipa-001.kbhpc.kb.dk.
+# _kpasswd._tcp.hadoop.bitarkiv.kb.dk. 86400 IN SRV 0 100 464 kbhpc-fipa-001.kbhpc.kb.dk.
+# _kpasswd._udp.hadoop.bitarkiv.kb.dk. 86400 IN SRV 0 100 464 kbhpc-fipa-001.kbhpc.kb.dk.
+# _ldap._tcp.hadoop.bitarkiv.kb.dk. 86400 IN SRV 0 100 389 kbhpc-fipa-001.kbhpc.kb.dk.
 ipaclient_servers: ["kbhpc-fipa-001.kbhpc.kb.dk"]
 
 #Use localhomes for system users
