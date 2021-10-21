@@ -17,6 +17,8 @@
     first: "{{ item.name }}"
     last: "System User"
     userclass: SystemUser
+    email: "{{ item.name }}@{{ ipa_domain }}"
+    principal: "{{ item.name }}@{{ ipa_realm }}"
 
     uid: "{{ item.uid | default(omit) }}"
     gid: "{{ item.gid | default(omit) }}"
