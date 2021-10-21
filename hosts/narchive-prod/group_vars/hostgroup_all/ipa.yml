@@ -8,6 +8,7 @@ domain: hadoop.bitarkiv.kb.dk
 # _kerberos.hadoop.bitarkiv.kb.dk. 86400 IN TXT "KBHPC.KB.DK"
 ipa_realm: "KBHPC.KB.DK"
 
+ipaclient_force_join: yes
 
 # This is the freeipa host. Set this variable if you need to clients to contact it on another hostname
 # than defined in the inventory
