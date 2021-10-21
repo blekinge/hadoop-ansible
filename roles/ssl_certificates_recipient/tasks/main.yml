@@ -21,7 +21,7 @@
 
 - name: "uploading ssl certs to hosts"
   throttle: 2
-  delegate_to: "{{ groups['hostgroup_ssl_creator'] | first }}"
+  #delegate_to: "{{ groups['hostgroup_ssl_creator'] | first }}"
   connection: ssh
   become: no
   # Be {{ sealbin_user }} on the src(fipa001) side
@@ -30,7 +30,7 @@
     src: "{{ sealbin_user }}@{{ groups['hostgroup_ssl_creator'] | first }}:{{ item.file }}"
     dest: "{{ item.dest  }}"
     archive: no
-    mode: push
+    mode: pull
     # Be root on the dest side, so we can create the files in /etc
     rsync_path: sudo rsync
   loop:
