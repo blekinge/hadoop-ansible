@@ -4,7 +4,8 @@
   lineinfile:
     path: /etc/chrony.conf
     state: absent
-    line: "^(server|pool).*"
+    regexp: "^(server|pool).*"
+
 #TODO only do this if ipaclient_ntp_pool is actually defined
 - name: setup chronyd to use ntp
   lineinfile:
