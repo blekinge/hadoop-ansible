@@ -7,6 +7,7 @@
         number: 1
         flags: [ lvm ]
         state: present
+        label: gpt
       register: parted
 
     - name: "print parted info"
