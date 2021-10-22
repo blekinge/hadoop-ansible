@@ -22,7 +22,7 @@
     dest: "{{ keytab.keytab_file }}"
     mode: "{{ keytab.file_permissions }}"
     owner: "{{ keytab.owner }}"
-    group: " {{ keytab.group }}"
+    group: "{{ keytab.group }}"
   loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | unique| list }}'
   loop_control:
     loop_var: "keytab"
