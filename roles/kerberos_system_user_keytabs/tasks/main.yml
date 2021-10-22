@@ -13,16 +13,14 @@
 
 
 
+
 - name: "uploading headless keytabs to hosts"
   throttle: 2
-  connection: ssh
-#  delegate_to: "{{ groups['hostgroup_ssl_creator'] | first }}"
-  become: no
+  delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
+  remote_user: root
   synchronize:
     src: "{{ item }}"
     dest: "{{ keytab_dir }}"
     mode: push
-    # Be root on the dest side, so we can create the files in /etc
-    rsync_path: sudo rsync
   loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | map(attribute="keytab_file") |unique| list }}'
 
