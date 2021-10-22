@@ -16,7 +16,6 @@
 - name: "uploading headless keytabs to hosts"
   throttle: 2
   connection: ssh
-  become: no
   delegate_to: localhost
   #delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
   synchronize:
