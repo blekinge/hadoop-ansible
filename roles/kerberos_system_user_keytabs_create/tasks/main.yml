@@ -13,6 +13,7 @@
 
 
 - name: Retrieving keytab for user
+  become: no
   block:
     - name: kinit_admin
       include_tasks: kinit_admin.yml
