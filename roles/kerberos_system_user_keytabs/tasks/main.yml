@@ -16,6 +16,7 @@
 
 - name: "uploading headless keytabs to hosts"
   throttle: 2
+  become: yes
   copy:
     src: "{{ keytab.keytab_file }}"
     dest: "{{ keytab_dir }}"
