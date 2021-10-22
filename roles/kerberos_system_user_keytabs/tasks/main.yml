@@ -18,8 +18,8 @@
   throttle: 2
   become: yes
   copy:
-    src: "{{ keytab.keytab_file }}"
-    dest: "{{ keytab_dir }}"
+    src: "{{ output_dir }}/{{ keytab.keytab_file | basename}}"
+    dest: "{{ keytab.keytab_file }}"
     mode: "{{ keytab.file_permissions }}"
     owner: "{{ keytab.owner }}"
     group: " {{ keytab.group }}"

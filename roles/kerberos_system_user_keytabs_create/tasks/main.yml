@@ -13,17 +13,16 @@
 
 
 - name: Retrieving keytab for user
-  become: no
-  remote_user: root
   block:
     - name: kinit_admin
       include_tasks: kinit_admin.yml
 
-    # System user keytabs are created on the ipa server and distributed below
+    # System user keytabs are created on the ansible server and distributed below
     - name: Retrieving keytab for user
-      include_tasks: retrieveKeytab.yml
+      include_tasks: retrieveUserKeytab.yml
       vars:
         entry: "{{ item }}"
+        output_dir: "{{ temp_keytab_dir }}"
       with_items: '{{ kerberos_conf | selectattr("type", "eq", "USER") | list }}'
 
     - name: kdestroy

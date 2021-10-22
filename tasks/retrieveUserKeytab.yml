@@ -1,0 +1,37 @@
+---
+# General ask used by several roles
+
+- name: "check if keytab file {{ entry.keytab_file }} exists"
+  stat:
+    path: "{{ output_dir }}/{{ entry.keytab_file | basename}}"
+  register: keytab_file
+
+- name: "test existing keytab for  {{ entry.principal }}"
+  shell:
+    cmd: kinit -kt {{ output_dir }}/{{ entry.keytab_file | basename}} {{ entry.principal }} -c test.ticket && rm test.ticket
+  when: keytab_file.stat.exists
+  register: keytab_valid
+  failed_when: keytab_valid.rc >= 2
+  changed_when: no
+
+- name: "Create keytab for {{ entry.principal }}"
+  when: keytab_valid is skipped or keytab_valid.rc != 0
+  block:
+    - name: remove invalid keytab file
+      file:
+        path: "{{ output_dir }}/{{ entry.keytab_file | basename}}"
+        state: absent
+
+    - name: "getKeytab for {{ entry.principal }}"
+      shell:
+        cmd: ipa-getkeytab --server={{ ipa_server }} --principal={{ entry.principal }} --keytab={{ output_dir }}/{{ entry.keytab_file | basename}}
+      args:
+        creates: "{{ output_dir }}/{{ entry.keytab_file | basename}}"
+
+#- name: "set permissions for {{ output_dir }}/{{ entry.keytab_file | basename}}"
+#  file:
+#    owner: "{{ entry.owner }}"
+#    group: "{{ entry.group }}"
+#    mode: "{{ entry.file_permissions }}"
+#    path: "{{ entry.keytab_file }}"
+#    state: "file"
