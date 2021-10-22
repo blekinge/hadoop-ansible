@@ -1,5 +1,7 @@
 ---
 
+sealbin_user: "sealbin"
+
 keytab_dir: "/etc/security/keytabs"
 keytab_permissions: "0400"
 
