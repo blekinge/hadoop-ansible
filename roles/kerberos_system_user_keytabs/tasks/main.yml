@@ -16,7 +16,7 @@
 - name: "uploading headless keytabs to hosts"
   throttle: 2
   connection: ssh
-  delegate_to: localhost
+  delegate_to: hostgroup_ssl_creator
   #delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
   synchronize:
     src: "{{ item }}"
