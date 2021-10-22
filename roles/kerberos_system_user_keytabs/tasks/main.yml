@@ -23,6 +23,5 @@
     mode: push
     # Be root on the dest side, so we can create the files in /etc
     rsync_path: sudo rsync
-    set_remote_user: "{{ sealbin_user }}"
   loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | map(attribute="keytab_file") |unique| list }}'
 
