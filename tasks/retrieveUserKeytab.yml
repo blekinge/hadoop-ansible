@@ -1,14 +1,14 @@
 ---
 # General ask used by several roles
 
-- name: "check if keytab file {{ entry.keytab_file }} exists"
+- name: "check if keytab file {{ output_dir }}/{{ entry.keytab_file | basename}} exists"
   stat:
     path: "{{ output_dir }}/{{ entry.keytab_file | basename}}"
   register: keytab_file
 
-- name: "test existing keytab for  {{ entry.principal }}"
+- name: "test existing keytab {{ output_dir }}/{{ entry.keytab_file | basename}} for  {{ entry.principal }}"
   shell:
-    cmd: kinit -kt {{ output_dir }}/{{ entry.keytab_file | basename}} {{ entry.principal }} -c test.ticket && rm test.ticket
+    cmd: kinit -kt '{{ output_dir }}/{{ entry.keytab_file | basename}}' '{{ entry.principal }}' -c test.ticket; rm test.ticket
   when: keytab_file.stat.exists
   register: keytab_valid
   failed_when: keytab_valid.rc >= 2
