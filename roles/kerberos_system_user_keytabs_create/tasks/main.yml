@@ -1,15 +1,15 @@
 ---
-
-- name: Create system user keytabs dir
-  file:
-    owner: root
-    group: "{{ hadoop_group.name }}"
-    mode: 0750
-    path: "{{ dir }}"
-    state: "directory"
-  loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | map(attribute="keytab_file") | map("dirname") |unique| list }}'
-  loop_control:
-    loop_var: "dir"
+#
+#- name: Create system user keytabs dir
+#  file:
+#    owner: root
+#    group: "{{ hadoop_group.name }}"
+#    mode: 0750
+#    path: "{{ dir }}"
+#    state: "directory"
+#  loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | map(attribute="keytab_file") | map("dirname") |unique| list }}'
+#  loop_control:
+#    loop_var: "dir"
 
 
 - name: Retrieving keytab for user

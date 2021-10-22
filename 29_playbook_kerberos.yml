@@ -8,11 +8,11 @@
 
 
 # Now that the hosts have been added as ipa clients, we can setup the kerberos services
-- hosts: hostgroup_ipaserver
-  roles:
-    - role: ipa_service_definitions
-  collections:
-    - freeipa.ansible_freeipa
+#- hosts: hostgroup_ipaserver
+#  roles:
+#    - role: ipa_service_definitions
+#  collections:
+#    - freeipa.ansible_freeipa
 
 # Now that the hosts have been added as ipa clients, we can setup the kerberos services
 - hosts: hostgroup_ansible_host
