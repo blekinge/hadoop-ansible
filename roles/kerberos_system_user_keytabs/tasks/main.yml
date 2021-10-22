@@ -17,6 +17,7 @@
   throttle: 2
   connection: ssh
 #  delegate_to: "{{ groups['hostgroup_ssl_creator'] | first }}"
+  become: no
   synchronize:
     src: "{{ item }}"
     dest: "{{ keytab_dir }}"
