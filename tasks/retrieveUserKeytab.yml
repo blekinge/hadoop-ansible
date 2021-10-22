@@ -21,6 +21,10 @@
       file:
         path: "{{ output_dir }}/{{ entry.keytab_file | basename}}"
         state: absent
+    - name: Create keytab dir
+      file:
+        path: "{{ output_dir }}"
+        state: directory
 
     - name: "getKeytab for {{ entry.principal }}"
       shell:
