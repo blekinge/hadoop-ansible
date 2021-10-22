@@ -20,6 +20,21 @@
   timezone:
     name: Europe/Copenhagen
 
+
+- name: Setup autocreation of homedirs
+  when: ipaclient_mkhomedir
+  become: yes
+  command:
+    cmd: authselect enable-feature with-mkhomedir
+
+- name: Ensure oddjobd.service
+  when: ipaclient_mkhomedir
+  systemd:
+    name: oddjobd
+    enabled: yes
+    state: started
+
+
 - name: Setup autohomes
   when: use_autofs_homes
   block:
