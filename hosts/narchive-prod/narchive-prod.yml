@@ -52,6 +52,9 @@ hostgroup_all:
               hosts:
                 narchive-p-hdfs[01:02].hadoop-mgmt.bitarkiv.kb.dk:
 
+            hostgroup_hdfs_secondary_namenodes:
+              hosts:
+
             hostgroup_hdfs_journalnodes:
               hosts:
                 narchive-p-zook[01:03].hadoop-mgmt.bitarkiv.kb.dk:
