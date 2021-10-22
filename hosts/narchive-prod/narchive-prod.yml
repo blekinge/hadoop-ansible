@@ -20,10 +20,6 @@
 
 hostgroup_all:
   children:
-    hostgroup_ssl_creator:
-      hosts:
-        narchive-p-admn02.hadoop-mgmt.bitarkiv.kb.dk:
-
     hostgroup_ipaserver: # Singular form as there can be only one here
       hosts:
         kbhpc-fipa-001.kbhpc.kb.dk:
