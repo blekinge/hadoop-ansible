@@ -5,7 +5,7 @@ sealbin_user: "sealbin"
 keytab_dir: "/etc/security/keytabs"
 keytab_permissions: "0400"
 
-temp_keytab_dir: "/tmp/temp_keytabs"
+temp_keytab_dir: "/home/{{ sealbin_user}}/keytabs"
 
 kinit_principal: "{{ ipa_admin_user.name }}@{{ ipaserver_realm }}"
 
