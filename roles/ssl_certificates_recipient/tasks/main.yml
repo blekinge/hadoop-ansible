@@ -31,7 +31,6 @@
     mode: push
     # Be root on the dest side, so we can create the files in /etc
     rsync_path: sudo rsync
-    use_ssh_args: true
   loop:
 #      For hadoop
     - file: "{{ temp_ssl_dir }}/{{ ansible_fqdn }}-keystore.p12"
