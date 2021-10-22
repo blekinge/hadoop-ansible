@@ -21,14 +21,14 @@
     name: Europe/Copenhagen
 
 
-- name: Setup autocreation of homedirs
-  when: ipaclient_mkhomedir
+- name: "Setup autocreation of homedirs"
+  when: ipaclient_mkhomedir == "yes"
   become: yes
   command:
     cmd: authselect enable-feature with-mkhomedir
 
-- name: Ensure oddjobd.service
-  when: ipaclient_mkhomedir
+- name: "Ensure oddjobd.service"
+  when: ipaclient_mkhomedir == "yes"
   systemd:
     name: oddjobd
     enabled: yes
