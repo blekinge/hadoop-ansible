@@ -16,11 +16,12 @@
 
 - name: "uploading headless keytabs to hosts"
   throttle: 2
-  delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
-  remote_user: root
-  synchronize:
+  copy:
     src: "{{ item }}"
     dest: "{{ keytab_dir }}"
-    mode: push
-  loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | map(attribute="keytab_file") |unique| list }}'
+    mode: "{{ file_permissions }}"
+    owner: "{{ owner }}"
+    group: " {{ group }}"
+  loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | unique| list }}'
+
 
