@@ -29,7 +29,7 @@
 
 
 - name: Setup Zookeeper
-  import_playbook: 30_playbook_hadoop_setup.yml
+  import_playbook: 30_playbook_zookeeper_setup.yml
 
 - name: Setup HDFS
   import_playbook: 31_playbook_hdfs_setup.yml
