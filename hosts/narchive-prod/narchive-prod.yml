@@ -23,8 +23,6 @@ hostgroup_all:
     hostgroup_ansible_host:
       hosts:
         localhost:
-          vars:
-            ansible_connection: local
 
     hostgroup_ipaserver: # Singular form as there can be only one here
       hosts:
