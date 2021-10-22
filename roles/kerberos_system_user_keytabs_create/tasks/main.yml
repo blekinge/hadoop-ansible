@@ -13,7 +13,6 @@
 
 
 - name: Retrieving keytab for user
-  delegate_to: localhost
   become: no
   remote_user: root
   block:
