@@ -16,7 +16,9 @@
     state: present
   notify: "restart chronyd"
 
-
+- name: set correct timezone
+  timezone:
+    name: Europe/Copenhagen
 
 - name: Setup autohomes
   when: use_autofs_homes
