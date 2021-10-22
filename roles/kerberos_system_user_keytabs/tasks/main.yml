@@ -1,6 +1,6 @@
 ---
 
-- name: Create system user keytabs dir
+- name: "Create system user keytabs dir"
   file:
     owner: root
     group: "{{ hadoop_group.name }}"
@@ -17,11 +17,13 @@
 - name: "uploading headless keytabs to hosts"
   throttle: 2
   copy:
-    src: "{{ item }}"
+    src: "{{ keytab.keytab_file }}"
     dest: "{{ keytab_dir }}"
-    mode: "{{ file_permissions }}"
-    owner: "{{ owner }}"
-    group: " {{ group }}"
+    mode: "{{ keytab.file_permissions }}"
+    owner: "{{ keytab.owner }}"
+    group: " {{ keytab.group }}"
   loop: '{{ kerberos_conf | selectattr("type", "eq", "USER") | unique| list }}'
+  loop_control:
+    loop_var: "keytab"
 
 
