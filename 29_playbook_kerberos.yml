@@ -11,6 +11,11 @@
 - hosts: hostgroup_ipaserver
   roles:
     - role: ipa_service_definitions
+  collections:
+    - freeipa.ansible_freeipa
+
+- hosts: hostgroup_ssl_creator
+  roles:
     - role: kerberos_system_user_keytabs_create
   collections:
     - freeipa.ansible_freeipa

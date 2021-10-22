@@ -24,7 +24,7 @@ grep -E "^[^#]+" requirements.dnf | grep -E -v "^\s+$" | xargs -r -i sudo dnf in
 You can create a virtualenv for these, but this might not work correctly with ansible. So beware. It is easier to install them system-wide
 
 ```bash
-sudo pip install -r requirements.pip
+pip install -r requirements.pip
 ```
 
 ### Ansible galaxy packages
