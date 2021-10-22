@@ -21,17 +21,12 @@
 
 - name: "uploading ssl certs to hosts"
   throttle: 2
-  delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
-  # Be {{ sealbin_user }} on the src(fipa001) side
-  # This allows us to use agent our agent forwarding so {{ ipa_serve }} can ssh to the right host
-  synchronize:
-    src: "{{ item.file }}"
+  copy:
     dest: "{{ item.dest  }}"
-    archive: no
-    mode: push
-    use_ssh_args: yes
-    # Be root on the dest side, so we can create the files in /etc
-    rsync_path: sudo rsync
+    src: "{{ item.file }}"
+    mode: "{{ item.mode  | default('0440') }}" #Not public
+    group: "{{ item.group | default(hadoop_group.name) }}"
+    owner: "{{ item.owner | default('root') }}"
   loop:
 #      For hadoop
     - file: "{{ temp_ssl_dir }}/{{ ansible_fqdn }}-keystore.p12"
@@ -39,6 +34,7 @@
 
     - file: "{{ temp_ssl_dir }}/all.jks"
       dest: "{{ ssl_server_dir }}/"
+      mode: '0444'
 
     - file: "{{ temp_ssl_dir }}/http_secret"
       dest: "/etc/security/"
@@ -46,36 +42,15 @@
 #      For rsyslog and others
     - file: "{{ temp_ssl_dir }}/{{ ansible_fqdn }}.crt"
       dest: "{{ ssl_cert_dir }}/"
+      mode: '0444'
 
     - file: "{{ temp_ssl_dir }}/{{ ansible_fqdn }}-private.pem"
       dest: "{{ ssl_key_dir }}/"
-
-    - file: "{{ certificate_authority.certificate_file }}"
-      dest: "{{ ssl_cert_dir }}/{{ certificate_authority.certificate_file | basename }}"
-
-
-- name: "Setting permissions on ssl certificates"
-  file:
-    path:  "{{ item.file }}"
-    mode:  "{{ item.mode  | default('0440') }}" #Not public
-    group: "{{ item.group | default(hadoop_group.name) }}"
-    owner: "{{ item.owner | default('root') }}"
-  loop:
-    - file: "{{ ssl_server_dir }}/{{ ansible_fqdn }}-keystore.p12"
-
-    - file: "{{ ssl_cert_dir }}/{{ ansible_fqdn }}.crt"
-      mode: '0444'
-
-    - file: "{{ ssl_key_dir }}/{{ ansible_fqdn }}-private.pem" # Used by rsyslog_client (root) and jupyterhub
       mode: '0440'
       group: "{{ jupyterhub_user.name }}"
 
-    - file: "{{ ssl_cert_dir }}/{{ certificate_authority.certificate_file | basename }}"
-
-    - file: "{{ ssl_server_dir }}/all.jks"
-      mode: '0444'
-
-    - file: "/etc/security/http_secret"
+    - file: "{{ certificate_authority.certificate_file }}"
+      dest: "{{ ssl_cert_dir }}/{{ certificate_authority.certificate_file | basename }}"
 
 
 
