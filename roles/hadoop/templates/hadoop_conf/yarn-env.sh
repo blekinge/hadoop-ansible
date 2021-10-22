@@ -45,7 +45,7 @@ export HADOOP_CONF_DIR="{{ hadoop_config_path | quote }}"
 HADOOP_IDENT_STRING="{{ yarn_user.name }}"
 HADOOP_OPTS="$HADOOP_OPTS -Dyarn.id.str=$HADOOP_IDENT_STRING"
 
-export HADOOP_YARN_USER="${HADOOP_YARN_USER:-{{ yarn_user.name } }}"
+export HADOOP_YARN_USER="${HADOOP_YARN_USER:-{{ yarn_user.name }}}"
 
 # The java implementation to use.  Required.
 export JAVA_HOME="{{ jvm_home }}"
