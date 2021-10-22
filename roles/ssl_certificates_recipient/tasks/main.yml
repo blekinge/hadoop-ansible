@@ -29,6 +29,7 @@
     dest: "{{ item.dest  }}"
     archive: no
     mode: push
+    use_ssh_args: yes
     # Be root on the dest side, so we can create the files in /etc
     rsync_path: sudo rsync
   loop:
