@@ -55,8 +55,7 @@ hostgroup_all:
             hostgroup_hdfs_namenodes:
               hosts:
                 narchive-p-hdfs01.hadoop-mgmt.bitarkiv.kb.dk:
-                  vars:
-                    primary: true
+                  primary: true
                 narchive-p-hdfs02.hadoop-mgmt.bitarkiv.kb.dk:
 
             hostgroup_hdfs_secondary_namenodes:
