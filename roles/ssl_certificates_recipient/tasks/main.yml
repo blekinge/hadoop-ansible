@@ -1,11 +1,5 @@
 ---
 
-- name: install rsync so we can use ansible synchronize
-  package:
-    name: rsync
-    state: present
-
-
 - name: Create ssl dirs dir
   file:
     path: "{{ dir }}"
