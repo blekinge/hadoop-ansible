@@ -38,7 +38,7 @@ hostgroup_all:
       children:
         hostgroup_ipaclients:
 
-#TODO what happens if this is not set?
+    #TODO what happens if this is not set?
     hostgroup_rsyslog_server:
       hosts:
         narchive-p-admn01.hadoop-mgmt.bitarkiv.kb.dk:
@@ -54,7 +54,10 @@ hostgroup_all:
 
             hostgroup_hdfs_namenodes:
               hosts:
-                narchive-p-hdfs[01:02].hadoop-mgmt.bitarkiv.kb.dk:
+                narchive-p-hdfs01.hadoop-mgmt.bitarkiv.kb.dk:
+                  vars:
+                    primary: true
+                narchive-p-hdfs02.hadoop-mgmt.bitarkiv.kb.dk:
 
             hostgroup_hdfs_secondary_namenodes:
               hosts:
