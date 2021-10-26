@@ -5,7 +5,7 @@
 - name: "Computing / Reading passsword for {{ user.username }}"
   delegate_to: localhost
   shell:
-    cmd: "cat 'passwords/{{ user.username }}.password' || (./passPhraseGen.sh -j '' -c -l 1 -m 25 | tee  'passwords/{{ user.username }}.password')"
+    cmd: "cat '{{ playbook_dir }}/passwords/{{ user.username }}.password' || ({{ playbook_dir }}/passPhraseGen.sh -j '' -c -l 1 -m 25 | tee  '{{ playbook_dir }}/passwords/{{ user.username }}.password')"
   register: newPassword
 
 
