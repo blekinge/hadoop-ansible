@@ -482,7 +482,7 @@ export HDFS_PORTMAP_OPTS="-Dhadoop.security.logger={{ hdfs_security_logger | quo
 # and therefore may override any similar flags set in HADOOP_OPTS
 #
 # export HDFS_ZKFC_OPTS=""
-export HDFS_ZKFC_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username={{ zookeeper_user.name|quote }} -Djava.security.auth.login.config={{ hadoop_config_path }}/hdfs_nn_jaas.conf -Dzookeeper.sasl.clientconfig=Client -Dhadoop.security.logger={{ hdfs_security_logger | quote }}"
+export HDFS_ZKFC_OPTS="-Dzookeeper.sasl.client=true -Dzookeeper.sasl.client.username={{ zookeeper_service_name|quote }} -Djava.security.auth.login.config={{ hadoop_config_path }}/hdfs_nn_jaas.conf -Dzookeeper.sasl.clientconfig=Client -Dhadoop.security.logger={{ hdfs_security_logger | quote }}"
 
 
 ###
