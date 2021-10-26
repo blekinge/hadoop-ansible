@@ -49,6 +49,7 @@
 
 - name: "user home for {{ user.username }}: {{ ipaserver_autohome_dir }}/{{ user.username }}"
   delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
+  when: use_autofs_homes | bool
   file:
     state: directory
     path: "{{ ipaserver_autohome_dir }}/{{ user.username }}"
@@ -58,6 +59,7 @@
 
 - name: "Autohomes on freeipa server"
   delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
+  when: use_autofs_homes | bool
   run_once: true
   file:
     state: link

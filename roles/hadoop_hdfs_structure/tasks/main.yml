@@ -3,6 +3,7 @@
   become: yes
   become_user: "{{ hdfs_user.name }}"
   shell:
+    #TODO also create home dir for hdfs_user
     cmd: | #TODO make this more configurable
       set -e # Fail on anything
       set -x # Output what happens
