@@ -8,10 +8,12 @@
     cmd: "cat '{{ playbook_dir }}/passwords/{{ user.username }}.password' || ({{ playbook_dir }}/passPhraseGen.sh -j '' -c -l 1 -m 25 | tee  '{{ playbook_dir }}/passwords/{{ user.username }}.password')"
   register: newPassword
 
-
+#TODO this might fail if there is NO change to the user. Set failed_when to something
 - name: "Project user {{ user.username }}"
   freeipa.ansible_freeipa.ipauser:
     ipaadmin_password: "{{ ipaadmin_password }}"
+
+    state: present
 
     name: "{{ user.username }}"
 
@@ -29,6 +31,7 @@
 
     password: "{{ newPassword.stdout }}"
     update_password: on_create
+
   register: ipauser_result
 
 - debug:
