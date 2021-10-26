@@ -10,7 +10,7 @@
 
 
 - name: "Project user {{ user.username }}"
-  ipauser:
+  freeipa.ansible_freeipa.ipauser:
     ipaadmin_password: "{{ ipaadmin_password }}"
 
     name: "{{ user.username }}"
