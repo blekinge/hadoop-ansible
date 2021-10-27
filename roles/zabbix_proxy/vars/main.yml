@@ -1,5 +1,13 @@
 ---
 
+zabbix_proxy_database: pgsql
+zabbix_proxy_dbhost: localhost
+zabbix_proxy_dbname: "zabbix_proxy"
+zabbix_proxy_dbuser: "zabbix_proxy"
+#zabbix_proxy_dbpassword: "zabbix_proxy"
+zabbix_proxy_dbport: 5432
+
+
 zabbix_useuip: "1"
 
 # Do not enable active checks

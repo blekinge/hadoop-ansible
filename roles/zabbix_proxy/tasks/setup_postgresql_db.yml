@@ -1,0 +1,36 @@
+- name: "Create app database"
+  postgresql_db:
+    state: present
+    name: "{{ zabbix_proxy_dbname }}"
+  become: yes
+  become_user: postgres
+
+- name: "Create db user"
+  postgresql_user:
+    state: present
+    name: "{{ zabbix_proxy_dbuser }}"
+    password: "{{ zabbix_proxy_dbpassword }}"
+  become: yes
+  become_user: postgres
+
+- name: "Grant db user access to app db"
+  postgresql_privs:
+    type: database
+    database: "{{ zabbix_proxy_dbname }}"
+    roles: "{{ zabbix_proxy_dbuser }}"
+    grant_option: no
+    privs: all
+  become: yes
+  become_user: postgres
+
+- name: "Allow md5 connection for the db user"
+  postgresql_pg_hba:
+    dest: "~/data/pg_hba.conf"
+    contype: host
+    databases: "{{ zabbix_proxy_dbname }}"
+    method: md5
+    users: "{{ zabbix_proxy_dbuser }}"
+    create: true
+  become: yes
+  become_user: postgres
+  notify: restart postgresql

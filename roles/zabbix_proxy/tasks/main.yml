@@ -1,5 +1,8 @@
 ---
 
+- name: "setup postgres"
+  include: install_postgresql.yml
+
 - name: Force OS Redhat when on Springdale
   when: ansible_os_family == 'Springdale'
   set_fact:
