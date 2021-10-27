@@ -1,7 +1,11 @@
 ---
 
-- name: "setup postgres"
+- name: "install postgres"
   include: install_postgresql.yml
+
+- name: "setup postgres"
+  include: setup_postgresql_db.yml
+
 
 - name: Force OS Redhat when on Springdale
   when: ansible_os_family == 'Springdale'
