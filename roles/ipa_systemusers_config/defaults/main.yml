@@ -140,6 +140,5 @@ system_users:
   - "{{ zookeeper_user }}"
   - "{{ spark_user }}"
   - "{{ hive_user }}"
-  - "{{ rstudio_user }}"
-  - "{{ jupyterhub_user }}"
-
+  - "{{ rstudio_user if groups['hostgroup_rstudio_nodes'] | length > 0 else omit }}"
+  - "{{ jupyterhub_user if groups['hostgroup_jupyter_nodes'] | length > 0 else omit }}"
