@@ -31,6 +31,9 @@ use_nfs_syshomes: no
 # Use localhomes for project users
 use_autofs_homes: no
 
+#Autocreate home dirs upon login
+ipaclient_mkhomedir: yes
+
 ipaclient_ntp_pool: pool.ntp.kb.dk
 
 ipa_hostgroup: narchive-p
