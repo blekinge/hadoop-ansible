@@ -1,6 +1,7 @@
 ---
 
 zabbix_proxy_database: pgsql
+zabbix_proxy_database_long: postgresql
 zabbix_proxy_dbhost: localhost
 zabbix_proxy_dbname: "zabbix_proxy"
 zabbix_proxy_dbuser: "zabbix_proxy"
