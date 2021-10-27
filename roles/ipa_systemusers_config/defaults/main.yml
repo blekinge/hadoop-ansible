@@ -24,11 +24,12 @@ ipa_admin_user:
   name: admin
   group: admins
 
-#TODO this should follow from use_autofs_homes...
-ipaclient_mkhomedir: yes
 
 #Config for Automounted user homedirs
 use_autofs_homes: true
+
+
+
 ipaclient_autohome_dir: /autohome
 ipaserver_autohome_dir: /sto-data/home
 #Nessesary to set up the automount
@@ -39,6 +40,7 @@ use_nfs_syshomes: true
 ipaserver_syshome_dir: /sto-data/syshome
 ipaclient_syshome_dir: /syshome
 
+ipaclient_mkhomedir: "{{ not (use_autofs_homes|bool or use_nfs_syshomes|bool) }}"
 
 hdfs_home_dir: /user
 
