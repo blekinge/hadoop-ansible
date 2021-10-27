@@ -23,21 +23,30 @@
 
 - name: "Setup autocreation of homedirs"
 #  TODO why is this not triggered here?
-  when: ipaclient_mkhomedir
+  when: ipaclient_mkhomedir | bool
   become: yes
   command:
     cmd: authselect enable-feature with-mkhomedir
 
 - name: "Ensure oddjobd.service"
-  when: ipaclient_mkhomedir
+  when: ipaclient_mkhomedir | bool
   systemd:
     name: oddjobd
     enabled: yes
     state: started
 
+- name: "Ensure autofs do not interfere"
+  when:
+    - not (use_autofs_homes|bool)
+    - ipaclient_mkhomedir | bool
+  systemd:
+    name: autofs
+    enabled: no
+    state: stopped
+
 
 - name: Setup autohomes
-  when: use_autofs_homes
+  when: use_autofs_homes|bool
   block:
     - name: "create {{ ipaclient_autohome_dir }}"
       file:
@@ -108,7 +117,7 @@
 
 
 - name: "Mount {{ ipaclient_syshome_dir }}"
-  when: use_nfs_syshomes
+  when: use_nfs_syshomes|bool
   mount:
     path: "{{ ipaclient_syshome_dir }}"
     src: "{{ ipa_server }}:{{ ipaserver_syshome_dir }}"
