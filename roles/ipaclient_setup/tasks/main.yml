@@ -20,9 +20,14 @@
   timezone:
     name: Europe/Copenhagen
 
+- name: "Show values of localhomes_autocreate"
+  debug:
+    var: localhomes_autocreate
+
 - name: "Show values of ipaclient_mkhomedir"
   debug:
     var: ipaclient_mkhomedir
+
 
 - name: "Show values of use_autofs_homes"
   debug:
@@ -34,13 +39,13 @@
 
 - name: "Setup autocreation of homedirs"
 #  TODO why is this not triggered here?
-  when: ipaclient_mkhomedir | bool
+  when: localhomes_autocreate | bool
   become: yes
   command:
     cmd: authselect enable-feature with-mkhomedir
 
 - name: "Ensure oddjobd.service"
-  when: ipaclient_mkhomedir | bool
+  when: localhomes_autocreate | bool
   systemd:
     name: oddjobd
     enabled: yes
@@ -49,7 +54,7 @@
 - name: "Ensure autofs do not interfere"
   when:
     - not (use_autofs_homes|bool)
-    - ipaclient_mkhomedir | bool
+    - localhomes_autocreate | bool
   systemd:
     name: autofs
     enabled: no

@@ -40,7 +40,8 @@ use_nfs_syshomes: true
 ipaserver_syshome_dir: /sto-data/syshome
 ipaclient_syshome_dir: /syshome
 
-ipaclient_mkhomedir: "{{ not (use_autofs_homes|bool or use_nfs_syshomes|bool) }}"
+localhomes_autocreate: "{{ not (use_autofs_homes|bool or use_nfs_syshomes|bool) }}"
+ipaclient_mkhomedir: "{{ localhomes_autocreate }}"
 
 hdfs_home_dir: /user
 
