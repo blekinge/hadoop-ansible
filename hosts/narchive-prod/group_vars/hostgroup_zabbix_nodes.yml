@@ -6,9 +6,8 @@
 # This must be in IP form, otherwise the firewalld config will complain
 #   You cannot open a port to a specific hostname, only to a specific ip
 zabbix_agent_server: 10.205.0.13 # the proxy
-zabbix_proxy_server: 172.18.95.44 # pc588.sb.statsbiblioteket.dk
-zabbix_proxy_serverport: 10051
-zabbix_api_server_url: "https://{{ zabbix_proxy_server }}/"
+zabbix_server_host: 172.18.95.44 # pc588.sb.statsbiblioteket.dk
+zabbix_url: "https://{{ zabbix_server_host }}/"
 zabbix_validate_certs: no
 
 zabbix_proxy_dbpassword: !vault |
