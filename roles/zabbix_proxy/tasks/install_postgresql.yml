@@ -7,7 +7,8 @@
   with_items:
     - postgresql
     - postgresql-server
-    - python3-psycopg2
+    - python3-psycopg2 # For ansible database creation steps in setup_postgresql_db.yml
+    - python3-PyMySQL #For zabbix connection later on...
 
 - name: "Find out if PostgreSQL is initialized"
   ansible.builtin.stat:
