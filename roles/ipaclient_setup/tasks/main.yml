@@ -20,6 +20,17 @@
   timezone:
     name: Europe/Copenhagen
 
+- name: "Show values of ipaclient_mkhomedir"
+  debug:
+    var: ipaclient_mkhomedir
+
+- name: "Show values of use_autofs_homes"
+  debug:
+    var: use_autofs_homes
+
+- name: "Show values of use_nfs_syshomes"
+  debug:
+    var: use_nfs_syshomes
 
 - name: "Setup autocreation of homedirs"
 #  TODO why is this not triggered here?
