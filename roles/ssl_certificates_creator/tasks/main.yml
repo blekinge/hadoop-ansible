@@ -1,11 +1,5 @@
 ---
 
-- name: install rsync so we can use ansible synchronize
-  package:
-    name: rsync
-    state: present
-
-
 - name: create certificates
   become: no # Do this as {{ sealbin_user }}, as this user will be used to scp(rsync) to each of the hosts to install these certs later on
   # This works because when we ssh into {{ ipa_server }} as {{ sealbin_user }} we use agent forwarding, and thus {{ sealbin_user }}
