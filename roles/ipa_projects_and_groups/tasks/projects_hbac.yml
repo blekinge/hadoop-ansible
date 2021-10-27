@@ -26,7 +26,7 @@
 - name: "Subadmin HBAC rules"
   freeipa.ansible_freeipa.ipahbacrule:
     ipaadmin_password: "{{ ipaadmin_password }}"
-    name: "{{ subadmins_project.project_ipa.name }} allowed on all"
+    name: "{{ subadmins_project.project_ipa.name }} allowed on {{ ipa_hostgroup | default(domain) }}"
     group:
       - "{{ subadmins_project.project_ipa.name }}"
     hostgroup:
