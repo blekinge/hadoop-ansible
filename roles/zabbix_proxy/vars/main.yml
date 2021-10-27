@@ -10,6 +10,8 @@ zabbix_proxy_dbport: 5432
 
 zabbix_proxy_name: "{{ ansible_fqdn }}"
 
+zabbix_proxy_status: passive
+
 zabbix_useuip: "1"
 
 # Do not enable active checks
