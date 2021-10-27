@@ -33,6 +33,9 @@
     update_password: on_create
 
   register: ipauser_result
+  failed_when:
+    - "ipauser_result.failed"
+    - '"no modifications to be performed" not in ipauser_result.msg'
 
 - debug:
     var: ipauser_result
