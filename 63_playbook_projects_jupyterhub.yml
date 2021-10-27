@@ -11,6 +11,6 @@
 
 #      og måske Jupyter
 - name: Jupyterhub
-  hosts: hostgroup_project_nodes
+  hosts: hostgroup_jupyter_nodes
   roles:
     - role: jupyterhub

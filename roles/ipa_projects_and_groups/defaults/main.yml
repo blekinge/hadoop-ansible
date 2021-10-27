@@ -8,12 +8,13 @@ shell: /bin/bash
 
 hdfs_delegation_host:  "{{ groups['hostgroup_hdfs'] | first }}"
 
+#TODO better way to not require jupyterhub and rstudio hbac_services than checking if project nodes is defined
 hbac_services:
   - crond
   - gdm
   - kdm
   - login
   - sshd
-  - "{{ 'rstudio' if groups['hostgroup_project_nodes'] | length > 0 else omit }}"
-  - "{{ jupyterhub_user.name if groups['hostgroup_project_nodes'] | length > 0 else omit }}"
+  - "{{ 'rstudio' if groups['hostgroup_rstudio_nodes'] | length > 0 else omit }}"
+  - "{{ jupyterhub_user.name if groups['hostgroup_jupyter_nodes'] | length > 0 else omit }}"
 #  - screen

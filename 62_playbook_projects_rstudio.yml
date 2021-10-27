@@ -9,7 +9,7 @@
 
 
 - name: Rstudio/Jupyterhub
-  hosts: hostgroup_project_nodes
+  hosts: hostgroup_rstudio_nodes
   roles:
     - role: rstudio_server
 
