@@ -174,6 +174,10 @@
 
 - name: "Put hosts in cluster hostgroup {{ ipa_hostgroup | default(domain) }}"
   delegate_to: "{{ groups['hostgroup_ipaserver'] | first }}"
+  register: hostgroup_addition_result
+  failed_when:
+    - "hostgroup_addition_result.failed"
+    - "'This entry is already a member' not in hostgroup_addition_result.msg"
   freeipa.ansible_freeipa.ipahostgroup:
     ipaadmin_password: "{{ ipaadmin_password }}"
     name: "{{ ipa_hostgroup | default(domain) }}"
