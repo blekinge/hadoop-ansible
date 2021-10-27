@@ -7,6 +7,10 @@ ansible
 # These are the pip packages that should be available to the python used to execute ansible
 
 zabbix-api
+
+# For postgresql for zabbix-proxy
+psycopg2-binary
+
 ovirt-engine-sdk-python
 
 # Nessesary for the merge_vars action plugin to merge zabbix host groups list
