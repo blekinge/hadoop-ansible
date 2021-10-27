@@ -26,6 +26,7 @@
 - name: "Allow md5 connection for the db user"
   postgresql_pg_hba:
     dest: "~/data/pg_hba.conf"
+    address: localhost
     contype: host
     databases: "{{ zabbix_proxy_dbname }}"
     method: md5
