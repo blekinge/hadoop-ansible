@@ -1,0 +1,34 @@
+---
+
+- name: Force OS Redhat when on Springdale
+  when: ansible_os_family == 'Springdale'
+  set_fact:
+    zabbix_agent_os_family: RedHat
+
+# https://github.com/ansible-collections/community.zabbix/blob/main/docs/ZABBIX_PROXY_ROLE.md
+- name: zetup zabbix proxies
+  include_role:
+    name: community.zabbix.zabbix_proxy
+
+- name: Restart firewalld to pick up changes
+  when: zabbix_agent_firewalld_enable | default(False) | bool
+  systemd:
+    service: firewalld
+    state: restarted
+
+- name: Enable zabbix selinux module
+  when: zabbix_custom_selinux
+  import_role:
+    name: zabbix_selinux
+
+
+- name: Fix selinux permissions
+  when: ansible_selinux.mode == 'enforcing'
+  command: "restorecon -R -v /var/lib/zabbix"
+
+
+- name: (Re)Start zabbix agent service
+  systemd:
+    service: zabbix-agent
+    state: restarted
+    enabled: yes

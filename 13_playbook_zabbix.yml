@@ -1,3 +1,8 @@
+- hosts: hostgroup_zabbix_proxies
+  roles:
+    - role: zabbix_proxy
+
+
 - hosts: hostgroup_zabbix_nodes
   roles:
     - role: zabbix_agent

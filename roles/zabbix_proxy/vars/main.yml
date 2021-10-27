@@ -1,0 +1,26 @@
+---
+
+zabbix_useuip: "1"
+
+# Do not enable active checks
+#zabbix_agent_serveractive: "{{ zabbix_agent_server }}"
+
+zabbix_agent_hostname: "{{ ansible_fqdn }}"
+hostname: "{{ ansible_fqdn }}"
+
+zabbix_link_templates:
+  - "Template OS Linux by Zabbix agent"
+
+zabbix_api_create_proxy: true
+
+
+zabbix_api_create_hosts: true
+zabbix_api_create_hostgroup: true
+
+zabbix_custom_selinux: true
+zabbix_selinux: false
+zabbix_proxy_firewalld_enable: false
+
+zabbix_proxy_tlsconnect: psk
+zabbix_proxy_tlsaccept: psk
+zabbix_proxy_tlspskfile: /var/lib/zabbix/zabbix_agentd.psk
