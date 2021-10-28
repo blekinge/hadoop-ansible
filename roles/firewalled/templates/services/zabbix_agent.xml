@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 {{ ansible_managed | comment('xml') }}
 <service>
-    <short>zabbix_agent</short>
-    <description>Allow services for Zabbix agent</description>
-    <port protocol="tcp" port="{{ zabbix_agent_listenport }}"/>
+    <short>zabbix_agent_passive</short>
+    <description>Allow services for Zabbix Passive agent</description>
+    <port protocol="tcp" port="{{ zabbix_passive_agent_listenport }}"/>
 </service>

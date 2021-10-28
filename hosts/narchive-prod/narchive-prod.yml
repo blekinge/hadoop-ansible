@@ -35,12 +35,13 @@ hostgroup_all:
     hostgroup_zabbix_nodes:
       hosts:
         narchive-p-admn01.hadoop-mgmt.bitarkiv.kb.dk:
+        narchive-p-zapr01.hadoop-mgmt.bitarkiv.kb.dk:
       children:
         hostgroup_ipaclients:
 
-        hostgroup_zabbix_proxies:
-          hosts:
-            narchive-p-zapr01.hadoop-mgmt.bitarkiv.kb.dk:
+    hostgroup_zabbix_proxies:
+      hosts:
+        narchive-p-zapr01.hadoop-mgmt.bitarkiv.kb.dk:
 
     hostgroup_rsyslog_server:
       hosts:

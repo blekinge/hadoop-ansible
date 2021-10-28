@@ -2,7 +2,7 @@
 
 zabbix_useuip: "1"
 
-# Do not enable active checks
+# Passive agents wait for connections from server. Active agents connect to server
 #zabbix_agent_serveractive: "{{ zabbix_agent_server }}"
 
 zabbix_agent_hostname: "{{ ansible_fqdn }}"

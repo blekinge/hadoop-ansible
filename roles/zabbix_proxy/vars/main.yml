@@ -10,13 +10,15 @@ zabbix_proxy_dbport: 5432
 
 zabbix_proxy_hostname: "{{ ansible_fqdn }}"
 zabbix_proxy_name: "{{ ansible_fqdn }}"
+hostname: "{{ ansible_fqdn }}"
 
-zabbix_proxy_status: active
-
+#Use ip, not DNS names for communication with zabbix server
 zabbix_useuip: "1"
 
-zabbix_agent_hostname: "{{ ansible_fqdn }}"
-hostname: "{{ ansible_fqdn }}"
+#Active proxy, meaning that this proxy initiates connections to the server
+zabbix_proxy_status: active
+
+
 
 zabbix_link_templates:
   - "Template OS Linux by Zabbix agent"
