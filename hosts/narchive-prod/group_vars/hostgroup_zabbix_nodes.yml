@@ -5,7 +5,7 @@
 
 #Agents should use the proxy
 #zabbix_agent_server: "{{ hostvars[inventory_hostname]['ansible_default_ipv4'].address }}"10.205.0.13 # the proxy
-zabbix_agent_server: "{{ (groups['hostgroup_zabbix_proxies'] | first | map('extract',hostvars, 'ansible_default_ipv4') ).address }}"
+zabbix_agent_server: "{{ (groups['hostgroup_zabbix_proxies'] | map('extract',hostvars, 'ansible_default_ipv4') |first).address }}"
 
 
 zabbix_server_host: 172.18.95.44 # pc588.sb.statsbiblioteket.dk
