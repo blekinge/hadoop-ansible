@@ -24,18 +24,22 @@
     state: restarted
 
 - name: Enable zabbix selinux module
-  when: zabbix_custom_selinux
+  when:
+    - zabbix_custom_selinux
+    - ansible_selinux.status != 'disabled'
   import_role:
     name: zabbix_selinux
 
 
 - name: Fix selinux permissions
-  when: ansible_selinux.mode == 'enforcing'
+  when:
+    - ansible_selinux.status != 'disabled'
+    - ansible_selinux.mode == 'enforcing'
   command: "restorecon -R -v /var/lib/zabbix"
 
 
-- name: (Re)Start zabbix agent service
+- name: (Re)Start zabbix proxy service
   systemd:
-    service: zabbix-agent
+    service: zabbix-proxy
     state: restarted
     enabled: yes
