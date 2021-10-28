@@ -3,11 +3,14 @@
 
 ### ZABBIX CONFIG
 
-# This must be in IP form, otherwise the firewalld config will complain
-#   You cannot open a port to a specific hostname, only to a specific ip
-zabbix_agent_server: 10.205.0.13 # the proxy
+#Agents should use the proxy
+#zabbix_agent_server: "{{ hostvars[inventory_hostname]['ansible_default_ipv4'].address }}"10.205.0.13 # the proxy
+zabbix_agent_server: "{{ groups['hostgroup_zabbix_proxies'] | first | map('extract',hostvars, 'ansible_default_ipv4').address }}"
+
+
 zabbix_server_host: 172.18.95.44 # pc588.sb.statsbiblioteket.dk
-zabbix_url: "https://{{ zabbix_server_host }}/"
+
+
 zabbix_validate_certs: no
 zabbix_custom_selinux: no
 
@@ -21,11 +24,6 @@ zabbix_proxy_dbpassword: !vault |
   38613665313737383439616430323366643232356638333465626638646634303562
 
 
-
-#This ensures that the zabbix agent uses the 216 address, which the zabbix server can reach
-## Require that the nic2_subnet subnet is defined
-nic2_subnet: "10.205.0"
-zabbix_agent_ip: "{{ ansible_all_ipv4_addresses | select('match', '^'+nic2_subnet+'.*') | first }}"
 
 
 zabbix_agent_tlspskidentity: YAKPSK
@@ -54,6 +52,9 @@ zabbix_proxy_tlspsk_secret: !vault |
   63383162613438396264
 
 
+#Used for host(group) creation during ansible install of zabbix
+zabbix_url: "https://{{ zabbix_server_host }}/"
+zabbix_api_server_url: "https://{{ zabbix_server_host }}/"
 zabbix_api_login_user: Admin
 zabbix_api_login_pass: !vault |
   $ANSIBLE_VAULT;1.1;AES256

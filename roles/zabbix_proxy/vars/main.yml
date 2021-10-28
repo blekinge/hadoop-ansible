@@ -24,7 +24,7 @@ hostname: "{{ ansible_fqdn }}"
 zabbix_link_templates:
   - "Template OS Linux by Zabbix agent"
 
-zabbix_api_create_proxy: false
+zabbix_api_create_proxy: true
 
 
 zabbix_api_create_hosts: true
