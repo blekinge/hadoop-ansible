@@ -8,7 +8,7 @@ zabbix_agent_server: "{{ (groups['hostgroup_zabbix_proxies'] | map('extract',hos
 zabbix_agent_serveractive: "{{ zabbix_agent_server }}"
 
 
-zabbix_agent_tlspskidentity: NARCHIVE_AGENT_PSK
+zabbix_agent_tlspskidentity: NARCHIVE_PSK
 zabbix_agent_tlspsk_secret: !vault |
   $ANSIBLE_VAULT;1.1;AES256
   32636264373464363939633633653262613034333732643930326661343936346239616535633663

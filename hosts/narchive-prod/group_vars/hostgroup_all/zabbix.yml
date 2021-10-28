@@ -25,7 +25,7 @@ zabbix_proxy_dbpassword: !vault |
 
 
 
-zabbix_proxy_tlspskidentity: NARCHIVE_PROXY_PSK
+zabbix_proxy_tlspskidentity: NARCHIVE_PSK
 zabbix_proxy_tlspsk_secret: !vault |
   $ANSIBLE_VAULT;1.1;AES256
   32636264373464363939633633653262613034333732643930326661343936346239616535633663
