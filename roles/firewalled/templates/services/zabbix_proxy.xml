@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+{{ ansible_managed | comment('xml') }}
+<service>
+    <short>zabbix_proxy_passive</short>
+    <description>Allow services for passive Zabbix proxy</description>
+    <port protocol="tcp" port="{{ zabbix_passive_proxy_listenport }}"/>
+</service>
