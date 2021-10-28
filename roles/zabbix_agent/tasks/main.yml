@@ -28,7 +28,7 @@
 
 - name: Enable zabbix selinux module
   when:
-    - zabbix_custom_selinux
+    - zabbix_custom_selinux | bool
     - ansible_selinux.status != 'disabled'
   import_role:
     name: zabbix_selinux
