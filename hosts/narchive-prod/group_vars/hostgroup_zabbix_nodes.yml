@@ -9,6 +9,8 @@ zabbix_agent_server: 10.205.0.13 # the proxy
 zabbix_server_host: 172.18.95.44 # pc588.sb.statsbiblioteket.dk
 zabbix_url: "https://{{ zabbix_server_host }}/"
 zabbix_validate_certs: no
+zabbix_custom_selinux: no
+
 
 zabbix_proxy_dbpassword: !vault |
   $ANSIBLE_VAULT;1.1;AES256
