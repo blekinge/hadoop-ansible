@@ -4,6 +4,9 @@
 #Agents should use the proxy
 zabbix_agent_server: "{{ (groups['hostgroup_zabbix_proxies'] | map('extract',hostvars, 'ansible_default_ipv4') |first).address }}"
 
+#Comment in to enable active checks.
+zabbix_agent_serveractive: "{{ zabbix_agent_server }}"
+
 
 zabbix_agent_tlspskidentity: NARCHIVE_AGENT_PSK
 zabbix_agent_tlspsk_secret: !vault |
