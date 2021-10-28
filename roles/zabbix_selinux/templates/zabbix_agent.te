@@ -6,7 +6,11 @@ require {
 	type var_lib_t;
 	type zabbix_agent_t;
 	type zabbix_var_lib_t;
+	type initctl_t;
+	type devlog_t;
 	class file { open read };
+	class fifo_file { getattr };
+	class sock_file { getattr };
 }
 
 #============= zabbix_agent_t ==============

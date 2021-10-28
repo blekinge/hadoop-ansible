@@ -5,7 +5,6 @@
 #This is only relevant for the proxy
 zabbix_server_host: 172.18.95.44 # pc588.sb.statsbiblioteket.dk
 
-zabbix_custom_selinux: no
 
 #Password for proxy postgresql user
 #zabbix_proxy_database: pgsql
