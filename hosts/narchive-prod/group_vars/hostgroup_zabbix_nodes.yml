@@ -2,7 +2,10 @@
 
 
 #Agents should use the proxy
-zabbix_agent_server: "{{ (groups['hostgroup_zabbix_proxies'] | map('extract',hostvars, 'ansible_default_ipv4') |first).address }}"
+zabbix_agent_server: "{{ (groups['hostgroup_zabbix_proxies'] | map('extract',hostvars, 'ansible_default_ipv4') | first).address }}"
+
+zabbix_proxy: "{{ (groups['hostgroup_zabbix_proxies'] | map('extract',hostvars, 'ansible_fqdn') | first) }}"
+
 
 #Comment in to enable active checks.
 zabbix_agent_serveractive: "{{ zabbix_agent_server }}"
