@@ -148,6 +148,13 @@
 
 
         <property>
+            <name>yarn.scheduler.capacity.{{ queue.longname }}.user-limit-factor</name>
+            <value>{{ queue.user_limit | default(1) }}</value>
+            <description>The multiple of the queue capacity which can be configured to allow a single user to acquire more resources. By default this is set to 1 which ensures that a single user can never take more than the queue’s configured capacity irrespective of how idle the cluster is. Value is specified as a float.
+            </description>
+        </property>
+
+        <property>
             <name>yarn.scheduler.capacity.{{ queue.longname }}.maximum-allocation-mb</name>
             <description>The per queue maximum limit of memory to allocate to each container request at the Resource
                 Manager. This setting overrides the cluster configuration yarn.scheduler.maximum-allocation-mb. This
