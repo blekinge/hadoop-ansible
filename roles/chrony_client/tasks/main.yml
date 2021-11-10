@@ -1,0 +1,22 @@
+---
+
+
+- name: remove other ntp servers from chrony.conf
+  lineinfile:
+    path: /etc/chrony.conf
+    state: absent
+    regexp: "^(server|pool).*"
+  notify: "restart chronyd"
+
+#TODO only do this if ipaclient_ntp_pool is actually defined
+- name: setup chronyd to use ntp
+  lineinfile:
+    path: /etc/chrony.conf
+    line: "pool {{ ipaclient_ntp_pool }} iburst"
+    insertafter: "^# Please consider joining the pool .*"
+    state: present
+  notify: "restart chronyd"
+
+- name: set correct timezone
+  timezone:
+    name: Europe/Copenhagen

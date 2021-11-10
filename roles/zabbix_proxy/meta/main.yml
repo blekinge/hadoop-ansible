@@ -1,3 +1,4 @@
 ---
 dependencies:
   - role: firewalled
+  - role: chrony_client
