@@ -1,6 +1,6 @@
 ---
 
-- name: "Mounting filesystem from {{ nfs_server }} on {{ mount }}"
+- name: "Mounting remote filesystems"
   vars:
     mountpoint: "{{ item.mountpoint }}"
     address: "{{ item.address }}"
