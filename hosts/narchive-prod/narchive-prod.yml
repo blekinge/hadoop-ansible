@@ -47,6 +47,10 @@ hostgroup_all:
       hosts:
         narchive-p-admn01.hadoop-mgmt.bitarkiv.kb.dk:
 
+    hostgroup_with_datamounts:
+      children:
+        hostgroup_hdfs_datanodes:
+
     hostgroup_hadoop_nodes:
       children:
 
