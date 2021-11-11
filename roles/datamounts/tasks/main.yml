@@ -1,0 +1,18 @@
+---
+
+- name: "Mounting filesystem from {{ nfs_server }} on {{ mount }}"
+  vars:
+    mountpoint: "{{ item.mountpoint }}"
+    address: "{{ item.address }}"
+    options: "{{ item.options | default('defaults,hard,intr,_netdev')}}"
+    fs: "{{ item.fs | default('nfs') }}"
+  when: nfs_data_mounts is defined
+  loop: "{{ nfs_data_mounts }}"
+  loop_control:
+    index_var: idx
+  mount:
+    fstype: "{{ fs }}"
+    src: "{{ address }}"
+    path: "{{ mountpoint }}"
+    opts: "{{ options }}"
+    state: mounted
