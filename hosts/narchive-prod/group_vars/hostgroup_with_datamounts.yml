@@ -1,0 +1,6 @@
+---
+
+nfs_data_mounts:
+  - mountpoint: "/netarkivet"
+    address: "nfs.nas-dia-02.bitarkiv.kb.dk:/netarkivet"
+    options: "ro,defaults,hard,intr,_netdev"
