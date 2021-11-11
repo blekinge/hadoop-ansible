@@ -1,0 +1,23 @@
+
+#The stuff below expect us to have facts about the ansible_fqdn of each host, so ensure that we have gathered these facts
+- name: Gather facts from all to ensure we have their fqdn names
+  hosts: hostgroup_all
+  gather_facts: yes
+
+
+# mount data from isilon on worker nodes
+
+- hosts: hostgroup_all:!hostgroup_ansible_host:!hostgroup_ipaserver
+  handlers:
+    - name: restart interface
+      shell: nmcli con up hadoop
+  tasks:
+    - name: specify routes to netarchive machines use hadoop network
+      notify: "restart interface"
+      community.general.nmcli:
+        type: ethernet
+        conn_name: hadoop
+        routes4: "130.226.228.64/26 10.204.0.1"
+        route_metric4: 100
+        state: present
+
