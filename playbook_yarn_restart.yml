@@ -1,0 +1,44 @@
+# Everything runs with serial: 1 here to ensure that the services can fail-over while restarting
+
+#- hosts: hostgroup_zookeeper_servers
+#  serial: 1
+#  tasks:
+#    - name: restart zookeeper_server
+#      systemd:
+#        state: restarted
+#        name: zookeeper
+#        daemon_reload: yes
+
+
+- hosts: hostgroup_yarn_resource_managers
+  serial: 1
+  tasks:
+    - name: restart resource managers
+      systemd:
+        state: restarted
+        name: yarn_resource_manager
+        daemon_reload: yes
+
+
+  # The namenodes do not require datanodes
+- hosts: hostgroup_yarn_timeline_servers
+  serial: 1
+  tasks:
+    - name: restart yarn timeline
+      systemd:
+        state: restarted
+        name: yarn_timeline_server
+        daemon_reload: yes
+
+
+
+  # The datanodes become unhappy if they cannot connect to a namenode when starting up
+- hosts: hostgroup_yarn_node_managers
+  serial: 1
+  tasks:
+    - name: restart node managers
+      systemd:
+        state: restarted
+        name: yarn_node_manager
+        daemon_reload: yes
+
