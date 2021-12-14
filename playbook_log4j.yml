@@ -1,0 +1,17 @@
+---
+#- hosts: all
+#  remote_user: root
+#  tasks:
+#    - command: /bin/sleep 15
+#      async: 45
+#      poll: 5
+
+- hosts: hostgroup_all:!localhost
+  remote_user: root
+#  serial: 1
+  roles:
+    - role: claranet.log4shell
+      log4shell_scan_path:
+        - /opt
+        - /usr
+        - /var/lib
