@@ -12,6 +12,6 @@
   roles:
     - role: claranet.log4shell
       log4shell_scan_path:
-        - /opt
-        - /usr
-        - /var/lib
+        - /opt/
+        - /usr/
+        - /var/lib/

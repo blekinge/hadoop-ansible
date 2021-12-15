@@ -18,3 +18,5 @@ collections:
     version: 1.3.0
 
   - name: community.crypto
+
+  - name: claranet.log4shell
