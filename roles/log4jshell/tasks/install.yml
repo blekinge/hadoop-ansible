@@ -2,7 +2,8 @@
 - name: install - Install requirements
   package:
     name:
-      - lsof
+#      - lsof
       - unzip
+      - zip
     state: present
 ...

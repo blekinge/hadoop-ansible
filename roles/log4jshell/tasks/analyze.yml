@@ -2,9 +2,4 @@
 - name: analyze - Merge files list
   set_fact:
     _log4shell_files: "{{ ( _log4shell_grep_files | default([]) ) +  ( _log4shell_find_files | default([]) ) + ( _log4shell_lsof_files | default([]) )  | list | unique }}"
-
-- name: analyze - Fail if vulnerable to CVE-2021-44228 (Log4Shell)
-  fail:
-    msg: "At least one file may be **VULNERABLE** to CVE-2021-44228 (Log4Shell) {{_log4shell_files}}"
-  when: _log4shell_files|length>0
 ...
