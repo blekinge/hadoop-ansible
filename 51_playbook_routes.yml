@@ -17,7 +17,7 @@
       community.general.nmcli:
         type: ethernet
         conn_name: hadoop
-        routes4: "130.226.228.64/26 10.204.0.1"
+        routes4: "130.226.228.64/26 10.204.0.1" #.65-.126 https://www.aelius.com/njh/subnet_sheet.html
         route_metric4: 100
         state: present
 
