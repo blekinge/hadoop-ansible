@@ -15,3 +15,8 @@
         - /opt/
         - /usr/
         - /var/lib/
+
+
+# TODO Check for war-files like this
+#  ansible -i hosts/KAC hostgroup_all -a 'bash -c "find /usr -name *.war -size +10k | xargs -r -i unzip -l {} | (grep log4j-core || echo clean) | grep -v log4j-core  "' -u root
+
