@@ -10,7 +10,7 @@
   remote_user: root
 #  serial: 1
   roles:
-    - role: claranet.log4shell
+    - role: blekinge.log4shell
       log4shell_scan_path:
         - /opt/
         - /usr/
