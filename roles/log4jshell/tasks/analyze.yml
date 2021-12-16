@@ -7,7 +7,7 @@
     - name: analyze - Analyze jar and war files
       unarchive:
         src: "{{ item }}"
-        dest: tmp  # Also needed in check mode ¯\_(ツ)_/¯
+        dest: /tmp  # Also needed in check mode ¯\_(ツ)_/¯
         remote_src: true
         list_files: true
         include: "*.jar" # Only extract jar files as we only use this to check for version numbers
