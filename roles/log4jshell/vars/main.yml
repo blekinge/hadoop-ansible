@@ -1,0 +1,5 @@
+---
+_log4shell_regex: 'log4j-core-(\d+.\d+.\d+)\.jar'
+_log4shell_patched_version: '2.14.1'
+_log4shell_defect_class: 'org/apache/logging/log4j/core/lookup/JndiLookup.class'
+...

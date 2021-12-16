@@ -10,7 +10,7 @@
   remote_user: root
 #  serial: 1
   roles:
-    - role: blekinge.log4shell
+    - role: log4jshell
       log4shell_scan_path:
         - /opt/
         - /usr/
