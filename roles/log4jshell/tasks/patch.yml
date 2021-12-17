@@ -2,5 +2,5 @@
 
 - name: patch
   loop: "{{ _log4shell_files }}"
-  shell: "zip -q -d {{item}} '{{_log4shell_defect_class}}' "
-    
+  shell: "zip --quiet --delete {{item}} '{{_log4shell_defect_class}}' "
+
