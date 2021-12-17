@@ -1,26 +1,28 @@
 Efter meget besvær med 
 
-https://github.com/claranet/ansible-role-log4shell
+<https://github.com/claranet/ansible-role-log4shell>
 
 endte jeg med at lave mit eget plugin
 
 Det kan ses her
-https://sbprojects.statsbiblioteket.dk/stash/projects/YAK/repos/hadoop-ansible/browse/roles/log4jshell
+<https://sbprojects.statsbiblioteket.dk/stash/projects/YAK/repos/hadoop-ansible/browse/roles/log4jshell>
 
 
 
 Det køres med
-
+```
 ansible-playbook -i hosts/narchive-test/ playbook_log4j.yml
+```
 
 og outputter ala
 
+```
 ...
 TASK [log4jshell : patch] *********************************************************************************************************************************************************************************************************
 changed: [narchive-t-yarn01.kb.dk] => (item=/usr/local/hive/apache-hive-3.1.2-bin/lib/log4j-core-2.10.0.jar)
 changed: [narchive-t-admn02.kb.dk] => (item=/usr/local/hive/apache-hive-3.1.2-bin/lib/log4j-core-2.10.0.jar)
 ...
-
+```
 
 
 De to vigtige dele er
