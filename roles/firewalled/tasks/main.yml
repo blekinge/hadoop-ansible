@@ -35,7 +35,7 @@
     service: firewalld
 
 
-- name: "Open Firewall for group {{ item }}"
+- name: "Open Firewall for group {{ ansible_role_names }}"
   include: open_firewall.yml rolename={{ item }}
   loop: "{{ ansible_role_names }}"
 
