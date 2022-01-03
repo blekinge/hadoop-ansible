@@ -19,4 +19,4 @@ collections:
 
   - name: community.crypto
 
-  - name: claranet.log4shell
+#  - name: claranet.log4shell
