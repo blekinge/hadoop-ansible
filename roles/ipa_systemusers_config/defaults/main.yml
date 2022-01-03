@@ -133,7 +133,8 @@ jupyterhub_user:
   gid: "{{ hadoop_group.gid|int+8 }}"
   private_group: yes
 
-system_users:
+#Can this be inlined?
+_system_users:
   - "{{ hdfs_user }}"
   - "{{ yarn_user }}"
   - "{{ mapreduce_user }}"
@@ -142,3 +143,4 @@ system_users:
   - "{{ hive_user }}"
   - "{{ rstudio_user if groups['hostgroup_rstudio_nodes'] | length > 0 else omit }}"
   - "{{ jupyterhub_user if groups['hostgroup_jupyter_nodes'] | length > 0 else omit }}"
+system_users: "{{ _system_users | reject('equalto', omit) | list }}"
