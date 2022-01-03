@@ -9,6 +9,9 @@
     mode: "0750"
   register: hadoop_dfs_name_dir_status
 
+- debug:
+    msg: "{{ hadoop_dfs_name_dir_status }}"
+
 - name: check if Fresh HDFS install
   set_fact:
     fresh_HDFS: '{{ hadoop_dfs_name_dir_status.changed == true and hadoop_dfs_name_dir_status.diff.before.state == "absent" }}'
