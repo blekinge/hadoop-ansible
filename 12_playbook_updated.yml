@@ -1,3 +1,6 @@
+
+# YUM Update and install java on all nodes
+
 - hosts: hostgroup_all:!localhost
   roles:
     - role: updated

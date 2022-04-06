@@ -4,11 +4,13 @@
   hosts: hostgroup_all
   gather_facts: yes
 
+#Setup the rsyslog server
 - hosts: hostgroup_rsyslog_server
   roles:
     - role: rsyslog_server
 
 
+#Install the syslog client on all hadoop nodes, so they can log to rsyslog
 - hosts: hostgroup_hadoop_nodes
   roles:
     - role: rsyslog_client

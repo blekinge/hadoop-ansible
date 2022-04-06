@@ -5,7 +5,6 @@
   gather_facts: yes
 
 
-# Now that the hosts have been added as ipa clients, we can setup the kerberos services
 - hosts: hostgroup_ansible_host
   roles:
     - role: ssl_certificates_creator

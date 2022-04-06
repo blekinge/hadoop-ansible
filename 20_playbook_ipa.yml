@@ -5,25 +5,28 @@
   gather_facts: yes
 
 
+# Configure the ipa server for this cluster
+# The IPA server is assumed to already have been set up and working
 - hosts: hostgroup_ipaserver
   roles:
-    - role: ipa_system_users
+    - role: ipa_system_users #   We create the system users (the users what will run the systemd services)
 
-    - role: ipa_syshomes
+    - role: ipa_syshomes #   We setup the NFS-mounted homedirs for these system users
 
-    - role: ipa_autohomes
+    - role: ipa_autohomes #   We setup the automounted homes for human users
 
   collections:
     - freeipa.ansible_freeipa
 
+# Install and configure ipa client on each node.
 - hosts: hostgroup_ipaclients
   throttle: 5 # It seems that if every node tries to register at the same time, some of them will fail
   roles:
-    - role: ipaclient_setup # Set up the ipa clients
+    - role: ipaclient_setup
   collections:
     - freeipa.ansible_freeipa
 
-
+# Setup sudo rules for the cluster.
 - hosts: hostgroup_ipaserver
   roles:
     - role: ipa_sudorules

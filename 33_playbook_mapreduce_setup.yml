@@ -5,9 +5,12 @@
   gather_facts: yes
 
 
-# MapReduce
 
+# MapReduce is not really a separate system, but rather a framework for YARN jobs
 
+# History server handle log aggregation for mapreduce jobs. There is some not-entirely-known interaction between
+#  hadoop_mapreduce_history_server and hadoop_yarn_timeline_server, and they should usually just be deployed on the
+#  same host
 - hosts: hostgroup_mapreduce_history_servers
   roles:
     - role: hadoop_mapreduce_history_server

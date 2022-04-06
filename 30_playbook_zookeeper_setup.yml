@@ -4,10 +4,8 @@
   hosts: hostgroup_all
   gather_facts: yes
 
-# The order here is important
 
 
-# HDFS HA requires zookeepers
 - hosts: hostgroup_zookeeper_servers
   roles:
-    - role: zookeeper_server
+    - role: zookeeper_server # Setup zookeeper daemons

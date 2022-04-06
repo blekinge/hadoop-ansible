@@ -1,4 +1,6 @@
-# Enable the {{ sealbin_user }} account and disable ssh logins to root
+
+# Enable the {{ sealbin_user }} account, which will be used as the ansible user in all subsequent playbooks
+
 - hosts: hostgroup_all:!localhost
   remote_user: root
   gather_facts: false

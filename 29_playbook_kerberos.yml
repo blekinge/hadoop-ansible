@@ -8,23 +8,22 @@
 
 
 # Now that the hosts have been added as ipa clients, we can setup the kerberos services
+# See 20_playbook_ipa.yml
 - hosts: hostgroup_ipaserver
   roles:
-    - role: ipa_service_definitions
+    - role: ipa_service_definitions # Create Kerberos service definitions in FreeIPA
   collections:
     - freeipa.ansible_freeipa
 
-# Now we create the keytabs for the system users
 - hosts: hostgroup_ansible_host
   roles:
-    - role: kerberos_system_user_keytabs_create
+    - role: kerberos_system_user_keytabs_create # Create the keytabs for the cluster-wide system users
   collections:
     - freeipa.ansible_freeipa
 
 
-# And now that the ipa server is ready, we can setup services and ssl
 - hosts: hostgroup_hadoop_nodes
   roles:
-    - role: kerberos_service_keytabs #Create the service keytabs
-    - role: kerberos_system_user_keytabs
+    - role: kerberos_service_keytabs #Create the node-specific service keytabs on each of the nodes
+    - role: kerberos_system_user_keytabs # Distribute the system user keytabs from the ansible host to the relevant nodes
 

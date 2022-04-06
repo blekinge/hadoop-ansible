@@ -1,4 +1,6 @@
 
+# Format and mount data disks on all nodes (if specified by the inventory)
+
 - hosts: hostgroup_all:!localhost
   roles:
     - role: disks_ready

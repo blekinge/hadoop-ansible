@@ -7,9 +7,12 @@
   gather_facts: yes
 
 
-#  En brugergruppe
-#  1+ Brugere
-#  en HBAC regel
+# Setup users and groups
+# * Create project group in FreeIPA
+# * Create project dir in HDFS, with correct permissions
+# * Create users in FreeIPA
+# * mkdir and chown user homes in HDFS
+# * Create FreeIPA HBAC (Host Based Access Control) rules to ensure users can log into their project node
 - name: Users and groups
   hosts: hostgroup_ipaserver
   roles:

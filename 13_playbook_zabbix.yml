@@ -1,7 +1,11 @@
+
+#Install a zabbix proxy, so the zabbix agents can push to a nearby machine
+
 - hosts: hostgroup_zabbix_proxies
   roles:
     - role: zabbix_proxy
 
+#Setup zabbix agent on the nodes, configured to use the zabbix proxy
 
 - hosts: hostgroup_zabbix_nodes
   roles:

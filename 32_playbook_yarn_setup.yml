@@ -6,19 +6,22 @@
 
 # The order here is important
 
+# I THINK Zookeeper must be set up BEFORE running this playbook
 
-# YARN
-
+# Timeline servers store logs of finished executions. They can exist independently of the yarn system, so
+# set these up first
 - hosts: hostgroup_yarn_timeline_servers
   roles:
     - role: hadoop_yarn_timeline_server
 
 
+# Each node managers manage a single worker-node.
+# These should be a strong overlap between hostgroup_yarn_node_managers and hostgroup_hdfs_datanodes
 - hosts: hostgroup_yarn_node_managers
   roles:
     - role: hadoop_yarn_node_manager
 
-
+# Resource managers manage the CPU/Mem resources of the cluster
 - hosts: hostgroup_yarn_resource_managers
   roles:
     - role: hadoop_yarn_resource_manager

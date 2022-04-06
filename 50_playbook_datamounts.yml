@@ -6,7 +6,8 @@
 
 
 # mount data from isilon on worker nodes
-
+# It is rare that you do not want hostgroup_with_datamounts == hadoop_yarn_node_manager as otherwise jobs could be
+#  scheduled to workers without these mounts
 - hosts: hostgroup_with_datamounts
   roles:
     - role: datamounts

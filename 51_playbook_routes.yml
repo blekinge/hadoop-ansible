@@ -5,7 +5,7 @@
   gather_facts: yes
 
 
-# mount data from isilon on worker nodes
+# Eh?
 
 - hosts: hostgroup_all:!hostgroup_ansible_host:!hostgroup_ipaserver
   handlers:

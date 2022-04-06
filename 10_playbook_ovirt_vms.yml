@@ -1,4 +1,7 @@
 ## This playbook creates the hosts as virtual VMs in Ovirt
+
+# KAC/YAK uses Ovirt, but Narchive used VMWare, so ignore for that cluster
+
 - name: oVirt ansible collection
   hosts: hostgroup_VMs
   gather_facts: False

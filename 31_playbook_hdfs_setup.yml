@@ -7,35 +7,35 @@
 # The order here is important
 
 
-# HDFS
+# Zookeeper must be set up BEFORE running this playbook
+
 
 # The journalnodes must exist before the namenodes can run
 - hosts: hostgroup_hdfs_journalnodes
   roles:
-    - role: hadoop_hdfs_journalnode
+    - role: hadoop_hdfs_journalnode # Setup journalnode daemons
 
 # The namenodes do not require datanodes, but the datanodes require namenodes
 - hosts: hostgroup_hdfs_namenodes
   roles:
-    - role: hadoop_hdfs_namenode
+    - role: hadoop_hdfs_namenode # Setup namenode daemons
 
-
-# The namenodes do not require datanodes, but the datanodes require namenodes
+# Secondary Namenodes are NOT related to High Availabilty or failover
+# https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsUserGuide.html#Secondary_NameNode
 - hosts: hostgroup_hdfs_secondary_namenodes
   roles:
-    - role: hadoop_hdfs_secondary_namenode
+    - role: hadoop_hdfs_secondary_namenode # Setyp secondary namenode daemons
+    
 
-
-# The datanodes become unhappy if they cannot connect to a namenode when starting up, so install them after the
-#   namenodes
+# The datanodes become unhappy if they cannot connect to a namenode when starting up, so install them after the namenodes
 - hosts: hostgroup_hdfs_datanodes
   roles:
-    - role: hadoop_hdfs_datanode
+    - role: hadoop_hdfs_datanode # Setup namenode daemons
 
 # And now that we have a working HDFS, create the basic directory structure
 - hosts: hostgroup_hdfs
-  run_once: yes
+  run_once: yes # Just pick a HDFS machine at random, but run on only one machine
   vars:
     install_hdfs: false # It should not be nessesary to reinstall hadoop hdfs as we have just set it up
   roles:
-    - role: hadoop_hdfs_structure
+    - role: hadoop_hdfs_structure # HDFS commands to create the initial folder structure
