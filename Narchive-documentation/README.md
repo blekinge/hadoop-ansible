@@ -49,7 +49,7 @@ The 10 physical nodes have these specs
 
 | Thing       | Value                                                             |
 |-------------|-------------------------------------------------------------------|
-| Memory      | 4 X DIMM DDR4 Synchronous Unbuffered 2666 MHz (0.4 ns)            |
+| Memory      | 4 X 16GB DIMM DDR4 Synchronous Unbuffered 2666 MHz (0.4 ns)       |
 | Processor   | Intel(R) Xeon(R) E-2186G CPU @ 3.80GHz (6 cores, 12 threads)      |
 | system disk | Toshiba 200GB SSD 2.5" 6Gb/s SATA Solid State Drive THNSF8200CCSE |
 | data disks  | 3 X TOSHIBA MG04SCA40ENY Enterprise 4TB 7200rpm Sas-12gbps 128mb  |
@@ -190,34 +190,38 @@ You can read about the user config [here](https://sbprojects.statsbiblioteket.dk
 
 For the Narchive Production cluster, the Hadoop system users are
 
-| name     | UID          | GID   | Supp. GID | Notes               |
-|----------|--------------|-------|-----------|---------------------|
-| nap-hadp | `is a group` | 11200 |           |                     |
-| nap-hdfs | 11201        | 11201 | 11200     | root-access to HDFS |
-| nap-mapr | 11202        | 11200 |           |                     |
-| nap-yarn | 11203        | 11200 |           |                     |
-| nap-zkpr | 11204        | 11200 |           |                     |
+| name                                                                                  | UID   | GID   | Supp. GID | Notes               |
+|---------------------------------------------------------------------------------------|-------|-------|-----------|---------------------|
+| [nap-hadp](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/group/member_user/nap-hadp)  | -     | 11200 |           |                     |
+| [nap-hdfs](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/user/details/nap-hdfs)       | 11201 | 11201 | 11200     | root-access to HDFS |
+| [nap-mapr](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/user/details/nap-mapr)       | 11202 | 11200 |           |                     |
+| [nap-yarn](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/user/details/nap-yarn)       | 11203 | 11200 |           |                     |
+| [nap-zkpr](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/user/details/nap-zkpr)       | 11204 | 11200 |           |                     |
 
 
 These system users also exist, but relate to services not installed in Narchive-Prod
 
-| name     | UID         | GID   | Supp. GID |
-|----------|-------------|-------|-----------|
-| nap-sprk | 11205       | 11200 |           |
-| nap-hive | 11206       | 11200 |           |
-| nap-rstd | 11207       | 11207 |           |
-| nap-jhub | 11208       | 11208 |           |
+| name                                                                             | UID         | GID   | Supp. GID |
+|----------------------------------------------------------------------------------|-------------|-------|-----------|
+| [nap-sprk](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/user/details/nap-sprk)  | 11205       | 11200 |           |
+| [nap-hive](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/user/details/nap-hive)  | 11206       | 11200 |           |
+| [nap-rstd](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/user/details/nap-rstd)  | 11207       | 11207 |           |
+| [nap-jhub](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/user/details/nap-jhub)  | 11208       | 11208 |           |
 
 
 In addition to these system users, a few "human" users also exists
 
-| name        | UID   | GID   | Supp. GID | Note                        |
-|-------------|-------|-------|-----------|-----------------------------|
-| nap-subadm  |       | 11100 |           | This group have sudo rights |
-| nap-abrsadm | 11101 | 11101 | 11100     | Disabled, former employee   |
-| nap-tbasadm | 11101 | 11102 | 11100     | Disabled, former employee   |
-| nap-users   |       | 11300 |           | General user group          |
-| nap-nas     | 11301 | 11300 |           | The Netarchive user         |
+| name                                                                                     | UID   | GID   | Supp. GID | Note                                                                                                                                                                                                  |
+|------------------------------------------------------------------------------------------|-------|-------|-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [nap-subadm](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/group/member_user/nap-subadm) | -     | 11100 |           | [Sudo](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/sudorule/details/nap-subadm). [HBAC rule](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/hbacrule/details/nap-subadm%20allowed%20on%20narchive-p) |
+| [nap-abrsadm](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/user/details/nap-abrsadm)    | 11101 | 11101 | 11100     | Disabled, former employee                                                                                                                                                                             |
+| [nap-tbasadm](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/user/details/nap-tbasadm)    | 11101 | 11102 | 11100     | Disabled, former employee                                                                                                                                                                             |
+| [nap-users](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/group/member_user/nap-users)   | -     | 11300 |           | General user group                                                                                                                                                                                    |
+| [nap-nas](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/user/details/nap-nas)            | 11301 | 11300 |           | The Netarchive user. [HBAC](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/hbacrule/details/nap-users%20allowed%20on%20narchive-p-admn02.hadoop.bitarkiv.kb.dk)                                        |
+
+Notice that a few groups have **Host Based Access Control** rules set up.
+
+
 
 
 #### Kerberos
@@ -228,15 +232,89 @@ Hadoop Security is managed by [Kerberos](https://steveloughran.gitbooks.io/kerbe
 
 For reasons I do not recall, we use a single Kerberos Realm (KBHPC.KB.DK) for all the clusters.
 
-
-
 <https://sbprojects.statsbiblioteket.dk/display/HPC/FreeIPA+konfiguration>
 
+Firstly, all the Hadoop Services have been created as ["Services" in FreeIPA](https://kbhpc-fipa-001.kbhpc.kb.dk/ipa/ui/#/e/service/search//filter=bitarkiv.kb.dk)
+
+The list can be summed up as this, employing ansible host patterns
 
 
+* `HTTP/narchive-p-admn02.hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: : Http access to ?
+
+ 
+* `nn/narchive-p-hdfs[01:02].hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: HDFS Namenode Service
+* `HTTP/narchive-p-hdfs[01:02].hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: Http access to the above service
 
 
-# What is Hadoop?
+* `rm/narchive-p-yarn[01:02].hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: YARN Resource Manager Service
+* `HTTP/narchive-p-yarn[01:02].hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: Http access to the above services
+
+
+* `jn/narchive-p-zook[01:03].hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: HDFS Journalnode service
+* `zookeeper/narchive-p-zook[01:03].hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: Zookeeper service
+* `HTTP/narchive-p-zook[01:03].hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: Http access to the above services
+
+
+* `dn/prod-hadoop-bur-[01:09].hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: HDFS Datanode service
+* `nm/prod-hadoop-bur-[01:09].hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: YARN Nodemanager service
+* `HTTP/prod-hadoop-bur-[01:09].hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: Http access to the above services
+
+
+* `jhs/narchive-p-hist01.hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: MapReduce History Server service
+* `shs/narchive-p-hist01.hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: Spark History Server service
+* `tl/narchive-p-hist01.hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: YARN Timeline Server service
+* `HTTP/narchive-p-hist01.hadoop.bitarkiv.kb.dk@KBHPC.KB.DK`: Http access to the above services
+
+Keytabs have been created for all these services, as well as the system users.
+
+A keytab have been created for the user `nap-nas` to enable him to start jobs programmatically.
+
+
+### SSL
+
+We use SSL and HTTPS for all communication on the Narchive cluster.
+
+We probably should have used LetsEncrypt to generate these certificates, but we did not. Instead we created on Certificate, (`CA.crt`) which we used to sign all the other SSL certificates in use.
+So the certificates presented to the browser will mostly look like this
+
+```
+subject: C=DK; ST=Copenhagen; L=Copenhaven; O=narchive; OU=Det Kongelige Bibliotek
+start date: Oct 21 13:36:11 2021 GMT
+expire date: Oct 19 13:36:11 2031 GMT
+issuer: C=DK; ST=Copenhagen; L=Copenhaven; O=narchive; OU=Det Kongelige Bibliotek; CN=CA
+```
+
+
+### Systemd Services
+
+The various Hadoop daemons have been deployed as SystemD services.
+
+* [zookeeper.service](/roles/zookeeper/templates/systemd/zookeeper.service)
+* hdfs_backupnode.service
+* hdfs_balancer.service
+* hdfs_checkpointnode.service
+* hdfs_datanode.service
+* hdfs_dfsrouter.service
+* hdfs_diskbalancer.service
+* hdfs_httpfs.service
+* hdfs_journalnode.service
+* hdfs_mover.service
+* hdfs_namenode.service
+* hdfs_nfs3.service
+* hdfs_portmap.service
+* hdfs_secondary_namenode.service
+* hdfs_sps.service
+* hdfs_zkfc.service
+* yarn_node_manager.service
+* yarn_proxy_server.service
+* yarn_registry_dns.service
+* yarn_resource_manager.service
+* yarn_shared_cache_manager.service
+* yarn_timeline_server.service
+* mapreduce_history_server.service
+
+
+# Hadoop, what is it?
 
 Hadoop is <https://hadoop.apache.org/>
 
@@ -251,14 +329,13 @@ The most primary components are
 
 HDFS is, as the name implies a Distributed File system. 
 
-A cluster will have a (small) number of HDFS Namenodes and a (large) number of HDFS Datanodes
+A cluster will have a (small) number of HDFS Namenodes (`narchive-p-hdfs[01:02].hadoop-mgmt.bitarkiv.kb.dk`) and a (large) number of HDFS Datanodes (`prod-hadoop-bur-[01:09].hadoop-mgmt.bitarkiv.kb.dk`)
 
-The HDFS Namenodes hold the "FAT" table for the file system. The Data nodes hold the blocks.
+The HDFS Namenodes hold the "FAT" table for the file system. The Data nodes hold the data blocks.
 
 Each block is normally 128MB, but unused space is not wasted.  
 
-To read a file from HDFS, a client must contact a Namenode to get pointers to the blocks of the file. The client
-must then contact the relevant datanodes to get the contents of the file.
+To read a file from HDFS, a client must contact a Namenode to get pointers to the blocks of the file. The client must then contact the relevant datanodes to get the contents of the file.
 
 Files are (often) replicated, meaning that the same block can be found on multiple data nodes.
 
@@ -302,7 +379,5 @@ TODO Fun with DNS or how we cannot have nice things
 # HDFS Revisited (Failover config, Zookeeper and so on)
 
 # Other Hadoop services (Spark, Map-reduce.)
-
-# SSL, or who cares about Certificate Authorities
 
 # Log collection (Rsyslog)
