@@ -289,29 +289,29 @@ issuer: C=DK; ST=Copenhagen; L=Copenhaven; O=narchive; OU=Det Kongelige Bibliote
 
 The various Hadoop daemons have been deployed as SystemD services.
 
-* [zookeeper.service](/roles/zookeeper/templates/systemd/zookeeper.service)
-* hdfs_backupnode.service
-* hdfs_balancer.service
-* hdfs_checkpointnode.service
-* hdfs_datanode.service
-* hdfs_dfsrouter.service
-* hdfs_diskbalancer.service
-* hdfs_httpfs.service
-* hdfs_journalnode.service
-* hdfs_mover.service
-* hdfs_namenode.service
-* hdfs_nfs3.service
-* hdfs_portmap.service
-* hdfs_secondary_namenode.service
-* hdfs_sps.service
-* hdfs_zkfc.service
-* yarn_node_manager.service
-* yarn_proxy_server.service
-* yarn_registry_dns.service
-* yarn_resource_manager.service
-* yarn_shared_cache_manager.service
-* yarn_timeline_server.service
-* mapreduce_history_server.service
+* [zookeeper.service](../roles/zookeeper/templates/systemd/zookeeper.service)
+* [hdfs_backupnode.service](../roles/hadoop/templates/systemd/hdfs/hdfs_backupnode.service)
+* [hdfs_balancer.service](../roles/hadoop/templates/systemd/hdfs/hdfs_balancer.service)
+* [hdfs_checkpointnode.service](../roles/hadoop/templates/systemd/hdfs/hdfs_checkpointnode.service)
+* [hdfs_datanode.service](../roles/hadoop/templates/systemd/hdfs/hdfs_datanode.service)
+* [hdfs_dfsrouter.service](../roles/hadoop/templates/systemd/hdfs/hdfs_dfsrouter.service)
+* [hdfs_diskbalancer.service](../roles/hadoop/templates/systemd/hdfs/hdfs_diskbalancer.service)
+* [hdfs_httpfs.service](../roles/hadoop/templates/systemd/hdfs/hdfs_httpfs.service)
+* [hdfs_journalnode.service](../roles/hadoop/templates/systemd/hdfs/hdfs_journalnode.service)
+* [hdfs_mover.service](../roles/hadoop/templates/systemd/hdfs/hdfs_mover.service)
+* [hdfs_namenode.service](../roles/hadoop/templates/systemd/hdfs/hdfs_namenode.service)
+* [hdfs_nfs3.service](../roles/hadoop/templates/systemd/hdfs/hdfs_nfs3.service)
+* [hdfs_portmap.service](../roles/hadoop/templates/systemd/hdfs/hdfs_portmap.service)
+* [hdfs_secondary_namenode.service](../roles/hadoop/templates/systemd/hdfs/hdfs_secondary_namenode.service)
+* [hdfs_sps.service](../roles/hadoop/templates/systemd/hdfs/hdfs_sps.service)
+* [hdfs_zkfc.service](../roles/hadoop/templates/systemd/hdfs/hdfs_zkfc.service)
+* [yarn_node_manager.service](../roles/hadoop/templates/systemd/yarn/yarn_node_manager.service)
+* [yarn_proxy_server.service](../roles/hadoop/templates/systemd/yarn/yarn_proxy_server.service)
+* [yarn_registry_dns.service](../roles/hadoop/templates/systemd/yarn/yarn_registry_dns.service)
+* [yarn_resource_manager.service](../roles/hadoop/templates/systemd/yarn/yarn_resource_manager.service)
+* [yarn_shared_cache_manager.service](../roles/hadoop/templates/systemd/yarn/yarn_shared_cache_manager.service)
+* [yarn_timeline_server.service](../roles/hadoop/templates/systemd/yarn/yarn_timeline_server.service)
+* [mapreduce_history_server.service](../roles/hadoop/templates/systemd/mapreduce/mapreduce_history_server.service)
 
 
 # Hadoop, what is it?
