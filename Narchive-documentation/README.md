@@ -287,7 +287,7 @@ issuer: C=DK; ST=Copenhagen; L=Copenhaven; O=narchive; OU=Det Kongelige Bibliote
 
 ### Systemd Services
 
-The various Hadoop daemons have been deployed as SystemD services.
+The various Hadoop daemons have been deployed as Systemd services.
 
 * [zookeeper.service](../roles/zookeeper/templates/systemd/zookeeper.service)
 * [hdfs_backupnode.service](../roles/hadoop/templates/systemd/hdfs/hdfs_backupnode.service)
@@ -314,11 +314,10 @@ The various Hadoop daemons have been deployed as SystemD services.
 * [mapreduce_history_server.service](../roles/hadoop/templates/systemd/mapreduce/mapreduce_history_server.service)
 
 
+
 # Hadoop, what is it?
 
 Hadoop is <https://hadoop.apache.org/>
-
-__That didn't help much!__ Well, Hadoop is a "thing", consisting of several "components".
 
 The most primary components are
 
@@ -327,7 +326,7 @@ The most primary components are
 
 ## What is HDFS
 
-HDFS is, as the name implies a Distributed File system. 
+[HDFS](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HdfsDesign.html) is, as the name implies a Distributed File system. 
 
 A cluster will have a (small) number of HDFS Namenodes (`narchive-p-hdfs[01:02].hadoop-mgmt.bitarkiv.kb.dk`) and a (large) number of HDFS Datanodes (`prod-hadoop-bur-[01:09].hadoop-mgmt.bitarkiv.kb.dk`)
 
@@ -352,7 +351,7 @@ Similarly, a Namenode is a (linux) machine running a HDFS Namenode daemon
 
 For the [Narchive (prod) cluster](/hosts/narchive-prod/narchive-prod.yml), `prod-hadoop-bur-[01:09].hadoop-mgmt.bitarkiv.kb.dk` function as Data nodes.
 
-Each of these have 4 4TB disks. 3 of these (/dev/sbb, sbc, sbd) are used for HDFS.
+Each of these have 3 4TB disks which are used for HDFS.
 
 HDFS is NOT a disk-filesystem, and the storage disks are formatted with some standard linux filesystem and mounted.
 
@@ -362,21 +361,40 @@ __And the Namenodes?__
 
 Yes, the Namenodes are `narchive-p-hdfs[01:02].hadoop-mgmt.bitarkiv.kb.dk`
 
+## HDFS Authentication
+
+HDFS uses Kerberos Authentication, meaning that you must provide a Kerberos ticket to access HDFS.
+
+HDFS provides a POSIX-like interface, with User-Group-Other file permissions. 
+
+Read all about [here](https://steveloughran.gitbooks.io/kerberos_and_hadoop/content/sections/hdfs.html)
 
 
-TODO Authentication
+## [HDFS High Availability](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithQJM.html)
 
-TODO Authorization
- 
-TODO FreeIPA Client and SSD (no, not that kind, the other one)
+It is possible to replicate the HDFS Namenodes and ensure automatic failover.
 
-TODO Impersonation, i.e. remote sudo
+1. you need a [Zookeeper](https://zookeeper.apache.org/) system for distributed coordination.
+2. prepare the HDFS Journalnodes (3+, just pick the zookeeper servers). These are the lightweight daemons that decide which Namenode is the currently active.
+3. All Namenode services must be stopped 
+4. Pick a single namenode (NN1) and `initializeSharedEdits`
+5. Start NN1
+6. Choose next Namenode NN2 and `bootstrapStandby`. This SHOULD cause it to sync to NN1
+7. pick NN1, stop the zkfc service and format zkfc
+8. Restart namenode services on NN1 and NN2
+9. Restart all zkfc services on NN1 and NN2
 
-TODO Fun with DNS or how we cannot have nice things
+Each HDFS zkfc service will monitor the health of it's local HDFS Namenode service and connect to the Zookeeper quorum.
+Should the primary Namenode service fail, the ZKFC service will notice and trigger a re-election by the Journalnodes.
 
-# YARN
+The Journal nodes will then decide on a new primary Namenode and switch the system to be using this. 
 
-# HDFS Revisited (Failover config, Zookeeper and so on)
+
+## [YARN, Yet Another Resource Negotiator](https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/YARN.html)
+
+YARN is the job and resource management system for a Hadoop cluster.
+
+
 
 # Other Hadoop services (Spark, Map-reduce.)
 
