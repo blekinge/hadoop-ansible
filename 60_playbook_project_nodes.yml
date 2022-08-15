@@ -23,6 +23,7 @@
   hosts: hostgroup_project_nodes
   remote_user: root
   ignore_unreachable: yes
+  ignore_errors: true
   roles:
     - role: ansible_account
   tasks:

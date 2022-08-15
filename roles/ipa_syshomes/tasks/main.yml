@@ -49,3 +49,14 @@
         enabled: yes
         daemon_reload: yes
 
+- name: Setup local syshomes
+  when: not use_nfs_syshomes
+  block:
+    - name: "Create {{ ipaclient_syshome_dir }}"
+      file:
+        path: "{{ ipaclient_syshome_dir }}"
+        owner: root
+        group: root
+        mode: '0755'
+        state: directory
+        setype: home_root_t

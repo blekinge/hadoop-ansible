@@ -3,9 +3,9 @@
 # hadoop basic vars
 # Set a local file here, if you do not want to download it dynamicallyl
 spark_version: "3.0.1"
-spark_download: "http://ftp.download-by.net/apache/spark/spark-{{ spark_version }}/spark-{{ spark_version }}-bin-hadoop3.2.tgz"
+spark_download: "https://dlcdn.apache.org/spark/spark-{{ spark_version }}/spark-{{ spark_version }}-bin-hadoop3.tgz"
 spark_path: "/usr/local/spark"
-spark_home: "{{ spark_path }}/spark-{{ spark_version }}-bin-hadoop3.2"
+spark_home: "{{ spark_path }}/spark-{{ spark_version }}-bin-hadoop3"
 
 current_spark_home: "{{ spark_path }}/current"
 

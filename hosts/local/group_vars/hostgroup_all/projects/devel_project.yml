@@ -1,0 +1,62 @@
+---
+# Vars in here will be available as p001.*
+
+
+#project_ipa controls project group and users.
+project_ipa:
+  name: "{{ users_group.name }}"
+  gid: "{{ users_group.gid }}"
+  # Project_host is used to set up HBAC rules
+  project_host: "projects.askov.net"
+  users:
+    - username: "{{ user_prefix }}abr-devel"
+      firstname: "Asger"
+      lastname: "Askov Blekinge"
+      mobile: ""
+      uid: "{{ users_group.gid | int +1 }}"
+      gid: "{{ users_group.gid }}"
+      noprivate: yes
+
+      # If uid or gid is not specified, use group gid + position in this list.
+
+
+
+
+queue_mapping: "g:{{ users_group.name }}:{{ users_group.name }}-devel_interactive"
+
+
+yarn_queue:
+  name: "{{ users_group.name }}-devel"
+  admins: " {{ users_group.name }}"
+  submitters: " {{ users_group.name }}"
+  capacity: 40
+  max_capacity: 100
+  minimum_user_limit: 25
+  user_limit: 100
+  ordering: priority-utilization
+  priority: 1
+  state: RUNNING
+
+  children:
+    - name: "{{ users_group.name }}-devel_batch"
+      admins: " {{ users_group.name }}"
+      submitters: " {{ users_group.name }}"
+      capacity: 30
+      max_capacity: 100
+      minimum_user_limit: 25
+      user_limit: 100
+      ordering: fifo
+      priority: 1
+      state: RUNNING
+
+    - name: "{{ users_group.name }}-devel_interactive"
+      admins: " {{ users_group.name }}"
+      submitters: " {{ users_group.name }}"
+      capacity: 70
+      max_capacity: 80
+      minimum_user_limit: 25
+      user_limit: 100
+      ordering: fair
+      priority: 2
+      size_based: true
+      state: RUNNING

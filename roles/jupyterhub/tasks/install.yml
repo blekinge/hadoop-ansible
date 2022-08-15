@@ -28,13 +28,13 @@
 - name: Update python pip package
   pip:
     name: pip
-    executable: pip3
+    executable: pip3.8
     state: latest
 
 - name: Install jupyterhub by pip
   pip:
     name: "{{ item }}"
-    executable: pip3
+    executable: pip3.8
     state: latest
   loop: "{{ jupyterhub_base_packages }}"
 

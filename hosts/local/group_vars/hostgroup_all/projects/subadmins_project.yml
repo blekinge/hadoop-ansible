@@ -1,0 +1,25 @@
+---
+
+project_ipa:
+  name: "{{ subadmins_group.name }}"
+  gid: "{{ subadmins_group.gid }}"
+#  project_host: proj000.yak2.net
+  users:
+    - username: "{{ user_prefix }}abrsadm"
+      firstname: "Asger"
+      lastname: "Askov Blekinge"
+      mobile: +4551671277
+      email: "abr@askov.net"
+
+yarn_queue:
+  name: "default"
+  admins: "{{ yarn_user.name }} {{ subadmins_group.name }}"
+  submitters: "{{ yarn_user.name }} {{ subadmins_group.name }}"
+  capacity: 20
+  max_capacity: 100
+  minimum_user_limit: 25
+  user_limit: 100
+  ordering: fair
+  size_based: true
+  priority: 0
+  state: RUNNING

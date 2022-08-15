@@ -24,6 +24,13 @@
   command:
     cmd: authselect enable-feature with-mkhomedir
 
+- name: "Setup autocreation of homedirs"
+  when: ipaclient_mkhomedir | bool
+  become: yes
+
+  command:
+    cmd: authselect enable-feature with-mkhomedir
+
 - name: "Ensure oddjobd.service"
   when: ipaclient_mkhomedir | bool
   systemd:

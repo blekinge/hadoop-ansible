@@ -28,8 +28,9 @@
   become: yes
   become_user: "{{ hdfs_user.name }}"
   shell:
+    #TODO scan output for 'INFO namenode.SecondaryNameNode: Web server init done' rather than waiting a fixed time
     cmd:
-      /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh secondarynamenode -format -nonInteractive -force > "{{ hdfs_checkpoints_dir }}/formatted"
+      timeout --signal=SIGINT 10 /usr/local/bin/hadoop-invoker.sh hdfs hadoop-env.sh secondarynamenode -format > "{{ hdfs_checkpoints_dir }}/formatted"
     executable: /bin/bash
     creates: "{{ hdfs_checkpoints_dir }}/formatted"
   ignore_errors: yes

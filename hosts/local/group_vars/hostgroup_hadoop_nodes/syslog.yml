@@ -1,0 +1,14 @@
+---
+#The log4j syslog appender to install in hadoop.
+syslog_appender_jar:
+  group_id: com.hlag
+  artifact_id: log4jSyslogWriter64k-kb
+  nexus: https://sbforge.org/nexus/content/groups/public
+  version: 1.1.1-SNAPSHOT
+  keep_name: no
+
+#Loggers
+hadoop_daemon_logger: "INFO,DRFA,SYSLOG"
+hadoop_security_logger: "INFO,DRFAS,SYSLOG_SECURITY"
+hadoop_audit_logger: "INFO,SYSLOG_AUDIT"
+zookeeper_daemon_logger: "DEBUG, CONSOLE, DAILYROLLINGFILE, SYSLOG"

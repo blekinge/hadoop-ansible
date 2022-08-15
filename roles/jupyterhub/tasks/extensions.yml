@@ -4,14 +4,14 @@
 - name: Install PyYAML dependency without conflicting with OS
   pip:
     name: "PyYAML"
-    executable: pip3
+    executable: pip3.8
     state: latest
     extra_args: "--ignore-installed"
 
 - name: Install extra jupyter extensions
   pip:
     name: "{{ item }}"
-    executable: pip3
+    executable: pip3.8
     state: latest
   loop: "{{ jupyterhub_pip_extensions }}"
 
